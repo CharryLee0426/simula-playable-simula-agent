@@ -1,0 +1,22 @@
+{
+  "title": "Castle Toss",
+  "genre": "Physics slingshot puzzle",
+  "objective": "Launch boulders from a slingshot to topple structures and knock out all Gloomling monsters and the boss across 3 levels.",
+  "controls": "Drag back on the slingshot and release to aim and fire boulders; tap mid-air to trigger Split Shot when unlocked.",
+  "core_loop": "Aim and fire boulders at monster-filled structures to destroy them, earn coins, and pick upgrades between levels.",
+  "features": [
+    "Slingshot aiming with trajectory arc",
+    "Destructible wood, stone, and ice blocks",
+    "TNT explosive crates",
+    "Split Shot upgrade",
+    "Heavy Boulder upgrade",
+    "Fire Bomb upgrade",
+    "+2 Boulders upgrade",
+    "Multi-KO combos",
+    "Boss battle with HP bar"
+  ],
+  "progression": "3 levels escalating from simple wooden platforms to multi-material towers with TNT and a crowned red boss, with upgrade choices after each cleared level.",
+  "end_card": true,
+  "tone": "Colorful, playful, arcade physics destruction",
+  "hook_idea": "Fire Bomb Split Shot triggering a TNT chain reaction and Triple KO against the boss tower at t=27.2s-30.4s"
+}

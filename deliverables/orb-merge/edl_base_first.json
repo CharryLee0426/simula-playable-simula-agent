@@ -1,0 +1,30 @@
+{
+  "id": "base_first",
+  "strategy": "baseline: first 20 s",
+  "title": "the first 20 s after loading, uncut",
+  "source": "baseline",
+  "clips": [
+    {
+      "start": 0,
+      "end": 10.4,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 10.95,
+      "end": 20,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 20,
+      "end": 20.533,
+      "speed": 1,
+      "role": "core_loop"
+    }
+  ],
+  "fixes": [
+    "clip 20.0-20.1 → 20.00-20.80 (bounds/gesture snap)",
+    "dead air 10.0-11.5 s cut out of a core_loop clip"
+  ]
+}

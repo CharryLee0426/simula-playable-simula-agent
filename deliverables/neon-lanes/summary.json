@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/highlight.mp4",
+  "score": 90.6,
+  "best": "b",
+  "usd": 0.3114,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:35:03.805Z",
+      "ms": 95017,
+      "note": "26.9 s recorded, 6 inputs, 11 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:35:35.425Z",
+      "ms": 31617,
+      "note": "9 moments, genre: 3-lane endless runner"
+    },
+    "cut": {
+      "at": "2026-11-22T10:36:18.280Z",
+      "ms": 42852,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:39:14.639Z",
+      "ms": 176356,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:41:15.581Z",
+      "ms": 120938,
+      "note": "best b (learn-then-escalate) score 90.6"
+    },
+    "friction": {
+      "at": "2026-11-22T10:41:27.284Z",
+      "ms": 11698,
+      "note": "4 items"
+    }
+  }
+}

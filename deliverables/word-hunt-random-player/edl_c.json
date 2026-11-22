@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Fast-paced montage of cash targets, tile flips, and orange swipe trails",
+  "clips": [
+    {
+      "start": 0,
+      "end": 1.8,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on the cash counter, fox mascot, and target word rewards"
+    },
+    {
+      "start": 3.1,
+      "end": 5.9,
+      "speed": 1.05,
+      "role": "core_loop",
+      "why": "Sped-up taps and swipes showing responsive tile flip feedback"
+    },
+    {
+      "start": 8.9,
+      "end": 12.2,
+      "speed": 1.4,
+      "role": "feature",
+      "why": "Fast cut of tapping individual S-U-N tiles on the 4x4 grid"
+    },
+    {
+      "start": 15,
+      "end": 18.1,
+      "speed": 1.2,
+      "role": "feature",
+      "why": "Highlights the orange line trail connecting adjacent letters"
+    },
+    {
+      "start": 19.9,
+      "end": 22.7,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Clean diagonal and horizontal swipes at full speed"
+    },
+    {
+      "start": 26.2,
+      "end": 29.2,
+      "speed": 1.3,
+      "role": "progression",
+      "why": "Quick mid-board diagonal letter combinations"
+    },
+    {
+      "start": 31.1,
+      "end": 34.1,
+      "speed": 1.1,
+      "role": "progression",
+      "why": "Vertical swipe down the left column and bottom row check"
+    },
+    {
+      "start": 38.5,
+      "end": 41.233,
+      "speed": 1,
+      "role": "climax",
+      "why": "Peak-motion burst of consecutive drags to close the montage"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

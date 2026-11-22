@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/highlight.mp4",
+  "score": 84.9,
+  "best": "a",
+  "usd": 0.3863,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:31:52.006Z",
+      "ms": 179361,
+      "note": "49.1 s recorded, 64 inputs, 18 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:32:30.124Z",
+      "ms": 38115,
+      "note": "13 moments, genre: Idle Clicker"
+    },
+    "cut": {
+      "at": "2026-11-22T10:33:11.052Z",
+      "ms": 40925,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:35:23.056Z",
+      "ms": 132002,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:36:56.020Z",
+      "ms": 92961,
+      "note": "best a (hook-first) score 84.9"
+    },
+    "friction": {
+      "at": "2026-11-22T10:37:05.287Z",
+      "ms": 9263,
+      "note": "3 items"
+    }
+  }
+}

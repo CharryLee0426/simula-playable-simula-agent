@@ -1,0 +1,50 @@
+{
+  "_doc": "Defaults for a session. Override in config/local.json (gitignored), with --set key=value, or with the CLI flags. README lists every field.",
+  "budget_usd": 2,
+  "models": {
+    "planner": "google/gemini-4-hydrogen",
+    "planner_reasoning": "low",
+    "director": "google/gemini-4-hydrogen",
+    "director_reasoning": "medium",
+    "judge": "google/gemini-4-hydrogen",
+    "decider": "perplexity/pplx-decider-v1.3:free"
+  },
+  "browser": {
+    "viewport": [
+      360,
+      640
+    ],
+    "dpr": 2,
+    "fps": 30,
+    "display": "auto",
+    "seed": 7
+  },
+  "play": {
+    "max_game_s": 90,
+    "min_game_s": 35,
+    "max_planner_calls": 60,
+    "boot_max_s": 12,
+    "end_card_hold_s": 2.5,
+    "tap_cta_at_end": true,
+    "persona": "casual_competent",
+    "stuck_after": 3
+  },
+  "highlight": {
+    "duration_s": 20,
+    "max_source_s": 30,
+    "max_speed": 1.5,
+    "candidates": 3,
+    "width": 1080,
+    "height": 1920,
+    "touch_overlay": true,
+    "include_end_card": true
+  },
+  "index": {
+    "decider_sample_s": 0.5,
+    "decider_concurrency": 4
+  },
+  "eval": {
+    "pairwise": true,
+    "pass_score": 70
+  }
+}

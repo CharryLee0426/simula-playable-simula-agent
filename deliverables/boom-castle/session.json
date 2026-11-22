@@ -1,0 +1,47 @@
+{
+  "game_s": 71.33333333333333,
+  "frames": 2140,
+  "fps": 30,
+  "planner_calls": 21,
+  "planner_failures": 0,
+  "actions": 56,
+  "turns": 21,
+  "cta_tapped": false,
+  "ended_by": "time_limit",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "click@element": 8,
+    "pointerdown@element": 1,
+    "pointermove@element": 1,
+    "pointerup@element": 1,
+    "pointercancel@element": 1
+  },
+  "events": [
+    {
+      "t": 0,
+      "frame": 0,
+      "kind": "network",
+      "via": "WebSocket",
+      "url": "/minigames/update/"
+    }
+  ],
+  "audio": {
+    "sounds": 232,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 0.671
+  },
+  "perf": {
+    "step_ms_avg": 10,
+    "shot_ms_avg": 249.2
+  },
+  "title": "Boom Castle TD",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Tower/cannon defense game. Dragging from cannon area [820, 500] towards enemies aims and fires. Fire Mage is active on the left tower. Central Cannon fire rate upgraded.",
+  "stuck_events": 0
+}

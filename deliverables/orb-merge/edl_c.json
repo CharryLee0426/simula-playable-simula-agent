@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Fast-Paced Neon Arcade Feature Montage",
+  "clips": [
+    {
+      "start": 3.5,
+      "end": 7.7,
+      "speed": 1.15,
+      "role": "core_loop",
+      "why": "Rapidly establishes the drag-to-aim core loop and COMBO x2! chain."
+    },
+    {
+      "start": 7.7,
+      "end": 10.3,
+      "speed": 1.3,
+      "role": "core_loop",
+      "why": "Quick shot of matching 8-orbs to stack multiple 16-orbs."
+    },
+    {
+      "start": 16.5,
+      "end": 18.7,
+      "speed": 1.1,
+      "role": "feature",
+      "why": "Showcases the 32-orb BIG MERGE! and Bomb unlock reward."
+    },
+    {
+      "start": 20.5,
+      "end": 22.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights the Bomb power-up clearing orbs for +42 points."
+    },
+    {
+      "start": 22.6,
+      "end": 27.1,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Speeds up the 16-orb merge into a second 32-orb to keep momentum high."
+    },
+    {
+      "start": 29.9,
+      "end": 31.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Flashes the SPEED UP! mode activation and combo chain."
+    },
+    {
+      "start": 31.9,
+      "end": 35.82,
+      "speed": 1.2,
+      "role": "climax",
+      "why": "Caps the montage with the 64-orb COMBO x2! (+128) milestone."
+    },
+    {
+      "start": 54.033,
+      "end": 56,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Finishes with the score summary and PLAY NOW call to action."
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

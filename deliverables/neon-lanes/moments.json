@@ -1,0 +1,634 @@
+{
+  "duration": 26.933333333333334,
+  "bins": [
+    {
+      "t": 0,
+      "motion": 0.02139,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.15728571428571428,
+      "frame": "index_frames/f_00001.jpg",
+      "phase": "tutorial",
+      "excitement": 2.048399530585224
+    },
+    {
+      "t": 0.5,
+      "motion": 0.019037333333333333,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.15888,
+      "frame": "index_frames/f_00002.jpg",
+      "phase": "tutorial",
+      "excitement": 2.0554282469122165
+    },
+    {
+      "t": 1,
+      "motion": 0.022212,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.16195333333333334,
+      "frame": "index_frames/f_00003.jpg",
+      "phase": "tutorial",
+      "excitement": 2.137562137678957
+    },
+    {
+      "t": 1.5,
+      "motion": 0.021764,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.16284666666666667,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00004.jpg",
+      "excitement": 2.3811817437057
+    },
+    {
+      "t": 2,
+      "motion": 0.025942666666666666,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.16334666666666664,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00005.jpg",
+      "excitement": 2.226413746969
+    },
+    {
+      "t": 2.5,
+      "motion": 0.023161333333333336,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.16417333333333334,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00006.jpg",
+      "excitement": 2.1773829141678487
+    },
+    {
+      "t": 3,
+      "motion": 0.016612666666666668,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.17078000000000002,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00007.jpg",
+      "excitement": 2.2934000146223386
+    },
+    {
+      "t": 3.5,
+      "motion": 0.022780666666666664,
+      "audio_db": -15.5,
+      "touches": 1,
+      "luma": 0.17087333333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00008.jpg",
+      "excitement": 2.597118013733516
+    },
+    {
+      "t": 4,
+      "motion": 0.034949333333333325,
+      "audio_db": -11.3,
+      "touches": 0,
+      "luma": 0.18067333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00009.jpg",
+      "excitement": 2.758600966317074
+    },
+    {
+      "t": 4.5,
+      "motion": 0.044939999999999994,
+      "audio_db": -11.3,
+      "touches": 0,
+      "luma": 0.21083333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00010.jpg",
+      "excitement": 3.062322791776573
+    },
+    {
+      "t": 5,
+      "motion": 0.025634666666666663,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.17124000000000003,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00011.jpg",
+      "excitement": 3.0685380127734163
+    },
+    {
+      "t": 5.5,
+      "motion": 0.022648666666666664,
+      "audio_db": -30.8,
+      "touches": 0,
+      "luma": 0.16158,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00012.jpg",
+      "excitement": 2.3552613395862134
+    },
+    {
+      "t": 6,
+      "motion": 0.022044,
+      "audio_db": -30.8,
+      "touches": 0,
+      "luma": 0.1608333333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00013.jpg",
+      "excitement": 2.302767346005401
+    },
+    {
+      "t": 6.5,
+      "motion": 0.023274,
+      "audio_db": -30.8,
+      "touches": 0,
+      "luma": 0.16076000000000004,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00014.jpg",
+      "excitement": 2.4630018332316124
+    },
+    {
+      "t": 7,
+      "motion": 0.02410533333333333,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.16782666666666665,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00015.jpg",
+      "excitement": 2.4795375977592067
+    },
+    {
+      "t": 7.5,
+      "motion": 0.014268666666666667,
+      "audio_db": -12.1,
+      "touches": 1,
+      "luma": 0.1756,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00016.jpg",
+      "excitement": 2.421057568101787
+    },
+    {
+      "t": 8,
+      "motion": 0.0547,
+      "audio_db": -14.3,
+      "touches": 1,
+      "luma": 0.20068,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00017.jpg",
+      "excitement": 2.6244083508017226
+    },
+    {
+      "t": 8.5,
+      "motion": 0.052065999999999994,
+      "audio_db": -18.2,
+      "touches": 0,
+      "luma": 0.19698000000000002,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00018.jpg",
+      "excitement": 3.1205424990678985
+    },
+    {
+      "t": 9,
+      "motion": 0.02941133333333333,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.17126,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00019.jpg",
+      "excitement": 2.52069339201486
+    },
+    {
+      "t": 9.5,
+      "motion": 0.044553999999999996,
+      "audio_db": -14,
+      "touches": 1,
+      "luma": 0.20635333333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00020.jpg",
+      "excitement": 2.6432528720070407
+    },
+    {
+      "t": 10,
+      "motion": 0.03768333333333333,
+      "audio_db": -13.9,
+      "touches": 1,
+      "luma": 0.23122,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00021.jpg",
+      "excitement": 2.860510608874929
+    },
+    {
+      "t": 10.5,
+      "motion": 0.004515333333333334,
+      "audio_db": -13.4,
+      "touches": 0,
+      "luma": 0.20287333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00022.jpg",
+      "excitement": 2.465130809033717
+    },
+    {
+      "t": 11,
+      "motion": 0.01389933333333333,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.16760000000000003,
+      "phase": "fail",
+      "frame": "index_frames/f_00023.jpg",
+      "excitement": 1.720608697727796
+    },
+    {
+      "t": 11.5,
+      "motion": 0.000638,
+      "audio_db": -31.1,
+      "touches": 0,
+      "luma": 0.17816666666666664,
+      "phase": "fail",
+      "frame": "index_frames/f_00024.jpg",
+      "excitement": 1.5787080402463158
+    },
+    {
+      "t": 12,
+      "motion": 0.014324666666666668,
+      "audio_db": -11.9,
+      "touches": 1,
+      "luma": 0.1775533333333333,
+      "phase": "fail",
+      "frame": "index_frames/f_00025.jpg",
+      "excitement": 1.595343066577959
+    },
+    {
+      "t": 12.5,
+      "motion": 0.029106666666666663,
+      "audio_db": -9.1,
+      "touches": 0,
+      "luma": 0.17913333333333328,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00026.jpg",
+      "excitement": 2.9929806509886663
+    },
+    {
+      "t": 13,
+      "motion": 0.033594000000000006,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.17517333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00027.jpg",
+      "excitement": 3.001331841648283
+    },
+    {
+      "t": 13.5,
+      "motion": 0.040118,
+      "audio_db": -31,
+      "touches": 0,
+      "luma": 0.17166,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00028.jpg",
+      "excitement": 2.575794724758775
+    },
+    {
+      "t": 14,
+      "motion": 0.030189333333333342,
+      "audio_db": -8.7,
+      "touches": 0,
+      "luma": 0.16394000000000003,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00029.jpg",
+      "excitement": 2.600390588809235
+    },
+    {
+      "t": 14.5,
+      "motion": 0.028456,
+      "audio_db": -16,
+      "touches": 0,
+      "luma": 0.16612666666666664,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00030.jpg",
+      "excitement": 2.5322175631630834
+    },
+    {
+      "t": 15,
+      "motion": 0.045914,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.18824666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00031.jpg",
+      "excitement": 2.6134343962272366
+    },
+    {
+      "t": 15.5,
+      "motion": 0.032445999999999996,
+      "audio_db": -11.9,
+      "touches": 0,
+      "luma": 0.17489333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00032.jpg",
+      "excitement": 2.5201695510489723
+    },
+    {
+      "t": 16,
+      "motion": 0.042744,
+      "audio_db": -7.6,
+      "touches": 0,
+      "luma": 0.20215333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00033.jpg",
+      "excitement": 2.57807287389139
+    },
+    {
+      "t": 16.5,
+      "motion": 0.039054,
+      "audio_db": -9.6,
+      "touches": 1,
+      "luma": 0.18041333333333337,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00034.jpg",
+      "excitement": 2.744288303721757
+    },
+    {
+      "t": 17,
+      "motion": 0.04085066666666667,
+      "audio_db": -8.9,
+      "touches": 0,
+      "luma": 0.18292000000000003,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00035.jpg",
+      "excitement": 2.654054673515236
+    },
+    {
+      "t": 17.5,
+      "motion": 0.04404733333333334,
+      "audio_db": -14.2,
+      "touches": 0,
+      "luma": 0.19350666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00036.jpg",
+      "excitement": 2.5732766282634616
+    },
+    {
+      "t": 18,
+      "motion": 0.03141933333333333,
+      "audio_db": -14,
+      "touches": 0,
+      "luma": 0.21602000000000002,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00037.jpg",
+      "excitement": 2.731080811427156
+    },
+    {
+      "t": 18.5,
+      "motion": 0.005168,
+      "audio_db": -13.3,
+      "touches": 0,
+      "luma": 0.19324000000000002,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00038.jpg",
+      "excitement": 2.482087242505857
+    },
+    {
+      "t": 19,
+      "motion": 0.004004666666666667,
+      "audio_db": -30.9,
+      "touches": 1,
+      "luma": 0.19818666666666662,
+      "phase": "fail",
+      "frame": "index_frames/f_00039.jpg",
+      "excitement": 2.155887412639876
+    },
+    {
+      "t": 19.5,
+      "motion": 0.0015626666666666666,
+      "audio_db": -30.9,
+      "touches": 1,
+      "luma": 0.20165333333333335,
+      "phase": "fail",
+      "frame": "index_frames/f_00040.jpg",
+      "excitement": 2.3333136942729333
+    },
+    {
+      "t": 20,
+      "motion": 0.012229333333333335,
+      "audio_db": -11.4,
+      "touches": 0,
+      "luma": 0.1908533333333333,
+      "phase": "fail",
+      "frame": "index_frames/f_00041.jpg",
+      "excitement": 2.4192614781987727
+    },
+    {
+      "t": 20.5,
+      "motion": 0.014660000000000001,
+      "audio_db": -11.4,
+      "touches": 0,
+      "luma": 0.25909333333333334,
+      "phase": "title",
+      "frame": "index_frames/f_00042.jpg",
+      "excitement": 0.7712838492142612
+    },
+    {
+      "t": 21,
+      "motion": 0.005001333333333333,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.2809600000000001,
+      "phase": "title",
+      "frame": "index_frames/f_00043.jpg",
+      "excitement": 0.6747795076304671
+    },
+    {
+      "t": 21.5,
+      "motion": 0.004382666666666666,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.2815666666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00044.jpg",
+      "excitement": 0.8116185311895814
+    },
+    {
+      "t": 22,
+      "motion": 0.00397,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.2819733333333333,
+      "phase": "title",
+      "frame": "index_frames/f_00045.jpg",
+      "excitement": 0.7832225080914891
+    },
+    {
+      "t": 22.5,
+      "motion": 0.004521333333333334,
+      "audio_db": -30.8,
+      "touches": 0,
+      "luma": 0.28054,
+      "phase": "title",
+      "frame": "index_frames/f_00046.jpg",
+      "excitement": 0.7145050398262442
+    },
+    {
+      "t": 23,
+      "motion": 0.006098,
+      "audio_db": -31.1,
+      "touches": 0,
+      "luma": 0.2849333333333333,
+      "phase": "title",
+      "frame": "index_frames/f_00047.jpg",
+      "excitement": 0.7900583734940736
+    },
+    {
+      "t": 23.5,
+      "motion": 0.004141333333333334,
+      "audio_db": -31,
+      "touches": 0,
+      "luma": 0.28196000000000004,
+      "phase": "title",
+      "frame": "index_frames/f_00048.jpg",
+      "excitement": 0.8407531921244229
+    },
+    {
+      "t": 24,
+      "motion": 0.0039380000000000005,
+      "audio_db": -30.5,
+      "touches": 0,
+      "luma": 0.27854666666666666,
+      "phase": "title",
+      "frame": "index_frames/f_00049.jpg",
+      "excitement": 0.7153547607847459
+    },
+    {
+      "t": 24.5,
+      "motion": 0.004309333333333334,
+      "audio_db": -30.8,
+      "touches": 1,
+      "luma": 0.28362666666666664,
+      "phase": "title",
+      "frame": "index_frames/f_00050.jpg",
+      "excitement": 0.7810178736670158
+    },
+    {
+      "t": 25,
+      "motion": 0.007578666666666666,
+      "audio_db": -16.1,
+      "touches": 1,
+      "luma": 0.2837466666666666,
+      "phase": "title",
+      "frame": "index_frames/f_00051.jpg",
+      "excitement": 0.7563304262009007
+    },
+    {
+      "t": 25.5,
+      "motion": 0.0042973333333333336,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.28036666666666665,
+      "phase": "title",
+      "frame": "index_frames/f_00052.jpg",
+      "excitement": 0.7240098403498212
+    },
+    {
+      "t": 26,
+      "motion": 0.004057333333333333,
+      "audio_db": -30.6,
+      "touches": 0,
+      "luma": 0.28242000000000006,
+      "phase": "title",
+      "frame": "index_frames/f_00053.jpg",
+      "excitement": 0.7527740008067311
+    },
+    {
+      "t": 26.5,
+      "motion": 0.004073571428571428,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.281,
+      "phase": "title",
+      "frame": "index_frames/f_00054.jpg",
+      "excitement": 0.8245052094761501
+    }
+  ],
+  "moments": [
+    {
+      "start": 0,
+      "end": 3.6,
+      "kind": "tutorial",
+      "label": "Car drives down the middle lane collecting coins while 'Swipe to switch lanes!' tutorial prompt and hand icon guide the player.",
+      "intensity": 2
+    },
+    {
+      "start": 3.6,
+      "end": 5.4,
+      "kind": "core_loop",
+      "label": "Player swipes right to dodge a tall pink X block, triggering 'NICE DODGE!' and collecting coins.",
+      "intensity": 3
+    },
+    {
+      "start": 5.4,
+      "end": 7.4,
+      "kind": "core_loop",
+      "label": "Car speeds down the right lane toward full-width orange barriers as speed climbs to 61.",
+      "intensity": 3
+    },
+    {
+      "start": 7.4,
+      "end": 9.2,
+      "kind": "feature",
+      "label": "'Swipe UP to jump!' prompt appears; player swipes up to leap over the orange barriers, earning 'GREAT JUMP!'.",
+      "intensity": 4,
+      "feature": "Jump"
+    },
+    {
+      "start": 9.2,
+      "end": 10.6,
+      "kind": "fail",
+      "label": "Car approaches a tall pink X block in the right lane and crashes into it in a burst of neon particles.",
+      "intensity": 4
+    },
+    {
+      "start": 10.6,
+      "end": 12.6,
+      "kind": "feature",
+      "label": "'CRASHED!' popup offers a free revive; player taps 'REVIVE' and resumes with 'REVIVED! Go go go!'.",
+      "intensity": 3,
+      "feature": "Free Revive"
+    },
+    {
+      "start": 12.6,
+      "end": 17.6,
+      "kind": "progression",
+      "label": "High-speed run from 141m to 235m as speed ramps up to 76, collecting coins up to 21 and swiping to dodge pink X blocks.",
+      "intensity": 4
+    },
+    {
+      "start": 17.6,
+      "end": 20.4,
+      "kind": "climax",
+      "label": "Car approaches a pink X block at 246m at top speed and crashes, triggering a neon explosion and 'GAME OVER' screen.",
+      "intensity": 5
+    },
+    {
+      "start": 20.4,
+      "end": 26.9,
+      "kind": "end_card",
+      "label": "'NEON LANES' end card displays 'Coins collected: 21' and a pulsing 'PLAY NOW' button, which the player taps.",
+      "intensity": 2
+    }
+  ],
+  "game": {
+    "title": "Neon Lanes",
+    "genre": "3-lane endless runner",
+    "objective": "Drive as far as possible down a synthwave highway, dodging obstacles and collecting coins.",
+    "controls": "Swipe left or right to switch between three lanes, swipe up to jump over barriers, and tap on-screen buttons to revive or play.",
+    "core_loop": "Swipe to switch lanes or jump over neon obstacles to collect coins and push your distance further.",
+    "features": [
+      "3-lane lane switching",
+      "Jump over barriers",
+      "Coin collection",
+      "Free Revive",
+      "Speed progression",
+      "Dodge/Jump combo callouts"
+    ],
+    "progression": "Speed steadily increases as distance climbs from 6m past 246m, with tighter obstacle patterns.",
+    "end_card": true,
+    "tone": "retro synthwave, neon, fast-paced",
+    "hook_idea": "Swiping up to leap over the glowing orange barriers with the 'GREAT JUMP!' banner at t=7.8-8.8s"
+  },
+  "end_card_t": 22.166666666666575,
+  "playable_from": 0,
+  "has_audio": true
+}

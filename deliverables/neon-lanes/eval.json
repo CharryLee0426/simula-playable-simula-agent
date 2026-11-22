@@ -1,0 +1,340 @@
+{
+  "best": "b",
+  "score": 90.6,
+  "pass": true,
+  "pairwise": {
+    "a": "b",
+    "b": "c",
+    "a_first": "B",
+    "b_first": "B",
+    "winner": "b"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.023,
+        "loading_ratio": 0,
+        "action": 0.582,
+        "hook_ratio": 1.127,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.767,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 3.5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 97.6
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 8.5,
+        "human_play": 8.5,
+        "action": 8,
+        "hook": 7.5,
+        "polish": 6.5,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Cuts backwards in progression from 120m to 45m, which breaks the sense of forward momentum."
+        },
+        "best_moment": {
+          "t": 10,
+          "why": "Seamless transition from the free revive back into fast-paced lane switching and coin collection."
+        },
+        "summary": "This highlight clearly demonstrates Neon Lanes' core mechanics, progression, and revive feature with natural human-like play and a strong end card. The only minor flaw is an early cut that jumps backwards in distance, slightly disrupting the pacing.",
+        "J": 79.5,
+        "J_samples": [
+          83.8,
+          75.2
+        ]
+      },
+      "score": 87.6
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.023,
+        "loading_ratio": 0,
+        "action": 0.582,
+        "hook_ratio": 1.045,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.767,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 3.5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 96.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8.5,
+        "action": 8,
+        "hook": 7.5,
+        "polish": 9,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Starts with a static tutorial prompt 'Swipe to switch lanes!' instead of pure high-speed action."
+        },
+        "best_moment": {
+          "t": 5,
+          "why": "Cleanly jumping over the orange barriers while collecting coins at high speed."
+        },
+        "summary": "This 20-second highlight effectively showcases Neon Lanes' core loop, speed progression, jumping mechanic, and free revive feature, capped off with a clean end card. Starting directly in the action without the initial tutorial prompt would make the opening hook even stronger.",
+        "J": 85.4,
+        "J_samples": [
+          83.2,
+          87.6
+        ]
+      },
+      "score": 90.6,
+      "wins": 1
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.023,
+        "loading_ratio": 0,
+        "action": 0.582,
+        "hook_ratio": 1.126,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.767,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 3.5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 97.6
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8,
+        "action": 8,
+        "hook": 8,
+        "polish": 6.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Cuts backward from 122m to 46m to show the tutorial prompt, breaking the sense of continuous progression."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "Opens immediately with a clean jump over orange barriers and the 'GREAT JUMP!' banner, hooking the viewer right away."
+        },
+        "summary": "This fast-paced highlight clearly demonstrates the 3-lane endless runner mechanics, including jumping, dodging, coin collection, and the free revive feature, while ending on a clean call-to-action card. Aside from a jarring continuity cut at t=2s that jumps backward in distance, the pacing and human-like mistakes make it a strong ad.",
+        "J": 81,
+        "J_samples": [
+          82.2,
+          79.8
+        ]
+      },
+      "score": 88.5,
+      "wins": 1
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.025,
+        "loading_ratio": 0,
+        "action": 0.619,
+        "hook_ratio": 0.853,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.767,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 3,
+        "moment_quality": 0.983,
+        "arc": 0.562,
+        "H": 83.7
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8.5,
+        "action": 7.5,
+        "hook": 6,
+        "polish": 7.5,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 18,
+          "issue": "The run ends abruptly in a crash and 'GAME OVER' screen without showing any end-card or call to action."
+        },
+        "best_moment": {
+          "t": 7.8,
+          "why": "The player successfully swipes up to jump over the orange barriers, triggering the 'GREAT JUMP!' banner and showcasing the verticality."
+        },
+        "summary": "This highlight clearly demonstrates the core 3-lane endless runner loop, including lane switching, jumping, coin collection, and the free revive mechanic, with natural-looking human timing. However, the opening 3 seconds are a bit slow with tutorial prompts, and the video ends abruptly on a Game Over screen without an end card.",
+        "J": 79.2,
+        "J_samples": [
+          75.6,
+          82.8
+        ]
+      },
+      "score": 81.2
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.024,
+        "loading_ratio": 0,
+        "action": 0.553,
+        "hook_ratio": 0.959,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.767,
+        "shots": 5,
+        "avg_shot_s": 4,
+        "touches_per_10s": 2,
+        "moment_quality": 0.892,
+        "arc": 0.85,
+        "H": 91.8
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8,
+        "action": 7,
+        "hook": 5.5,
+        "polish": 3.5,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 13,
+          "issue": "The 'PLAY NOW' end card appears at 00:13-00:16, but the video awkwardly cuts back to a crash and revive screen at 00:17."
+        },
+        "best_moment": {
+          "t": 11,
+          "why": "Jumping over the glowing orange barriers with the 'GREAT JUMP!' callout cleanly showcases the jump mechanic."
+        },
+        "summary": "The video clearly demonstrates the core 3-lane runner mechanics, coin collection, and jumping, but the editing order is broken. Placing the 'PLAY NOW' end card before the revive sequence and jumping backward in distance makes the clip feel disjointed and unpolished.",
+        "J": 67.1,
+        "J_samples": [
+          65.2,
+          69
+        ]
+      },
+      "score": 78.2
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 81.2
+    },
+    {
+      "id": "base_random",
+      "score": 78.2
+    }
+  ],
+  "separation": 9.4,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

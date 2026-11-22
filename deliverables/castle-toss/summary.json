@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/highlight.mp4",
+  "score": 88.2,
+  "best": "a",
+  "usd": 0.3253,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:22:38.714Z",
+      "ms": 205017,
+      "note": "47.3 s recorded, 12 inputs, 12 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:23:15.194Z",
+      "ms": 36476,
+      "note": "16 moments, genre: Physics slingshot puzzle"
+    },
+    "cut": {
+      "at": "2026-11-22T10:23:59.949Z",
+      "ms": 44751,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:26:17.936Z",
+      "ms": 137984,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:28:22.142Z",
+      "ms": 124203,
+      "note": "best a (hook-first) score 88.2"
+    },
+    "friction": {
+      "at": "2026-11-22T10:28:33.349Z",
+      "ms": 11199,
+      "note": "3 items"
+    }
+  }
+}

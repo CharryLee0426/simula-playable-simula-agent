@@ -1,0 +1,58 @@
+{
+  "id": "a",
+  "title": "Hook-first: barrier jump opener into lane dodging, free revive, and high-speed crash",
+  "clips": [
+    {
+      "start": 7.3,
+      "end": 9.2,
+      "speed": 1,
+      "role": "hook",
+      "why": "High-motion jump over glowing orange barriers with GREAT JUMP! callout"
+    },
+    {
+      "start": 2.8,
+      "end": 5.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows lane-switching swipe to dodge a pink X block and collect coins"
+    },
+    {
+      "start": 5.4,
+      "end": 7.3,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Speed climbs to 61 while racing down the right lane toward barriers"
+    },
+    {
+      "start": 9.2,
+      "end": 12.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Shows crash stakes and tapping the Free Revive button to keep running"
+    },
+    {
+      "start": 12.6,
+      "end": 17.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "High-speed run from 141m to 235m dodging blocks and stacking 21 coins"
+    },
+    {
+      "start": 17.6,
+      "end": 20.4,
+      "speed": 1,
+      "role": "climax",
+      "why": "Top-speed crash at 246m with neon explosion and Game Over screen"
+    },
+    {
+      "start": 23.5,
+      "end": 25.9,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Neon Lanes end card with coin total and PLAY NOW tap"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

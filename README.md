@@ -154,7 +154,88 @@ calibration from review decisions and online CTR/IPM.
 
 ## Results
 
-_Filled in from the final batch run — see [deliverables/](deliverables/)._
+Full table with links to every highlight, raw session, trace and friction report: **[deliverables/README.md](deliverables/README.md)**.
+All runs: default config, seed 7, one take per playable, CPU-only Linux VM (4 cores, no GPU).
+
+| set | playable | how it's played (agent's own words, condensed) | session | score | judge · heuristics | baselines (first 20 s / random) | head-to-head |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| sample | Boom Castle (3D WebGL) | drag from the cannon to aim at goblin waves; pick upgrade cards between waves | 71 s, 56 inputs, 3 upgrades | **82.7** | 82.1 · 83.5 | 63.2 / 73.9 | 2/2 |
+| sample | Word Hunt (DOM) | swipe through letter tiles to form target words; 3 rounds | 26 s, game over → end card | **85.5** | 82.3 · 89.5 | 83.6 / 69.7 | 0/2 (ties) |
+| sample | Raid: Shard Market (3D) | joystick-drag to mine shards, sell at the market, buy worker/mine upgrades | 92 s, 25 inputs | **79.7** | 81.5 · 77.5 | 53.3 / 60.4 | 2/2 |
+| sample | West Game II (3D) | joystick-drag near outlaws to auto-shoot, collect gold, build defenses on pads | 93 s, 20 inputs | **83.4** | 81.5 · 85.7 | 40.6 / 64.9 | 2/2 |
+| generated | Castle Toss (2D physics) | pull back and release the catapult; tap mid-air to split; upgrades between levels | 47 s, all 3 levels → end card | **88.2** | 88.2 · 88.3 | 69.1 / 65.3 | 2/2 |
+| generated | Bakery Rush (DOM idle) | tap the cake, buy upgrades, rush order, frenzy | 49 s, 64 inputs → end card | **84.9** | 81.2 · 89.5 | 59.9 / 50.7 | 2/2 |
+| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump; revive after a crash | 27 s, crashed twice → end card | **90.6** | 85.4 · 96.9 | 81.2 / 78.2 | 2/2 |
+| generated | Orb Merge (2D physics) | drag to aim and drop orbs, merge equal values, bomb power-up | 59 s → end card | **87.2** | 86.2 · 88.4 | 69.5 / 59.9 | 2/2 |
+| hold-out | Gem Swap (match-3) | swipe gems into lines of 3–4, cascades, row blaster, fever | 25 s, target smashed → end card | **89.9** | 87.9 · 92.4 | 81.5 / 71.5 | 2/2 |
+| hold-out | Sky Stack (raw WebGL 3D stacker) | tap to drop a sliding slab onto the tower | 29 s, 7 floors, missed, retry, missed → end card | **80.3** | 78.1 · 82.9 | 72.8 / 60.8 | 2/2 |
+| calibration | Word Hunt, *random player* | random taps/drags with machine timing, no model | 46 s | **54.4** | 28.3 · 86.4 | 48.8 / 50.9 | — |
+
+What the numbers say:
+
+- **It plays games it has never seen**, across 2D canvas, DOM and WebGL 3D, tap/swipe/drag/joystick/slingshot
+  controls, with no per-game code: it read every tutorial, used upgrades/power-ups when offered, reached the end card
+  in 7 of 10 games (the three that did not — Boom Castle, Raid, West — simply last longer than the 90 s cap), and recovered from fail
+  screens via retry/revive.
+- **The evaluator separates real edits from lazy ones**: the chosen cut beat the best naive baseline head to head
+  in 9 of 10 games, by +7.5 to +25 points. The exception is informative: Word Hunt's whole game lasts 26 s, so "the
+  first 20 s" already *is* the story; the evaluator calls it a tie, correctly.
+- **It catches bad play, not just bad editing**: the random player on Word Hunt scores 54.4 (judge 28.3: "no
+  coherent play") vs 85.5 for the agent. The heuristics alone don't (86.4 — random taps still produce motion), which
+  is why the judge carries the larger weight.
+- **Two honest weaknesses surfaced by the generated/hold-out games** (both genres the samples don't have):
+  *pure timing* (Sky Stack: tap when the slab is aligned) and *fast reflexes* (Neon Lanes: dodge in time). Both come
+  from the decide → react → watch cadence being slower than the game's events. The judge still rates those highlights
+  well (a crash and a retry make good drama), which is itself a limitation worth knowing: the judge scores the video,
+  not the player's competence.
+- **A negative result, kept honest.** I tried a generic fix for timing: `tap_when`, where the planner describes the
+  visual moment ("the sliding block is exactly above the tower") and the executor steps the frozen game frame by
+  frame, asking the decider until that moment comes (free and invisible on video). The decider's probability does
+  peak periodically as the slab passes, but a per-frame classifier is not precise enough for a stacker's tolerance:
+  re-runs reached 2 and 1 floors vs 7 without it. It ships **off by default** (`--set play.timing_actions=true`
+  to try it). The better next step is to estimate the moving object's phase from pixel motion over one period and
+  time the tap from that, and the same frame-stepping loop with a reflex policy ("when an obstacle is ahead in my
+  lane, swipe away") for runners. (Sky Stack is no longer a clean hold-out for timing work after this.)
+- **Cost and time**: $0.29–0.71 per playable (median ≈ $0.35); 6–11 min wall time for 2D/DOM games, 17–20 min for
+  the 3D samples on CPU (capture is ~0.2–0.4 s per frame on llvmpipe; a GPU worker removes most of that). The three 3D
+  samples were re-cut once after evaluator changes (play reused), so their cost includes both cut/eval passes.
+
+---
+
+## What I learned building it (bugs the system found in itself)
+
+| symptom | found by | cause | generic fix |
+| --- | --- | --- | --- |
+| 3D samples at 1–2 fps, a 90 s session would take an hour | probe benchmark | headless Chromium forces SwiftShader | headed Chrome on an auto-started Xvfb uses Mesa llvmpipe (multi-threaded): 3.5× faster; the virtual clock makes speed irrelevant to the video |
+| Raid hung at boot | worker timeout | a CPU-benchmark busy-wait (`while (performance.now() - t0 < …)`) never ends on a frozen clock | after 20k clock reads in one frame the clock creeps forward, as on a real device |
+| Word Hunt: the first swipe of a word never registered | the decider's "did that work" (≈0.2) and the planner's own notes ("SUN did not register") | my Bézier sampler fell back to the start of the last segment on the final frame (floating-point rounding) | fixed + unit test over 300 seeds |
+| floating "+$0.30" labels frozen on screen | the VLM judge's "worst moment" | a Web Animation seeked to 999.99 of 1000 ms drops out of `document.getAnimations()` and never finishes, so the game's `.finished.then(remove)` never runs | the shim tracks animations itself and finishes them |
+| heuristics scored random clips above the real edit on an action-heavy game | baseline control | every 3 s of a tower-defense game "has action" | moment quality (intensity of what the cut shows vs the best available) and arc (ends on a payoff) |
+| upgrade-card taps looked "instant, robotic" | the judge | dead-air trimming removed the player's reading pause on static popups | popups/menus exempt; ~1 s of pause always kept |
+| friction report claimed "no tutorial" where there was one | reading the report | the writer only saw signals and a few frames | it now also gets the player's own turn-by-turn screen descriptions and must not contradict them |
+| director EDLs failed on one game (`finish_reason: length`) | trace | reasoning tokens used up the output budget | larger budgets + automatic retry with more tokens and less reasoning; heuristic EDL as the last fallback |
+| cutting from a late hook back to tutorial footage felt jarring | the judge | the editor treated tutorial footage as ordinary core-loop footage | editor rule: at most one short tutorial clip, never after later gameplay |
+
+**Time allocation (80/20).** Most of the effort went into the capture layer (virtual clock, audio, sandbox), because
+it is what makes both "30 fps" and "looks like a person" possible on any machine, and into the evaluator, because
+it is what makes the system improvable without watching every video. The editor is deliberately simple: the model
+picks the story, code enforces the rules.
+
+## Limitations and next steps
+
+- **One take per playable.** A second take with another seed/persona is the cheapest fix for an unlucky session
+  (died early, got stuck); run 2–3 in parallel and let the evaluator pick across all candidates.
+- **Session length vs end card.** Some playables only show their end card after a long level; with a 90 s cap the
+  agent sometimes ends first (the cut then ends on its best payoff instead). An adaptive cap (extend while the game
+  is still escalating, stop when it loops) would fix most of these.
+- **Evaluator.** One judge model (sampled twice and averaged; it still moves a few points between runs) and
+  hand-set heuristic weights. In production both get calibrated on human review decisions and online CTR/IPM.
+- **The decider is a classifier, not a planner.** Its "did that work" check is less reliable in games where the
+  whole screen moves all the time (scrolling 3D); the pixel-change fallback is weaker there too.
+- **Effects nodes in audio** (filters, panners, convolvers) are not reproduced in the offline mix; gain and timing are.
+- **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
+- **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation
+  to a stronger one when the decider reports low clarity or the agent is stuck would cut both.
 
 ---
 

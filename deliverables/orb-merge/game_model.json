@@ -1,0 +1,21 @@
+{
+  "title": "Orb Merge",
+  "genre": "2048 Ball Drop Puzzle",
+  "objective": "Drop numbered orbs into the container to merge matching orbs and reach the 128 goal orb before time runs out.",
+  "controls": "Drag horizontally to aim the orb, then release or tap to drop it.",
+  "core_loop": "Aim and drop a numbered orb -> matching adjacent orbs merge into a higher-value orb -> earn points, chain combos, and unlock power-ups.",
+  "features": [
+    "2048-style orb merging",
+    "Combo chains (COMBO x2!)",
+    "Bomb power-up (clears surrounding orbs)",
+    "Speed Up mode",
+    "Next orb preview",
+    "Goal progress tracker (up to 128)",
+    "Danger overflow line",
+    "Countdown timer"
+  ],
+  "progression": "Orbs merge in powers of 2 (2 -> 4 -> 8 -> 16 -> 32 -> 64 -> 128 goal), unlocking the Bomb power-up on a 32-orb Big Merge and escalating into a Speed Up phase.",
+  "end_card": true,
+  "tone": "Crisp, neon-arcade, satisfying, upbeat",
+  "hook_idea": "Chain merge into a 64-orb with 'COMBO x2! 64! Halfway to the goal!' and +128 points at t=32.0-36.0s"
+}

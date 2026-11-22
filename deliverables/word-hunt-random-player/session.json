@@ -1,0 +1,42 @@
+{
+  "game_s": 45.733333333333334,
+  "frames": 1372,
+  "fps": 30,
+  "planner_calls": 0,
+  "planner_failures": 0,
+  "actions": 128,
+  "turns": 0,
+  "cta_tapped": false,
+  "ended_by": "time_limit",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "keydown@window": 1,
+    "pointerdown@element": 2,
+    "keydown@element": 2,
+    "pointermove@element": 1,
+    "pointerup@element": 1,
+    "pointercancel@element": 1,
+    "click@element": 4
+  },
+  "events": [],
+  "audio": {
+    "sounds": 241,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 0.656
+  },
+  "perf": {
+    "step_ms_avg": 5.8,
+    "shot_ms_avg": 40.6
+  },
+  "title": "Word Hunt · Scrambly",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "",
+  "stuck_events": 2
+}

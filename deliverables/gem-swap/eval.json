@@ -1,0 +1,340 @@
+{
+  "best": "a",
+  "score": 89.9,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "c",
+    "a_first": "A",
+    "b_first": "A",
+    "winner": "a"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.209,
+        "loading_ratio": 0,
+        "action": 0.598,
+        "hook_ratio": 1.311,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.8,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.997,
+        "arc": 1,
+        "H": 92.4
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 9,
+        "hook": 9,
+        "polish": 8.5,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Hard cut from the high-action 3435-score cascade back to the 0-score tutorial screen is slightly jarring."
+        },
+        "best_moment": {
+          "t": 1,
+          "why": "Explosive opening Combo x4 'BRILLIANT!' cascade with Row Blaster (+1760 points) immediately grabs attention."
+        },
+        "summary": "This 19-second highlight opens with an explosive Combo x4 hook before cleanly demonstrating the core match-3 loop, Row Blasters, Fever Time, and Bonus Blast finale. The pacing is fast and juicy with natural touch timing and a clear end card, making it ready to run.",
+        "J": 87.9,
+        "J_samples": [
+          87.4,
+          88.4
+        ]
+      },
+      "score": 89.9,
+      "wins": 1
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.209,
+        "loading_ratio": 0,
+        "action": 0.598,
+        "hook_ratio": 0.483,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.8,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 3.5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 85.2
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 7.5,
+        "action": 9,
+        "hook": 7.5,
+        "polish": 9,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first two seconds are a static tutorial prompt before any action occurs, making for a slightly slow hook."
+        },
+        "best_moment": {
+          "t": 7,
+          "why": "Massive Combo x4 'BRILLIANT!' cascade with a Row Blaster clear (+1760 points) that immediately triggers Fever Time."
+        },
+        "summary": "This 19-second highlight cleanly demonstrates the core match-3 loop, escalating quickly from a tutorial swipe into massive cascades, Fever Time, and a Bonus Blast victory. It is bright, fast-paced, and polished with a clear end-card CTA, making it a strong ad creative.",
+        "J": 85.2,
+        "J_samples": [
+          83,
+          87.4
+        ]
+      },
+      "score": 85.2
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.209,
+        "loading_ratio": 0,
+        "action": 0.598,
+        "hook_ratio": 0.483,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.8,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.997,
+        "arc": 1,
+        "H": 85.1
+      },
+      "judge": {
+        "core_loop_clarity": 9.5,
+        "features": 9,
+        "human_play": 8,
+        "action": 9,
+        "hook": 8,
+        "polish": 9,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 0.5,
+          "issue": "Starts with a brief static pause on the tutorial hand before the first swipe."
+        },
+        "best_moment": {
+          "t": 7,
+          "why": "Massive Combo x4 'BRILLIANT!' cascade with Row Blaster clears (+1760) leading directly into Fever Time."
+        },
+        "summary": "A punchy, well-paced 20-second highlight that clearly demonstrates the match-3 core loop, Row Blasters, Fever Time, and 3-star progression. It flows seamlessly from gameplay into a clean end card with a clear Install CTA.",
+        "J": 88.3,
+        "J_samples": [
+          87.4,
+          89.2
+        ]
+      },
+      "score": 86.9,
+      "wins": 1
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.2,
+        "loading_ratio": 0,
+        "action": 0.611,
+        "hook_ratio": 0.522,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.8,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 3.5,
+        "moment_quality": 1,
+        "arc": 0.477,
+        "H": 79.2
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 7,
+        "action": 9,
+        "hook": 6.5,
+        "polish": 9,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 1,
+          "issue": "The first two seconds are spent on the board dropping in and a slow tutorial hand animation rather than immediate action."
+        },
+        "best_moment": {
+          "t": 8,
+          "why": "Massive Combo x4 'BRILLIANT!' cascade with a Row Blaster clear (+1760 points) that immediately triggers Fever Time."
+        },
+        "summary": "This 19-second highlight cleanly demonstrates the core match-3 loop, Row Blasters, Fever Time, and Bonus Blast progression before ending on a clear install CTA. While the opening two seconds are a bit slow due to the tutorial prompt, the mid-video cascade and rapid score escalation make it a strong, runnable ad.",
+        "J": 83.4,
+        "J_samples": [
+          82,
+          84.8
+        ]
+      },
+      "score": 81.5
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.167,
+        "loading_ratio": 0,
+        "action": 0.562,
+        "hook_ratio": 0.569,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.8,
+        "shots": 5,
+        "avg_shot_s": 4,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.971,
+        "arc": 0.7,
+        "H": 83.3
+      },
+      "judge": {
+        "core_loop_clarity": 7.5,
+        "features": 8.5,
+        "human_play": 6.5,
+        "action": 8,
+        "hook": 6,
+        "polish": 2.5,
+        "would_run": 3.5,
+        "worst_moment": {
+          "t": 14,
+          "issue": "The INSTALL end card appears at 14s and then abruptly cuts back to gameplay at 16s, following several other jarring out-of-order jump cuts."
+        },
+        "best_moment": {
+          "t": 11,
+          "why": "Combo x3 'AWESOME!' into Row Blaster and 'FEVER TIME!' activation shows the game's most exciting mechanics."
+        },
+        "summary": "The video showcases Gem Swap's core match-3 loop, row blasters, and Fever Time well, but the editing is completely out of chronological order. Placing the end-of-round Bonus Blast at 5 seconds and the INSTALL end card before the final gameplay clip makes it feel disjointed and unpolished.",
+        "J": 61.8,
+        "J_samples": [
+          64,
+          59.6
+        ]
+      },
+      "score": 71.5
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 81.5
+    },
+    {
+      "id": "base_random",
+      "score": 71.5
+    }
+  ],
+  "separation": 8.4,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

@@ -1,0 +1,1115 @@
+{
+  "duration": 49.06666666666667,
+  "bins": [
+    {
+      "t": 0,
+      "motion": 0.00024571428571428574,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8539142857142855,
+      "frame": "index_frames/f_00001.jpg",
+      "phase": "reward",
+      "excitement": 0.6177882975737828
+    },
+    {
+      "t": 0.5,
+      "motion": 0.0013626666666666668,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8445933333333333,
+      "frame": "index_frames/f_00002.jpg",
+      "phase": "tutorial",
+      "excitement": 0.9935668827113487
+    },
+    {
+      "t": 1,
+      "motion": 0.00031199999999999994,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8441866666666669,
+      "frame": "index_frames/f_00003.jpg",
+      "phase": "tutorial",
+      "excitement": 0.9947040652428958
+    },
+    {
+      "t": 1.5,
+      "motion": 0.0003546666666666667,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8440133333333332,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00004.jpg",
+      "excitement": 1.0565941269324086
+    },
+    {
+      "t": 2,
+      "motion": 0.000316,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8442600000000003,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00005.jpg",
+      "excitement": 1.0069972721452445
+    },
+    {
+      "t": 2.5,
+      "motion": 0.000352,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8439199999999997,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00006.jpg",
+      "excitement": 1.004480679582636
+    },
+    {
+      "t": 3,
+      "motion": 0.0003,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.8440399999999998,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00007.jpg",
+      "excitement": 1.0054600368868043
+    },
+    {
+      "t": 3.5,
+      "motion": 0.0016066666666666666,
+      "audio_db": -22,
+      "touches": 1,
+      "luma": 0.8507600000000001,
+      "phase": "reward",
+      "frame": "index_frames/f_00008.jpg",
+      "excitement": 0.8504611485448251
+    },
+    {
+      "t": 4,
+      "motion": 0.0010926666666666667,
+      "audio_db": -15.3,
+      "touches": 2,
+      "luma": 0.8538799999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00009.jpg",
+      "excitement": 1.2331516001538072
+    },
+    {
+      "t": 4.5,
+      "motion": 0.0013093333333333331,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8537200000000001,
+      "phase": "reward",
+      "frame": "index_frames/f_00010.jpg",
+      "excitement": 1.2228926304314889
+    },
+    {
+      "t": 5,
+      "motion": 0.0008526666666666666,
+      "audio_db": -13.5,
+      "touches": 0,
+      "luma": 0.8536666666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00011.jpg",
+      "excitement": 1.1060140841139638
+    },
+    {
+      "t": 5.5,
+      "motion": 0.0006826666666666667,
+      "audio_db": -16.6,
+      "touches": 1,
+      "luma": 0.8539733333333334,
+      "phase": "reward",
+      "frame": "index_frames/f_00012.jpg",
+      "excitement": 0.7440336873232489
+    },
+    {
+      "t": 6,
+      "motion": 0.001148,
+      "audio_db": -16.7,
+      "touches": 2,
+      "luma": 0.8535466666666667,
+      "phase": "reward",
+      "frame": "index_frames/f_00013.jpg",
+      "excitement": 1.2644542823651574
+    },
+    {
+      "t": 6.5,
+      "motion": 0.0015846666666666667,
+      "audio_db": -11,
+      "touches": 2,
+      "luma": 0.8538266666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00014.jpg",
+      "excitement": 1.2318773115248987
+    },
+    {
+      "t": 7,
+      "motion": 0.0006659999999999999,
+      "audio_db": -20,
+      "touches": 0,
+      "luma": 0.8536266666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00015.jpg",
+      "excitement": 1.0977302451083795
+    },
+    {
+      "t": 7.5,
+      "motion": 0.000462,
+      "audio_db": -16.5,
+      "touches": 1,
+      "luma": 0.8537399999999998,
+      "phase": "reward",
+      "frame": "index_frames/f_00016.jpg",
+      "excitement": 0.6942127993356798
+    },
+    {
+      "t": 8,
+      "motion": 0.001310666666666667,
+      "audio_db": -15.4,
+      "touches": 1,
+      "luma": 0.85336,
+      "phase": "reward",
+      "frame": "index_frames/f_00017.jpg",
+      "excitement": 1.1765366120773997
+    },
+    {
+      "t": 8.5,
+      "motion": 0.0007433333333333334,
+      "audio_db": -15.2,
+      "touches": 1,
+      "luma": 0.8527666666666666,
+      "phase": "reward",
+      "frame": "index_frames/f_00018.jpg",
+      "excitement": 1.1408790401806561
+    },
+    {
+      "t": 9,
+      "motion": 0.001484,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8527866666666666,
+      "phase": "reward",
+      "frame": "index_frames/f_00019.jpg",
+      "excitement": 1.164573102431866
+    },
+    {
+      "t": 9.5,
+      "motion": 0.0026906666666666667,
+      "audio_db": -31.2,
+      "touches": 0,
+      "luma": 0.8413533333333334,
+      "phase": "reward",
+      "frame": "index_frames/f_00020.jpg",
+      "excitement": 1.1604532663154932
+    },
+    {
+      "t": 10,
+      "motion": 0.0006726666666666668,
+      "audio_db": -13.2,
+      "touches": 1,
+      "luma": 0.83554,
+      "phase": "reward",
+      "frame": "index_frames/f_00021.jpg",
+      "excitement": 1.0670454893257548
+    },
+    {
+      "t": 10.5,
+      "motion": 0.003972666666666667,
+      "audio_db": -7,
+      "touches": 2,
+      "luma": 0.8478933333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00022.jpg",
+      "excitement": 1.4921930118570357
+    },
+    {
+      "t": 11,
+      "motion": 0.003278666666666667,
+      "audio_db": -16.8,
+      "touches": 2,
+      "luma": 0.8521866666666666,
+      "phase": "reward",
+      "frame": "index_frames/f_00023.jpg",
+      "excitement": 1.3259499419105445
+    },
+    {
+      "t": 11.5,
+      "motion": 0.001428,
+      "audio_db": -15.4,
+      "touches": 1,
+      "luma": 0.8529599999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00024.jpg",
+      "excitement": 1.330885537324634
+    },
+    {
+      "t": 12,
+      "motion": 0.00041133333333333327,
+      "audio_db": -13.2,
+      "touches": 0,
+      "luma": 0.8533600000000001,
+      "phase": "reward",
+      "frame": "index_frames/f_00025.jpg",
+      "excitement": 1.1106627246831748
+    },
+    {
+      "t": 12.5,
+      "motion": 0.0008726666666666667,
+      "audio_db": -15.3,
+      "touches": 1,
+      "luma": 0.8531866666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00026.jpg",
+      "excitement": 1.271770579257038
+    },
+    {
+      "t": 13,
+      "motion": 0.0013806666666666668,
+      "audio_db": -15.3,
+      "touches": 2,
+      "luma": 0.8526799999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00027.jpg",
+      "excitement": 1.2730482979950595
+    },
+    {
+      "t": 13.5,
+      "motion": 0.0014926666666666667,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8524,
+      "phase": "reward",
+      "frame": "index_frames/f_00028.jpg",
+      "excitement": 1.2851882936464705
+    },
+    {
+      "t": 14,
+      "motion": 0.0011179999999999999,
+      "audio_db": -32.5,
+      "touches": 0,
+      "luma": 0.8522933333333335,
+      "phase": "reward",
+      "frame": "index_frames/f_00029.jpg",
+      "excitement": 1.2974487525392584
+    },
+    {
+      "t": 14.5,
+      "motion": 0.0007766666666666667,
+      "audio_db": -15.2,
+      "touches": 1,
+      "luma": 0.8526466666666667,
+      "phase": "reward",
+      "frame": "index_frames/f_00030.jpg",
+      "excitement": 0.8034301110090775
+    },
+    {
+      "t": 15,
+      "motion": 0.0012993333333333333,
+      "audio_db": -16.4,
+      "touches": 2,
+      "luma": 0.8521733333333334,
+      "phase": "reward",
+      "frame": "index_frames/f_00031.jpg",
+      "excitement": 1.3530561771229015
+    },
+    {
+      "t": 15.5,
+      "motion": 0.001475333333333333,
+      "audio_db": -16.7,
+      "touches": 1,
+      "luma": 0.8518466666666668,
+      "phase": "reward",
+      "frame": "index_frames/f_00032.jpg",
+      "excitement": 1.3412519528026443
+    },
+    {
+      "t": 16,
+      "motion": 0.000992,
+      "audio_db": -15.5,
+      "touches": 1,
+      "luma": 0.8521466666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00033.jpg",
+      "excitement": 1.2857703256949315
+    },
+    {
+      "t": 16.5,
+      "motion": 0.00022933333333333337,
+      "audio_db": -30.6,
+      "touches": 0,
+      "luma": 0.8525333333333336,
+      "phase": "reward",
+      "frame": "index_frames/f_00034.jpg",
+      "excitement": 1.004076958591105
+    },
+    {
+      "t": 17,
+      "motion": 0.00029733333333333337,
+      "audio_db": -16.7,
+      "touches": 1,
+      "luma": 0.8524999999999998,
+      "phase": "reward",
+      "frame": "index_frames/f_00035.jpg",
+      "excitement": 0.7583762846249019
+    },
+    {
+      "t": 17.5,
+      "motion": 0.0015226666666666665,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8513799999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00036.jpg",
+      "excitement": 1.2577124023135613
+    },
+    {
+      "t": 18,
+      "motion": 0.0018059999999999999,
+      "audio_db": -13.3,
+      "touches": 1,
+      "luma": 0.84808,
+      "phase": "reward",
+      "frame": "index_frames/f_00037.jpg",
+      "excitement": 1.2422155116815312
+    },
+    {
+      "t": 18.5,
+      "motion": 0.003193333333333333,
+      "audio_db": -6.7,
+      "touches": 1,
+      "luma": 0.8501866666666668,
+      "phase": "reward",
+      "frame": "index_frames/f_00038.jpg",
+      "excitement": 1.287224781178768
+    },
+    {
+      "t": 19,
+      "motion": 0.0008820000000000001,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.8519599999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00039.jpg",
+      "excitement": 1.2588871043517873
+    },
+    {
+      "t": 19.5,
+      "motion": 0.0007213333333333333,
+      "audio_db": -16.6,
+      "touches": 1,
+      "luma": 0.852,
+      "phase": "reward",
+      "frame": "index_frames/f_00040.jpg",
+      "excitement": 1.138889818358639
+    },
+    {
+      "t": 20,
+      "motion": 0.005732666666666666,
+      "audio_db": -17.3,
+      "touches": 1,
+      "luma": 0.8452,
+      "phase": "reward",
+      "frame": "index_frames/f_00041.jpg",
+      "excitement": 1.6983771715428864
+    },
+    {
+      "t": 20.5,
+      "motion": 0.0012540000000000003,
+      "audio_db": -17.2,
+      "touches": 1,
+      "luma": 0.84616,
+      "phase": "reward",
+      "frame": "index_frames/f_00042.jpg",
+      "excitement": 1.6720075367048288
+    },
+    {
+      "t": 21,
+      "motion": 0.0007360000000000001,
+      "audio_db": -30.9,
+      "touches": 1,
+      "luma": 0.8510066666666667,
+      "phase": "reward",
+      "frame": "index_frames/f_00043.jpg",
+      "excitement": 1.3301479667581262
+    },
+    {
+      "t": 21.5,
+      "motion": 0.00025466666666666666,
+      "audio_db": -32.5,
+      "touches": 0,
+      "luma": 0.8519333333333334,
+      "phase": "reward",
+      "frame": "index_frames/f_00044.jpg",
+      "excitement": 1.3460615580642008
+    },
+    {
+      "t": 22,
+      "motion": 0.00012866666666666666,
+      "audio_db": -33.1,
+      "touches": 0,
+      "luma": 0.85214,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00045.jpg",
+      "excitement": 1.3405957643879203
+    },
+    {
+      "t": 22.5,
+      "motion": 0.0008859999999999999,
+      "audio_db": -16.4,
+      "touches": 1,
+      "luma": 0.8518533333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00046.jpg",
+      "excitement": 1.43803292829278
+    },
+    {
+      "t": 23,
+      "motion": 0.0010266666666666666,
+      "audio_db": -16.7,
+      "touches": 1,
+      "luma": 0.8515333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00047.jpg",
+      "excitement": 1.4152347479020566
+    },
+    {
+      "t": 23.5,
+      "motion": 0.0015720000000000003,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8511000000000002,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00048.jpg",
+      "excitement": 1.502594094402028
+    },
+    {
+      "t": 24,
+      "motion": 0.001888666666666667,
+      "audio_db": -13.2,
+      "touches": 0,
+      "luma": 0.8487733333333335,
+      "phase": "reward",
+      "frame": "index_frames/f_00049.jpg",
+      "excitement": 1.4903857403051524
+    },
+    {
+      "t": 24.5,
+      "motion": 0.017026,
+      "audio_db": -11,
+      "touches": 1,
+      "luma": 0.8471866666666668,
+      "phase": "reward",
+      "frame": "index_frames/f_00050.jpg",
+      "excitement": 1.4070703772612034
+    },
+    {
+      "t": 25,
+      "motion": 0.016536000000000002,
+      "audio_db": -10,
+      "touches": 1,
+      "luma": 0.8336599999999998,
+      "phase": "reward",
+      "frame": "index_frames/f_00051.jpg",
+      "excitement": 2.181594788677098
+    },
+    {
+      "t": 25.5,
+      "motion": 0.003387333333333334,
+      "audio_db": -11.8,
+      "touches": 2,
+      "luma": 0.8292733333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00052.jpg",
+      "excitement": 2.674041931524761
+    },
+    {
+      "t": 26,
+      "motion": 0.0020366666666666667,
+      "audio_db": -19.9,
+      "touches": 1,
+      "luma": 0.8362333333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00053.jpg",
+      "excitement": 1.9375941953122013
+    },
+    {
+      "t": 26.5,
+      "motion": 0.0010180000000000002,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.8382066666666665,
+      "phase": "reward",
+      "frame": "index_frames/f_00054.jpg",
+      "excitement": 1.6547428569080638
+    },
+    {
+      "t": 27,
+      "motion": 0.0017999999999999997,
+      "audio_db": -15.3,
+      "touches": 2,
+      "luma": 0.83722,
+      "phase": "reward",
+      "frame": "index_frames/f_00055.jpg",
+      "excitement": 1.7335829360712878
+    },
+    {
+      "t": 27.5,
+      "motion": 0.0025853333333333336,
+      "audio_db": -16.5,
+      "touches": 2,
+      "luma": 0.8364333333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00056.jpg",
+      "excitement": 1.9422443481452834
+    },
+    {
+      "t": 28,
+      "motion": 0.002586666666666667,
+      "audio_db": -10.8,
+      "touches": 1,
+      "luma": 0.8359666666666666,
+      "phase": "reward",
+      "frame": "index_frames/f_00057.jpg",
+      "excitement": 2.094477881356792
+    },
+    {
+      "t": 28.5,
+      "motion": 0.0014353333333333334,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.8367200000000001,
+      "phase": "reward",
+      "frame": "index_frames/f_00058.jpg",
+      "excitement": 1.7825402429498367
+    },
+    {
+      "t": 29,
+      "motion": 0.039588,
+      "audio_db": -10.5,
+      "touches": 1,
+      "luma": 0.72658,
+      "phase": "reward",
+      "frame": "index_frames/f_00059.jpg",
+      "excitement": 2.478744531591595
+    },
+    {
+      "t": 29.5,
+      "motion": 0.003523333333333334,
+      "audio_db": -10.9,
+      "touches": 2,
+      "luma": 0.6624066666666667,
+      "phase": "reward",
+      "frame": "index_frames/f_00060.jpg",
+      "excitement": 2.21853790391518
+    },
+    {
+      "t": 30,
+      "motion": 0.036730666666666675,
+      "audio_db": -16,
+      "touches": 2,
+      "luma": 0.6978533333333333,
+      "phase": "fail",
+      "frame": "index_frames/f_00061.jpg",
+      "excitement": 1.1527484038893405
+    },
+    {
+      "t": 30.5,
+      "motion": 0.0004726666666666667,
+      "audio_db": -21.4,
+      "touches": 1,
+      "luma": 0.6565333333333333,
+      "phase": "fail",
+      "frame": "index_frames/f_00062.jpg",
+      "excitement": 1.0615812674270582
+    },
+    {
+      "t": 31,
+      "motion": 0.0001726666666666667,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.6563066666666667,
+      "phase": "fail",
+      "frame": "index_frames/f_00063.jpg",
+      "excitement": 1.0596554263324391
+    },
+    {
+      "t": 31.5,
+      "motion": 0.00015533333333333333,
+      "audio_db": -30.6,
+      "touches": 0,
+      "luma": 0.6568200000000002,
+      "phase": "fail",
+      "frame": "index_frames/f_00064.jpg",
+      "excitement": 1.0990133072259671
+    },
+    {
+      "t": 32,
+      "motion": 0.00018066666666666665,
+      "audio_db": -31.2,
+      "touches": 1,
+      "luma": 0.6561733333333334,
+      "phase": "fail",
+      "frame": "index_frames/f_00065.jpg",
+      "excitement": 1.0666639940552176
+    },
+    {
+      "t": 32.5,
+      "motion": 0.020772,
+      "audio_db": -11.2,
+      "touches": 1,
+      "luma": 0.8208533333333332,
+      "phase": "reward",
+      "frame": "index_frames/f_00066.jpg",
+      "excitement": 1.9029099192227845
+    },
+    {
+      "t": 33,
+      "motion": 0.0014693333333333331,
+      "audio_db": -17.2,
+      "touches": 0,
+      "luma": 0.8338599999999999,
+      "phase": "reward",
+      "frame": "index_frames/f_00067.jpg",
+      "excitement": 2.190928945781309
+    },
+    {
+      "t": 33.5,
+      "motion": 0.0012900000000000001,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.8385666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00068.jpg",
+      "excitement": 1.5527697866056138
+    },
+    {
+      "t": 34,
+      "motion": 0.0011313333333333334,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.8422133333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00069.jpg",
+      "excitement": 1.3603569191199794
+    },
+    {
+      "t": 34.5,
+      "motion": 0.000316,
+      "audio_db": -32,
+      "touches": 0,
+      "luma": 0.8459266666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00070.jpg",
+      "excitement": 1.3967637976838274
+    },
+    {
+      "t": 35,
+      "motion": 0.0012273333333333333,
+      "audio_db": -15.4,
+      "touches": 1,
+      "luma": 0.84546,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00071.jpg",
+      "excitement": 1.3194291410281014
+    },
+    {
+      "t": 35.5,
+      "motion": 0.001426,
+      "audio_db": -16.5,
+      "touches": 1,
+      "luma": 0.8450933333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00072.jpg",
+      "excitement": 1.3934344908460594
+    },
+    {
+      "t": 36,
+      "motion": 0.0015826666666666667,
+      "audio_db": -16.4,
+      "touches": 1,
+      "luma": 0.8459999999999998,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00073.jpg",
+      "excitement": 1.3807827128862453
+    },
+    {
+      "t": 36.5,
+      "motion": 0.0019133333333333333,
+      "audio_db": -15.4,
+      "touches": 1,
+      "luma": 0.8453266666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00074.jpg",
+      "excitement": 1.3975666758800802
+    },
+    {
+      "t": 37,
+      "motion": 0.0009506666666666668,
+      "audio_db": -13.3,
+      "touches": 0,
+      "luma": 0.8447399999999999,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00075.jpg",
+      "excitement": 1.4182843419170608
+    },
+    {
+      "t": 37.5,
+      "motion": 0.001842666666666667,
+      "audio_db": -15.3,
+      "touches": 2,
+      "luma": 0.8457133333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00076.jpg",
+      "excitement": 1.4608488157975528
+    },
+    {
+      "t": 38,
+      "motion": 0.002234,
+      "audio_db": -15.2,
+      "touches": 2,
+      "luma": 0.8455333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00077.jpg",
+      "excitement": 1.4244996336056475
+    },
+    {
+      "t": 38.5,
+      "motion": 0.002502666666666667,
+      "audio_db": -16.6,
+      "touches": 1,
+      "luma": 0.84148,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00078.jpg",
+      "excitement": 1.4231608582614315
+    },
+    {
+      "t": 39,
+      "motion": 0.0012026666666666668,
+      "audio_db": -30.6,
+      "touches": 0,
+      "luma": 0.8416933333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00079.jpg",
+      "excitement": 1.4101580263781972
+    },
+    {
+      "t": 39.5,
+      "motion": 0.0017213333333333332,
+      "audio_db": -16.6,
+      "touches": 1,
+      "luma": 0.8423266666666668,
+      "phase": "reward",
+      "frame": "index_frames/f_00080.jpg",
+      "excitement": 1.3476777119783294
+    },
+    {
+      "t": 40,
+      "motion": 0.002558666666666666,
+      "audio_db": -16.7,
+      "touches": 1,
+      "luma": 0.8412666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00081.jpg",
+      "excitement": 1.455238366594078
+    },
+    {
+      "t": 40.5,
+      "motion": 0.0023513333333333333,
+      "audio_db": -16.7,
+      "touches": 1,
+      "luma": 0.8408599999999998,
+      "phase": "reward",
+      "frame": "index_frames/f_00082.jpg",
+      "excitement": 1.3903787974217123
+    },
+    {
+      "t": 41,
+      "motion": 0.002136,
+      "audio_db": -15.3,
+      "touches": 1,
+      "luma": 0.8415866666666668,
+      "phase": "reward",
+      "frame": "index_frames/f_00083.jpg",
+      "excitement": 1.4996950561654756
+    },
+    {
+      "t": 41.5,
+      "motion": 0.0015153333333333332,
+      "audio_db": -13.2,
+      "touches": 0,
+      "luma": 0.84092,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00084.jpg",
+      "excitement": 1.3624521912826941
+    },
+    {
+      "t": 42,
+      "motion": 0.0014500000000000001,
+      "audio_db": -16.5,
+      "touches": 1,
+      "luma": 0.8413533333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00085.jpg",
+      "excitement": 1.3678384890783635
+    },
+    {
+      "t": 42.5,
+      "motion": 0.0034660000000000008,
+      "audio_db": -21.4,
+      "touches": 2,
+      "luma": 0.8324533333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00086.jpg",
+      "excitement": 1.2023089364103625
+    },
+    {
+      "t": 43,
+      "motion": 0.0015919999999999997,
+      "audio_db": -21.5,
+      "touches": 1,
+      "luma": 0.8295933333333334,
+      "phase": "reward",
+      "frame": "index_frames/f_00087.jpg",
+      "excitement": 1.2730355698818587
+    },
+    {
+      "t": 43.5,
+      "motion": 0.002782666666666667,
+      "audio_db": -20,
+      "touches": 0,
+      "luma": 0.8360733333333333,
+      "phase": "reward",
+      "frame": "index_frames/f_00088.jpg",
+      "excitement": 1.0539241959086654
+    },
+    {
+      "t": 44,
+      "motion": 0.013089333333333335,
+      "audio_db": -17.4,
+      "touches": 0,
+      "luma": 0.8286199999999998,
+      "phase": "title",
+      "frame": "index_frames/f_00089.jpg",
+      "excitement": 0.7977344795397209
+    },
+    {
+      "t": 44.5,
+      "motion": 0.005735333333333332,
+      "audio_db": -23.4,
+      "touches": 0,
+      "luma": 0.7944399999999999,
+      "phase": "title",
+      "frame": "index_frames/f_00090.jpg",
+      "excitement": 0.918235934617766
+    },
+    {
+      "t": 45,
+      "motion": 0.003385333333333333,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.7901266666666668,
+      "phase": "title",
+      "frame": "index_frames/f_00091.jpg",
+      "excitement": 0.8325594365514418
+    },
+    {
+      "t": 45.5,
+      "motion": 0.003313333333333333,
+      "audio_db": -33.1,
+      "touches": 0,
+      "luma": 0.7909066666666666,
+      "phase": "title",
+      "frame": "index_frames/f_00092.jpg",
+      "excitement": 0.9769286537014852
+    },
+    {
+      "t": 46,
+      "motion": 0.0032686666666666667,
+      "audio_db": -30.9,
+      "touches": 0,
+      "luma": 0.7900466666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00093.jpg",
+      "excitement": 0.9621787034547586
+    },
+    {
+      "t": 46.5,
+      "motion": 0.005496666666666667,
+      "audio_db": -30.6,
+      "touches": 0,
+      "luma": 0.7941066666666666,
+      "phase": "title",
+      "frame": "index_frames/f_00094.jpg",
+      "excitement": 0.8972083893938847
+    },
+    {
+      "t": 47,
+      "motion": 0.004197333333333334,
+      "audio_db": -18.9,
+      "touches": 1,
+      "luma": 0.7908466666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00095.jpg",
+      "excitement": 0.8622495559328077
+    },
+    {
+      "t": 47.5,
+      "motion": 0.0032146666666666665,
+      "audio_db": -30.7,
+      "touches": 0,
+      "luma": 0.7902800000000002,
+      "phase": "end_card",
+      "frame": "index_frames/f_00096.jpg",
+      "excitement": 1.1112269288496237
+    },
+    {
+      "t": 48,
+      "motion": 0.003421333333333333,
+      "audio_db": -32.8,
+      "touches": 0,
+      "luma": 0.7904199999999998,
+      "phase": "title",
+      "frame": "index_frames/f_00097.jpg",
+      "excitement": 0.9535924179499546
+    },
+    {
+      "t": 48.5,
+      "motion": 0.004568000000000001,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.7928266666666668,
+      "phase": "title",
+      "frame": "index_frames/f_00098.jpg",
+      "excitement": 1.0905604356174876
+    },
+    {
+      "t": 49,
+      "motion": 0.00585,
+      "audio_db": -33,
+      "touches": 0,
+      "luma": 0.7945333333333333,
+      "phase": "reward"
+    }
+  ],
+  "moments": [
+    {
+      "start": 0,
+      "end": 3.5,
+      "kind": "tutorial",
+      "label": "Game opens at Sweet Corner Shop 1/3 with 0 coins and a 'Tap the cake to bake!' tutorial prompt.",
+      "intensity": 2
+    },
+    {
+      "start": 3.5,
+      "end": 10.2,
+      "kind": "core_loop",
+      "label": "Player taps the cake repeatedly to bake and earn +1 coin per tap, reaching 12 coins.",
+      "intensity": 3
+    },
+    {
+      "start": 10.2,
+      "end": 12.2,
+      "kind": "upgrade",
+      "label": "Player buys the Rolling Pin x2 upgrade for 12 coins, doubling tap income to +2 coins per tap.",
+      "intensity": 3,
+      "feature": "Rolling Pin x2"
+    },
+    {
+      "start": 12.2,
+      "end": 18,
+      "kind": "core_loop",
+      "label": "Player taps the cake for +2 coins per tap, building up to 26 coins.",
+      "intensity": 3
+    },
+    {
+      "start": 18,
+      "end": 20,
+      "kind": "upgrade",
+      "label": "Player buys the Auto-Baker upgrade for 25 coins, adding +3 coins/sec passive income.",
+      "intensity": 3,
+      "feature": "Auto-Baker"
+    },
+    {
+      "start": 20,
+      "end": 24.4,
+      "kind": "feature",
+      "label": "Rush Order event begins ('Bake 25 cakes in 10s!'), prompting rapid tapping as passive income ticks up.",
+      "intensity": 4,
+      "feature": "Rush Order"
+    },
+    {
+      "start": 24.4,
+      "end": 28.8,
+      "kind": "feature",
+      "label": "Player taps the Golden Cupcake to trigger Golden Frenzy x3 (+6 per tap, +9/s), surging past 100 coins during the Rush Order.",
+      "intensity": 5,
+      "feature": "Golden Frenzy x3"
+    },
+    {
+      "start": 28.8,
+      "end": 30.2,
+      "kind": "progression",
+      "label": "Reaching 150 total coins unlocks Bakery Lane (Shop 2/3) with new two-tier cakes.",
+      "intensity": 4
+    },
+    {
+      "start": 30.2,
+      "end": 33,
+      "kind": "fail",
+      "label": "Rush Order timer expires at 11/25 cakes, showing the 'ORDER MISSED! So close!' popup until Try Again is tapped.",
+      "intensity": 2
+    },
+    {
+      "start": 33,
+      "end": 37.5,
+      "kind": "core_loop",
+      "label": "A new Rush Order starts in Bakery Lane; player taps the two-tier cake to earn coins.",
+      "intensity": 3
+    },
+    {
+      "start": 37.5,
+      "end": 42.8,
+      "kind": "core_loop",
+      "label": "Player continues rapid tapping in Bakery Lane, reaching 12/25 cakes and 193 coins.",
+      "intensity": 3
+    },
+    {
+      "start": 42.8,
+      "end": 44.2,
+      "kind": "upgrade",
+      "label": "Player buys the Display Case upgrade (+50% all income) for 170 coins just as the second Rush Order timer runs out.",
+      "intensity": 3,
+      "feature": "Display Case"
+    },
+    {
+      "start": 44.2,
+      "end": 49.06666666666667,
+      "kind": "end_card",
+      "label": "End card displays the Bakery Rush logo, 231 coins earned, and a Play Now button that the player taps.",
+      "intensity": 2
+    }
+  ],
+  "game": {
+    "title": "Bakery Rush",
+    "genre": "Idle Clicker",
+    "objective": "Tap cakes to bake and earn coins, buy upgrades, complete timed Rush Orders, and unlock larger bakery shops.",
+    "controls": "Tap the cake in the center to bake and earn coins; tap upgrade cards at the bottom to purchase them; tap floating Golden Cupcakes for a 3x frenzy.",
+    "core_loop": "Tap the cake to earn coins -> buy tap and auto-baking upgrades -> earn faster to unlock new bakery shops and beat Rush Orders.",
+    "features": [
+      "Tap-to-bake coins",
+      "Rolling Pin x2 upgrade",
+      "Auto-Baker passive income",
+      "Display Case income multiplier",
+      "Delivery Van upgrade",
+      "Timed Rush Orders",
+      "Golden Cupcake 3x Frenzy",
+      "Multi-tier shop progression"
+    ],
+    "progression": "Accumulating total coins unlocks new bakery shops (Sweet Corner to Bakery Lane at 150 coins, then Cake Palace at 2,500 coins) with multi-tier cakes and higher upgrade targets.",
+    "end_card": true,
+    "tone": "Bright, pastel pink, upbeat, casual arcade",
+    "hook_idea": "Activating the Golden Frenzy x3 cupcake during a frantic Rush Order right before unlocking Bakery Lane (t=24.4s-29.5s)"
+  },
+  "end_card_t": 44.20000000000036,
+  "playable_from": 0,
+  "has_audio": true
+}

@@ -1,0 +1,335 @@
+{
+  "best": "b",
+  "score": 80.3,
+  "pass": true,
+  "pairwise": {
+    "a": "b",
+    "b": "c",
+    "a_first": "tie",
+    "b_first": "tie",
+    "winner": "b"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.256,
+        "loading_ratio": 0,
+        "action": 0.279,
+        "hook_ratio": 1.338,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "end_card": true
+        },
+        "human_timing": 0.873,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 86.2
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 7.5,
+        "human_play": 7,
+        "action": 6,
+        "hook": 6.5,
+        "polish": 5,
+        "would_run": 5.5,
+        "worst_moment": {
+          "t": 15,
+          "issue": "Missing on the very first block (0 floors) right before the end card, which makes the end card read 'Your tower: 0 floors'."
+        },
+        "best_moment": {
+          "t": 6,
+          "why": "Rapid, clean stacking and overhang slicing as the tower gets narrower and shifts colors."
+        },
+        "summary": "The video clearly demonstrates Sky Stack's core timing and slicing mechanics with natural human play. However, a jarring cut from floor 3 back to floor 0 at the start and ending on a 0-floor fail hurt the overall polish.",
+        "J": 67.7,
+        "J_samples": [
+          68.4,
+          67
+        ]
+      },
+      "score": 76
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.262,
+        "loading_ratio": 0,
+        "action": 0.275,
+        "hook_ratio": 0.841,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "end_card": true
+        },
+        "human_timing": 0.873,
+        "shots": 8,
+        "avg_shot_s": 2.498,
+        "touches_per_10s": 5.004,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 82.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8.5,
+        "action": 7.5,
+        "hook": 7,
+        "polish": 7,
+        "would_run": 7,
+        "worst_moment": {
+          "t": 15,
+          "issue": "After retrying, the player immediately misses the very first block, causing the end card to display 'Your tower: 0 floors'."
+        },
+        "best_moment": {
+          "t": 3,
+          "why": "The 'PERFECT!' drop with the golden burst clearly demonstrates the precision mechanic and rewarding feedback."
+        },
+        "summary": "This highlight clearly demonstrates the core stacking loop, overhang slicing, and progression toward the 20-floor goal with natural human timing. However, ending the clip on an immediate zero-floor miss undermines the momentum and makes the final end card look underwhelming.",
+        "J": 78.1,
+        "J_samples": [
+          78.2,
+          78
+        ]
+      },
+      "score": 80.3,
+      "wins": 0
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.273,
+        "loading_ratio": 0,
+        "action": 0.272,
+        "hook_ratio": 0.804,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "end_card": true
+        },
+        "human_timing": 0.873,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 4.999,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 82.1
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 7.5,
+        "action": 7.5,
+        "hook": 7.5,
+        "polish": 7.5,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 15,
+          "issue": "Player misses the very first block after retrying, resulting in 'Your tower: 0 floors' on the end card."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "Lands a 'PERFECT!' drop with a satisfying visual effect while stacking the color-shifting tower."
+        },
+        "summary": "This highlight clearly demonstrates the core stacking loop, overhang slicing, and progression toward the 20-floor goal within a brisk 19-second runtime. However, an immediate miss after the retry leaves the end card awkwardly displaying '0 floors' instead of ending on the stronger first run.",
+        "J": 78.4,
+        "J_samples": [
+          76,
+          80.8
+        ]
+      },
+      "score": 80.1,
+      "wins": 0
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.3,
+        "loading_ratio": 0,
+        "action": 0.302,
+        "hook_ratio": 0.952,
+        "coverage": 0.667,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "end_card": false
+        },
+        "human_timing": 0.873,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 5,
+        "moment_quality": 1,
+        "arc": 0.453,
+        "H": 69.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8,
+        "action": 7,
+        "hook": 5.5,
+        "polish": 7,
+        "would_run": 7,
+        "worst_moment": {
+          "t": 19,
+          "issue": "Ends abruptly right after missing on the very first block of the retry."
+        },
+        "best_moment": {
+          "t": 6.4,
+          "why": "The 'PERFECT!' drop with the golden sparkle burst clearly demonstrates the precision reward mechanic."
+        },
+        "summary": "The highlight clearly demonstrates Sky Stack's core loop, overhang slicing, and progression toward the 20-floor goal with natural human timing. However, the slow 3-second tutorial start and the abrupt ending on a floor-0 miss dampen the overall punchiness.",
+        "J": 75.1,
+        "J_samples": [
+          75.6,
+          74.6
+        ]
+      },
+      "score": 72.8
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.341,
+        "loading_ratio": 0,
+        "action": 0.259,
+        "hook_ratio": 1.086,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "end_card": true
+        },
+        "human_timing": 0.873,
+        "shots": 5,
+        "avg_shot_s": 4,
+        "touches_per_10s": 4,
+        "moment_quality": 0.917,
+        "arc": 0.7,
+        "H": 78.5
+      },
+      "judge": {
+        "core_loop_clarity": 6.5,
+        "features": 7,
+        "human_play": 5.5,
+        "action": 5,
+        "hook": 3.5,
+        "polish": 2,
+        "would_run": 2,
+        "worst_moment": {
+          "t": 14,
+          "issue": "The 'INSTALL' end card appears in the middle of the video before cutting back to gameplay and ending on a 'TRY AGAIN' screen."
+        },
+        "best_moment": {
+          "t": 9,
+          "why": "Shows a clean 'PERFECT!' drop during a brief, uninterrupted stretch of stacking."
+        },
+        "summary": "The video is poorly edited with jarring, out-of-order cuts, including jumping straight from the tutorial to a game-over screen and placing the install end card in the middle. While the core stacking mechanic is visible, the chaotic structure and harsh audio make it unusable as an ad.",
+        "J": 46.4,
+        "J_samples": [
+          45.2,
+          47.6
+        ]
+      },
+      "score": 60.8
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 72.8
+    },
+    {
+      "id": "base_random",
+      "score": 60.8
+    }
+  ],
+  "separation": 7.5,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

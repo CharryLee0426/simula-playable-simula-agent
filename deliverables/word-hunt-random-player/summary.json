@@ -1,0 +1,44 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/calib-random-word/highlight.mp4",
+  "score": 54.4,
+  "best": "a",
+  "usd": 0.4925,
+  "pass": false,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T09:35:37.280Z",
+      "ms": 87411,
+      "note": "45.7 s recorded, 128 inputs, 0 planner turns, ended by time_limit"
+    },
+    "index": {
+      "at": "2026-11-22T09:36:31.637Z",
+      "ms": 54353,
+      "note": "9 moments, genre: Word Puzzle"
+    },
+    "cut": {
+      "at": "2026-11-22T10:57:15.167Z",
+      "ms": 47292,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:58:34.056Z",
+      "ms": 78886,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T11:00:04.814Z",
+      "ms": 90755,
+      "note": "best a (hook-first) score 54.4"
+    },
+    "friction": {
+      "at": "2026-11-22T11:00:16.128Z",
+      "ms": 11312,
+      "note": "3 items"
+    },
+    "report": {
+      "at": "2026-11-22T09:40:39.665Z",
+      "ms": 10,
+      "note": "trace.html written · total spend $0.266"
+    }
+  }
+}

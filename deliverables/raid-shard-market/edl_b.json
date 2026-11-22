@@ -1,0 +1,60 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: From first shard harvest to worker automation and 91-shard climax",
+  "clips": [
+    {
+      "start": 5.8,
+      "end": 9.7,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Quick, clear first action showing crystal mining without slow tutorial text."
+    },
+    {
+      "start": 12,
+      "end": 16.2,
+      "speed": 1.4,
+      "role": "core_loop",
+      "why": "Stocks the market bin as customers line up to buy shards."
+    },
+    {
+      "start": 18.8,
+      "end": 22.4,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Collects the first 46 gold bars earned from sales."
+    },
+    {
+      "start": 35.4,
+      "end": 39.3,
+      "speed": 1.3,
+      "role": "feature",
+      "why": "Hires the first worker on the 10-gold pad and reveals higher-tier upgrades."
+    },
+    {
+      "start": 46,
+      "end": 49.6,
+      "speed": 1.2,
+      "role": "climax",
+      "why": "Escalates to gathering a massive towering stack of 91 glowing shards."
+    },
+    {
+      "start": 50.95,
+      "end": 53.6,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Hauls the 91-shard stack to the market bin for a huge drop-off."
+    },
+    {
+      "start": 54.6,
+      "end": 56.88,
+      "speed": 1.2,
+      "role": "progression",
+      "why": "Collects an 89-gold payout to fund the next wave of upgrades."
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": [
+    "dead air 50.0-51.5 s cut out of a core_loop clip"
+  ]
+}

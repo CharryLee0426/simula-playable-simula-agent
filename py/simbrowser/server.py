@@ -296,6 +296,15 @@ class Worker:
         im.save(out, quality=80)
         return out
 
+    async def peek(self, p: dict) -> dict:
+        """A quick screenshot for a frame-by-frame check (timing actions); does not move the observation baseline."""
+        width = int(p.get("width", 360))
+        vw, _ = self.cfg.get("viewport", [360, 640])
+        jpeg = await self._shot(quality=int(p.get("quality", 65)), scale=width / vw)
+        path = self.run_dir / "obs" / "peek.jpg"
+        path.write_bytes(jpeg)
+        return {"path": str(path), "frame": await self.page.evaluate("__sim.frame")}
+
     async def motion_probe(self, p: dict) -> dict:
         """Change between now and after `frames` more frames, without moving the observation baseline."""
         a = thumb_from_jpeg(await self._shot(quality=60, scale=0.25))

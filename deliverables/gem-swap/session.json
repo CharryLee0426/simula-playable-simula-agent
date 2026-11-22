@@ -1,0 +1,54 @@
+{
+  "game_s": 25.366666666666667,
+  "frames": 761,
+  "fps": 30,
+  "planner_calls": 8,
+  "planner_failures": 0,
+  "actions": 7,
+  "turns": 8,
+  "end_card_at": 20.29999999999998,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "pointerup@window": 1,
+    "touchend@window": 1,
+    "click@window": 1,
+    "pointerdown@element": 2,
+    "click@element": 1,
+    "pointerdown@canvas": 1,
+    "pointermove@canvas": 1,
+    "pointerup@canvas": 1,
+    "pointercancel@canvas": 1,
+    "contextmenu@document": 1
+  },
+  "events": [
+    {
+      "t": 23533.333333333194,
+      "frame": 706,
+      "kind": "cta",
+      "via": "mraid.open",
+      "url": "https://example.com/app"
+    }
+  ],
+  "audio": {
+    "sounds": 276,
+    "skipped": 1,
+    "has_audio": true,
+    "peak": 1.827
+  },
+  "perf": {
+    "step_ms_avg": 6.5,
+    "shot_ms_avg": 79.9
+  },
+  "title": "Gem Swap",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Game ended with score 6180. End card displayed with INSTALL button.",
+  "stuck_events": 0
+}

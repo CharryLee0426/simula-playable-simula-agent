@@ -1,0 +1,67 @@
+{
+  "id": "a",
+  "title": "Hook-first: Round 3 backwards swipes open before a full 4x4 to 6x6 cash climb",
+  "clips": [
+    {
+      "start": 16.8,
+      "end": 18.8,
+      "speed": 1,
+      "role": "hook",
+      "why": "Rapid backwards, diagonal, and vertical swipes on the 6x6 grid"
+    },
+    {
+      "start": 3.5,
+      "end": 6,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Clear 4x4 word swipes with coins flying into the cash balance"
+    },
+    {
+      "start": 6,
+      "end": 8.1,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 1 clear awards a +$1.00 bonus to reach $2.00"
+    },
+    {
+      "start": 8.1,
+      "end": 8.9,
+      "speed": 1,
+      "role": "progression",
+      "why": "Grid escalates to 5x5 with new target words"
+    },
+    {
+      "start": 11,
+      "end": 13.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Demonstrates diagonal word swiping on the 5x5 grid"
+    },
+    {
+      "start": 13.9,
+      "end": 16.8,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 2 +$1.00 bonus pushes balance to $4.20 before 6x6 unlock"
+    },
+    {
+      "start": 18.8,
+      "end": 22.9,
+      "speed": 1,
+      "role": "climax",
+      "why": "Round 3 cleared banner and coin shower hit $6.60"
+    },
+    {
+      "start": 22.9,
+      "end": 25.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Scrambly end card showing $6.60 haul and CTA tap"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": [
+    "dead air 8.5-11.0 s cut out of a progression clip"
+  ]
+}

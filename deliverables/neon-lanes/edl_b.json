@@ -1,0 +1,58 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: chronological run from first dodge to top-speed crash",
+  "clips": [
+    {
+      "start": 2.8,
+      "end": 5.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Immediate lane-switch dodge and coin pickup without slow tutorial text"
+    },
+    {
+      "start": 5.4,
+      "end": 7.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Builds speed toward full-width orange barriers"
+    },
+    {
+      "start": 7.4,
+      "end": 9.2,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces jump mechanic over barriers with GREAT JUMP! feedback"
+    },
+    {
+      "start": 9.2,
+      "end": 12.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Obstacle crash followed by Free Revive tap to resume the run"
+    },
+    {
+      "start": 12.6,
+      "end": 17.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "Escalating speed up to 76 with rapid lane switches and coin collection"
+    },
+    {
+      "start": 17.6,
+      "end": 20.4,
+      "speed": 1,
+      "role": "climax",
+      "why": "Peak-speed crash at 246m triggering the Game Over climax"
+    },
+    {
+      "start": 23.5,
+      "end": 25.9,
+      "speed": 1,
+      "role": "end_card",
+      "why": "End card displaying 21 coins collected and PLAY NOW tap"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

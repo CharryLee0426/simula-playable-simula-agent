@@ -1,0 +1,51 @@
+{
+  "game_s": 29,
+  "frames": 870,
+  "fps": 30,
+  "planner_calls": 14,
+  "planner_failures": 0,
+  "actions": 11,
+  "turns": 14,
+  "end_card_at": 23.999999999999844,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "pointerup@window": 1,
+    "touchend@window": 1,
+    "click@window": 1,
+    "pointerdown@element": 3,
+    "click@element": 1,
+    "pointerdown@canvas": 1,
+    "contextmenu@document": 1
+  },
+  "events": [
+    {
+      "t": 27166.666666666395,
+      "frame": 815,
+      "kind": "cta",
+      "via": "mraid.open",
+      "url": "https://example.com/app"
+    }
+  ],
+  "audio": {
+    "sounds": 168,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 1.435
+  },
+  "perf": {
+    "step_ms_avg": 5.9,
+    "shot_ms_avg": 37.8
+  },
+  "title": "Sky Stack",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Game ended and showed the end card.",
+  "stuck_events": 0
+}

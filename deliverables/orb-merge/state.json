@@ -1,0 +1,46 @@
+{
+  "session_id": "orb-merge-e9e132-20261122-1037",
+  "playable": "/home/user/simula-playable-simula-agent/games/generated/orb-merge.html",
+  "playable_sha": "6a137ad750e563e6",
+  "created_at": "2026-11-22T10:37:21.638Z",
+  "out": "/home/user/simula-playable-simula-agent/deliverables/orb-merge/highlight.mp4",
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:42:05.267Z",
+      "ms": 283598,
+      "note": "59.2 s recorded, 27 inputs, 25 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:42:49.317Z",
+      "ms": 44048,
+      "note": "16 moments, genre: 2048 Ball Drop Puzzle"
+    },
+    "cut": {
+      "at": "2026-11-22T10:43:45.990Z",
+      "ms": 56671,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:46:20.755Z",
+      "ms": 154763,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:48:08.951Z",
+      "ms": 108195,
+      "note": "best b (learn-then-escalate) score 87.2"
+    },
+    "friction": {
+      "at": "2026-11-22T10:48:24.448Z",
+      "ms": 15494,
+      "note": "3 items"
+    },
+    "report": {
+      "at": "2026-11-22T10:48:24.454Z",
+      "ms": 5,
+      "note": "trace.html written · total spend $0.452"
+    }
+  },
+  "task": 7,
+  "best": "b"
+}

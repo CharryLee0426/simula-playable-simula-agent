@@ -15,7 +15,10 @@ import { appendJsonl, errMsg, Rng, run, writeJson } from "../util/core.ts";
 import { Humanizer, PERSONAS, type Gesture, type Performed, type Pt } from "./humanize.ts";
 
 export type PlanAction = {
-	type: "tap" | "drag" | "hold" | "swipe" | "wait";
+	type: "tap" | "drag" | "hold" | "swipe" | "wait" | "tap_when";
+	/** tap_when: a visual condition checked frame by frame; the tap fires on the first frame where it holds. */
+	condition?: string;
+	timeout_ms?: number;
 	point?: [number, number];
 	target?: number;
 	path?: [number, number][];
@@ -42,6 +45,9 @@ export type SessionSummary = {
 
 const PHASES = ["loading", "title", "tutorial", "gameplay", "reward", "level_end", "fail", "end_card", "other"];
 
+const TIMING_GESTURE = `- {"type":"tap_when","point":[y,x],"condition":"the sliding block is exactly above the tower","timeout_ms":N} for TIMING: when success depends on tapping at the right moment (a moving/sliding/swinging target, a power or timing meter, a rhythm cue), describe the visual moment to tap; the game is watched frame by frame and the tap fires when the condition holds (or at the timeout, max 6000).`;
+/** The planner prompt; the experimental timing gesture is only offered when play.timing_actions is on. */
+const systemPrompt = (timing: boolean) => (timing ? SYSTEM.replace("Give 1-4 actions per turn", `${TIMING_GESTURE}\nGive 1-4 actions per turn`) : SYSTEM);
 const SYSTEM = `You are playing a mobile HTML5 game (a "playable ad") on a phone, like a real person who has never seen it before, so that a gameplay video can be recorded. The game is paused while you think. You see one screenshot per turn.
 
 What a good session looks like:
@@ -94,9 +100,11 @@ function validatePlan(p: Plan, domCount: number): string[] {
 	const pt = (v: unknown) => Array.isArray(v) && v.length === 2 && v.every((n) => typeof n === "number" && n >= 0 && n <= 1000);
 	p.actions.forEach((a, i) => {
 		const k = `action ${i + 1} (${a?.type})`;
-		if (!a || !["tap", "drag", "hold", "swipe", "wait"].includes(a.type)) return void e.push(`${k}: type must be tap|drag|hold|swipe|wait`);
+		if (!a || !["tap", "drag", "hold", "swipe", "wait", "tap_when"].includes(a.type)) return void e.push(`${k}: type must be tap|drag|hold|swipe|wait|tap_when`);
+		if (a.type === "tap_when" && (typeof a.condition !== "string" || a.condition.trim().length < 6)) e.push(`${k}: tap_when needs a "condition" describing the visual moment to tap`);
+		if (a.type === "tap_when" && a.timeout_ms !== undefined && (typeof a.timeout_ms !== "number" || a.timeout_ms < 200 || a.timeout_ms > 6000)) e.push(`${k}: timeout_ms must be 200-6000`);
 		const tgtOk = (t: unknown) => typeof t === "number" && Number.isInteger(t) && t >= 1 && t <= domCount;
-		if (a.type === "tap" || a.type === "hold" || a.type === "swipe") {
+		if (a.type === "tap" || a.type === "hold" || a.type === "swipe" || a.type === "tap_when") {
 			if (!pt(a.point) && !tgtOk(a.target)) e.push(`${k}: needs "point":[y,x] in 0-1000${domCount ? ` or "target":1..${domCount}` : ""}`);
 		}
 		if (a.type === "swipe" && !["up", "down", "left", "right"].includes(String(a.direction))) e.push(`${k}: direction must be up|down|left|right`);
@@ -129,7 +137,7 @@ function toGesture(a: PlanAction, dom: DomCandidate[], vw: number, vh: number): 
 		const dir = { up: [0, -d], down: [0, d], left: [-d, 0], right: [d, 0] }[a.direction ?? "up"]!;
 		return { g: { kind: "swipe", points: [p0, { x: p0.x + dir[0]!, y: p0.y + dir[1]! }] }, label: tgt?.label };
 	}
-	return { g: { kind: a.type, points: [p0], durationMs: a.duration_ms, target: tgt ? { x: tgt.x, y: tgt.y, w: tgt.w, h: tgt.h } : undefined }, label: tgt?.label };
+	return { g: { kind: a.type === "tap_when" ? "tap" : a.type, points: [p0], durationMs: a.duration_ms, target: tgt ? { x: tgt.x, y: tgt.y, w: tgt.w, h: tgt.h } : undefined }, label: tgt?.label };
 }
 
 /** The calibration baseline's policy: uniform random taps and drags anywhere on screen. */
@@ -243,7 +251,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			let planMs = 0, planUsd = 0, planErr: string | undefined;
 			const [dec, planRes] = robot ? [null, { value: randomPlan(rng), ms: 0, usd: 0 }] : await Promise.all([
 				deciderObs(obs, prevObs, lastIntents).catch(() => null),
-				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: SYSTEM, ledger, phase: "play", kind: "planner",
+				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: systemPrompt(!!cfg.play.timing_actions), ledger, phase: "play", kind: "planner",
 					parts: [{ text }, { image: obs.marks_path ?? obs.path }], validate: (p) => validatePlan(p, dom.length), maxTokens: 4000, estimateUsd: 0.015 })
 					.then((r) => r, (e) => e as Error),
 			]);
@@ -298,12 +306,36 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			for (let k = 0; k < plan.actions.length; k++) {
 				const a = plan.actions[k]!;
 				const delay = robot ? 1000 / fps : k === 0 ? hz.reactionMs(obs.changed_frac > 0.25 || turn === 1, turn === 1) : hz.chainGapMs();
-				if (a.type !== "wait") await w.step(hz.framesFor(delay));
+				let timing = "";
+				if (a.type === "tap_when") {
+					// Timing: watch the (frozen-between-checks) game every 2 frames and ask the decider whether the moment
+					// has come; tap on the first frame it has. Checks cost nothing on video; the decider is fast and free.
+					const maxFrames = hz.framesFor(Math.min(6000, Math.max(300, a.timeout_ms ?? 3000)));
+					// The decider's probability for "the moment is now" rises and falls as the moving thing passes; its
+					// absolute scale depends on the question (peaks of ~0.5 are typical for spatial alignment), so fire on a
+					// rising probability past 0.42, and check every frame once it starts to climb.
+					const checks: number[] = [];
+					let prev = 0, stride = 2;
+					for (let f = 0; f < maxFrames; f += stride) {
+						const pk = await w.peek(vw);
+						const d = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current frame of a mobile game (portrait):", { image: pk.path }],
+							questions: { now: { type: "noul", instructions: `Exactly at this moment: ${a.condition}` } } });
+						const p = noul(d?.answers.now);
+						if (p === undefined) break; // no decider: tap now
+						checks.push(Math.round(p * 100) / 100);
+						if (p >= 0.42 && p >= prev) break;
+						stride = p >= 0.22 && p > prev ? 1 : 2;
+						prev = p;
+						await w.step(stride);
+					}
+					timing = ` [tap_when after ${checks.length} checks, last p=${checks.at(-1) ?? "n/a"}]`;
+					trace.emit("play", "decide", `tap_when "${a.condition?.slice(0, 60)}": ${checks.length} frame checks → tap (p ${checks.slice(-4).join(", ")})`, { checks }, { quiet: true });
+				} else if (a.type !== "wait") await w.step(hz.framesFor(delay));
 				const { g, label } = toGesture(a, dom, vw, vh);
 				const st = await w.call<{ value: number }>("eval", { expr: "__sim.frame" });
-				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: !robot });
+				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: !robot && a.type !== "tap_when" });
 				const r = await w.ops(ops);
-				const rec: ActionRecord = { i: history.length, turn, kind: a.type, intent: a.intent ?? "", t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: performed.slipped, reaction_ms: a.type === "wait" ? 0 : delay, target_label: label };
+				const rec: ActionRecord = { i: history.length, turn, kind: a.type, intent: (a.intent ?? "") + timing, t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: performed.slipped, reaction_ms: a.type === "wait" || a.type === "tap_when" ? 0 : delay, target_label: label };
 				history.push(rec);
 				appendJsonl(paths.actions, rec);
 				if (a.type !== "wait") actionsDone++;

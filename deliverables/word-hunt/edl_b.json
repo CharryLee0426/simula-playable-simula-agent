@@ -1,0 +1,67 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: Chronological progression from 4x4 basics to 6x6 $6.60 payoff",
+  "clips": [
+    {
+      "start": 3.5,
+      "end": 6,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "First live swipes on 4x4 grid teach the core loop without tutorial text"
+    },
+    {
+      "start": 6,
+      "end": 8.1,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 1 clear bonus adds +$1.00 to the cash counter"
+    },
+    {
+      "start": 8.1,
+      "end": 8.9,
+      "speed": 1,
+      "role": "progression",
+      "why": "Escalates to a larger 5x5 grid for Round 2"
+    },
+    {
+      "start": 11,
+      "end": 13.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces diagonal swiping alongside horizontal and vertical"
+    },
+    {
+      "start": 13.9,
+      "end": 16.8,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 2 +$1.00 reward climbs to $4.20 and unlocks the 6x6 grid"
+    },
+    {
+      "start": 16.8,
+      "end": 18.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Backwards and diagonal swiping on the 6x6 grid"
+    },
+    {
+      "start": 18.8,
+      "end": 22.9,
+      "speed": 1,
+      "role": "climax",
+      "why": "Final round coin shower brings total cash to $6.60"
+    },
+    {
+      "start": 22.9,
+      "end": 25.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Scrambly end card with $6.60 summary and CTA tap"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": [
+    "dead air 8.5-11.0 s cut out of a progression clip"
+  ]
+}

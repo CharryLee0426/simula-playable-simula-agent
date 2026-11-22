@@ -1,0 +1,231 @@
+{
+  "summary": "The player understood the core drag-to-aim cannon mechanic and recruited the Fire Mage, but experienced a slow, empty opening and persistent uncertainty about where and how to aim during waves. The session also lacked an end card after 71 seconds and had an upgrade popup interrupt active aiming.",
+  "items": [
+    {
+      "t": 8.3,
+      "end": 66.9,
+      "type": "confusion",
+      "severity": "high",
+      "title": "No persistent aiming cue after initial tutorial",
+      "evidence": "Although a 'DRAG TO AIM' tutorial appeared at t=2.0s, once gameplay began the screen had no aiming reticle, trajectory preview, or pull-ring on the central cannon, leading to low confidence (21%-40%) across 15 gameplay checks.",
+      "suggestion": "Add a subtle pulsing drag-ring around the central cannon when idle and show a dotted trajectory arc while dragging so players always know where to touch and where the shot will land.",
+      "signals": [
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16"
+      ],
+      "image": "obs/obs_0007_marks.jpg"
+    },
+    {
+      "t": 0,
+      "end": 8.5,
+      "type": "pacing",
+      "severity": "high",
+      "title": "Slow opening with empty battlefield",
+      "evidence": "It took 5.3s for the first input to visibly work, and two idle gaps occurred (0.5-3.5s and 4.5-8.5s) because goblins did not spawn until t=8.3s, leaving the player firing at an empty path.",
+      "suggestion": "Spawn the first wave of goblins and a red explosive barrel immediately at t=0.0s so the player's very first drag-to-aim shot hits a target right away.",
+      "signals": [
+        "S1",
+        "S18",
+        "S19"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 71.3,
+      "end": null,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "No end card shown within 71 seconds",
+      "evidence": "The session ran until the 71.3s time limit without ever presenting an end card or install CTA.",
+      "suggestion": "Trigger the end card with a clear 'Play Now / Install' CTA after the second upgrade wave or around 35-45 seconds of play.",
+      "signals": [
+        "S20"
+      ]
+    },
+    {
+      "t": 47,
+      "end": null,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Upgrade popup interrupts active aiming",
+      "evidence": "At t=47.0s, the upgrade selection popup ('Central Cannon' and 'Castle Recovery') appeared mid-action while the player was aiming at approaching goblins, causing their input to have no visible effect.",
+      "suggestion": "Add a brief 0.5s input-lock grace period when the upgrade popup opens so stray gameplay drags do not get eaten or accidentally misclick an upgrade card.",
+      "signals": [
+        "S17"
+      ],
+      "image": "obs/obs_0019.jpg"
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 5.266666666666663,
+      "kind": "time_to_first_success",
+      "detail": "5.3 s from the first playable frame until an input visibly worked",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 8.266666666666639,
+      "kind": "unclear_screen",
+      "detail": "decider: only 21% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 7,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0007_marks.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 11.533333333333365,
+      "kind": "unclear_screen",
+      "detail": "decider: only 24% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 8,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0008_marks.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 14.03333333333341,
+      "kind": "unclear_screen",
+      "detail": "decider: only 33% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 9,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0009_marks.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 17.933333333333398,
+      "kind": "unclear_screen",
+      "detail": "decider: only 40% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0010_marks.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 27.966666666666367,
+      "kind": "unclear_screen",
+      "detail": "decider: only 31% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0013_marks.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 30.766666666666264,
+      "kind": "unclear_screen",
+      "detail": "decider: only 29% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0014_marks.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 34.43333333333298,
+      "kind": "unclear_screen",
+      "detail": "decider: only 25% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 15,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0015_marks.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 37.299999999999855,
+      "kind": "unclear_screen",
+      "detail": "decider: only 33% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 16,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0016_marks.jpg"
+    },
+    {
+      "id": "S10",
+      "t": 40.40000000000008,
+      "kind": "unclear_screen",
+      "detail": "decider: only 32% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0017_marks.jpg"
+    },
+    {
+      "id": "S11",
+      "t": 43.4000000000003,
+      "kind": "unclear_screen",
+      "detail": "decider: only 25% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0018_marks.jpg"
+    },
+    {
+      "id": "S12",
+      "t": 52.73333333333431,
+      "kind": "unclear_screen",
+      "detail": "decider: only 33% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 21,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0021_marks.jpg"
+    },
+    {
+      "id": "S13",
+      "t": 55.66666666666786,
+      "kind": "unclear_screen",
+      "detail": "decider: only 35% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 22,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0022_marks.jpg"
+    },
+    {
+      "id": "S14",
+      "t": 59.300000000001454,
+      "kind": "unclear_screen",
+      "detail": "decider: only 28% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 23,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0023_marks.jpg"
+    },
+    {
+      "id": "S15",
+      "t": 63.400000000001754,
+      "kind": "unclear_screen",
+      "detail": "decider: only 37% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 24,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0024_marks.jpg"
+    },
+    {
+      "id": "S16",
+      "t": 66.90000000000171,
+      "kind": "unclear_screen",
+      "detail": "decider: only 25% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 25,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0025_marks.jpg"
+    },
+    {
+      "id": "S17",
+      "t": 47.03333333333389,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 24%, 60.3% of pixels changed) — the player had tried: Gameplay with goblins approaching the wall from multiple paths; Fire Mage is sho",
+      "obs": 19,
+      "image": "/home/user/simula-playable-simula-agent/runs/e2e-boom/obs/obs_0019.jpg"
+    },
+    {
+      "id": "S18",
+      "t": 0.5,
+      "end": 3.5,
+      "kind": "idle",
+      "detail": "3.0 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S19",
+      "t": 4.5,
+      "end": 8.5,
+      "kind": "idle",
+      "detail": "4.0 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S20",
+      "t": 71.33333333333333,
+      "kind": "no_end_card",
+      "detail": "no end card within 71 s of play"
+    }
+  ]
+}

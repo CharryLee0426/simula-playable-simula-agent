@@ -22,6 +22,8 @@ export type Config = {
 		persona: "casual_competent" | "first_timer" | "expert";
 		/** "agent" (default) or "random": a model-free random player with machine timing, used to calibrate the evaluator. */
 		policy?: "agent" | "random";
+		/** Experimental: offer the planner `tap_when` (decider-timed taps for timing games). Off by default. */
+		timing_actions?: boolean;
 		stuck_after: number;
 	};
 	highlight: { duration_s: number; max_source_s: number; max_speed: number; candidates: number; width: number; height: number; touch_overlay: boolean; include_end_card: boolean };

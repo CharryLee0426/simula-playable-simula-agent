@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Feature-montage: Fast-paced showcase of slicing, perfect drops, color shifts, and instant retry",
+  "clips": [
+    {
+      "start": 1.4,
+      "end": 3.5,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Briskly introduces the sliding cyan block and tap control."
+    },
+    {
+      "start": 3.5,
+      "end": 5.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Showcases the overhang slicing mechanic on the opening drops."
+    },
+    {
+      "start": 5.4,
+      "end": 7.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights the 'PERFECT!' drop bonus and particle burst."
+    },
+    {
+      "start": 7.4,
+      "end": 11.6,
+      "speed": 1.15,
+      "role": "progression",
+      "why": "Speeds through rapid stacking, color-shifting blocks, and the 20-floor progress bar."
+    },
+    {
+      "start": 11.6,
+      "end": 14.9,
+      "speed": 1.1,
+      "role": "climax",
+      "why": "Tightens the tense wait before the narrow purple block misses."
+    },
+    {
+      "start": 14.9,
+      "end": 16.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Features streak and perfect drop tracking alongside instant retry."
+    },
+    {
+      "start": 16.6,
+      "end": 20.38,
+      "speed": 1.2,
+      "role": "climax",
+      "why": "Quickly shows the 45-second timer reset and dramatic early miss."
+    },
+    {
+      "start": 23.1,
+      "end": 25.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Ends on the Sky Stack app icon and INSTALL call to action."
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

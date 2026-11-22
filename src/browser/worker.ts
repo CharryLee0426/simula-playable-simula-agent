@@ -86,6 +86,9 @@ export class BrowserWorker {
 	observe(p: { width?: number; quality?: number; dom?: boolean; marks?: boolean } = {}) {
 		return this.call<Observation>("observe", p, 120_000);
 	}
+	peek(width = 360) {
+		return this.call<{ path: string; frame: number }>("peek", { width }, 60_000);
+	}
 	async close(): Promise<any> {
 		if (this.exited) return {};
 		try {

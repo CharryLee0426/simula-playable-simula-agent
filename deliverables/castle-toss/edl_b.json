@@ -1,0 +1,58 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: Clean slingshot intro to Split Shot, TNT chaos, and boss victory",
+  "clips": [
+    {
+      "start": 6.4,
+      "end": 10.2,
+      "speed": 1.05,
+      "role": "core_loop",
+      "why": "Immediate slingshot aim and release smashing the wooden fort for Double KO"
+    },
+    {
+      "start": 12.8,
+      "end": 14.4,
+      "speed": 1,
+      "role": "progression",
+      "why": "Unlocking Split Shot on the Level Clear upgrade screen"
+    },
+    {
+      "start": 16.5,
+      "end": 20.5,
+      "speed": 1.15,
+      "role": "feature",
+      "why": "Demonstrating Split Shot mid-air tap to clear two towers at once"
+    },
+    {
+      "start": 23.6,
+      "end": 25.2,
+      "speed": 1,
+      "role": "progression",
+      "why": "Selecting the Fire Bomb upgrade for the final level"
+    },
+    {
+      "start": 27,
+      "end": 30.2,
+      "speed": 1,
+      "role": "feature",
+      "why": "Fire Bomb Split Shot detonates TNT crate for a Triple KO in the boss level"
+    },
+    {
+      "start": 35.2,
+      "end": 39.965,
+      "speed": 1.05,
+      "role": "climax",
+      "why": "Landing the final blow on the crowned boss and Boss Down celebration"
+    },
+    {
+      "start": 42.533,
+      "end": 44.5,
+      "speed": 1,
+      "role": "end_card",
+      "why": "End card with Castle Toss title and Play Now button"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

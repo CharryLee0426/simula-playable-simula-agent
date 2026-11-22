@@ -1,0 +1,58 @@
+{
+  "id": "b",
+  "title": "Chronological Escalation from First Combo to 64-Orb Climax",
+  "clips": [
+    {
+      "start": 3.5,
+      "end": 7.7,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Skips tutorial text and immediately teaches aim-and-drop with a COMBO x2! into 16."
+    },
+    {
+      "start": 16.5,
+      "end": 18.7,
+      "speed": 1,
+      "role": "feature",
+      "why": "Triggers BIG MERGE! into a 32-orb and unlocks the Bomb power-up."
+    },
+    {
+      "start": 20.5,
+      "end": 22.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Pays off the unlock with a satisfying Bomb explosion clearing the stack."
+    },
+    {
+      "start": 22.6,
+      "end": 27.5,
+      "speed": 1.4,
+      "role": "progression",
+      "why": "Builds the board with a 16-orb merge into another 32-orb."
+    },
+    {
+      "start": 29.9,
+      "end": 31.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces SPEED UP! faster drops mode alongside a combo chain."
+    },
+    {
+      "start": 31.9,
+      "end": 35.933,
+      "speed": 1,
+      "role": "climax",
+      "why": "Delivers the full 64-orb COMBO x2! (+128) climax and Bomb refill."
+    },
+    {
+      "start": 54.033,
+      "end": 56,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Closes on the ORB MERGE end card and PLAY NOW button."
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

@@ -1,0 +1,233 @@
+{
+  "summary": "The first-time player successfully follows the initial shard-gathering loop, but struggles with off-screen tutorial targets, ambiguous upgrade pad icons, and a lack of clear goals once free-roam gameplay begins. Additionally, the playable runs for over 90 seconds without ever presenting an end card or CTA.",
+  "items": [
+    {
+      "t": 40.2,
+      "end": 88.7,
+      "type": "unclear_goal",
+      "severity": "high",
+      "title": "Post-tutorial upgrade pads and objectives are ambiguous",
+      "evidence": "From t=40.2s to 88.7s, clarity drops to 23%–48% as the player navigates between the 40 (pickaxe), 50 (crystal), and 1,500 (tower) pads while a yellow arrow points to the crystal pile. The player steps on pads without clear feedback on whether they can afford them or what the overarching goal is.",
+      "suggestion": "Add a persistent top HUD showing current gold, a clear objective tracker (e.g., 'Hire 2 Workers' or 'Unlock the Tower: 49/1500'), and color-code upgrade pad costs (red when unaffordable, green/pulsing when affordable).",
+      "signals": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18"
+      ],
+      "image": "obs/obs_0015.jpg"
+    },
+    {
+      "t": 91.8,
+      "end": null,
+      "type": "pacing",
+      "severity": "high",
+      "title": "No end card or CTA within 92 seconds of play",
+      "evidence": "The session ran for 91.8s and ended by time_limit without ever triggering an end card or install prompt.",
+      "suggestion": "Trigger the end card with a clear 'Play Now' CTA after a key milestone—such as hiring the second worker or upgrading the mine (around 45–60s)—rather than waiting for the 1,500-gold tower.",
+      "signals": [
+        "S20"
+      ]
+    },
+    {
+      "t": 22.8,
+      "end": 34.2,
+      "type": "confusion",
+      "severity": "medium",
+      "title": "Tutorial hand points off-screen toward hidden upgrade pad",
+      "evidence": "At t=22.8s, the player is at the golden carpet with 46 gold and the tutorial hand points left-downward into empty courtyard space. The player has to walk around the stone building until t=34.2s before the '10' pickaxe pad becomes visible.",
+      "suggestion": "Place an on-screen edge indicator or briefly pan the camera to the '10' pickaxe pad when it becomes the active tutorial step so the player sees their destination immediately.",
+      "signals": [
+        "S2",
+        "S3"
+      ],
+      "image": "obs/obs_0010.jpg"
+    },
+    {
+      "t": 0.5,
+      "end": 4.5,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Initial tap input fails to move character or clarify drag control",
+      "evidence": "At t=0.5s–1.6s, the tutorial hand points to a yellow circle without showing a drag motion, and at t=4.5s the player's input has no visible effect while 'DRAG TO MOVE' is displayed.",
+      "suggestion": "Animate the tutorial hand performing a clear drag gesture with a visible virtual joystick ring, and show a subtle joystick indicator on any tap so players immediately understand they need to hold and drag.",
+      "signals": [
+        "S1",
+        "S19"
+      ],
+      "image": "obs/obs_0004.jpg"
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0.5,
+      "end": 1.5500400000000016,
+      "kind": "time_to_first_success",
+      "detail": "1.1 s from the first playable frame until an input visibly worked",
+      "obs": 4,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0004.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 22.750039999999892,
+      "kind": "unclear_screen",
+      "detail": "decider: only 37% that a first-time player knows what to do (screen: tutorial)",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0010.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 34.15003999999963,
+      "kind": "unclear_screen",
+      "detail": "decider: only 50% that a first-time player knows what to do (screen: tutorial)",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0013.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 40.1833733333334,
+      "kind": "unclear_screen",
+      "detail": "decider: only 35% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 15,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0015.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 42.816706666666924,
+      "kind": "unclear_screen",
+      "detail": "decider: only 31% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 16,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0016.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 46.616706666667206,
+      "kind": "unclear_screen",
+      "detail": "decider: only 45% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 50.2500400000008,
+      "kind": "unclear_screen",
+      "detail": "decider: only 30% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0018.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 54.3500400000011,
+      "kind": "unclear_screen",
+      "detail": "decider: only 43% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 19,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0019.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 57.48337333333466,
+      "kind": "unclear_screen",
+      "detail": "decider: only 23% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 20,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0020.jpg"
+    },
+    {
+      "id": "S10",
+      "t": 60.48337333333488,
+      "kind": "unclear_screen",
+      "detail": "decider: only 37% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 21,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0021.jpg"
+    },
+    {
+      "id": "S11",
+      "t": 64.85004000000187,
+      "kind": "unclear_screen",
+      "detail": "decider: only 36% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 22,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0022.jpg"
+    },
+    {
+      "id": "S12",
+      "t": 68.71670666666812,
+      "kind": "unclear_screen",
+      "detail": "decider: only 48% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 23,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0023.jpg"
+    },
+    {
+      "id": "S13",
+      "t": 71.68337333333436,
+      "kind": "unclear_screen",
+      "detail": "decider: only 36% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 24,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0024.jpg"
+    },
+    {
+      "id": "S14",
+      "t": 74.61670666666726,
+      "kind": "unclear_screen",
+      "detail": "decider: only 34% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 25,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0025.jpg"
+    },
+    {
+      "id": "S15",
+      "t": 77.5833733333335,
+      "kind": "unclear_screen",
+      "detail": "decider: only 32% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 26,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0026.jpg"
+    },
+    {
+      "id": "S16",
+      "t": 81.71670666666623,
+      "kind": "unclear_screen",
+      "detail": "decider: only 28% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 27,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0027.jpg"
+    },
+    {
+      "id": "S17",
+      "t": 85.61670666666566,
+      "kind": "unclear_screen",
+      "detail": "decider: only 25% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 28,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0028.jpg"
+    },
+    {
+      "id": "S18",
+      "t": 88.65003999999855,
+      "kind": "unclear_screen",
+      "detail": "decider: only 29% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 29,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0029.jpg"
+    },
+    {
+      "id": "S19",
+      "t": 4.516706666666672,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 30%, 51.7% of pixels changed) — the player had tried: Isometric dungeon/courtyard with character, building, green crystals, and tutori",
+      "obs": 5,
+      "image": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/obs/obs_0005.jpg"
+    },
+    {
+      "id": "S20",
+      "t": 91.83333333333333,
+      "kind": "no_end_card",
+      "detail": "no end card within 92 s of play"
+    }
+  ]
+}

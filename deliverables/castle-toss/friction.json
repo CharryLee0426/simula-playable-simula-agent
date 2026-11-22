@@ -1,0 +1,86 @@
+{
+  "summary": "The first-time experience was smooth and engaging, with the player completing all three levels and reaching the end card in 42.5 seconds. Minor friction occurred around aiming clarity after the tutorial disappeared and feedback during the final boss encounter.",
+  "items": [
+    {
+      "t": 34.7,
+      "end": null,
+      "type": "unclear_goal",
+      "severity": "medium",
+      "title": "Low visual feedback and unclear Split Shot cue on final boss",
+      "evidence": "At t=34.7s, the crowned red boss remained alone with low HP and 1 boulder left; the previous shot produced only 3.0% pixel change (no_effect) and the screen clarity dropped to 27% while 'SPLIT' and 'FIRE' badges sat passively at the top-left.",
+      "suggestion": "Add a brief hit-flash or floating damage number when the boss takes damage, and display a subtle 'Tap mid-air to Split!' hint while a Split Shot boulder is in flight.",
+      "signals": [
+        "S3",
+        "S4"
+      ],
+      "image": "obs/obs_0014.jpg"
+    },
+    {
+      "t": 6.3,
+      "end": null,
+      "type": "confusion",
+      "severity": "low",
+      "title": "No aiming cue after the first-shot tutorial disappears",
+      "evidence": "After the first shot missed or failed to clear the wooden structure at t=6.3s, the 'Drag back & release to fire!' banner and hand pointer were gone, leaving screen clarity at 50% with a new boulder loaded.",
+      "suggestion": "Pulse the loaded boulder gently in the slingshot and show a faint dotted trajectory arc as soon as the player touches the slingshot.",
+      "signals": [
+        "S2"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 0,
+      "end": 2,
+      "type": "pacing",
+      "severity": "low",
+      "title": "Fast initial onboarding with minor room for drag-direction clarity",
+      "evidence": "The player took 2.0s from the first playable frame to execute a working shot using the 'Drag back & release to fire!' banner and hand pointer.",
+      "suggestion": "Animate the hand pointer slightly backward along the pull vector on frame 0 so players immediately see the drag direction.",
+      "signals": [
+        "S1"
+      ],
+      "image": "obs/obs_0005.jpg"
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 1.9999999999999982,
+      "kind": "time_to_first_success",
+      "detail": "2.0 s from the first playable frame until an input visibly worked",
+      "obs": 5,
+      "image": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/obs/obs_0005.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 6.333333333333321,
+      "kind": "unclear_screen",
+      "detail": "decider: only 50% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 34.66666666666633,
+      "kind": "unclear_screen",
+      "detail": "decider: only 27% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 34.66666666666633,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 17%, 3.0% of pixels changed) — the player had tried: Level 3/3 gameplay, only the crowned red boss remains with ~35% HP",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 42.533333333333566,
+      "kind": "end_card",
+      "detail": "end card appeared at 42.5 s (session 47.3 s)"
+    }
+  ]
+}

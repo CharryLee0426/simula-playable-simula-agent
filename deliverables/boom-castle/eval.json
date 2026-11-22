@@ -1,0 +1,335 @@
+{
+  "best": "c",
+  "score": 82.7,
+  "pass": true,
+  "pairwise": {
+    "a": "c",
+    "b": "b",
+    "a_first": "A",
+    "b_first": "B",
+    "winner": "c"
+  },
+  "vs_baseline": {
+    "baseline": "base_random",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/e2e-boom/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.186,
+        "loading_ratio": 0,
+        "action": 0.439,
+        "hook_ratio": 0.998,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.987,
+        "shots": 6,
+        "avg_shot_s": 3.333,
+        "touches_per_10s": 9,
+        "moment_quality": 0.893,
+        "arc": 0.85,
+        "H": 86.8
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 7.5,
+        "human_play": 6,
+        "action": 7.5,
+        "hook": 6,
+        "polish": 7,
+        "would_run": 6.5,
+        "worst_moment": {
+          "t": 5,
+          "issue": "The upgrade card is selected almost instantaneously without any realistic pause to read the options."
+        },
+        "best_moment": {
+          "t": 2,
+          "why": "The cannonball hits the red explosive barrel right in the middle of the path, creating a satisfying early hook."
+        },
+        "summary": "This highlight clearly demonstrates the core loop of aiming the cannon, blowing up enemies, and unlocking tower heroes like the Fire Mage. While the action is steady and easy to follow, the upgrade selection at 5 seconds is overly fast and the video ends abruptly.",
+        "J": 70.6,
+        "J_samples": [
+          74.8,
+          66.4
+        ]
+      },
+      "score": 77.9
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/e2e-boom/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.233,
+        "loading_ratio": 0,
+        "action": 0.41,
+        "hook_ratio": 0.751,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.987,
+        "shots": 6,
+        "avg_shot_s": 3.336,
+        "touches_per_10s": 7.994,
+        "moment_quality": 0.935,
+        "arc": 0.85,
+        "H": 82.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 9,
+        "action": 8,
+        "hook": 7,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 19,
+          "issue": "The clip cuts off abruptly mid-wave without a clear climax or end card."
+        },
+        "best_moment": {
+          "t": 5,
+          "why": "The player aims at and detonates the red explosive barrel, followed immediately by a natural pause to pick the Fire Mage upgrade."
+        },
+        "summary": "This highlight clearly demonstrates the core loop of aiming the cannon, detonating barrels, and recruiting heroes through upgrade cards. The pacing is engaging and the touch inputs look genuinely human, though the ending cuts off a bit abruptly.",
+        "J": 82.4,
+        "J_samples": [
+          82.4,
+          82.4
+        ]
+      },
+      "score": 82.6,
+      "wins": 0
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/e2e-boom/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.186,
+        "loading_ratio": 0,
+        "action": 0.411,
+        "hook_ratio": 0.752,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.987,
+        "shots": 8,
+        "avg_shot_s": 2.499,
+        "touches_per_10s": 11.005,
+        "moment_quality": 0.898,
+        "arc": 0.85,
+        "H": 83.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8.5,
+        "action": 8,
+        "hook": 7.5,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 12,
+          "issue": "The second upgrade selection screen pauses the action for a couple of seconds."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "A cannonball hits the red explosive barrel in the middle of a goblin pack, triggering a satisfying shockwave explosion."
+        },
+        "summary": "This highlight clearly demonstrates the core loop of aiming the cannon, triggering barrel explosions, and recruiting heroes through upgrade cards. The pacing is engaging with natural human-like aiming and decision-making, making it a strong ad creative.",
+        "J": 82.1,
+        "J_samples": [
+          80.8,
+          83.4
+        ]
+      },
+      "score": 82.7,
+      "wins": 2
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/e2e-boom/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20.033333,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.463,
+        "loading_ratio": 0,
+        "action": 0.389,
+        "hook_ratio": 1.169,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.987,
+        "shots": 3,
+        "avg_shot_s": 6.667,
+        "touches_per_10s": 6,
+        "moment_quality": 0.738,
+        "arc": 0.85,
+        "H": 75.3
+      },
+      "judge": {
+        "core_loop_clarity": 7,
+        "features": 5,
+        "human_play": 7,
+        "action": 4.5,
+        "hook": 3,
+        "polish": 6,
+        "would_run": 4,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 4 seconds show the cannon firing at an empty path with a 'DRAG TO AIM' prompt, offering zero hook."
+        },
+        "best_moment": {
+          "t": 15.5,
+          "why": "The cannonball finally hits the red explosive barrel, triggering a satisfying shockwave that clears a group of goblins."
+        },
+        "summary": "This highlight starts too slowly with several seconds of firing at an empty path before enemies even appear. While the barrel explosion and upgrade popup show the core loop, the clip ends before any upgrade is selected or heroes are shown in action.",
+        "J": 53.3,
+        "J_samples": [
+          52.6,
+          54
+        ]
+      },
+      "score": 63.2
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/e2e-boom/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.262,
+        "loading_ratio": 0,
+        "action": 0.43,
+        "hook_ratio": 1.043,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.987,
+        "shots": 5,
+        "avg_shot_s": 3.995,
+        "touches_per_10s": 9.512,
+        "moment_quality": 0.761,
+        "arc": 0.63,
+        "H": 80.1
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 8,
+        "human_play": 7,
+        "action": 7,
+        "hook": 3,
+        "polish": 7.5,
+        "would_run": 6,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first two seconds show the cannon firing at an empty path with no enemies, creating a weak hook."
+        },
+        "best_moment": {
+          "t": 10,
+          "why": "The cannonball hits the red explosive barrel in the middle of the goblin pack, triggering a massive, satisfying shockwave."
+        },
+        "summary": "This 20-second highlight clearly demonstrates the drag-to-aim tower defense loop, upgrade cards, and explosive barrel mechanics. However, starting on an empty path for the first few seconds weakens the initial hook.",
+        "J": 68.8,
+        "J_samples": [
+          70.2,
+          67.4
+        ]
+      },
+      "score": 73.9
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 63.2
+    },
+    {
+      "id": "base_random",
+      "score": 73.9
+    }
+  ],
+  "separation": 8.8,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

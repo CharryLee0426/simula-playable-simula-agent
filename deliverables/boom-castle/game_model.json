@@ -1,0 +1,20 @@
+{
+  "title": "Boom Castle TD",
+  "genre": "Tower Defense",
+  "objective": "Defend the castle wall from waves of advancing goblins and monsters using a manually aimed cannon and recruited tower heroes.",
+  "controls": "Drag from the central cannon area towards enemies to aim and fire cannonballs; tap upgrade cards when prompted.",
+  "core_loop": "Aim and fire cannonballs at advancing enemy waves to destroy them, earn upgrade selections, and strengthen castle defenses.",
+  "features": [
+    "Manual drag-to-aim Central Cannon",
+    "Red explosive barrels on the path",
+    "Upgrade selection cards",
+    "Recruitable Fire Mage tower hero",
+    "Central Cannon fire rate upgrade",
+    "Castle Recovery HP regeneration option",
+    "Lightning Priest hero unlock option"
+  ],
+  "progression": "Escalates through denser enemy waves, tougher armored enemies and large ogres, and periodic upgrade popups that unlock new heroes and boost cannon fire rate.",
+  "end_card": false,
+  "tone": "Action-packed medieval fantasy",
+  "hook_idea": "Cannonball hits the red explosive barrel in the middle of a goblin pack, triggering a massive shockwave explosion at t=19.4s."
+}

@@ -1,0 +1,46 @@
+{
+  "session_id": "gem-swap-b73e44-20261122-1048",
+  "playable": "/home/user/simula-playable-simula-agent/games/holdout/gem-swap.html",
+  "playable_sha": "2bfeefb3f9df49f6",
+  "created_at": "2026-11-22T10:48:41.821Z",
+  "out": "/home/user/simula-playable-simula-agent/deliverables/gem-swap/highlight.mp4",
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:50:31.649Z",
+      "ms": 109794,
+      "note": "25.4 s recorded, 7 inputs, 8 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:50:55.926Z",
+      "ms": 24273,
+      "note": "10 moments, genre: Match-3 Puzzle"
+    },
+    "cut": {
+      "at": "2026-11-22T10:52:03.773Z",
+      "ms": 67844,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:54:34.575Z",
+      "ms": 150800,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:56:11.615Z",
+      "ms": 97038,
+      "note": "best a (hook-first) score 89.9"
+    },
+    "friction": {
+      "at": "2026-11-22T10:56:19.930Z",
+      "ms": 8308,
+      "note": "3 items"
+    },
+    "report": {
+      "at": "2026-11-22T10:56:19.936Z",
+      "ms": 4,
+      "note": "trace.html written · total spend $0.334"
+    }
+  },
+  "task": 7,
+  "best": "a"
+}

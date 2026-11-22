@@ -1,0 +1,19 @@
+{
+  "title": "Neon Lanes",
+  "genre": "3-lane endless runner",
+  "objective": "Drive as far as possible down a synthwave highway, dodging obstacles and collecting coins.",
+  "controls": "Swipe left or right to switch between three lanes, swipe up to jump over barriers, and tap on-screen buttons to revive or play.",
+  "core_loop": "Swipe to switch lanes or jump over neon obstacles to collect coins and push your distance further.",
+  "features": [
+    "3-lane lane switching",
+    "Jump over barriers",
+    "Coin collection",
+    "Free Revive",
+    "Speed progression",
+    "Dodge/Jump combo callouts"
+  ],
+  "progression": "Speed steadily increases as distance climbs from 6m past 246m, with tighter obstacle patterns.",
+  "end_card": true,
+  "tone": "retro synthwave, neon, fast-paced",
+  "hook_idea": "Swiping up to leap over the glowing orange barriers with the 'GREAT JUMP!' banner at t=7.8-8.8s"
+}

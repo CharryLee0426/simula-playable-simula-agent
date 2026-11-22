@@ -1,0 +1,325 @@
+{
+  "best": "a",
+  "score": 54.4,
+  "pass": false,
+  "pairwise": {
+    "a": "a",
+    "b": "c",
+    "a_first": "tie",
+    "b_first": "tie",
+    "winner": "a"
+  },
+  "vs_baseline": {
+    "baseline": "base_random",
+    "chosen_wins": 0,
+    "of": 2,
+    "orders": [
+      "tie",
+      "tie"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/calib-random-word/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0,
+        "loading_ratio": 0,
+        "action": 0.362,
+        "hook_ratio": 1.074,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true
+        },
+        "human_timing": 0.636,
+        "shots": 6,
+        "avg_shot_s": 3.334,
+        "touches_per_10s": 30.491,
+        "moment_quality": 0.844,
+        "arc": 0.602,
+        "H": 86.4
+      },
+      "judge": {
+        "core_loop_clarity": 3,
+        "features": 4,
+        "human_play": 2,
+        "action": 2,
+        "hook": 4.5,
+        "polish": 5,
+        "would_run": 1,
+        "worst_moment": {
+          "t": 14,
+          "issue": "The player continues tapping random letters and failing to connect 'SUN' despite it being highlighted, making the gameplay look broken or frustrating."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "The opening frame clearly displays the cute fox mascot, the $0.00 cash counter, and the highlighted 'SUN' tutorial prompt."
+        },
+        "summary": "The player fails to complete even a single word throughout the entire 19-second clip, never triggering the cash reward or progression. Because the core loop of earning money is never demonstrated, this highlight is frustrating to watch and unsuitable as an ad.",
+        "J": 28.3,
+        "J_samples": [
+          28.8,
+          27.8
+        ]
+      },
+      "score": 54.4,
+      "wins": 0
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/calib-random-word/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.093,
+        "loading_ratio": 0,
+        "action": 0.361,
+        "hook_ratio": 0.944,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true
+        },
+        "human_timing": 0.636,
+        "shots": 6,
+        "avg_shot_s": 3.334,
+        "touches_per_10s": 26.996,
+        "moment_quality": 0.854,
+        "arc": 0.632,
+        "H": 82.6
+      },
+      "judge": {
+        "core_loop_clarity": 2,
+        "features": 3.5,
+        "human_play": 1.5,
+        "action": 1.5,
+        "hook": 4.5,
+        "polish": 4,
+        "would_run": 1,
+        "worst_moment": {
+          "t": 11,
+          "issue": "The player continues randomly tapping non-adjacent letters instead of swiping to form 'SUN', leaving the board completely unchanged."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "The opening frame clearly displays the $0.00 cash counter, fox mascot, and highlighted 'SUN' ($0.30) target."
+        },
+        "summary": "The video fails to demonstrate the core loop because the player only taps random, non-adjacent tiles instead of swiping to form words. As a result, no words are completed and no cash rewards are earned, making this unusable as an ad highlight.",
+        "J": 23.3,
+        "J_samples": [
+          24.6,
+          22
+        ]
+      },
+      "score": 50
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/calib-random-word/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.091,
+        "loading_ratio": 0,
+        "action": 0.361,
+        "hook_ratio": 0.946,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true
+        },
+        "human_timing": 0.636,
+        "shots": 8,
+        "avg_shot_s": 2.497,
+        "touches_per_10s": 30.538,
+        "moment_quality": 0.805,
+        "arc": 0.617,
+        "H": 81.5
+      },
+      "judge": {
+        "core_loop_clarity": 3,
+        "features": 3,
+        "human_play": 2,
+        "action": 2,
+        "hook": 4.5,
+        "polish": 4.5,
+        "would_run": 1,
+        "worst_moment": {
+          "t": 2,
+          "issue": "The player swipes across random letters instead of the clearly highlighted 'SUN' tutorial word and continues failing to form any word for the rest of the clip."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "The opening frame clearly presents the fox mascot, $0.00 cash counter, target words with dollar values, and the highlighted 'SUN' prompt."
+        },
+        "summary": "The video fails to demonstrate the core loop because the player never successfully connects a single word, not even the highlighted 'SUN' tutorial, leaving the cash counter at $0.00. Watching random, unsuccessful taps and swipes for 19 seconds makes for a frustrating and unconvincing ad.",
+        "J": 26.4,
+        "J_samples": [
+          26.4,
+          26.4
+        ]
+      },
+      "score": 51.2,
+      "wins": 0
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/calib-random-word/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 19.967,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.049,
+        "loading_ratio": 0,
+        "action": 0.361,
+        "hook_ratio": 0.963,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true
+        },
+        "human_timing": 0.636,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 29,
+        "moment_quality": 0.824,
+        "arc": 0.618,
+        "H": 81.9
+      },
+      "judge": {
+        "core_loop_clarity": 2,
+        "features": 3.5,
+        "human_play": 1,
+        "action": 1,
+        "hook": 5,
+        "polish": 3.5,
+        "would_run": 1,
+        "worst_moment": {
+          "t": 14,
+          "issue": "The player taps randomly on the fox mascot and title area instead of playing the grid, while still having completed zero words."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "The initial frame clearly displays the $0.00 cash counter, target words with cash values, and the highlighted 'SUN' tutorial prompt."
+        },
+        "summary": "The player taps randomly all over the screen—including outside the grid—for 19 seconds without ever swiping to form a single word or earn any cash. This fails to demonstrate the core loop or progression and makes the game look unresponsive.",
+        "J": 21.8,
+        "J_samples": [
+          20.6,
+          23
+        ]
+      },
+      "score": 48.8
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/calib-random-word/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.048,
+        "loading_ratio": 0,
+        "action": 0.361,
+        "hook_ratio": 0.961,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true
+        },
+        "human_timing": 0.636,
+        "shots": 5,
+        "avg_shot_s": 3.997,
+        "touches_per_10s": 30.021,
+        "moment_quality": 0.765,
+        "arc": 0.603,
+        "H": 82.1
+      },
+      "judge": {
+        "core_loop_clarity": 2,
+        "features": 3.5,
+        "human_play": 2,
+        "action": 2,
+        "hook": 5,
+        "polish": 4,
+        "would_run": 1,
+        "worst_moment": {
+          "t": 15,
+          "issue": "The player continues randomly tapping single letters and failing to form any word, never even completing the highlighted 'SUN' tutorial."
+        },
+        "best_moment": {
+          "t": 9,
+          "why": "The player actually performs a swipe from S to E, briefly showing the orange line trail mechanic."
+        },
+        "summary": "The video fails to demonstrate the core loop because the player never completes a single word or earns any cash reward. Random, unsuccessful tapping makes the gameplay look frustrating and broken, making this unsuitable as an ad highlight.",
+        "J": 25.3,
+        "J_samples": [
+          24.6,
+          26
+        ]
+      },
+      "score": 50.9
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 48.8
+    },
+    {
+      "id": "base_random",
+      "score": 50.9
+    }
+  ],
+  "separation": 3.5,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

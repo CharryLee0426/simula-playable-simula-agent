@@ -1,0 +1,65 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: Clear first swipe into Fever Time and Bonus Blast",
+  "clips": [
+    {
+      "start": 1.1,
+      "end": 4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Clean first gem swipe shows match-3 controls immediately"
+    },
+    {
+      "start": 4,
+      "end": 7.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Cascade crafts Row Blaster and chains into orange Combo x2 match"
+    },
+    {
+      "start": 7.4,
+      "end": 9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Green gem swipe unleashes Combo x4 cascade and Row Blaster clear"
+    },
+    {
+      "start": 9,
+      "end": 11.2,
+      "speed": 1,
+      "role": "feature",
+      "why": "Row Blaster match activates Fever Time x2 points near target"
+    },
+    {
+      "start": 11.2,
+      "end": 13.4,
+      "speed": 1,
+      "role": "progression",
+      "why": "Match-4 yellow gems surpass the 4000-point target"
+    },
+    {
+      "start": 13.4,
+      "end": 17.4,
+      "speed": 1,
+      "role": "climax",
+      "why": "Bonus Blast end-of-round detonation boosts score to 6180"
+    },
+    {
+      "start": 17.4,
+      "end": 18.8,
+      "speed": 1,
+      "role": "progression",
+      "why": "3-star victory screen rewards player"
+    },
+    {
+      "start": 22.5,
+      "end": 24.8,
+      "speed": 1,
+      "role": "end_card",
+      "why": "End card call to action with INSTALL tap"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

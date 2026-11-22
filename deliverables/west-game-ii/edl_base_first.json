@@ -1,0 +1,19 @@
+{
+  "id": "base_first",
+  "strategy": "baseline: first 20 s",
+  "title": "the first 20 s after loading, uncut",
+  "source": "baseline",
+  "clips": [
+    {
+      "start": 0.5,
+      "end": 20.513,
+      "speed": 1,
+      "role": "core_loop"
+    }
+  ],
+  "fixes": [
+    "clip 0.5-20.5 → 0.50-21.11 (bounds/gesture snap)",
+    "clip 20.5-20.6 → 19.75-21.30 (bounds/gesture snap)",
+    "overlap trimmed (core_loop)"
+  ]
+}

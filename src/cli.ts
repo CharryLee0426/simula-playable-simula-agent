@@ -165,7 +165,17 @@ function summarize(dir: string): void {
 		const st = readJsonIf<any>(join(dir, n, "state.json"));
 		const usd = readFileSync(join(dir, n, "ledger.jsonl"), "utf8").split("\n").filter(Boolean).reduce((a, l) => a + Number(JSON.parse(l).usd || 0), 0);
 		total += usd;
-		const mins = st?.phases ? Object.values(st.phases as Record<string, { ms: number }>).reduce((a, p) => a + p.ms, 0) / 60000 : 0;
+		let ms = st?.phases ? Object.values(st.phases as Record<string, { ms: number }>).reduce((a, p) => a + p.ms, 0) : 0;
+		// Sessions re-cut before reused phases kept their timing: recover play/index durations from the trace.
+		if (st?.phases && existsSync(join(dir, n, "trace.jsonl"))) {
+			const ev = readFileSync(join(dir, n, "trace.jsonl"), "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l) as { ts: string; phase: string; type: string });
+			const first = (ph: string) => ev.find((e) => e.phase === ph)?.ts;
+			for (const [ph, nextPh] of [["play", "index"], ["index", "cut"]] as const) {
+				const a = first(ph), b = first(nextPh);
+				if ((st.phases[ph]?.ms ?? 0) < 2000 && a && b) ms += Date.parse(b) - Date.parse(a);
+			}
+		}
+		const mins = ms / 60000;
 		const best = ev.candidates.find((c: any) => c.id === ev.best);
 		const vs = ev.vs_baseline ? `${ev.vs_baseline.chosen_wins}/${ev.vs_baseline.of}` : "-";
 		const high = fr?.items?.filter((i: any) => i.severity === "high").length ?? 0;

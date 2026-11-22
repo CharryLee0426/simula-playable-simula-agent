@@ -1,0 +1,51 @@
+{
+  "id": "b",
+  "title": "Cash-reward setup followed by escalating swipe gameplay",
+  "clips": [
+    {
+      "start": 0,
+      "end": 1.9,
+      "speed": 1,
+      "role": "hook",
+      "why": "Introduces the $0.00 balance, target words, and cash values"
+    },
+    {
+      "start": 2.5,
+      "end": 6.8,
+      "speed": 1.15,
+      "role": "core_loop",
+      "why": "Quickly demonstrates grid interaction and tile flip feedback"
+    },
+    {
+      "start": 13,
+      "end": 17,
+      "speed": 1.1,
+      "role": "feature",
+      "why": "Showcases dragging orange connection trails across adjacent letters"
+    },
+    {
+      "start": 19.9,
+      "end": 23.8,
+      "speed": 1,
+      "role": "progression",
+      "why": "Diagonal and horizontal swipes with crisp audio feedback"
+    },
+    {
+      "start": 31,
+      "end": 35.1,
+      "speed": 1.1,
+      "role": "progression",
+      "why": "Vertical column swipe and bottom-row word searching"
+    },
+    {
+      "start": 37.8,
+      "end": 40.9,
+      "speed": 1,
+      "role": "climax",
+      "why": "Finishes on high-intensity consecutive drags across the grid"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

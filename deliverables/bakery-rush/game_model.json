@@ -1,0 +1,21 @@
+{
+  "title": "Bakery Rush",
+  "genre": "Idle Clicker",
+  "objective": "Tap cakes to bake and earn coins, buy upgrades, complete timed Rush Orders, and unlock larger bakery shops.",
+  "controls": "Tap the cake in the center to bake and earn coins; tap upgrade cards at the bottom to purchase them; tap floating Golden Cupcakes for a 3x frenzy.",
+  "core_loop": "Tap the cake to earn coins -> buy tap and auto-baking upgrades -> earn faster to unlock new bakery shops and beat Rush Orders.",
+  "features": [
+    "Tap-to-bake coins",
+    "Rolling Pin x2 upgrade",
+    "Auto-Baker passive income",
+    "Display Case income multiplier",
+    "Delivery Van upgrade",
+    "Timed Rush Orders",
+    "Golden Cupcake 3x Frenzy",
+    "Multi-tier shop progression"
+  ],
+  "progression": "Accumulating total coins unlocks new bakery shops (Sweet Corner to Bakery Lane at 150 coins, then Cake Palace at 2,500 coins) with multi-tier cakes and higher upgrade targets.",
+  "end_card": true,
+  "tone": "Bright, pastel pink, upbeat, casual arcade",
+  "hook_idea": "Activating the Golden Frenzy x3 cupcake during a frantic Rush Order right before unlocking Bakery Lane (t=24.4s-29.5s)"
+}

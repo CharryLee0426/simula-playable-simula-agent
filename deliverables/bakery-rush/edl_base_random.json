@@ -1,0 +1,43 @@
+{
+  "id": "base_random",
+  "strategy": "baseline: random clips",
+  "title": "five random 4 s clips",
+  "source": "baseline",
+  "clips": [
+    {
+      "start": 0,
+      "end": 4,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 27.647,
+      "end": 31.853,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 10.638,
+      "end": 14.638,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 38.491,
+      "end": 42.713,
+      "speed": 1.15,
+      "role": "core_loop"
+    },
+    {
+      "start": 21.08,
+      "end": 25.21,
+      "speed": 1,
+      "role": "core_loop"
+    }
+  ],
+  "fixes": [
+    "clip 27.9-31.9 → 27.65-31.85 (bounds/gesture snap)",
+    "clip 38.5-42.5 → 38.49-42.71 (bounds/gesture snap)",
+    "clip 21.3-25.3 → 21.08-25.28 (bounds/gesture snap)"
+  ]
+}

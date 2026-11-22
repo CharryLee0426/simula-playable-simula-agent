@@ -1,0 +1,65 @@
+{
+  "id": "b",
+  "title": "Learn-then-escalate: Chronological rise from first drop to 7-floor streak and topple",
+  "clips": [
+    {
+      "start": 2,
+      "end": 3.5,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Quickly establishes the sliding block and tap-to-drop mechanic."
+    },
+    {
+      "start": 3.5,
+      "end": 5.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows the first two successful drops and overhang slicing up to 2/20 floors."
+    },
+    {
+      "start": 5.4,
+      "end": 7.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Rewards accurate timing with the 'PERFECT!' drop golden flash."
+    },
+    {
+      "start": 7.4,
+      "end": 11.6,
+      "speed": 1.1,
+      "role": "progression",
+      "why": "Escalates difficulty as the tower climbs to 7/20 and shifts from blue to purple."
+    },
+    {
+      "start": 11.6,
+      "end": 15,
+      "speed": 1,
+      "role": "climax",
+      "why": "Delivers the tense alignment attempt and 'MISSED!' block tumble."
+    },
+    {
+      "start": 15,
+      "end": 16.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Shows the run stats summary and instant 'TRY AGAIN' tap."
+    },
+    {
+      "start": 16.6,
+      "end": 19.967,
+      "speed": 1,
+      "role": "climax",
+      "why": "Captures the fast restart and immediate first-drop miss."
+    },
+    {
+      "start": 23.1,
+      "end": 25.5,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Closes with the Sky Stack end card and INSTALL button."
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

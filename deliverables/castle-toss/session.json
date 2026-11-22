@@ -1,0 +1,53 @@
+{
+  "game_s": 47.3,
+  "frames": 1419,
+  "fps": 30,
+  "planner_calls": 12,
+  "planner_failures": 0,
+  "actions": 12,
+  "turns": 12,
+  "end_card_at": 42.533333333333566,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "pointerup@window": 1,
+    "touchend@window": 1,
+    "click@window": 1,
+    "pointerdown@canvas": 1,
+    "pointermove@canvas": 1,
+    "pointerup@canvas": 1,
+    "pointercancel@canvas": 1,
+    "contextmenu@canvas": 1,
+    "click@element": 4
+  },
+  "events": [
+    {
+      "t": 45466.666666667115,
+      "frame": 1364,
+      "kind": "cta",
+      "via": "mraid.open",
+      "url": "https://example.com/app"
+    }
+  ],
+  "audio": {
+    "sounds": 500,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 4.454
+  },
+  "perf": {
+    "step_ms_avg": 8.7,
+    "shot_ms_avg": 94.5
+  },
+  "title": "Castle Toss",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Game completed! Reached end card.",
+  "stuck_events": 0
+}

@@ -1,0 +1,45 @@
+{
+  "game_s": 92.56666666666666,
+  "frames": 2777,
+  "fps": 30,
+  "planner_calls": 29,
+  "planner_failures": 0,
+  "actions": 20,
+  "turns": 29,
+  "cta_tapped": false,
+  "ended_by": "time_limit",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@canvas": 2,
+    "pointercancel@canvas": 1,
+    "wheel@canvas": 1,
+    "contextmenu@canvas": 1,
+    "click@element": 1,
+    "pointermove@canvas": 1,
+    "pointerup@window": 1,
+    "pointercancel@window": 1,
+    "pointerdown@document": 1,
+    "pointermove@document": 20,
+    "pointerup@document": 20
+  },
+  "events": [],
+  "audio": {
+    "sounds": 793,
+    "skipped": 1,
+    "has_audio": true,
+    "peak": 1.571
+  },
+  "perf": {
+    "step_ms_avg": 14.2,
+    "shot_ms_avg": 183.5
+  },
+  "title": "Wild West",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Goal: defend town, collect gold to build on pads. Controls: virtual joystick. Have 720 gold. 300 gold pad (+ gold) is right next to us. Next: step onto the 300 pad.",
+  "stuck_events": 0
+}

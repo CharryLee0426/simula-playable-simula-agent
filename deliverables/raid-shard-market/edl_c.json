@@ -1,0 +1,74 @@
+{
+  "id": "c",
+  "title": "Feature-montage: Rapid tour of mining, market sales, worker automation, and mega-stacks",
+  "clips": [
+    {
+      "start": 5.8,
+      "end": 8.8,
+      "speed": 1.05,
+      "role": "core_loop",
+      "why": "Fast cut of joystick movement and shard stacking."
+    },
+    {
+      "start": 12.6,
+      "end": 15.6,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Quick shot of dumping shards into the automated market bin."
+    },
+    {
+      "start": 19.6,
+      "end": 22.6,
+      "speed": 1.5,
+      "role": "feature",
+      "why": "Shows the gold carpet reward collection mechanic."
+    },
+    {
+      "start": 35.4,
+      "end": 39,
+      "speed": 1.2,
+      "role": "feature",
+      "why": "Unlocks the first worker hiring pad and reveals 40, 50, and 1,500 pads."
+    },
+    {
+      "start": 40.5,
+      "end": 43.5,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Highlights automated worker mining alongside the player."
+    },
+    {
+      "start": 46,
+      "end": 49.6,
+      "speed": 1.2,
+      "role": "climax",
+      "why": "Showcases the towering 91-shard carry stack."
+    },
+    {
+      "start": 51.6,
+      "end": 54.6,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Delivers the massive 91-shard haul into the market bin."
+    },
+    {
+      "start": 82.5,
+      "end": 84.9,
+      "speed": 1.4,
+      "role": "progression",
+      "why": "Hires a second miner at 40 gold and upgrades the pad to 65."
+    },
+    {
+      "start": 85.95,
+      "end": 86.56,
+      "speed": 1.4,
+      "role": "progression",
+      "why": "Hires a second miner at 40 gold and upgrades the pad to 65."
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": [
+    "dead air 84.5-86.5 s cut out of a progression clip"
+  ]
+}

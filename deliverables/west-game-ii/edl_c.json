@@ -1,0 +1,71 @@
+{
+  "id": "c",
+  "title": "Fast-paced montage of mines, gold rushes, deputies, and fence upgrades",
+  "clips": [
+    {
+      "start": 11.18,
+      "end": 14.3,
+      "speed": 1.45,
+      "role": "feature",
+      "why": "Gold Mine pickaxe and minecart build animation"
+    },
+    {
+      "start": 19.747,
+      "end": 23.68,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Cowboy collects a pile of 80 gold bars"
+    },
+    {
+      "start": 23.68,
+      "end": 27.7,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Armed outlaws emerge from the cave to raid town"
+    },
+    {
+      "start": 34.78,
+      "end": 39.8,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Auto-shooting outlaws at the fence"
+    },
+    {
+      "start": 45.3,
+      "end": 48.8,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Battling a heavy outlaw as a new pad appears"
+    },
+    {
+      "start": 61.5,
+      "end": 64.5,
+      "speed": 1.5,
+      "role": "feature",
+      "why": "Whiskey glass shatters to unlock Deputies"
+    },
+    {
+      "start": 71.147,
+      "end": 75.4,
+      "speed": 1.5,
+      "role": "climax",
+      "why": "Cowboy and deputies shred a swarming wave together"
+    },
+    {
+      "start": 80.1,
+      "end": 82.23,
+      "speed": 1.05,
+      "role": "feature",
+      "why": "Town fence glows green and upgrades mid-fight"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": [
+    "clip 12.2-14.3 → 11.18-14.30 (bounds/gesture snap)",
+    "clip 20.9-22.2 → 19.75-23.68 (bounds/gesture snap)",
+    "clip 36.2-39.8 → 34.78-39.80 (bounds/gesture snap)",
+    "clip 73.2-75.4 → 71.15-75.40 (bounds/gesture snap)",
+    "overlap trimmed (progression)"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "game_s": 26.233333333333334,
+  "frames": 787,
+  "fps": 30,
+  "planner_calls": 5,
+  "planner_failures": 0,
+  "actions": 9,
+  "turns": 5,
+  "end_card_at": 20.733333333333295,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "keydown@window": 1,
+    "pointerdown@element": 2,
+    "keydown@element": 2,
+    "pointermove@element": 1,
+    "pointerup@element": 1,
+    "pointercancel@element": 1,
+    "click@element": 4
+  },
+  "events": [],
+  "audio": {
+    "sounds": 84,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 1.092
+  },
+  "perf": {
+    "step_ms_avg": 3.3,
+    "shot_ms_avg": 27.5
+  },
+  "title": "Word Hunt · Scrambly",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Word Hunt completed all 3 rounds, reached end card.",
+  "stuck_events": 0
+}

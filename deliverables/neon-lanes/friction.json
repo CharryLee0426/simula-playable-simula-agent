@@ -1,0 +1,117 @@
+{
+  "summary": "The core 3-lane runner loop and jump tutorial worked well, taking the player to 246m with 21 coins. However, late-registering swipes caused frustrating crashes, and both the revive popup and game-over transition suffered from low-contrast UI and dead-air delays.",
+  "items": [
+    {
+      "t": 11.1,
+      "end": 20.2,
+      "type": "frustration",
+      "severity": "high",
+      "title": "Swipes fail to register before crashing into tall blocks",
+      "evidence": "At t=11.1s and t=20.2s, the player saw tall pink X blocks ahead and attempted to swipe away, but crashed before the input registered (no_effect).",
+      "suggestion": "Increase swipe input responsiveness and add input buffering during lane transitions, or slightly increase the spacing before tall pink X blocks at higher speeds.",
+      "signals": [
+        "S3",
+        "S4"
+      ],
+      "image": "obs/obs_0010.jpg"
+    },
+    {
+      "t": 20.2,
+      "end": 22.2,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Faint Game Over screen with no buttons before end card",
+      "evidence": "At t=20.2s, the screen showed faint, low-contrast 'GAME OVER' text with SPD 0 and no actionable buttons, leaving a 2-second dead-air gap until the end card appeared at t=22.2s.",
+      "suggestion": "Make the 'GAME OVER' text high-contrast immediately on crash and transition directly to the end card or display a 'PLAY NOW' button right away.",
+      "signals": [
+        "S2",
+        "S6",
+        "S7"
+      ],
+      "image": "obs/obs_0014.jpg"
+    },
+    {
+      "t": 11.1,
+      "end": null,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Low-contrast Revive button on crash popup",
+      "evidence": "On the 'CRASHED! Keep your run going?' popup at t=11.1s, the central 'REVIVE' button is dark and blends into the road, while 'No thanks' is bright white and underlined.",
+      "suggestion": "Style the 'REVIVE (1 FREE)' button with a bright neon fill and glowing border so it clearly stands out as the primary action over 'No thanks'.",
+      "signals": [
+        "S5"
+      ],
+      "image": "obs/obs_0010.jpg"
+    },
+    {
+      "t": 0,
+      "end": 2,
+      "type": "pacing",
+      "severity": "low",
+      "title": "Slight delay to first successful lane switch",
+      "evidence": "It took 2.0s from the first playable frame for the player's first swipe to visibly register during the 'Swipe to switch lanes!' tutorial.",
+      "suggestion": "Trigger the lane-switch tutorial prompt immediately at 0.0s with a slightly slower initial car speed so first-time players can complete their first dodge within 1 second.",
+      "signals": [
+        "S1"
+      ],
+      "image": "obs/obs_0005.jpg"
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 1.9999999999999982,
+      "kind": "time_to_first_success",
+      "detail": "2.0 s from the first playable frame until an input visibly worked",
+      "obs": 5,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0005.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 20.16666666666665,
+      "kind": "unclear_screen",
+      "detail": "decider: only 30% that a first-time player knows what to do (screen: fail)",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 11.06666666666669,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 9%, 30.2% of pixels changed) — the player had tried: Car in right lane approaching tall pink X block; coins in middle lane",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0010.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 20.16666666666665,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 2%, 29.6% of pixels changed) — the player had tried: 241m, car in middle lane, tall pink X block directly ahead, coins in right lane",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 11.06666666666669,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0010.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 20.16666666666665,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 22.166666666666575,
+      "kind": "end_card",
+      "detail": "end card appeared at 22.2 s (session 26.9 s)"
+    }
+  ]
+}

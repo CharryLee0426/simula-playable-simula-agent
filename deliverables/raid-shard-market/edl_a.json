@@ -1,0 +1,58 @@
+{
+  "id": "a",
+  "title": "Hook-first: 91-shard mega-drop into core loop, worker hire, and 89-gold rush",
+  "clips": [
+    {
+      "start": 51.6,
+      "end": 53.8,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on hauling and dumping a towering 91-shard stack into the market bin."
+    },
+    {
+      "start": 5.8,
+      "end": 9.7,
+      "speed": 1.3,
+      "role": "core_loop",
+      "why": "Shows virtual joystick movement and mining green shards onto the character's back."
+    },
+    {
+      "start": 12,
+      "end": 16.2,
+      "speed": 1.4,
+      "role": "core_loop",
+      "why": "Carries 35 shards across the courtyard and stocks the market bin for customers."
+    },
+    {
+      "start": 18.8,
+      "end": 22.4,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Collects 46 earned gold bars from the market carpet."
+    },
+    {
+      "start": 35.4,
+      "end": 39.3,
+      "speed": 1.3,
+      "role": "feature",
+      "why": "Spends gold on the 10-gold pad to hire the first automated miner."
+    },
+    {
+      "start": 54.6,
+      "end": 57.6,
+      "speed": 1,
+      "role": "climax",
+      "why": "Collects a huge stack of 89 gold bars from the blue-and-gold market carpet."
+    },
+    {
+      "start": 82.5,
+      "end": 85.3,
+      "speed": 1,
+      "role": "progression",
+      "why": "Upgrades the worker pad at 40 gold to hire a second miner."
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

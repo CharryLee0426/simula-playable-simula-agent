@@ -1,0 +1,58 @@
+{
+  "id": "a",
+  "title": "Hook-first: TNT Triple KO opener into escalating upgrades and boss finish",
+  "clips": [
+    {
+      "start": 28,
+      "end": 30.2,
+      "speed": 1,
+      "role": "hook",
+      "why": "Mid-air Fire Bomb Split Shot triggers a massive TNT explosion and Triple KO"
+    },
+    {
+      "start": 6.4,
+      "end": 9.8,
+      "speed": 1.05,
+      "role": "core_loop",
+      "why": "Clear slingshot drag, wooden tower smash, and Double KO"
+    },
+    {
+      "start": 16.5,
+      "end": 20.4,
+      "speed": 1.1,
+      "role": "feature",
+      "why": "Split Shot mid-air tap wrecks two platforms for a Triple KO"
+    },
+    {
+      "start": 23.6,
+      "end": 25.2,
+      "speed": 1,
+      "role": "progression",
+      "why": "Choosing the Fire Bomb upgrade between levels"
+    },
+    {
+      "start": 30.7,
+      "end": 33.4,
+      "speed": 1.1,
+      "role": "core_loop",
+      "why": "Fire Bomb Split Shot drops the crowned boss's HP bar"
+    },
+    {
+      "start": 35.2,
+      "end": 40.2,
+      "speed": 1,
+      "role": "climax",
+      "why": "Final Fire Bomb finishes the boss and triggers Boss Down fireworks"
+    },
+    {
+      "start": 42.533,
+      "end": 44.5,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Castle Toss logo, final score, and Play Now CTA"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

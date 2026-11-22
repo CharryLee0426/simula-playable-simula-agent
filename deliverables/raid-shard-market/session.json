@@ -1,0 +1,44 @@
+{
+  "game_s": 91.83333333333333,
+  "frames": 2755,
+  "fps": 30,
+  "planner_calls": 26,
+  "planner_failures": 0,
+  "actions": 25,
+  "turns": 26,
+  "cta_tapped": false,
+  "ended_by": "time_limit",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@canvas": 2,
+    "pointercancel@canvas": 1,
+    "wheel@canvas": 1,
+    "contextmenu@canvas": 1,
+    "pointermove@canvas": 1,
+    "pointerup@window": 1,
+    "pointercancel@window": 1,
+    "pointerdown@document": 1,
+    "pointermove@document": 25,
+    "pointerup@document": 25
+  },
+  "events": [],
+  "audio": {
+    "sounds": 144,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 0.818
+  },
+  "perf": {
+    "step_ms_avg": 12.8,
+    "shot_ms_avg": 156.2
+  },
+  "title": "Raid: Shard Market",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "Controls: DRAG TO MOVE. Stepping onto 50 crystal pad.",
+  "stuck_events": 0
+}

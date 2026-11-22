@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Feature-montage: fast-paced showcase of jumps, dodges, revive, and speed",
+  "clips": [
+    {
+      "start": 7.4,
+      "end": 9.2,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on the high-energy barrier jump and GREAT JUMP! banner"
+    },
+    {
+      "start": 2.9,
+      "end": 5.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Quick cut to lane-switching dodge and NICE DODGE! callout"
+    },
+    {
+      "start": 5.4,
+      "end": 7.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Tightened stretch showing speed ramping up toward barriers"
+    },
+    {
+      "start": 9.2,
+      "end": 12.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Demonstrates obstacle collision and Free Revive recovery"
+    },
+    {
+      "start": 12.6,
+      "end": 15.5,
+      "speed": 1,
+      "role": "progression",
+      "why": "Fast highway run collecting coins as speed climbs"
+    },
+    {
+      "start": 15.5,
+      "end": 17.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "Tight obstacle dodging at speed 76 near 235m"
+    },
+    {
+      "start": 17.6,
+      "end": 20.4,
+      "speed": 1,
+      "role": "climax",
+      "why": "Final high-speed crash at 246m and Game Over explosion"
+    },
+    {
+      "start": 23.4,
+      "end": 25.9,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Call to action end card with PLAY NOW tap"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

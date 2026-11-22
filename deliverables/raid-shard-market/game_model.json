@@ -1,0 +1,19 @@
+{
+  "title": "Raid: Shard Market",
+  "genre": "Arcade Idle / Resource Management",
+  "objective": "Mine green shards, stock the market bin for customers to buy, collect gold, and hire workers or upgrade the mine.",
+  "controls": "Drag anywhere on screen to move the character with a virtual joystick.",
+  "core_loop": "Collect green shards from the mine, carry them to the market bin to sell to customers, collect the earned gold, and spend it on worker and mine upgrades.",
+  "features": [
+    "Virtual joystick movement",
+    "Stacking resource carry mechanic",
+    "Automated shard market bin",
+    "Worker hiring pads",
+    "Crystal mine upgrade pad",
+    "Tower unlock pad (1,500 gold)"
+  ],
+  "progression": "Unlocking and upgrading worker pads (10 -> 40 -> 65 gold) to automate mining, alongside higher-tier mine (50 gold) and tower (1,500 gold) unlocks.",
+  "end_card": false,
+  "tone": "Dark fantasy, glowing arcade-idle",
+  "hook_idea": "t=45.2-54.6s: Gathering and hauling a towering glowing stack of 91 green shards through the dungeon into the market bin."
+}

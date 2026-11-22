@@ -1,0 +1,340 @@
+{
+  "best": "b",
+  "score": 85.5,
+  "pass": true,
+  "pairwise": {
+    "a": "b",
+    "b": "c",
+    "a_first": "tie",
+    "b_first": "tie",
+    "winner": "b"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 0,
+    "of": 2,
+    "orders": [
+      "tie",
+      "tie"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.186,
+        "loading_ratio": 0,
+        "action": 0.442,
+        "hook_ratio": 0.918,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.844,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 88.7
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 7,
+        "action": 8,
+        "hook": 8,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Abruptly resets from $5.00 in Round 3 back to $0.00 in Round 1 after the opening hook."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Round 3 clears with a shower of coins pushing the balance to $6.60, leading cleanly into the end card."
+        },
+        "summary": "This highlight clearly demonstrates the word-swiping core loop, grid progression from 4x4 to 6x6, and cash reward mechanics with a strong end card. The pacing is snappy and engaging, though the balance reset after the opening hook and slightly robotic swipe speed hold it back from perfection.",
+        "J": 80.9,
+        "J_samples": [
+          81.6,
+          80.2
+        ]
+      },
+      "score": 84.4
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.186,
+        "loading_ratio": 0,
+        "action": 0.442,
+        "hook_ratio": 0.987,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.844,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 89.5
+      },
+      "judge": {
+        "core_loop_clarity": 9.5,
+        "features": 9,
+        "human_play": 5.5,
+        "action": 8.5,
+        "hook": 8.5,
+        "polish": 9,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 11,
+          "issue": "Instantaneous, robotic swiping of backwards and diagonal words on a 6x6 grid with zero scanning pause."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Satisfying Round 3 clear with coins showering to $6.60 and a clean transition to the end card CTA."
+        },
+        "summary": "This 19-second highlight clearly demonstrates the core word-swiping loop, grid progression, and cash reward mechanics with a strong end card. However, the gameplay feels overly robotic because the player finds and swipes complex backwards and diagonal words without any natural human scanning pauses.",
+        "J": 82.3,
+        "J_samples": [
+          76,
+          88.6
+        ]
+      },
+      "score": 85.5,
+      "wins": 0
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.19,
+        "loading_ratio": 0,
+        "action": 0.444,
+        "hook_ratio": 0.98,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.844,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 5,
+        "moment_quality": 1,
+        "arc": 1,
+        "H": 89.3
+      },
+      "judge": {
+        "core_loop_clarity": 9.5,
+        "features": 8.5,
+        "human_play": 5,
+        "action": 8.5,
+        "hook": 8,
+        "polish": 9,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 11,
+          "issue": "The player immediately spots and swipes a backwards word and a diagonal word on a 6x6 grid with zero hesitation, feeling slightly robotic."
+        },
+        "best_moment": {
+          "t": 13,
+          "why": "Rapidly completing the 6x6 round with coins showering into the counter and transitioning cleanly into the 'Nice haul' end card."
+        },
+        "summary": "A crisp, well-paced highlight that clearly demonstrates the word-swiping core loop, escalating grid sizes, and cash reward progression. While the instant word recognition feels slightly robotic, the constant action, coin showers, and strong end-card CTA make it very effective for an ad.",
+        "J": 81.2,
+        "J_samples": [
+          86,
+          76.4
+        ]
+      },
+      "score": 84.8,
+      "wins": 0
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 19.967,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.22,
+        "loading_ratio": 0,
+        "action": 0.446,
+        "hook_ratio": 0.83,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.844,
+        "shots": 3,
+        "avg_shot_s": 6.656,
+        "touches_per_10s": 5.008,
+        "moment_quality": 1,
+        "arc": 0.85,
+        "H": 84.7
+      },
+      "judge": {
+        "core_loop_clarity": 9.5,
+        "features": 9,
+        "human_play": 5.5,
+        "action": 8.5,
+        "hook": 8,
+        "polish": 9,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 12,
+          "issue": "Robotic, instantaneous word solving in the 6x6 grid with zero human-like scanning or hesitation."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Completing the final round with a +$1.00 bonus and smoothly transitioning to the $6.60 end card and CTA."
+        },
+        "summary": "This 20-second highlight clearly demonstrates the core word-swiping loop, escalating grid sizes, and cash reward mechanics with great pacing and polish. However, the player's instant, zero-hesitation swipes feel robotic rather than like a real person scanning the board.",
+        "J": 82.7,
+        "J_samples": [
+          79.2,
+          86.2
+        ]
+      },
+      "score": 83.6
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.262,
+        "loading_ratio": 0,
+        "action": 0.445,
+        "hook_ratio": 0.829,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.844,
+        "shots": 5,
+        "avg_shot_s": 4.007,
+        "touches_per_10s": 4.493,
+        "moment_quality": 1,
+        "arc": 0.85,
+        "H": 83.9
+      },
+      "judge": {
+        "core_loop_clarity": 8,
+        "features": 7,
+        "human_play": 6,
+        "action": 7,
+        "hook": 7,
+        "polish": 2,
+        "would_run": 3,
+        "worst_moment": {
+          "t": 18,
+          "issue": "Cuts back to Round 2 gameplay with a $2.00 balance after the $6.60 end card has already been shown."
+        },
+        "best_moment": {
+          "t": 6,
+          "why": "Shows backwards and diagonal word swiping in the 6x6 grid with coins flying into the balance."
+        },
+        "summary": "The video clearly demonstrates the word-swiping core loop and cash reward mechanics, but the editing is completely out of order. It repeatedly jumps backwards between rounds and cash balances, even cutting back to gameplay after the final end card.",
+        "J": 58,
+        "J_samples": [
+          58,
+          58
+        ]
+      },
+      "score": 69.7
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 83.6
+    },
+    {
+      "id": "base_random",
+      "score": 69.7
+    }
+  ],
+  "separation": 1.9,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

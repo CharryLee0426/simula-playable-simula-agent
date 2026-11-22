@@ -1,0 +1,67 @@
+{
+  "id": "c",
+  "title": "Feature-montage: Brisk showcase of swipes, grid upgrades, and cash bonuses",
+  "clips": [
+    {
+      "start": 3.5,
+      "end": 6,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Fast 4x4 word connections sending coins to the balance"
+    },
+    {
+      "start": 6,
+      "end": 8.1,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 1 +$1.00 cash bonus popup"
+    },
+    {
+      "start": 8.1,
+      "end": 8.9,
+      "speed": 1,
+      "role": "progression",
+      "why": "Sped-up transition into the 5x5 grid"
+    },
+    {
+      "start": 11,
+      "end": 13.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Diagonal swiping mechanic on 5x5 letters"
+    },
+    {
+      "start": 13.9,
+      "end": 16.8,
+      "speed": 1,
+      "role": "progression",
+      "why": "Round 2 bonus to $4.20 and 6x6 grid reveal"
+    },
+    {
+      "start": 16.8,
+      "end": 18.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Backwards word swiping on the 6x6 board"
+    },
+    {
+      "start": 18.8,
+      "end": 22.8,
+      "speed": 1,
+      "role": "climax",
+      "why": "Coin shower celebration hitting $6.60"
+    },
+    {
+      "start": 22.8,
+      "end": 25.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Scrambly end card and Play CTA tap"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": [
+    "dead air 8.5-11.0 s cut out of a progression clip"
+  ]
+}

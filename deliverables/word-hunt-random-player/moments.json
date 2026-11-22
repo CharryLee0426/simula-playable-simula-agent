@@ -1,0 +1,1008 @@
+{
+  "duration": 45.733333333333334,
+  "bins": [
+    {
+      "t": 0,
+      "motion": 0,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.3613,
+      "frame": "index_frames/f_00001.jpg",
+      "phase": "gameplay",
+      "excitement": 1.416476200262425
+    },
+    {
+      "t": 0.5,
+      "motion": 0,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.3613,
+      "frame": "index_frames/f_00002.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4312222205927283
+    },
+    {
+      "t": 1,
+      "motion": 0,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.3613,
+      "frame": "index_frames/f_00003.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4487357763191402
+    },
+    {
+      "t": 1.5,
+      "motion": 0,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.3613,
+      "frame": "index_frames/f_00004.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4403428888609227
+    },
+    {
+      "t": 2,
+      "motion": 0,
+      "audio_db": -37.4,
+      "touches": 1,
+      "luma": 0.3613,
+      "frame": "index_frames/f_00005.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4144243870952844
+    },
+    {
+      "t": 2.5,
+      "motion": 0.0011766666666666668,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.35867999999999994,
+      "frame": "index_frames/f_00006.jpg",
+      "phase": "gameplay",
+      "excitement": 1.466907664971814
+    },
+    {
+      "t": 3,
+      "motion": 0.0013106666666666668,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.3589200000000001,
+      "frame": "index_frames/f_00007.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4196243748170987
+    },
+    {
+      "t": 3.5,
+      "motion": 0.0017953333333333335,
+      "audio_db": -17,
+      "touches": 3,
+      "luma": 0.3580866666666666,
+      "frame": "index_frames/f_00008.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4591705392591998
+    },
+    {
+      "t": 4,
+      "motion": 0.003202666666666667,
+      "audio_db": -17,
+      "touches": 3,
+      "luma": 0.3573133333333333,
+      "frame": "index_frames/f_00009.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4494300576603432
+    },
+    {
+      "t": 4.5,
+      "motion": 0.0031106666666666665,
+      "audio_db": -13.5,
+      "touches": 1,
+      "luma": 0.3577066666666667,
+      "frame": "index_frames/f_00010.jpg",
+      "phase": "gameplay",
+      "excitement": 1.437633267292348
+    },
+    {
+      "t": 5,
+      "motion": 0.0010739999999999999,
+      "audio_db": -19,
+      "touches": 2,
+      "luma": 0.36048666666666673,
+      "frame": "index_frames/f_00011.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4287752418858608
+    },
+    {
+      "t": 5.5,
+      "motion": 0.003159333333333333,
+      "audio_db": -14.3,
+      "touches": 1,
+      "luma": 0.35664,
+      "frame": "index_frames/f_00012.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4105015942625214
+    },
+    {
+      "t": 6,
+      "motion": 0.002597333333333334,
+      "audio_db": -17.2,
+      "touches": 3,
+      "luma": 0.35786,
+      "frame": "index_frames/f_00013.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4393453751216743
+    },
+    {
+      "t": 6.5,
+      "motion": 6.666666666666667e-7,
+      "audio_db": -38.2,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00014.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4460867232844614
+    },
+    {
+      "t": 7,
+      "motion": 0,
+      "audio_db": -36.1,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00015.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4651057229568978
+    },
+    {
+      "t": 7.5,
+      "motion": 0.0011146666666666666,
+      "audio_db": -17.1,
+      "touches": 2,
+      "luma": 0.3580866666666668,
+      "frame": "index_frames/f_00016.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4360019204939722
+    },
+    {
+      "t": 8,
+      "motion": 0.0015673333333333331,
+      "audio_db": -16.9,
+      "touches": 3,
+      "luma": 0.35860666666666674,
+      "frame": "index_frames/f_00017.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4296032551287965
+    },
+    {
+      "t": 8.5,
+      "motion": 0,
+      "audio_db": -22.4,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00018.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4628527980508808
+    },
+    {
+      "t": 9,
+      "motion": 0.0011466666666666667,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.35783333333333317,
+      "frame": "index_frames/f_00019.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4361383832635546
+    },
+    {
+      "t": 9.5,
+      "motion": 0,
+      "audio_db": -37.8,
+      "touches": 2,
+      "luma": 0.3586999999999999,
+      "frame": "index_frames/f_00020.jpg",
+      "phase": "gameplay",
+      "excitement": 1.452810148397764
+    },
+    {
+      "t": 10,
+      "motion": 0.0009926666666666667,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35798666666666656,
+      "frame": "index_frames/f_00021.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4489870198088526
+    },
+    {
+      "t": 10.5,
+      "motion": 0.0004933333333333333,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.36074000000000006,
+      "frame": "index_frames/f_00022.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4358837796158652
+    },
+    {
+      "t": 11,
+      "motion": 0.0011513333333333334,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3579599999999999,
+      "frame": "index_frames/f_00023.jpg",
+      "phase": "gameplay",
+      "excitement": 1.409406461702573
+    },
+    {
+      "t": 11.5,
+      "motion": 0.0027113333333333325,
+      "audio_db": -16.1,
+      "touches": 3,
+      "luma": 0.3571733333333333,
+      "frame": "index_frames/f_00024.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4741131511280434
+    },
+    {
+      "t": 12,
+      "motion": 0.000028,
+      "audio_db": -34.2,
+      "touches": 2,
+      "luma": 0.36118666666666677,
+      "frame": "index_frames/f_00025.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4676970006818213
+    },
+    {
+      "t": 12.5,
+      "motion": 0,
+      "audio_db": -37.4,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00026.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4499839481895582
+    },
+    {
+      "t": 13,
+      "motion": 0.002692,
+      "audio_db": -14.9,
+      "touches": 2,
+      "luma": 0.3572733333333334,
+      "frame": "index_frames/f_00027.jpg",
+      "phase": "gameplay",
+      "excitement": 1.3999279953466799
+    },
+    {
+      "t": 13.5,
+      "motion": 0.0011986666666666669,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.35776666666666657,
+      "frame": "index_frames/f_00028.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4500913067921812
+    },
+    {
+      "t": 14,
+      "motion": 0.0014799999999999998,
+      "audio_db": -16.9,
+      "touches": 3,
+      "luma": 0.3582,
+      "frame": "index_frames/f_00029.jpg",
+      "phase": "gameplay",
+      "excitement": 1.457178823574589
+    },
+    {
+      "t": 14.5,
+      "motion": 0.005300666666666667,
+      "audio_db": -15,
+      "touches": 2,
+      "luma": 0.35491333333333336,
+      "frame": "index_frames/f_00030.jpg",
+      "phase": "gameplay",
+      "excitement": 1.436306398739336
+    },
+    {
+      "t": 15,
+      "motion": 0.002218666666666667,
+      "audio_db": -16.9,
+      "touches": 1,
+      "luma": 0.35750666666666664,
+      "frame": "index_frames/f_00031.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4034522000278482
+    },
+    {
+      "t": 15.5,
+      "motion": 0.004415333333333333,
+      "audio_db": -12.9,
+      "touches": 3,
+      "luma": 0.3553733333333333,
+      "frame": "index_frames/f_00032.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4430126780223078
+    },
+    {
+      "t": 16,
+      "motion": 0.0007780000000000002,
+      "audio_db": -22.5,
+      "touches": 2,
+      "luma": 0.36109333333333343,
+      "frame": "index_frames/f_00033.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4468061915369401
+    },
+    {
+      "t": 16.5,
+      "motion": 0,
+      "audio_db": -36.9,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00034.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4444917405811766
+    },
+    {
+      "t": 17,
+      "motion": 0.002656,
+      "audio_db": -16.1,
+      "touches": 1,
+      "luma": 0.35786,
+      "frame": "index_frames/f_00035.jpg",
+      "phase": "gameplay",
+      "excitement": 1.416590455262204
+    },
+    {
+      "t": 17.5,
+      "motion": 0.0010160000000000002,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35846666666666654,
+      "frame": "index_frames/f_00036.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4753327262750144
+    },
+    {
+      "t": 18,
+      "motion": 0.0015526666666666666,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.35864,
+      "frame": "index_frames/f_00037.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4366501598592503
+    },
+    {
+      "t": 18.5,
+      "motion": 0.0026379999999999997,
+      "audio_db": -15.1,
+      "touches": 2,
+      "luma": 0.35699333333333333,
+      "frame": "index_frames/f_00038.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4418929579563369
+    },
+    {
+      "t": 19,
+      "motion": 0.000028666666666666664,
+      "audio_db": -35.7,
+      "touches": 1,
+      "luma": 0.36118666666666677,
+      "frame": "index_frames/f_00039.jpg",
+      "phase": "gameplay",
+      "excitement": 1.477308213006696
+    },
+    {
+      "t": 19.5,
+      "motion": 0.0011706666666666666,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35897999999999997,
+      "frame": "index_frames/f_00040.jpg",
+      "phase": "gameplay",
+      "excitement": 1.456736231189955
+    },
+    {
+      "t": 20,
+      "motion": 0.005144666666666667,
+      "audio_db": -13.6,
+      "touches": 2,
+      "luma": 0.3559266666666667,
+      "frame": "index_frames/f_00041.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4438675477072391
+    },
+    {
+      "t": 20.5,
+      "motion": 0.004673333333333334,
+      "audio_db": -12.9,
+      "touches": 2,
+      "luma": 0.3543733333333333,
+      "frame": "index_frames/f_00042.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4492918572381652
+    },
+    {
+      "t": 21,
+      "motion": 0.002164,
+      "audio_db": -14.2,
+      "touches": 2,
+      "luma": 0.35845333333333346,
+      "frame": "index_frames/f_00043.jpg",
+      "phase": "gameplay",
+      "excitement": 1.438551482885117
+    },
+    {
+      "t": 21.5,
+      "motion": 0.0015879999999999996,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.35852666666666677,
+      "frame": "index_frames/f_00044.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4542225982515733
+    },
+    {
+      "t": 22,
+      "motion": 0.0013446666666666668,
+      "audio_db": -17.1,
+      "touches": 2,
+      "luma": 0.3597133333333334,
+      "frame": "index_frames/f_00045.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4758965067752217
+    },
+    {
+      "t": 22.5,
+      "motion": 0.0011513333333333334,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.3593133333333334,
+      "frame": "index_frames/f_00046.jpg",
+      "phase": "gameplay",
+      "excitement": 1.455252399084528
+    },
+    {
+      "t": 23,
+      "motion": 0.0028413333333333333,
+      "audio_db": -13.5,
+      "touches": 1,
+      "luma": 0.35514666666666667,
+      "frame": "index_frames/f_00047.jpg",
+      "phase": "gameplay",
+      "excitement": 1.425159898013604
+    },
+    {
+      "t": 23.5,
+      "motion": 0.0015746666666666667,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3578533333333333,
+      "frame": "index_frames/f_00048.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4344205316017606
+    },
+    {
+      "t": 24,
+      "motion": 0.0031346666666666667,
+      "audio_db": -17.2,
+      "touches": 3,
+      "luma": 0.3573266666666666,
+      "frame": "index_frames/f_00049.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4582645214589376
+    },
+    {
+      "t": 24.5,
+      "motion": 0.00002066666666666667,
+      "audio_db": -33.5,
+      "touches": 1,
+      "luma": 0.3611800000000001,
+      "frame": "index_frames/f_00050.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4473867923895707
+    },
+    {
+      "t": 25,
+      "motion": 0.000966,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3594000000000001,
+      "frame": "index_frames/f_00051.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4136942461986988
+    },
+    {
+      "t": 25.5,
+      "motion": 0.0027233333333333332,
+      "audio_db": -17,
+      "touches": 3,
+      "luma": 0.35725999999999997,
+      "frame": "index_frames/f_00052.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4258991587752423
+    },
+    {
+      "t": 26,
+      "motion": 0.0015300000000000001,
+      "audio_db": -17.2,
+      "touches": 3,
+      "luma": 0.35816000000000003,
+      "frame": "index_frames/f_00053.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4464635745819134
+    },
+    {
+      "t": 26.5,
+      "motion": 0.0011486666666666665,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35950666666666675,
+      "frame": "index_frames/f_00054.jpg",
+      "phase": "gameplay",
+      "excitement": 1.452335294322098
+    },
+    {
+      "t": 27,
+      "motion": 0.0018766666666666667,
+      "audio_db": -16.1,
+      "touches": 2,
+      "luma": 0.3574333333333333,
+      "frame": "index_frames/f_00055.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4291586497180708
+    },
+    {
+      "t": 27.5,
+      "motion": 0.0010713333333333334,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.35970666666666673,
+      "frame": "index_frames/f_00056.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4297129377803655
+    },
+    {
+      "t": 28,
+      "motion": 0.0011706666666666666,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35847999999999997,
+      "frame": "index_frames/f_00057.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4372988103049602
+    },
+    {
+      "t": 28.5,
+      "motion": 0.0014866666666666665,
+      "audio_db": -17.2,
+      "touches": 3,
+      "luma": 0.35921333333333344,
+      "frame": "index_frames/f_00058.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4502287051742957
+    },
+    {
+      "t": 29,
+      "motion": 0.000954,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.35987333333333343,
+      "frame": "index_frames/f_00059.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4333892807001531
+    },
+    {
+      "t": 29.5,
+      "motion": 0.00004133333333333333,
+      "audio_db": -22.4,
+      "touches": 1,
+      "luma": 0.35909999999999986,
+      "frame": "index_frames/f_00060.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4304776601748448
+    },
+    {
+      "t": 30,
+      "motion": 0,
+      "audio_db": -38.7,
+      "touches": 2,
+      "luma": 0.35909999999999986,
+      "frame": "index_frames/f_00061.jpg",
+      "phase": "gameplay",
+      "excitement": 1.442011594208802
+    },
+    {
+      "t": 30.5,
+      "motion": 0,
+      "audio_db": -39.7,
+      "touches": 2,
+      "luma": 0.35909999999999986,
+      "frame": "index_frames/f_00062.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4530450371894978
+    },
+    {
+      "t": 31,
+      "motion": 0.0035533333333333333,
+      "audio_db": -14,
+      "touches": 2,
+      "luma": 0.35646,
+      "frame": "index_frames/f_00063.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4517261038095286
+    },
+    {
+      "t": 31.5,
+      "motion": 0.001964666666666666,
+      "audio_db": -17.1,
+      "touches": 2,
+      "luma": 0.35818,
+      "frame": "index_frames/f_00064.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4546112328125977
+    },
+    {
+      "t": 32,
+      "motion": 0.0013593333333333333,
+      "audio_db": -17.1,
+      "touches": 3,
+      "luma": 0.3577799999999999,
+      "frame": "index_frames/f_00065.jpg",
+      "phase": "gameplay",
+      "excitement": 1.444649469696514
+    },
+    {
+      "t": 32.5,
+      "motion": 0.004178666666666666,
+      "audio_db": -12.4,
+      "touches": 1,
+      "luma": 0.3548533333333334,
+      "frame": "index_frames/f_00066.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4582883968196618
+    },
+    {
+      "t": 33,
+      "motion": 0.0011146666666666666,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3581266666666668,
+      "frame": "index_frames/f_00067.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4415185398560886
+    },
+    {
+      "t": 33.5,
+      "motion": 0,
+      "audio_db": -33.9,
+      "touches": 3,
+      "luma": 0.3588000000000001,
+      "frame": "index_frames/f_00068.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4344550061401444
+    },
+    {
+      "t": 34,
+      "motion": 0.0013720000000000002,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.35798,
+      "frame": "index_frames/f_00069.jpg",
+      "phase": "gameplay",
+      "excitement": 1.430648164231042
+    },
+    {
+      "t": 34.5,
+      "motion": 0.003781999999999999,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3579133333333334,
+      "frame": "index_frames/f_00070.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4375844701010694
+    },
+    {
+      "t": 35,
+      "motion": 0.0014873333333333333,
+      "audio_db": -16.9,
+      "touches": 1,
+      "luma": 0.3590600000000001,
+      "frame": "index_frames/f_00071.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4579683751114714
+    },
+    {
+      "t": 35.5,
+      "motion": 0.0011906666666666665,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.35788666666666663,
+      "frame": "index_frames/f_00072.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4531733950735897
+    },
+    {
+      "t": 36,
+      "motion": 0,
+      "audio_db": -37.4,
+      "touches": 2,
+      "luma": 0.3586,
+      "frame": "index_frames/f_00073.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4420200787431563
+    },
+    {
+      "t": 36.5,
+      "motion": 0.0023973333333333338,
+      "audio_db": -17.2,
+      "touches": 2,
+      "luma": 0.3583466666666667,
+      "frame": "index_frames/f_00074.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4700643042095392
+    },
+    {
+      "t": 37,
+      "motion": 0.0026639999999999997,
+      "audio_db": -17,
+      "touches": 3,
+      "luma": 0.35746666666666665,
+      "frame": "index_frames/f_00075.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4565130453200477
+    },
+    {
+      "t": 37.5,
+      "motion": 0.00028333333333333335,
+      "audio_db": -17.2,
+      "touches": 3,
+      "luma": 0.3586933333333334,
+      "frame": "index_frames/f_00076.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4281284932909764
+    },
+    {
+      "t": 38,
+      "motion": 0.004128,
+      "audio_db": -14.3,
+      "touches": 2,
+      "luma": 0.35663333333333325,
+      "frame": "index_frames/f_00077.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4633755694294752
+    },
+    {
+      "t": 38.5,
+      "motion": 0.002257333333333334,
+      "audio_db": -15.8,
+      "touches": 1,
+      "luma": 0.35662,
+      "frame": "index_frames/f_00078.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4416778567637383
+    },
+    {
+      "t": 39,
+      "motion": 0.004650666666666667,
+      "audio_db": -16.1,
+      "touches": 2,
+      "luma": 0.35666666666666663,
+      "frame": "index_frames/f_00079.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4807100555832602
+    },
+    {
+      "t": 39.5,
+      "motion": 0.0015266666666666666,
+      "audio_db": -16.1,
+      "touches": 2,
+      "luma": 0.3585133333333334,
+      "frame": "index_frames/f_00080.jpg",
+      "phase": "gameplay",
+      "excitement": 1.455417427035318
+    },
+    {
+      "t": 40,
+      "motion": 0.007564666666666665,
+      "audio_db": -14.8,
+      "touches": 2,
+      "luma": 0.3529600000000001,
+      "frame": "index_frames/f_00081.jpg",
+      "phase": "gameplay",
+      "excitement": 1.5181182835013134
+    },
+    {
+      "t": 40.5,
+      "motion": 0.0017093333333333333,
+      "audio_db": -16.9,
+      "touches": 2,
+      "luma": 0.3592466666666667,
+      "frame": "index_frames/f_00082.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4178701289668814
+    },
+    {
+      "t": 41,
+      "motion": 0.0011906666666666665,
+      "audio_db": -17,
+      "touches": 2,
+      "luma": 0.35767333333333334,
+      "frame": "index_frames/f_00083.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4234390285623237
+    },
+    {
+      "t": 41.5,
+      "motion": 0.0026826666666666674,
+      "audio_db": -16.9,
+      "touches": 3,
+      "luma": 0.3572666666666667,
+      "frame": "index_frames/f_00084.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4414751534929322
+    },
+    {
+      "t": 42,
+      "motion": 0.0032466666666666672,
+      "audio_db": -16.1,
+      "touches": 2,
+      "luma": 0.35672000000000004,
+      "frame": "index_frames/f_00085.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4171883308837427
+    },
+    {
+      "t": 42.5,
+      "motion": 0.002515333333333334,
+      "audio_db": -14.1,
+      "touches": 2,
+      "luma": 0.3594600000000001,
+      "frame": "index_frames/f_00086.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4465348664331026
+    },
+    {
+      "t": 43,
+      "motion": 0.00306,
+      "audio_db": -14.1,
+      "touches": 2,
+      "luma": 0.35679333333333335,
+      "frame": "index_frames/f_00087.jpg",
+      "phase": "gameplay",
+      "excitement": 1.438774399076468
+    },
+    {
+      "t": 43.5,
+      "motion": 0.0006813333333333334,
+      "audio_db": -16.9,
+      "touches": 3,
+      "luma": 0.36057333333333347,
+      "frame": "index_frames/f_00088.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4508449787699793
+    },
+    {
+      "t": 44,
+      "motion": 0,
+      "audio_db": -37.9,
+      "touches": 2,
+      "luma": 0.36120000000000013,
+      "frame": "index_frames/f_00089.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4546643943387605
+    },
+    {
+      "t": 44.5,
+      "motion": 0.004889333333333333,
+      "audio_db": -12.5,
+      "touches": 1,
+      "luma": 0.35366000000000003,
+      "frame": "index_frames/f_00090.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4890646087747823
+    },
+    {
+      "t": 45,
+      "motion": 0.000055333333333333334,
+      "audio_db": -36.9,
+      "touches": 0,
+      "luma": 0.3611733333333334,
+      "frame": "index_frames/f_00091.jpg",
+      "phase": "gameplay",
+      "excitement": 1.4362396190343065
+    },
+    {
+      "t": 45.5,
+      "motion": 0,
+      "audio_db": -37.7,
+      "touches": 0,
+      "luma": 0.3612000000000001
+    }
+  ],
+  "moments": [
+    {
+      "start": 0,
+      "end": 2,
+      "kind": "tutorial",
+      "label": "Game opens with the $0.00 balance, target words (SUN, SEA, SAND), and 'SUN' highlighted with a 'Swipe to connect' prompt.",
+      "intensity": 2
+    },
+    {
+      "start": 2,
+      "end": 8.9,
+      "kind": "core_loop",
+      "label": "Player taps and swipes randomly across the 4x4 grid, triggering tile flip feedback and 'Try another line' prompts.",
+      "intensity": 2
+    },
+    {
+      "start": 8.9,
+      "end": 12,
+      "kind": "core_loop",
+      "label": "Player taps individual letters S, U, and N on the grid, triggering 'Choose the last letter' without completing a swipe.",
+      "intensity": 2
+    },
+    {
+      "start": 12,
+      "end": 19.5,
+      "kind": "core_loop",
+      "label": "Player drags between adjacent tiles such as E to O (t=15.4s), drawing orange connection lines on the board.",
+      "intensity": 3
+    },
+    {
+      "start": 19.5,
+      "end": 24.7,
+      "kind": "core_loop",
+      "label": "Player swipes diagonally from E to D (t=20.4s) and horizontally from O to N (t=21.4s) while searching for valid words.",
+      "intensity": 3
+    },
+    {
+      "start": 24.7,
+      "end": 30.1,
+      "kind": "core_loop",
+      "label": "Player selects N and A and drags diagonally between them (t=27.4s), receiving 'Try another line' feedback.",
+      "intensity": 2
+    },
+    {
+      "start": 30.1,
+      "end": 35.5,
+      "kind": "core_loop",
+      "label": "Player swipes vertically down the left column from S to E (t=31.4s) and tests letters along the bottom row.",
+      "intensity": 3
+    },
+    {
+      "start": 35.5,
+      "end": 41,
+      "kind": "core_loop",
+      "label": "Player taps S, O, and D and makes short random drags on the right side of the grid without matching a target word.",
+      "intensity": 2
+    },
+    {
+      "start": 41,
+      "end": 45.7,
+      "kind": "fail",
+      "label": "Player drags O to A (t=42.4s) and swipes S-S-E (t=43.4s), ending the session with $0.00 earned and all target words unsolved.",
+      "intensity": 3
+    }
+  ],
+  "game": {
+    "title": "Word Hunt · Scrambly",
+    "genre": "Word Puzzle",
+    "objective": "Swipe to connect adjacent letters on a 4x4 grid to form target words (SUN, SEA, SAND) and earn cash rewards.",
+    "controls": "Tap or swipe across adjacent letter tiles on the 4x4 grid to connect them into words, or tap the Hint button.",
+    "core_loop": "Swipe across letters on the grid to form a listed target word -> earn the displayed cash reward ($0.30-$0.40) -> add to the total cash balance.",
+    "features": [
+      "4x4 letter grid",
+      "Target word list with cash values (SUN $0.30, SEA $0.30, SAND $0.40)",
+      "Swipe-to-connect orange line trail",
+      "Cash balance counter ($0.00)",
+      "Hint button",
+      "Tutorial highlight on first word (SUN)"
+    ],
+    "progression": "Complete all target words on the current board to earn cash rewards and advance to subsequent word boards.",
+    "end_card": false,
+    "tone": "Playful, cozy, reward-driven",
+    "hook_idea": "0.0-2.0s showing the $0.00 cash counter, fox mascot, and the highlighted 'SUN' ($0.30) tutorial prompt, which immediately communicates the play-for-rewards hook."
+  },
+  "playable_from": 0,
+  "has_audio": true
+}

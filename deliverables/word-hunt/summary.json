@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/highlight.mp4",
+  "score": 85.5,
+  "best": "b",
+  "usd": 0.2898,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:13:38.600Z",
+      "ms": 55076,
+      "note": "26.2 s recorded, 9 inputs, 5 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:14:04.502Z",
+      "ms": 25898,
+      "note": "10 moments, genre: Word Puzzle / Reward Playable"
+    },
+    "cut": {
+      "at": "2026-11-22T10:14:58.620Z",
+      "ms": 54116,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:16:56.727Z",
+      "ms": 118105,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:18:57.698Z",
+      "ms": 120968,
+      "note": "best b (learn-then-escalate) score 85.5"
+    },
+    "friction": {
+      "at": "2026-11-22T10:19:08.503Z",
+      "ms": 10801,
+      "note": "3 items"
+    }
+  }
+}

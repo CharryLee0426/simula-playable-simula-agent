@@ -1,0 +1,340 @@
+{
+  "best": "a",
+  "score": 84.9,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "b",
+    "a_first": "A",
+    "b_first": "B",
+    "winner": "a"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.159,
+        "loading_ratio": 0,
+        "action": 0.354,
+        "hook_ratio": 1.464,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 1,
+        "shots": 8,
+        "avg_shot_s": 2.502,
+        "touches_per_10s": 17.988,
+        "moment_quality": 0.919,
+        "arc": 1,
+        "H": 89.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 7.5,
+        "action": 8,
+        "hook": 8,
+        "polish": 7.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 17,
+          "issue": "The second Rush Order is cut short by the end card before it can be completed."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Golden Frenzy x3 pushes the player over the threshold to unlock Bakery Lane (Shop 2/3) with a new multi-tier cake."
+        },
+        "summary": "This is a well-paced, clear highlight that opens with an exciting Golden Frenzy hook before demonstrating the core tap-and-upgrade loop. It cleanly showcases major features including Rush Orders, shop progression, and the final call-to-action end card.",
+        "J": 81.2,
+        "J_samples": [
+          86,
+          76.4
+        ]
+      },
+      "score": 84.9,
+      "wins": 2
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.136,
+        "loading_ratio": 0,
+        "action": 0.359,
+        "hook_ratio": 0.711,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 1,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 18.001,
+        "moment_quality": 0.927,
+        "arc": 1,
+        "H": 85.8
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8.5,
+        "action": 8,
+        "hook": 6.5,
+        "polish": 9,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 14,
+          "issue": "Failing the Rush Order ('ORDER MISSED!') right after unlocking the new shop interrupts the momentum"
+        },
+        "best_moment": {
+          "t": 13,
+          "why": "Unlocking Bakery Lane during Golden Frenzy x3 with the cake visually upgrading to two tiers"
+        },
+        "summary": "A well-paced 20-second highlight that clearly demonstrates the core idle-clicker loop, upgrades, Golden Frenzy, and shop progression, ending on a clean CTA card. The opening two seconds start a bit slow from 1 coin, and failing the Rush Order at 14s slightly dampens the climax.",
+        "J": 82.8,
+        "J_samples": [
+          83.2,
+          82.4
+        ]
+      },
+      "score": 84.2,
+      "wins": 0
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.182,
+        "loading_ratio": 0,
+        "action": 0.347,
+        "hook_ratio": 0.732,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 1,
+        "shots": 8,
+        "avg_shot_s": 2.501,
+        "touches_per_10s": 19.489,
+        "moment_quality": 0.916,
+        "arc": 1,
+        "H": 84.3
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8.5,
+        "action": 7.5,
+        "hook": 6.5,
+        "polish": 8.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 16,
+          "issue": "The 'ORDER MISSED' banner appears right before the end card, ending the gameplay on a failure state."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Activating Golden Frenzy x3 during the Rush Order leads directly into unlocking Bakery Lane with celebratory confetti."
+        },
+        "summary": "A very clear and well-paced highlight that demonstrates the core idle-clicker loop, upgrades, and shop progression naturally. Ending on a missed Rush Order is a minor blemish, but the Golden Frenzy and clean end card make it a strong ad.",
+        "J": 80.9,
+        "J_samples": [
+          83.4,
+          78.4
+        ]
+      },
+      "score": 82.4
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.317,
+        "loading_ratio": 0,
+        "action": 0.288,
+        "hook_ratio": 0.778,
+        "coverage": 0.5,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": false,
+          "end_card": false
+        },
+        "human_timing": 1,
+        "shots": 2,
+        "avg_shot_s": 10.014,
+        "touches_per_10s": 15.479,
+        "moment_quality": 0.772,
+        "arc": 0.7,
+        "H": 62.4
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 5.5,
+        "human_play": 7.5,
+        "action": 4.5,
+        "hook": 3.5,
+        "polish": 5,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 19.5,
+          "issue": "The video cuts off abruptly right as the exciting Rush Order begins, missing the payoff."
+        },
+        "best_moment": {
+          "t": 9,
+          "why": "Purchasing the Rolling Pin x2 upgrade with celebratory confetti and immediately doubling tap income."
+        },
+        "summary": "The clip clearly demonstrates the core tap-and-upgrade loop with natural human timing, but it opens slowly on a static tutorial prompt. Worse, it cuts off the exact second a Rush Order begins, missing the high-action frenzy and shop progression that would make a strong ad.",
+        "J": 57.9,
+        "J_samples": [
+          62.4,
+          53.4
+        ]
+      },
+      "score": 59.9
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.405,
+        "loading_ratio": 0,
+        "action": 0.341,
+        "hook_ratio": 0.614,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 1,
+        "shots": 5,
+        "avg_shot_s": 4.001,
+        "touches_per_10s": 13.495,
+        "moment_quality": 0.85,
+        "arc": 0.7,
+        "H": 66.8
+      },
+      "judge": {
+        "core_loop_clarity": 5.5,
+        "features": 5,
+        "human_play": 4.5,
+        "action": 3.5,
+        "hook": 1.5,
+        "polish": 2.5,
+        "would_run": 2.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 3 seconds are a completely static tutorial screen with no action, followed by a jarring jump cut."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "Golden Frenzy x3 is active right as the player unlocks Bakery Lane (Shop 2/3), showing exciting progression."
+        },
+        "summary": "This highlight starts with 3 seconds of dead air on a static tutorial screen and suffers from confusing jump cuts that bounce backwards between Shop 1/3 and Shop 2/3. The player taps too slowly to complete any Rush Orders and the video ends abruptly without a call to action.",
+        "J": 37.5,
+        "J_samples": [
+          43.2,
+          31.8
+        ]
+      },
+      "score": 50.7
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 59.9
+    },
+    {
+      "id": "base_random",
+      "score": 50.7
+    }
+  ],
+  "separation": 25,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

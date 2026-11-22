@@ -1,0 +1,46 @@
+{
+  "session_id": "west-game-ii-9eae55-20261122-0950",
+  "playable": "/home/user/simula-playable-simula-agent/games/samples/west-game-ii.html",
+  "playable_sha": "4037ed0d2290a7e4",
+  "created_at": "2026-11-22T09:50:20.121Z",
+  "out": "/home/user/simula-playable-simula-agent/runs/batch-3d/west-game-ii/highlight.mp4",
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:26:02.989Z",
+      "ms": 0,
+      "note": "raw recording exists (reused)"
+    },
+    "index": {
+      "at": "2026-11-22T10:26:02.990Z",
+      "ms": 0,
+      "note": "index exists (reused)"
+    },
+    "cut": {
+      "at": "2026-11-22T10:26:50.533Z",
+      "ms": 47540,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:30:20.815Z",
+      "ms": 210280,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:32:38.460Z",
+      "ms": 137644,
+      "note": "best b (learn-then-escalate) score 83.4"
+    },
+    "friction": {
+      "at": "2026-11-22T10:32:53.103Z",
+      "ms": 14640,
+      "note": "4 items"
+    },
+    "report": {
+      "at": "2026-11-22T10:32:53.109Z",
+      "ms": 4,
+      "note": "trace.html written · total spend $0.645"
+    }
+  },
+  "task": 8,
+  "best": "b"
+}

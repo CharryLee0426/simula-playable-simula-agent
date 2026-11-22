@@ -1,0 +1,309 @@
+{
+  "summary": "The player repeatedly got stuck with no visible feedback on the 4x4 word grid, failing to complete even the tutorial word 'SUN' within 45.7 seconds. The session ended by time limit without ever reaching an end card or conversion CTA.",
+  "items": [
+    {
+      "t": 5.2,
+      "end": 6.9,
+      "type": "stuck",
+      "severity": "high",
+      "title": "Repeated inputs produce no visible effect on the grid",
+      "evidence": "Across S2-S5 (t=5.2-6.9s), three consecutive inputs resulted in 0.0% pixel change while the bottom-left text remained 'Try another line' and the balance stayed at $0.00. Similar multi-turn stuck states recurred at S8, S13, S17, S20, S26, and S30.",
+      "suggestion": "Add immediate visual feedback for invalid or incomplete swipes—such as a brief tile shake, a fading orange line trail, or highlighting valid adjacent letters—so players understand why their input did not register.",
+      "signals": [
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S8",
+        "S13",
+        "S17",
+        "S20",
+        "S26",
+        "S30"
+      ],
+      "image": "obs/obs_0010.jpg"
+    },
+    {
+      "t": 2.6,
+      "end": 9.8,
+      "type": "confusion",
+      "severity": "high",
+      "title": "Static tutorial highlight does not clearly demonstrate the swipe gesture",
+      "evidence": "At t=2.6s (S1), 'S', 'U', and 'N' are outlined in orange with small 'Swipe to connect' text at the bottom left, and by t=9.8s (S6) only a single 'S' is highlighted with 'Choose the last letter' while inputs still fail to progress.",
+      "suggestion": "Replace the static orange outline on S-U-N with an animated finger/hand icon and glowing swipe path moving from S to U to N until the first word is completed.",
+      "signals": [
+        "S1",
+        "S6",
+        "S7"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 45.7,
+      "end": null,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "No end card shown within 46 seconds of play",
+      "evidence": "The session ran for 45.7 seconds and ended by time_limit without displaying an end card or install CTA (S31).",
+      "suggestion": "Add a fallback timer (e.g., 25-30 seconds) or a 'Claim / Download' CTA that triggers the end card even if the player has not cleared the first word board.",
+      "signals": [
+        "S31"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 2.6000000000000005,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 5.1999999999999975,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0010.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 5.966666666666657,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 11,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0011.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 6.933333333333315,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 12,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0012.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 5.1999999999999975,
+      "end": 6.933333333333315,
+      "kind": "stuck",
+      "detail": "3 consecutive turns where the player's input had no visible effect",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0010.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 9.833333333333334,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 16,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0016.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 10.166666666666673,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 9.833333333333334,
+      "end": 10.166666666666673,
+      "kind": "stuck",
+      "detail": "2 consecutive turns where the player's input had no visible effect",
+      "obs": 16,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0016.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 13.10000000000006,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 21,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0021.jpg"
+    },
+    {
+      "id": "S10",
+      "t": 14.233333333333414,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 23,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0023.jpg"
+    },
+    {
+      "id": "S11",
+      "t": 16.200000000000117,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 25,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0025.jpg"
+    },
+    {
+      "id": "S12",
+      "t": 17.100000000000094,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 26,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0026.jpg"
+    },
+    {
+      "id": "S13",
+      "t": 16.200000000000117,
+      "end": 17.100000000000094,
+      "kind": "stuck",
+      "detail": "2 consecutive turns where the player's input had no visible effect",
+      "obs": 25,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0025.jpg"
+    },
+    {
+      "id": "S14",
+      "t": 19.500000000000007,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 29,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0029.jpg"
+    },
+    {
+      "id": "S15",
+      "t": 21.799999999999923,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 32,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0032.jpg"
+    },
+    {
+      "id": "S16",
+      "t": 22.733333333333224,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 33,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0033.jpg"
+    },
+    {
+      "id": "S17",
+      "t": 21.799999999999923,
+      "end": 22.733333333333224,
+      "kind": "stuck",
+      "detail": "2 consecutive turns where the player's input had no visible effect",
+      "obs": 32,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0032.jpg"
+    },
+    {
+      "id": "S18",
+      "t": 28.933333333332996,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 42,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0042.jpg"
+    },
+    {
+      "id": "S19",
+      "t": 29.29999999999965,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 43,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0043.jpg"
+    },
+    {
+      "id": "S20",
+      "t": 28.933333333332996,
+      "end": 29.29999999999965,
+      "kind": "stuck",
+      "detail": "2 consecutive turns where the player's input had no visible effect",
+      "obs": 42,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0042.jpg"
+    },
+    {
+      "id": "S21",
+      "t": 31.133333333332917,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 45,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0045.jpg"
+    },
+    {
+      "id": "S22",
+      "t": 34.233333333332965,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 50,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0050.jpg"
+    },
+    {
+      "id": "S23",
+      "t": 37.86666666666656,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 57,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0057.jpg"
+    },
+    {
+      "id": "S24",
+      "t": 39.93333333333338,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 59,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0059.jpg"
+    },
+    {
+      "id": "S25",
+      "t": 40.93333333333345,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 60,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0060.jpg"
+    },
+    {
+      "id": "S26",
+      "t": 39.93333333333338,
+      "end": 40.93333333333345,
+      "kind": "stuck",
+      "detail": "2 consecutive turns where the player's input had no visible effect",
+      "obs": 59,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0059.jpg"
+    },
+    {
+      "id": "S27",
+      "t": 43.20000000000029,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 64,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0064.jpg"
+    },
+    {
+      "id": "S28",
+      "t": 43.733333333333654,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 65,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0065.jpg"
+    },
+    {
+      "id": "S29",
+      "t": 44.533333333333715,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider n/a, 0.0% of pixels changed) — the player had tried: (random policy)",
+      "obs": 66,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0066.jpg"
+    },
+    {
+      "id": "S30",
+      "t": 43.20000000000029,
+      "end": 44.533333333333715,
+      "kind": "stuck",
+      "detail": "3 consecutive turns where the player's input had no visible effect",
+      "obs": 64,
+      "image": "/home/user/simula-playable-simula-agent/runs/calib-random-word/obs/obs_0064.jpg"
+    },
+    {
+      "id": "S31",
+      "t": 45.733333333333334,
+      "kind": "no_end_card",
+      "detail": "no end card within 46 s of play"
+    }
+  ]
+}

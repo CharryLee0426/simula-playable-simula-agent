@@ -1,0 +1,295 @@
+{
+  "summary": "The first-time experience is hampered by persistent visual ambiguity, with the player frequently unsure whether to fight outlaws, collect gold, or step onto competing build pads. Additionally, unskippable camera pans lock out controls mid-session, and the playable runs for 93 seconds without ever presenting an end card.",
+  "items": [
+    {
+      "t": 18.5,
+      "end": 88.5,
+      "type": "unclear_goal",
+      "severity": "high",
+      "title": "Competing objectives and unclear pad priorities",
+      "evidence": "From t=18.5s onward, clarity scores stay between 22% and 49%. At t=18.5s, a tutorial hand points to a gold pile down-left while a 300-gold pad sits right next to the cowboy (with 0 gold). Later, during active waves at the left fence (t=37.2s-77.5s), hint hands repeatedly point to the minecart or hay bale on the right while multiple pads (200, 300, 1,050) compete for attention.",
+      "suggestion": "Dim or hide non-affordable build pads, and show only one contextual objective arrow at a time (e.g., point to gold only when below the next pad's cost, or point to the fence when outlaws are attacking).",
+      "signals": [
+        "S2",
+        "S3",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23"
+      ],
+      "image": "obs/obs_0011.jpg"
+    },
+    {
+      "t": 24.5,
+      "end": 30.5,
+      "type": "stuck",
+      "severity": "high",
+      "title": "Camera pan cutscene locks out input without context",
+      "evidence": "At t=24.5s, the camera pans to a cave entrance with all UI hidden, causing the player's previous input to have no effect and dropping clarity to 15%-19% until control returns at t=30.5s. A similar camera pan occurs during building construction at t=63.9s-66.9s while enemies attack the fence.",
+      "suggestion": "Keep the Town HP bar and a subtle 'INCOMING WAVE' banner visible during the cave pan, shorten the cutscene to under 2 seconds, and avoid panning the camera away from active combat during construction animations.",
+      "signals": [
+        "S4",
+        "S5",
+        "S6",
+        "S16",
+        "S17",
+        "S25"
+      ],
+      "image": "obs/obs_0013.jpg"
+    },
+    {
+      "t": 0.5,
+      "end": 8,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "Slow onboarding and stalled initial pad interaction",
+      "evidence": "The session starts with 3.0s of no motion or input and takes 5.0s for an input to visibly work. By t=8.0s, the cowboy is standing on the 270-gold spot with the tutorial hand still on the joystick, and waiting produces no visible change (0.1% pixel change).",
+      "suggestion": "Trigger an immediate, brief pulse on the joystick and gold pad at t=0.5s, and auto-collect or clearly animate the gold transfer as soon as the cowboy steps onto the starting 270-gold pad.",
+      "signals": [
+        "S1",
+        "S24",
+        "S26"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 92.6,
+      "end": null,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "No end card shown within 93 seconds",
+      "evidence": "The playable ran until the 92.6s time limit without ever displaying an end card or install CTA.",
+      "suggestion": "Trigger the end card and install CTA after the first major wave is cleared or the saloon/deputies building finishes around t=65s, rather than letting the session time out.",
+      "signals": [
+        "S27"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0.5,
+      "end": 5.499999999999995,
+      "kind": "time_to_first_success",
+      "detail": "5.0 s from the first playable frame until an input visibly worked",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 18.533333333333374,
+      "kind": "unclear_screen",
+      "detail": "decider: only 41% that a first-time player knows what to do (screen: tutorial)",
+      "obs": 11,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0011.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 21.533333333333267,
+      "kind": "unclear_screen",
+      "detail": "decider: only 46% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 12,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0012.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 24.499999999999826,
+      "kind": "unclear_screen",
+      "detail": "decider: only 15% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0013.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 26.999999999999734,
+      "kind": "unclear_screen",
+      "detail": "decider: only 18% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 30.499999999999606,
+      "kind": "unclear_screen",
+      "detail": "decider: only 19% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 15,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0015.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 37.233333333333185,
+      "kind": "unclear_screen",
+      "detail": "decider: only 29% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 38.93333333333331,
+      "kind": "unclear_screen",
+      "detail": "decider: only 37% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0018.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 42.566666666666904,
+      "kind": "unclear_screen",
+      "detail": "decider: only 48% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 19,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0019.jpg"
+    },
+    {
+      "id": "S10",
+      "t": 46.26666666666717,
+      "kind": "unclear_screen",
+      "detail": "decider: only 38% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 20,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0020.jpg"
+    },
+    {
+      "id": "S11",
+      "t": 48.766666666667355,
+      "kind": "unclear_screen",
+      "detail": "decider: only 43% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 21,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0021.jpg"
+    },
+    {
+      "id": "S12",
+      "t": 52.43333333333429,
+      "kind": "unclear_screen",
+      "detail": "decider: only 36% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 22,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0022.jpg"
+    },
+    {
+      "id": "S13",
+      "t": 55.53333333333451,
+      "kind": "unclear_screen",
+      "detail": "decider: only 22% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 23,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0023.jpg"
+    },
+    {
+      "id": "S14",
+      "t": 58.76666666666808,
+      "kind": "unclear_screen",
+      "detail": "decider: only 22% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 24,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0024.jpg"
+    },
+    {
+      "id": "S15",
+      "t": 61.90000000000165,
+      "kind": "unclear_screen",
+      "detail": "decider: only 42% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 25,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0025.jpg"
+    },
+    {
+      "id": "S16",
+      "t": 63.90000000000179,
+      "kind": "unclear_screen",
+      "detail": "decider: only 26% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 26,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0026.jpg"
+    },
+    {
+      "id": "S17",
+      "t": 66.90000000000171,
+      "kind": "unclear_screen",
+      "detail": "decider: only 18% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 27,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0027.jpg"
+    },
+    {
+      "id": "S18",
+      "t": 69.90000000000128,
+      "kind": "unclear_screen",
+      "detail": "decider: only 44% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 28,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0028.jpg"
+    },
+    {
+      "id": "S19",
+      "t": 73.70000000000073,
+      "kind": "unclear_screen",
+      "detail": "decider: only 39% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 29,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0029.jpg"
+    },
+    {
+      "id": "S20",
+      "t": 77.50000000000017,
+      "kind": "unclear_screen",
+      "detail": "decider: only 30% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 30,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0030.jpg"
+    },
+    {
+      "id": "S21",
+      "t": 81.29999999999963,
+      "kind": "unclear_screen",
+      "detail": "decider: only 47% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 31,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0031.jpg"
+    },
+    {
+      "id": "S22",
+      "t": 85.16666666666572,
+      "kind": "unclear_screen",
+      "detail": "decider: only 49% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 32,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0032.jpg"
+    },
+    {
+      "id": "S23",
+      "t": 88.46666666666525,
+      "kind": "unclear_screen",
+      "detail": "decider: only 46% that a first-time player knows what to do (screen: gameplay)",
+      "obs": 33,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0033.jpg"
+    },
+    {
+      "id": "S24",
+      "t": 7.999999999999972,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 11%, 0.1% of pixels changed) — the player had tried: Cowboy standing on glowing gold spot showing 270 gold",
+      "obs": 7,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0007.jpg"
+    },
+    {
+      "id": "S25",
+      "t": 24.499999999999826,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 15%, 78.3% of pixels changed) — the player had tried: Cowboy has 66 gold, standing by the gold mine and a 300-gold pad.",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/obs/obs_0013.jpg"
+    },
+    {
+      "id": "S26",
+      "t": 0.5,
+      "end": 3.5,
+      "kind": "idle",
+      "detail": "3.0 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S27",
+      "t": 92.56666666666666,
+      "kind": "no_end_card",
+      "detail": "no end card within 93 s of play"
+    }
+  ]
+}

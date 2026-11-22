@@ -1,0 +1,84 @@
+{
+  "summary": "The player smoothly completed all three rounds of Word Hunt and reached the end card in 20.7 seconds, but experienced an initial 3.5-second idle period and a slow 7.1-second time-to-first-success. On the end card, the call-to-action buttons were not visibly rendered, leaving the player with no clear next step.",
+  "items": [
+    {
+      "t": 20.7,
+      "end": 26.2,
+      "type": "ui",
+      "severity": "high",
+      "title": "End card CTA buttons are invisible",
+      "evidence": "At t=20.7s on the end card, the 'Nice haul.' header and '$6.60' badge are visible, but the 'Play on Scrambly' and 'Play again' buttons are completely dark/unrendered, resulting in only 36% confidence that a first-time player knows what to do.",
+      "suggestion": "Remove any delayed fade-in on the end card buttons and render 'Play on Scrambly' with a high-contrast primary button style immediately when the end card appears at t=20.7s.",
+      "signals": [
+        "S2",
+        "S5"
+      ],
+      "image": "obs/obs_0009_marks.jpg"
+    },
+    {
+      "t": 0,
+      "end": 7.1,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "Slow start with 3.5s initial idle",
+      "evidence": "From t=0.0s to 3.5s there was no on-screen motion or input, and it took 7.1s from the first playable frame until an input visibly worked.",
+      "suggestion": "Display an animated hand-swipe tutorial over the first target word ('SUN') on the 4x4 grid immediately at t=0.0s to prompt the player's first swipe.",
+      "signals": [
+        "S1",
+        "S3"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 8,
+      "end": 11,
+      "type": "pacing",
+      "severity": "low",
+      "title": "3.0s idle gap between Round 1 and Round 2",
+      "evidence": "After clearing Round 1 at t=7.1s with the '+$1.00' banner, there was a 3.0-second period (t=8.0-11.0s) with no on-screen motion or input before Round 2 gameplay began.",
+      "suggestion": "Shorten the 'Round cleared! +$1.00' banner duration and transition directly into the 5x5 Round 2 grid within 1.0 to 1.5 seconds.",
+      "signals": [
+        "S4"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 7.066666666666647,
+      "kind": "time_to_first_success",
+      "detail": "7.1 s from the first playable frame until an input visibly worked",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 20.733333333333295,
+      "kind": "unclear_screen",
+      "detail": "decider: only 36% that a first-time player knows what to do (screen: end_card)",
+      "obs": 9,
+      "image": "/home/user/simula-playable-simula-agent/runs/word-hunt-9b0319-20261122-1012/obs/obs_0009_marks.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 0,
+      "end": 3.5,
+      "kind": "idle",
+      "detail": "3.5 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S4",
+      "t": 8,
+      "end": 11,
+      "kind": "idle",
+      "detail": "3.0 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S5",
+      "t": 20.733333333333295,
+      "kind": "end_card",
+      "detail": "end card appeared at 20.7 s (session 26.2 s)"
+    }
+  ]
+}

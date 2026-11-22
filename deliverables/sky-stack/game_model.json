@@ -1,0 +1,20 @@
+{
+  "title": "Sky Stack",
+  "genre": "Arcade timing stacker",
+  "objective": "Stack sliding blocks on top of each other to build a 20-floor tower before the 45-second timer runs out.",
+  "controls": "Tap anywhere on the screen to drop the sliding block onto the top of the tower.",
+  "core_loop": "Wait for the sliding block to align with the tower -> tap to drop -> misaligned edges are sliced off while the tower grows taller and narrower.",
+  "features": [
+    "Overhang slicing",
+    "Perfect drop bonus",
+    "45-second countdown timer",
+    "20-floor progress bar",
+    "Color-shifting block tower",
+    "Streak and perfect drop tracking",
+    "Instant retry"
+  ],
+  "progression": "Each successful drop adds 1 floor toward the 20-floor goal while imperfect drops shrink the remaining block surface, increasing precision difficulty.",
+  "end_card": true,
+  "tone": "Bright, airy, casual arcade",
+  "hook_idea": "The 'PERFECT!' drop with golden sparkle burst at t=6.4s, or the rapid-fire slicing and stacking sequence from t=5.4s to t=11.4s."
+}

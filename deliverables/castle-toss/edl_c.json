@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Feature montage: Rapid showcase of slingshot physics, upgrades, TNT, and boss battle",
+  "clips": [
+    {
+      "start": 6.4,
+      "end": 9.6,
+      "speed": 1.25,
+      "role": "core_loop",
+      "why": "Fast slingshot launch and wooden structure collapse"
+    },
+    {
+      "start": 11.5,
+      "end": 14.4,
+      "speed": 1.5,
+      "role": "feature",
+      "why": "Quick pick of Split Shot over Heavy Boulder"
+    },
+    {
+      "start": 16.5,
+      "end": 20.6,
+      "speed": 1.35,
+      "role": "feature",
+      "why": "Split Shot multi-boulder destruction and Triple KO"
+    },
+    {
+      "start": 22.5,
+      "end": 25.2,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Quick pick of Fire Bomb upgrade"
+    },
+    {
+      "start": 27,
+      "end": 30.2,
+      "speed": 1,
+      "role": "climax",
+      "why": "TNT explosive chain reaction and Triple KO at full speed"
+    },
+    {
+      "start": 30.7,
+      "end": 33.4,
+      "speed": 1.3,
+      "role": "core_loop",
+      "why": "Boss HP bar dropping from Fire Bomb Split Shot"
+    },
+    {
+      "start": 35.2,
+      "end": 39.5,
+      "speed": 1.25,
+      "role": "climax",
+      "why": "Final boss knockout and victory fireworks"
+    },
+    {
+      "start": 42.533,
+      "end": 44.5,
+      "speed": 1,
+      "role": "end_card",
+      "why": "End card call to action"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

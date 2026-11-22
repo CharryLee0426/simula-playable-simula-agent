@@ -1,0 +1,340 @@
+{
+  "best": "a",
+  "score": 88.2,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "b",
+    "a_first": "A",
+    "b_first": "A",
+    "winner": "a"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.209,
+        "loading_ratio": 0,
+        "action": 0.485,
+        "hook_ratio": 1.738,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.825,
+        "shots": 7,
+        "avg_shot_s": 2.858,
+        "touches_per_10s": 4.499,
+        "moment_quality": 0.875,
+        "arc": 1,
+        "H": 88.3
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8.5,
+        "action": 9,
+        "hook": 9,
+        "polish": 8,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 11,
+          "issue": "Abrupt cut in Level 3 where the entire tower and TNT disappear between shots, leaving only the boss."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "Immediate high-action hook showing a Fire Bomb Split Shot triggering a TNT explosion and Triple KO."
+        },
+        "summary": "This 19-second highlight opens with an explosive Triple KO hook and cleanly walks through the core loop, upgrades, and boss battle with natural human aiming. Aside from one abrupt cut during the final level, the pacing, feature showcase, and end-card call to action make it a very strong ad.",
+        "J": 88.2,
+        "J_samples": [
+          89,
+          87.4
+        ]
+      },
+      "score": 88.2,
+      "wins": 1
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.25,
+        "loading_ratio": 0,
+        "action": 0.477,
+        "hook_ratio": 0.489,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.825,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 4.499,
+        "moment_quality": 0.886,
+        "arc": 1,
+        "H": 79.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 9,
+        "hook": 8,
+        "polish": 9,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 14,
+          "issue": "The final Split Shot is triggered very early, looking slightly awkward before hitting the boss."
+        },
+        "best_moment": {
+          "t": 11,
+          "why": "The Fire Bomb Split Shot detonates the TNT crate in the boss tower, triggering a massive explosion and Triple KO."
+        },
+        "summary": "This highlight video cleanly showcases the core slingshot destruction loop, upgrade progression, and boss battle in a fast-paced 20-second run. The pacing feels natural, the action is constant, and it finishes with a strong end card.",
+        "J": 87.4,
+        "J_samples": [
+          87.4,
+          87.4
+        ]
+      },
+      "score": 84,
+      "wins": 1
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.318,
+        "loading_ratio": 0,
+        "action": 0.457,
+        "hook_ratio": 0.553,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.825,
+        "shots": 8,
+        "avg_shot_s": 2.502,
+        "touches_per_10s": 5.496,
+        "moment_quality": 0.853,
+        "arc": 1,
+        "H": 77.6
+      },
+      "judge": {
+        "core_loop_clarity": 9.5,
+        "features": 9,
+        "human_play": 8,
+        "action": 9,
+        "hook": 8.5,
+        "polish": 9,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 13,
+          "issue": "The shot falls short and misses the boss completely, briefly stalling the momentum."
+        },
+        "best_moment": {
+          "t": 10,
+          "why": "The Fire Bomb Split Shot triggers a massive TNT chain reaction and Triple KO on the boss tower."
+        },
+        "summary": "This highlight video clearly demonstrates the slingshot core loop, upgrade progression, and boss battle in a fast-paced 19-second cut. Aside from one missed shot against the boss, the action is non-stop and finishes cleanly with a strong call-to-action end card.",
+        "J": 88.8,
+        "J_samples": [
+          87.4,
+          90.2
+        ]
+      },
+      "score": 83.8
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.475,
+        "loading_ratio": 0,
+        "action": 0.418,
+        "hook_ratio": 0.63,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.825,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 2.5,
+        "moment_quality": 0.664,
+        "arc": 0.7,
+        "H": 59.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 7.5,
+        "human_play": 9,
+        "action": 7.5,
+        "hook": 5.5,
+        "polish": 7,
+        "would_run": 7,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Starts with a static Level 1 tutorial screen and a missed first shot at 0:04 instead of an immediate high-action hook."
+        },
+        "best_moment": {
+          "t": 17,
+          "why": "Tapping mid-air to trigger Split Shot and smashing through the Level 2 structure with three boulders."
+        },
+        "summary": "This 20-second highlight clearly demonstrates the slingshot core loop, upgrade progression, and Split Shot mechanic with very natural, human-like pacing. However, starting with the Level 1 tutorial and ending slightly abruptly mid-explosion without an end card makes the hook and finish weaker than they could be.",
+        "J": 76.7,
+        "J_samples": [
+          78.6,
+          74.8
+        ]
+      },
+      "score": 69.1
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/castle-toss-9a3efd-20261122-1019/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.381,
+        "loading_ratio": 0,
+        "action": 0.517,
+        "hook_ratio": 0.477,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.825,
+        "shots": 5,
+        "avg_shot_s": 4.001,
+        "touches_per_10s": 2.499,
+        "moment_quality": 0.851,
+        "arc": 0.85,
+        "H": 69.3
+      },
+      "judge": {
+        "core_loop_clarity": 7,
+        "features": 8,
+        "human_play": 7,
+        "action": 7.5,
+        "hook": 5.5,
+        "polish": 3,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 7,
+          "issue": "Abruptly cuts from the middle of the Level 3 boss fight back to the Level 1 clear screen, making the progression order confusing."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "Fire Bomb Split Shot hits the TNT crate, triggering a massive explosion and Triple KO against the boss tower."
+        },
+        "summary": "The highlight effectively showcases the slingshot physics, upgrades, and explosive boss action, making the core loop easy to understand. However, the out-of-order cuts between levels 1, 3, and 2—and ending on an upgrade screen without a call to action—hurt its polish.",
+        "J": 62.1,
+        "J_samples": [
+          64.2,
+          60
+        ]
+      },
+      "score": 65.3
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 69.1
+    },
+    {
+      "id": "base_random",
+      "score": 65.3
+    }
+  ],
+  "separation": 19.1,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

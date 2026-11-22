@@ -1,0 +1,19 @@
+{
+  "title": "Word Hunt (Scrambly)",
+  "genre": "Word Puzzle / Reward Playable",
+  "objective": "Find and swipe all target words hidden in the letter grid across three rounds to earn cash rewards.",
+  "controls": "Touch and drag across adjacent letters horizontally, vertically, diagonally, or backwards to connect target words.",
+  "core_loop": "Spot a target word in the grid -> swipe across its letters -> cross off the word and collect flying coins into your cash balance.",
+  "features": [
+    "Cash reward per word",
+    "Round clear bonus (+$1.00)",
+    "Diagonal word swiping",
+    "Backwards word swiping",
+    "Hint button",
+    "Scrambly fox mascot & coin counter"
+  ],
+  "progression": "Grid size and word length escalate each round: 4x4 (3-4 letter words), 5x5 (4-letter words with diagonals), and 6x6 (4-5 letter words including backwards swipes).",
+  "end_card": true,
+  "tone": "Playful, rewarding, cozy-casual",
+  "hook_idea": "Round 3 climax with rapid backwards/diagonal swipes and coins showering to $6.60 at t=16.8-19.5s"
+}

@@ -1,0 +1,82 @@
+{
+  "summary": "The core tap-to-bake and upgrade loop was clear, allowing the player to progress from Sweet Corner to Bakery Lane. However, a slow initial start, a small target for the Golden Cupcake, and an overly demanding Rush Order target caused repeated failures.",
+  "items": [
+    {
+      "t": 31.4,
+      "end": 41.8,
+      "type": "frustration",
+      "severity": "high",
+      "title": "Rush Order target (25 cakes in 10s) is too difficult",
+      "evidence": "The player activated Golden Frenzy x3 but only reached 11/25 cakes before the 'ORDER MISSED!' fail screen appeared at t=31.4s. After tapping 'Try Again', they only reached 12/25 cakes with 1s left at t=41.8s.",
+      "suggestion": "Reduce the Rush Order requirement from 25 cakes to 12-15 cakes in 10s (or extend the timer to 15s) so casual players can complete the order and experience the reward.",
+      "signals": [
+        "S3"
+      ],
+      "image": "obs/obs_0017.jpg"
+    },
+    {
+      "t": 0,
+      "end": 5.4,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "Slow time to first tap due to lack of initial motion",
+      "evidence": "Despite the 'Tap the cake to bake!' tutorial, there was 3.5s of idle time with no on-screen motion, and it took 5.4s for the first tap to register.",
+      "suggestion": "Add an animated, pulsing hand pointer directly over the center cake from t=0.0s along with a subtle idle bounce on the cake to prompt immediate interaction.",
+      "signals": [
+        "S1",
+        "S2"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 25.9,
+      "end": null,
+      "type": "ui",
+      "severity": "low",
+      "title": "Imprecise taps when trying to hit the Golden Cupcake",
+      "evidence": "Two imprecise tap slips were recorded at t=25.9s, right as the player was trying to activate the floating Golden Cupcake x3.",
+      "suggestion": "Increase the invisible hit-box of the floating Golden Cupcake by 30-50% and slow its travel speed slightly so it is easier to tap during active gameplay.",
+      "signals": [
+        "S4"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 5.399999999999995,
+      "kind": "time_to_first_success",
+      "detail": "5.4 s from the first playable frame until an input visibly worked",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 0,
+      "end": 3.5,
+      "kind": "idle",
+      "detail": "3.5 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S3",
+      "t": 31.399999999999576,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/bakery-rush-1af002-20261122-1028/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 25.933333333333334,
+      "kind": "slips",
+      "detail": "2 imprecise tap(s) by the player (targets may be small)"
+    },
+    {
+      "id": "S5",
+      "t": 44.20000000000036,
+      "kind": "end_card",
+      "detail": "end card appeared at 44.2 s (session 49.1 s)"
+    }
+  ]
+}

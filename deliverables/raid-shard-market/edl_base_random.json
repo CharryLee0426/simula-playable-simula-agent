@@ -1,0 +1,51 @@
+{
+  "id": "base_random",
+  "strategy": "baseline: random clips",
+  "title": "five random 4 s clips",
+  "source": "baseline",
+  "clips": [
+    {
+      "start": 0.5,
+      "end": 4.5,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 54.475,
+      "end": 59.863,
+      "speed": 1.45,
+      "role": "core_loop"
+    },
+    {
+      "start": 20.28,
+      "end": 25.463,
+      "speed": 1.5,
+      "role": "core_loop"
+    },
+    {
+      "start": 75.091,
+      "end": 79.697,
+      "speed": 1.15,
+      "role": "core_loop"
+    },
+    {
+      "start": 40.513,
+      "end": 42.9,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 43.45,
+      "end": 45.897,
+      "speed": 1,
+      "role": "core_loop"
+    }
+  ],
+  "fixes": [
+    "clip 54.5-58.5 → 54.47-59.86 (bounds/gesture snap)",
+    "clip 21.1-25.1 → 20.28-25.46 (bounds/gesture snap)",
+    "clip 75.1-79.1 → 75.09-79.70 (bounds/gesture snap)",
+    "clip 41.7-45.7 → 40.51-46.00 (bounds/gesture snap)",
+    "dead air 42.5-44.0 s cut out of a core_loop clip"
+  ]
+}

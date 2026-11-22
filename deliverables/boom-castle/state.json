@@ -1,0 +1,45 @@
+{
+  "session_id": "e2e-boom",
+  "playable": "/home/user/simula-playable-simula-agent/games/samples/boom-castle.html",
+  "playable_sha": "7d20d3cc9a0faf3a",
+  "created_at": "2026-11-22T09:11:48.865Z",
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:12:43.195Z",
+      "ms": 0,
+      "note": "raw recording exists (reused)"
+    },
+    "index": {
+      "at": "2026-11-22T10:12:43.198Z",
+      "ms": 0,
+      "note": "index exists (reused)"
+    },
+    "cut": {
+      "at": "2026-11-22T10:13:35.685Z",
+      "ms": 52486,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:15:51.993Z",
+      "ms": 136305,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:18:03.628Z",
+      "ms": 131633,
+      "note": "best c (feature-montage) score 82.7"
+    },
+    "friction": {
+      "at": "2026-11-22T10:18:17.903Z",
+      "ms": 14269,
+      "note": "4 items"
+    },
+    "report": {
+      "at": "2026-11-22T10:18:17.912Z",
+      "ms": 6,
+      "note": "trace.html written · total spend $0.713"
+    }
+  },
+  "task": 9,
+  "best": "c"
+}

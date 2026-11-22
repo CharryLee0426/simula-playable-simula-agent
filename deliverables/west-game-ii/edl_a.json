@@ -1,0 +1,70 @@
+{
+  "id": "a",
+  "title": "Deputies unlock hook into escalating defense and minecart payout",
+  "clips": [
+    {
+      "start": 62.2,
+      "end": 64.5,
+      "speed": 1,
+      "role": "hook",
+      "why": "Giant glowing whiskey glass slams down and unlocks Deputies mid-battle"
+    },
+    {
+      "start": 8.18,
+      "end": 12.846,
+      "speed": 1.5,
+      "role": "feature",
+      "why": "Gold Mine builds with pickaxe and minecart animation"
+    },
+    {
+      "start": 34.78,
+      "end": 38.9,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Cowboy auto-shoots outlaw wave at the fence and collects gold"
+    },
+    {
+      "start": 39.45,
+      "end": 41.747,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Cowboy auto-shoots outlaw wave at the fence and collects gold"
+    },
+    {
+      "start": 45.3,
+      "end": 49.8,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Fights heavy outlaw while a new 200-gold pad spawns"
+    },
+    {
+      "start": 53.48,
+      "end": 57.947,
+      "speed": 1.5,
+      "role": "core_loop",
+      "why": "Outlaws press the wooden fence as cowboy holds the line"
+    },
+    {
+      "start": 70.5,
+      "end": 75.2,
+      "speed": 1.5,
+      "role": "climax",
+      "why": "Cowboy and deputies mow down a dense wave pouring from the cave"
+    },
+    {
+      "start": 83.7,
+      "end": 85.55,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Massive minecart payout boosts gold over 700 while deputies fight"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": [
+    "clip 9.6-13.8 → 8.18-13.80 (bounds/gesture snap)",
+    "clip 36.2-40.3 → 34.78-41.75 (bounds/gesture snap)",
+    "clip 54.7-56.8 → 53.48-57.95 (bounds/gesture snap)",
+    "dead air 38.5-40.0 s cut out of a core_loop clip"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "a",
+  "title": "Hook-first rapid swipes into chronological grid exploration",
+  "clips": [
+    {
+      "start": 38.5,
+      "end": 40.8,
+      "speed": 1,
+      "role": "hook",
+      "why": "Peak motion with rapid consecutive drags across the grid"
+    },
+    {
+      "start": 2.5,
+      "end": 6.8,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows core tapping and swiping with tile flip feedback"
+    },
+    {
+      "start": 8.8,
+      "end": 12.2,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Demonstrates selecting individual S-U-N letters on the 4x4 board"
+    },
+    {
+      "start": 15,
+      "end": 18.1,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights the orange connection line trail between adjacent tiles"
+    },
+    {
+      "start": 19.9,
+      "end": 24.6,
+      "speed": 1.1,
+      "role": "progression",
+      "why": "Escalates with diagonal and horizontal word-hunting swipes"
+    },
+    {
+      "start": 30,
+      "end": 33.2,
+      "speed": 1,
+      "role": "climax",
+      "why": "Strong vertical swipe down the left column and bottom row test"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

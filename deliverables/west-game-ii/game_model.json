@@ -1,0 +1,20 @@
+{
+  "title": "Wild West",
+  "genre": "Arcade Action / Town Defense",
+  "objective": "Defend the Wild West town from waves of outlaws while collecting gold to build mines, hire deputies, and upgrade defenses.",
+  "controls": "Drag a virtual joystick anywhere on screen to move the cowboy; shooting outlaws in range and spending gold on pads happen automatically.",
+  "core_loop": "Move near outlaws to auto-shoot them, collect dropped gold and minecart payouts, and step onto glowing pads to build or upgrade town defenses.",
+  "features": [
+    "Virtual joystick movement with auto-aim shooting",
+    "Gold Mine construction and passive minecart gold delivery",
+    "Gold bar pile collection",
+    "Deputies (ally gunfighters)",
+    "Automated fence upgrades",
+    "Escalating outlaw waves with heavy enemies",
+    "Town HP bar"
+  ],
+  "progression": "Outlaw waves grow larger and include tougher heavy enemies, while build pad costs scale up from 200-270 gold to 300, 400, and 1,050 gold as new areas and upgrades unlock.",
+  "end_card": false,
+  "tone": "Dusty Wild West arcade action",
+  "hook_idea": "At t=63.0s, a giant glowing whiskey glass slams down and shatters into 'DEPUTIES' while the cowboy blasts a swarming wave of outlaws at the fence."
+}

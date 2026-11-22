@@ -1,0 +1,65 @@
+{
+  "id": "a",
+  "title": "Hook-first: Perfect drop opener into rapid stacking and dramatic topple",
+  "clips": [
+    {
+      "start": 5.5,
+      "end": 7.4,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on the golden 'PERFECT!' drop burst for immediate visual payoff."
+    },
+    {
+      "start": 2.9,
+      "end": 5.5,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows the tap-to-drop control and overhang slicing mechanic clearly."
+    },
+    {
+      "start": 7.4,
+      "end": 9.8,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Demonstrates rapid stacking and color-shifting blocks as the tower grows."
+    },
+    {
+      "start": 9.8,
+      "end": 11.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "Escalates precision stakes as sliced blocks become noticeably narrower."
+    },
+    {
+      "start": 11.6,
+      "end": 14.9,
+      "speed": 1,
+      "role": "feature",
+      "why": "Builds tension on a narrow purple block before a dramatic missed drop."
+    },
+    {
+      "start": 14.9,
+      "end": 16.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "Highlights the score summary and instant retry button."
+    },
+    {
+      "start": 16.6,
+      "end": 20.5,
+      "speed": 1,
+      "role": "climax",
+      "why": "Shows a fresh 45-second run starting immediately and ending in a quick fail."
+    },
+    {
+      "start": 23.1,
+      "end": 25.5,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Displays the Sky Stack logo, tagline, and INSTALL call to action."
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

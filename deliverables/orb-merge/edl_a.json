@@ -1,0 +1,65 @@
+{
+  "id": "a",
+  "title": "64-Orb Combo Hook into Rising Merges and Power-Ups",
+  "clips": [
+    {
+      "start": 33.5,
+      "end": 35.9,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on the explosive 64-orb COMBO x2! (+128) merge halfway to the 128 goal."
+    },
+    {
+      "start": 7.7,
+      "end": 10.3,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows clean drag-and-drop aiming as two 8-orbs merge into 16."
+    },
+    {
+      "start": 10.4,
+      "end": 14,
+      "speed": 1.25,
+      "role": "core_loop",
+      "why": "Demonstrates chain merging with a COMBO x2! into an 8-orb."
+    },
+    {
+      "start": 16.5,
+      "end": 18.7,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights the BIG MERGE! into a 32-orb and Bomb power-up unlock."
+    },
+    {
+      "start": 20.5,
+      "end": 22.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Shows the Bomb power-up clearing surrounding orbs with BOOM! +42."
+    },
+    {
+      "start": 22.6,
+      "end": 27.5,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Tightens the 16-orb merge into a second 32-orb to show steady progression."
+    },
+    {
+      "start": 29.9,
+      "end": 33.41,
+      "speed": 1.35,
+      "role": "climax",
+      "why": "Escalates into SPEED UP! mode with a fast COMBO x2! chain merge."
+    },
+    {
+      "start": 54.033,
+      "end": 56,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Displays the final score, best orb 64, and PLAY NOW call to action."
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

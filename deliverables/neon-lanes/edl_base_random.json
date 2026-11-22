@@ -1,0 +1,41 @@
+{
+  "id": "base_random",
+  "strategy": "baseline: random clips",
+  "title": "five random 4 s clips",
+  "source": "baseline",
+  "clips": [
+    {
+      "start": 0,
+      "end": 4.654,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 14.173,
+      "end": 18.173,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 5.414,
+      "end": 9.414,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 19.587,
+      "end": 23.587,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 10.827,
+      "end": 14.173,
+      "speed": 1,
+      "role": "core_loop"
+    }
+  ],
+  "fixes": [
+    "overlap trimmed (core_loop)"
+  ]
+}

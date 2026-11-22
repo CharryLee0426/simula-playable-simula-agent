@@ -1,0 +1,19 @@
+{
+  "title": "Gem Swap",
+  "genre": "Match-3 Puzzle",
+  "objective": "Swap adjacent gems to match 3 or more of the same color and reach the 4000-point target before the 45-second timer runs out.",
+  "controls": "Swipe a gem horizontally or vertically to swap it with an adjacent gem.",
+  "core_loop": "Swipe gems to form matches of 3 or 4 -> trigger cascades and Row Blasters -> earn combo points and fill the Fever bar toward the target score.",
+  "features": [
+    "Tutorial hand guidance",
+    "Row Blaster (match-4 line clear power-up)",
+    "Combo multiplier cascades",
+    "Fever Time (x2 points and free blasters)",
+    "Bonus Blast end-of-round blaster detonation",
+    "3-star target score progression"
+  ],
+  "progression": "Score escalates rapidly via Combo x2/x4 cascades, Row Blasters, and Fever Time x2 multiplier until reaching the 4000-point target and triggering Bonus Blast.",
+  "end_card": true,
+  "tone": "Bright, juicy, fast-paced arcade puzzle",
+  "hook_idea": "Massive Combo x4 'BRILLIANT!' cascade with Row Blaster laser clear (+1760 points) at t=7.5-9.2s"
+}

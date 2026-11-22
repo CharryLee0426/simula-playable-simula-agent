@@ -1,0 +1,44 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/highlight.mp4",
+  "score": 79.7,
+  "best": "c",
+  "usd": 0.6168,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:18:34.381Z",
+      "ms": 0,
+      "note": "raw recording exists (reused)"
+    },
+    "index": {
+      "at": "2026-11-22T10:18:34.383Z",
+      "ms": 0,
+      "note": "index exists (reused)"
+    },
+    "cut": {
+      "at": "2026-11-22T10:19:26.338Z",
+      "ms": 51953,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:23:02.082Z",
+      "ms": 215741,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:25:09.823Z",
+      "ms": 127737,
+      "note": "best c (feature-montage) score 79.7"
+    },
+    "friction": {
+      "at": "2026-11-22T10:25:21.580Z",
+      "ms": 11752,
+      "note": "4 items"
+    },
+    "report": {
+      "at": "2026-11-22T09:50:03.645Z",
+      "ms": 8,
+      "note": "trace.html written · total spend $0.393"
+    }
+  }
+}

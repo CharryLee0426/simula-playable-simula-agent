@@ -1,0 +1,53 @@
+{
+  "game_s": 59.233333333333334,
+  "frames": 1777,
+  "fps": 30,
+  "planner_calls": 25,
+  "planner_failures": 0,
+  "actions": 27,
+  "turns": 25,
+  "end_card_at": 54.033333333334404,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@window": 1,
+    "pointerup@window": 1,
+    "touchend@window": 1,
+    "click@window": 1,
+    "pointerdown@canvas": 1,
+    "pointermove@canvas": 1,
+    "pointerup@canvas": 1,
+    "pointercancel@canvas": 1,
+    "contextmenu@canvas": 1,
+    "click@element": 3
+  },
+  "events": [
+    {
+      "t": 57400.00000000132,
+      "frame": 1722,
+      "kind": "cta",
+      "via": "mraid.open",
+      "url": "https://example.com/app"
+    }
+  ],
+  "audio": {
+    "sounds": 355,
+    "skipped": 1,
+    "has_audio": true,
+    "peak": 1.525
+  },
+  "perf": {
+    "step_ms_avg": 7.5,
+    "shot_ms_avg": 82.2
+  },
+  "title": "Orb Merge",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "2048 ball drop (Orb Merge). Score: 450, Best orb: 64. Tapping PLAY NOW on end card.",
+  "stuck_events": 0
+}

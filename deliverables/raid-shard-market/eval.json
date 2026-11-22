@@ -1,0 +1,335 @@
+{
+  "best": "c",
+  "score": 79.7,
+  "pass": true,
+  "pairwise": {
+    "a": "c",
+    "b": "b",
+    "a_first": "A",
+    "b_first": "B",
+    "winner": "c"
+  },
+  "vs_baseline": {
+    "baseline": "base_random",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.293,
+        "loading_ratio": 0,
+        "action": 0.352,
+        "hook_ratio": 1.27,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.877,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.852,
+        "arc": 0.631,
+        "H": 79.7
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 7,
+        "human_play": 8,
+        "action": 7,
+        "hook": 7,
+        "polish": 7.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 11,
+          "issue": "The jump cut between collecting gold and walking to the worker pad is slightly abrupt."
+        },
+        "best_moment": {
+          "t": 15,
+          "why": "Collecting a large arc of gold from the market bin while the hired worker delivers shards."
+        },
+        "summary": "This highlight clearly demonstrates the core arcade-idle loop of mining shards, stocking the market, collecting gold, and hiring workers. The pacing is brisk with natural joystick movement, making it a strong, runnable ad creative.",
+        "J": 77.5,
+        "J_samples": [
+          78,
+          77
+        ]
+      },
+      "score": 78.5
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.333,
+        "loading_ratio": 0,
+        "action": 0.34,
+        "hook_ratio": 0.873,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.877,
+        "shots": 7,
+        "avg_shot_s": 2.858,
+        "touches_per_10s": 3.499,
+        "moment_quality": 0.89,
+        "arc": 0.85,
+        "H": 78.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8,
+        "action": 8,
+        "hook": 6.5,
+        "polish": 7.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 1,
+          "issue": "Slow start with the tutorial banner before the resource-gathering action really picks up."
+        },
+        "best_moment": {
+          "t": 15,
+          "why": "Hauling a massive glowing stack of 91 green shards through the dungeon and dumping them into the market bin."
+        },
+        "summary": "This highlight clearly demonstrates the core arcade-idle loop of mining shards, stocking the market, collecting gold, and hiring workers. The pacing is tight with clean cuts and natural-looking joystick movement, making it a strong, runnable ad.",
+        "J": 79.8,
+        "J_samples": [
+          80.8,
+          78.8
+        ]
+      },
+      "score": 79.2,
+      "wins": 0
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.256,
+        "loading_ratio": 0,
+        "action": 0.359,
+        "hook_ratio": 0.82,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.877,
+        "shots": 9,
+        "avg_shot_s": 2.223,
+        "touches_per_10s": 3.999,
+        "moment_quality": 0.878,
+        "arc": 0.572,
+        "H": 77.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8,
+        "action": 8,
+        "hook": 7,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Opens with a relatively slow walk and tutorial prompt instead of jumping straight into high-stacking action."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Hauling a massive, towering stack of 90 glowing green shards across the dungeon into the market bin."
+        },
+        "summary": "This highlight clearly demonstrates the core arcade-idle loop of mining shards, stocking the market, and hiring workers with natural human-like movement. The pacing is brisk with clean cuts, culminating in a satisfyingly huge stack of shards that makes it a strong ad candidate.",
+        "J": 81.5,
+        "J_samples": [
+          80.8,
+          82.2
+        ]
+      },
+      "score": 79.7,
+      "wins": 2
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.366,
+        "loading_ratio": 0,
+        "action": 0.307,
+        "hook_ratio": 1.013,
+        "coverage": 0.667,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": false,
+          "progression": true
+        },
+        "human_timing": 0.877,
+        "shots": 2,
+        "avg_shot_s": 10.002,
+        "touches_per_10s": 2.999,
+        "moment_quality": 0.727,
+        "arc": 0.85,
+        "H": 67.3
+      },
+      "judge": {
+        "core_loop_clarity": 5.5,
+        "features": 3.5,
+        "human_play": 6.5,
+        "action": 3,
+        "hook": 2,
+        "polish": 5,
+        "would_run": 3,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 4 seconds are completely static with a tutorial prompt, offering no hook."
+        },
+        "best_moment": {
+          "t": 15,
+          "why": "Carrying the glowing stack of 35 shards and depositing them into the market bin."
+        },
+        "summary": "This clip is too slow and static, spending the first four seconds on a tutorial prompt and only showing the most basic shard collection and deposit. It misses the exciting arcade-idle progression like hiring workers, upgrading the mine, and collecting piles of gold.",
+        "J": 41.8,
+        "J_samples": [
+          41.2,
+          42.4
+        ]
+      },
+      "score": 53.3
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/raid-shard-market-04d04a-20261122-0931/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.286,
+        "loading_ratio": 0,
+        "action": 0.349,
+        "hook_ratio": 0.904,
+        "coverage": 0.667,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": false,
+          "progression": true
+        },
+        "human_timing": 0.877,
+        "shots": 6,
+        "avg_shot_s": 3.335,
+        "touches_per_10s": 4.498,
+        "moment_quality": 0.726,
+        "arc": 0.85,
+        "H": 70.5
+      },
+      "judge": {
+        "core_loop_clarity": 5,
+        "features": 6,
+        "human_play": 7.5,
+        "action": 4,
+        "hook": 3,
+        "polish": 7,
+        "would_run": 4,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 3 seconds are a static tutorial screen with a pointing hand and zero movement."
+        },
+        "best_moment": {
+          "t": 5,
+          "why": "Gold bars rapidly flying from the market bin to the player's stack as customers buy shards."
+        },
+        "summary": "The highlight shows the market bin, gold collection, and upgrade pads, but completely misses the satisfying mechanic of mining and hauling a towering stack of shards. Combined with a static 3-second tutorial intro and slow pacing, it lacks the action needed for a strong ad.",
+        "J": 52.2,
+        "J_samples": [
+          53,
+          51.4
+        ]
+      },
+      "score": 60.4
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 53.3
+    },
+    {
+      "id": "base_random",
+      "score": 60.4
+    }
+  ],
+  "separation": 19.3,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

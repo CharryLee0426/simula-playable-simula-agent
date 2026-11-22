@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Fast-Paced Feature and Upgrade Montage",
+  "clips": [
+    {
+      "start": 8.4,
+      "end": 10.8,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Quick intro to manual cannon aiming against incoming goblins"
+    },
+    {
+      "start": 17.5,
+      "end": 19.6,
+      "speed": 1,
+      "role": "feature",
+      "why": "Explosive barrel blast clears the center lane"
+    },
+    {
+      "start": 21.5,
+      "end": 23.5,
+      "speed": 1.15,
+      "role": "progression",
+      "why": "Quickly shows Fire Mage recruitment from upgrade cards"
+    },
+    {
+      "start": 24,
+      "end": 26.5,
+      "speed": 1,
+      "role": "feature",
+      "why": "Fire Mage lobs exploding fireballs while cannon fires"
+    },
+    {
+      "start": 31,
+      "end": 33.8,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Rapid lane-switching defense tightened for pace"
+    },
+    {
+      "start": 44,
+      "end": 48.3,
+      "speed": 1.5,
+      "role": "progression",
+      "why": "Selects Level 2 Central Cannon for +30% fire rate"
+    },
+    {
+      "start": 49,
+      "end": 52,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Demonstrates the faster cannon fire rate in action"
+    },
+    {
+      "start": 62.5,
+      "end": 66.23,
+      "speed": 1.05,
+      "role": "climax",
+      "why": "High-action ogre siege finale across both castle walls"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

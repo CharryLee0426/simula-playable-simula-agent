@@ -1,0 +1,69 @@
+{
+  "summary": "The first-time experience was smooth and engaging, with the player quickly understanding the match-3 mechanics, triggering combos and Fever Time, and surpassing the 4000-point target. The only minor friction came from a slightly slow 5.1-second start to the first successful match and an abrupt transition to the end card while the player was still swiping.",
+  "items": [
+    {
+      "t": 0,
+      "end": 5.1,
+      "type": "pacing",
+      "severity": "low",
+      "title": "Slightly slow time to first successful match",
+      "evidence": "It took 5.1 seconds from the first playable frame for the player's first swipe to visibly succeed (S1), even though the tutorial hand was already visible at 2.0 seconds.",
+      "suggestion": "Allow the player's swipe input to register immediately as soon as the board appears, rather than waiting for an intro or tutorial hand animation to finish.",
+      "signals": [
+        "S1"
+      ],
+      "image": "obs/obs_0006.jpg"
+    },
+    {
+      "t": 19,
+      "end": 20.3,
+      "type": "ui",
+      "severity": "low",
+      "title": "Abrupt end-card transition interrupts active swiping",
+      "evidence": "The end card appeared at 19.0 seconds while the timer still showed 36 seconds remaining at 17.5 seconds (S3), causing the player's ongoing gameplay swipe to have no visible effect at 20.3 seconds (S2).",
+      "suggestion": "Lock board input cleanly and display a brief 1-second 'Round Complete' or 'Bonus Blast Complete' transition before fading in the end card so active swipes are not cut off mid-gesture.",
+      "signals": [
+        "S2",
+        "S3"
+      ],
+      "image": "obs/obs_0012.jpg"
+    },
+    {
+      "t": 19,
+      "end": null,
+      "type": "pacing",
+      "severity": "low",
+      "title": "Early end-card trigger before timer expires",
+      "evidence": "The round ended and showed the end card at 19.0 seconds (S3) with 36 seconds still left on the 45-second timer, which may feel premature to players enjoying Fever Time.",
+      "suggestion": "If ending the playable early after 'Target Smashed!' is intentional, add a clear 'Bonus Time Complete!' message on the transition so players understand why the round ended with time left on the clock.",
+      "signals": [
+        "S3"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 5.0666666666666655,
+      "kind": "time_to_first_success",
+      "detail": "5.1 s from the first playable frame until an input visibly worked",
+      "obs": 6,
+      "image": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/obs/obs_0006.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 20.29999999999998,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 2%, 58.6% of pixels changed) — the player had tried: Match-3 gameplay, score 6180, timer 36s, FEVER x2 bar",
+      "obs": 12,
+      "image": "/home/user/simula-playable-simula-agent/runs/gem-swap-b73e44-20261122-1048/obs/obs_0012.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 19,
+      "kind": "end_card",
+      "detail": "end card appeared at 19.0 s (session 25.4 s)"
+    }
+  ]
+}

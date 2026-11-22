@@ -1,0 +1,51 @@
+{
+  "id": "a",
+  "title": "Explosive Barrel Hook to Ogre Siege Climax",
+  "clips": [
+    {
+      "start": 17.4,
+      "end": 19.6,
+      "speed": 1,
+      "role": "hook",
+      "why": "Cannonball detonates the red explosive barrel in a massive shockwave"
+    },
+    {
+      "start": 8.3,
+      "end": 11.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Shows manual drag-to-aim cannon firing at left and right goblin waves"
+    },
+    {
+      "start": 23.6,
+      "end": 27.3,
+      "speed": 1,
+      "role": "feature",
+      "why": "Recruited Fire Mage deploys on the tower and lobs fireballs alongside the cannon"
+    },
+    {
+      "start": 30.8,
+      "end": 34.2,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Fast multi-lane aiming as goblins push closer to the castle wall"
+    },
+    {
+      "start": 49,
+      "end": 52.2,
+      "speed": 1,
+      "role": "progression",
+      "why": "Upgraded central cannon fires noticeably faster at advancing enemies"
+    },
+    {
+      "start": 62.5,
+      "end": 66.9,
+      "speed": 1,
+      "role": "climax",
+      "why": "Heavy siege with large ogres and goblins attacking both walls"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

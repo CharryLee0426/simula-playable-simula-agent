@@ -1,0 +1,19 @@
+{
+  "title": "Word Hunt · Scrambly",
+  "genre": "Word Puzzle",
+  "objective": "Swipe to connect adjacent letters on a 4x4 grid to form target words (SUN, SEA, SAND) and earn cash rewards.",
+  "controls": "Tap or swipe across adjacent letter tiles on the 4x4 grid to connect them into words, or tap the Hint button.",
+  "core_loop": "Swipe across letters on the grid to form a listed target word -> earn the displayed cash reward ($0.30-$0.40) -> add to the total cash balance.",
+  "features": [
+    "4x4 letter grid",
+    "Target word list with cash values (SUN $0.30, SEA $0.30, SAND $0.40)",
+    "Swipe-to-connect orange line trail",
+    "Cash balance counter ($0.00)",
+    "Hint button",
+    "Tutorial highlight on first word (SUN)"
+  ],
+  "progression": "Complete all target words on the current board to earn cash rewards and advance to subsequent word boards.",
+  "end_card": false,
+  "tone": "Playful, cozy, reward-driven",
+  "hook_idea": "0.0-2.0s showing the $0.00 cash counter, fox mascot, and the highlighted 'SUN' ($0.30) tutorial prompt, which immediately communicates the play-for-rewards hook."
+}

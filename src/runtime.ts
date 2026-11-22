@@ -41,6 +41,7 @@ export function markPhase(phase: string, ms: number, note?: string): void {
 	const { paths } = sc();
 	const st = loadState(paths);
 	if (!st) return;
+	if (note?.includes("reused") && st.phases[phase]) return; // keep the timing of the run that did the work
 	st.phases[phase] = { at: new Date().toISOString(), ms, ...(note ? { note } : {}) };
 	saveState(paths, st);
 }

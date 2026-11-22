@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/sky-stack-feeb04-20261122-1041/highlight.mp4",
+  "score": 80.3,
+  "best": "b",
+  "usd": 0.3378,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T10:43:07.382Z",
+      "ms": 87081,
+      "note": "29.0 s recorded, 11 inputs, 14 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T10:43:33.497Z",
+      "ms": 26112,
+      "note": "11 moments, genre: Arcade timing stacker"
+    },
+    "cut": {
+      "at": "2026-11-22T10:44:26.589Z",
+      "ms": 53090,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T10:47:58.025Z",
+      "ms": 211434,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T10:49:32.603Z",
+      "ms": 94576,
+      "note": "best b (learn-then-escalate) score 80.3"
+    },
+    "friction": {
+      "at": "2026-11-22T10:49:47.683Z",
+      "ms": 15064,
+      "note": "4 items"
+    }
+  }
+}

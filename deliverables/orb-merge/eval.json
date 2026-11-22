@@ -1,0 +1,340 @@
+{
+  "best": "b",
+  "score": 87.2,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "b",
+    "a_first": "B",
+    "b_first": "A",
+    "winner": "b"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/orb-merge-e9e132-20261122-1037/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.205,
+        "loading_ratio": 0,
+        "action": 0.472,
+        "hook_ratio": 1.278,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.974,
+        "shots": 8,
+        "avg_shot_s": 2.502,
+        "touches_per_10s": 6.496,
+        "moment_quality": 0.947,
+        "arc": 1,
+        "H": 90.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 9,
+        "hook": 9,
+        "polish": 8,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Abrupt cut from the 64-orb hook (score 419) back to an earlier board state (score 44), which is slightly jarring."
+        },
+        "best_moment": {
+          "t": 1,
+          "why": "Immediate chain merge into a 64-orb with 'COMBO x2!' and 'Halfway to the goal!' text, creating a strong opening hook."
+        },
+        "summary": "This 19-second highlight opens with a high-energy 64-orb combo hook before showcasing the core merging loop, Bomb power-up, and a clean 'PLAY NOW' end card. Aside from a slightly jarring score reset after the opening hook, the pacing, clarity, and human-like aiming make it a strong ad creative.",
+        "J": 87.4,
+        "J_samples": [
+          87.4,
+          87.4
+        ]
+      },
+      "score": 88.8,
+      "wins": 0
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/orb-merge-e9e132-20261122-1037/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.093,
+        "loading_ratio": 0,
+        "action": 0.464,
+        "hook_ratio": 0.625,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.974,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 5.5,
+        "moment_quality": 0.963,
+        "arc": 1,
+        "H": 88.4
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 8.5,
+        "hook": 7.5,
+        "polish": 9,
+        "would_run": 9,
+        "worst_moment": {
+          "t": 9,
+          "issue": "Brief lull in action as a couple of orbs are dropped without immediate merges."
+        },
+        "best_moment": {
+          "t": 5,
+          "why": "Big Merge creates a 32-orb, unlocks the Bomb power-up, and immediately clears surrounding orbs."
+        },
+        "summary": "This is a crisp, well-paced highlight that clearly demonstrates the core 2048-style drop-and-merge loop, combo chains, and Bomb power-up. It feels like natural human play and finishes cleanly on a strong call-to-action end card.",
+        "J": 86.2,
+        "J_samples": [
+          87.4,
+          85
+        ]
+      },
+      "score": 87.2,
+      "wins": 2
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/orb-merge-e9e132-20261122-1037/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.14,
+        "loading_ratio": 0,
+        "action": 0.452,
+        "hook_ratio": 0.642,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.974,
+        "shots": 8,
+        "avg_shot_s": 2.498,
+        "touches_per_10s": 6.505,
+        "moment_quality": 0.946,
+        "arc": 1,
+        "H": 86.7
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 8,
+        "hook": 7,
+        "polish": 8.5,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 7,
+          "issue": "The 'Tap the BOMB, then drop it!' prompt overlaps with the 'BIG MERGE!' banner, creating brief visual clutter."
+        },
+        "best_moment": {
+          "t": 17,
+          "why": "Satisfying chain reaction into a 64 orb with 'COMBO x2!' and 'Halfway to the goal!' right before the clean end card."
+        },
+        "summary": "A crisp, well-paced 19-second highlight that clearly demonstrates the 2048-style orb merging loop, combo chains, Bomb power-up, and Speed Up mode. Despite starting with tutorial prompts and having a brief UI text overlap at 7 seconds, it looks like natural human play and finishes with a strong climax and end card.",
+        "J": 83.6,
+        "J_samples": [
+          82.2,
+          85
+        ]
+      },
+      "score": 85
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/orb-merge-e9e132-20261122-1037/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.333,
+        "loading_ratio": 0,
+        "action": 0.405,
+        "hook_ratio": 0.63,
+        "coverage": 0.5,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": false,
+          "end_card": false
+        },
+        "human_timing": 0.974,
+        "shots": 3,
+        "avg_shot_s": 6.661,
+        "touches_per_10s": 5.004,
+        "moment_quality": 0.728,
+        "arc": 0.7,
+        "H": 62.1
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 7,
+        "human_play": 8,
+        "action": 7,
+        "hook": 6,
+        "polish": 7.5,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Starts with a 3-second static tutorial prompt ('Drag to aim, release to drop!') before any orb is actually dropped."
+        },
+        "best_moment": {
+          "t": 16,
+          "why": "Chain merge into a 32-orb triggers 'COMBO x2!', 'BIG MERGE!', and unlocks the Bomb power-up."
+        },
+        "summary": "This highlight clearly demonstrates the 2048-style orb merging core loop, combo chains, and unlocking the Bomb power-up with natural-feeling player pacing. Trimming the slow tutorial opening and extending slightly to show the Bomb actually being used would make it an even stronger ad.",
+        "J": 75.6,
+        "J_samples": [
+          78,
+          73.2
+        ]
+      },
+      "score": 69.5
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/orb-merge-e9e132-20261122-1037/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.366,
+        "loading_ratio": 0,
+        "action": 0.381,
+        "hook_ratio": 0.685,
+        "coverage": 0.5,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": false,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.974,
+        "shots": 5,
+        "avg_shot_s": 4.002,
+        "touches_per_10s": 5.497,
+        "moment_quality": 0.718,
+        "arc": 0.606,
+        "H": 60.7
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 6.5,
+        "human_play": 6.5,
+        "action": 6,
+        "hook": 4,
+        "polish": 4,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 15,
+          "issue": "TIME'S UP! appears mid-video and then abruptly cuts back to earlier gameplay at score 194 with no end card."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "Chain merge into a 64-orb with COMBO x2!, +128 points, and unlocking the Bomb power-up."
+        },
+        "summary": "The highlight clearly demonstrates the 2048 orb-merging loop and features a great 64-orb combo chain, but the first three seconds are wasted on a static tutorial screen. The editing order is jarring—jumping backwards in score, showing a Time's Up screen mid-clip, and ending abruptly without an end card.",
+        "J": 59.3,
+        "J_samples": [
+          63.6,
+          55
+        ]
+      },
+      "score": 59.9
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 69.5
+    },
+    {
+      "id": "base_random",
+      "score": 59.9
+    }
+  ],
+  "separation": 17.7,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

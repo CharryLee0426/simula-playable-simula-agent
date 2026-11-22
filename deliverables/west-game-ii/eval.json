@@ -1,0 +1,335 @@
+{
+  "best": "b",
+  "score": 83.4,
+  "pass": true,
+  "pairwise": {
+    "a": "c",
+    "b": "b",
+    "a_first": "B",
+    "b_first": "A",
+    "winner": "b"
+  },
+  "vs_baseline": {
+    "baseline": "base_random",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.136,
+        "loading_ratio": 0,
+        "action": 0.385,
+        "hook_ratio": 0.908,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.816,
+        "shots": 8,
+        "avg_shot_s": 2.504,
+        "touches_per_10s": 3.494,
+        "moment_quality": 0.811,
+        "arc": 0.85,
+        "H": 83.7
+      },
+      "judge": {
+        "core_loop_clarity": 8,
+        "features": 7.5,
+        "human_play": 7.5,
+        "action": 7.5,
+        "hook": 8,
+        "polish": 7,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Abruptly cuts from the exciting whiskey glass hook to a basic 'DRAG TO MOVE' tutorial prompt."
+        },
+        "best_moment": {
+          "t": 17,
+          "why": "Cowboy fends off a large, escalating wave of outlaws including heavy enemies before dashing to collect a huge pile of gold."
+        },
+        "summary": "This highlight effectively demonstrates the core loop of auto-shooting outlaws, collecting gold, and stepping on pads to upgrade defenses. The opening whiskey glass slam is a strong hook, and the escalating enemy waves keep the action engaging throughout.",
+        "J": 75.9,
+        "J_samples": [
+          78.6,
+          73.2
+        ]
+      },
+      "score": 79.4
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 19.967,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.023,
+        "loading_ratio": 0,
+        "action": 0.395,
+        "hook_ratio": 0.664,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.816,
+        "shots": 6,
+        "avg_shot_s": 3.333,
+        "touches_per_10s": 2.5,
+        "moment_quality": 0.876,
+        "arc": 0.85,
+        "H": 85.7
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8,
+        "action": 8,
+        "hook": 7,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Starts with tutorial text and standing on a build pad rather than immediate combat."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "The DEPUTIES unlock slams down and shatters while the cowboy and new ally blast a large wave of outlaws."
+        },
+        "summary": "This 20-second highlight clearly demonstrates the core loop of building a gold mine, auto-shooting waves of outlaws, and unlocking deputies. It features natural human-like movement, steady action, and strong visual progression, making it a very effective ad highlight.",
+        "J": 81.5,
+        "J_samples": [
+          82.2,
+          80.8
+        ]
+      },
+      "score": 83.4,
+      "wins": 2
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.068,
+        "loading_ratio": 0,
+        "action": 0.375,
+        "hook_ratio": 1.107,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.816,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 2.5,
+        "moment_quality": 0.788,
+        "arc": 0.693,
+        "H": 85.8
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8.5,
+        "human_play": 8,
+        "action": 7.5,
+        "hook": 8,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 5,
+          "issue": "The scripted camera pan to the cave entrance interrupts the player's movement and briefly slows the pace."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "A giant whiskey glass slams down to unlock Deputies, leading directly into intense combat against a large wave of outlaws."
+        },
+        "summary": "This highlight clearly demonstrates the core loop of collecting gold, building town defenses, and auto-shooting waves of outlaws. The pacing is engaging with natural joystick movement and punchy unlock animations, making it a strong ad creative.",
+        "J": 81.8,
+        "J_samples": [
+          80.4,
+          83.2
+        ]
+      },
+      "score": 83.6,
+      "wins": 0
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.317,
+        "loading_ratio": 0,
+        "action": 0.315,
+        "hook_ratio": 0.793,
+        "coverage": 0.333,
+        "coverage_detail": {
+          "core_loop": false,
+          "feature": true,
+          "progression": false
+        },
+        "human_timing": 0.816,
+        "shots": 1,
+        "avg_shot_s": 20.013,
+        "touches_per_10s": 2.498,
+        "moment_quality": 0.56,
+        "arc": 0.544,
+        "H": 51.3
+      },
+      "judge": {
+        "core_loop_clarity": 3.5,
+        "features": 3,
+        "human_play": 5,
+        "action": 2,
+        "hook": 2,
+        "polish": 5,
+        "would_run": 2,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 8 seconds are spent slowly wiggling the joystick in an empty tutorial area with no enemies or action."
+        },
+        "best_moment": {
+          "t": 12,
+          "why": "The gold mine construction animation with the pickaxe and minecart adds a brief moment of visual payoff."
+        },
+        "summary": "This clip only captures the slow opening tutorial of building a gold mine, completely missing the core combat and town defense mechanics. With zero outlaws, no shooting, and minimal movement, it lacks the action and hook needed for an effective ad highlight.",
+        "J": 31.9,
+        "J_samples": [
+          32.8,
+          31
+        ]
+      },
+      "score": 40.6
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/west-game-ii-9eae55-20261122-0950/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.195,
+        "loading_ratio": 0,
+        "action": 0.364,
+        "hook_ratio": 0.663,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true
+        },
+        "human_timing": 0.816,
+        "shots": 5,
+        "avg_shot_s": 4.003,
+        "touches_per_10s": 2.997,
+        "moment_quality": 0.647,
+        "arc": 0.7,
+        "H": 73.9
+      },
+      "judge": {
+        "core_loop_clarity": 7,
+        "features": 7,
+        "human_play": 7,
+        "action": 6,
+        "hook": 3,
+        "polish": 4.5,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Opens on a static 3-second tutorial prompt instead of immediate gameplay action."
+        },
+        "best_moment": {
+          "t": 14,
+          "why": "Cowboy and deputies blast a wave of outlaws while the fence upgrades with a bright sparkle effect."
+        },
+        "summary": "The highlight shows off key features like deputies, gold collection, and fence upgrades, making the core loop easy to understand. However, opening with a static tutorial screen and using jarring cuts where the gold count jumps around hurts the pacing and polish.",
+        "J": 57.6,
+        "J_samples": [
+          56.2,
+          59
+        ]
+      },
+      "score": 64.9
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 40.6
+    },
+    {
+      "id": "base_random",
+      "score": 64.9
+    }
+  ],
+  "separation": 18.5,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}
