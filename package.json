@@ -1,0 +1,28 @@
+{
+  "name": "simula-playable-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playable simulation agent: loads any HTML5 playable, learns and plays it like a person under a virtual clock, records it at 30 fps with game audio, cuts a 20 s 9:16 highlight, flags friction and scores itself. Orchestrated with Pi Durable.",
+  "type": "module",
+  "engines": { "node": ">=22.19.0" },
+  "bin": { "playable-agent": "src/cli.ts" },
+  "scripts": {
+    "setup": "node src/cli.ts setup",
+    "doctor": "node src/cli.ts doctor",
+    "run": "node src/cli.ts run",
+    "batch": "node src/cli.ts batch",
+    "report": "node src/cli.ts report",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@earendil-works/chord": "^1.6.0",
+    "@earendil-works/pi-ai": "^1.6.0",
+    "@earendil-works/pi-durable": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  },
+  "license": "UNLICENSED"
+}

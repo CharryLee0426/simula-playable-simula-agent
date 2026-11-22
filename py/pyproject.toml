@@ -1,0 +1,13 @@
+[project]
+name = "simula-playable-py"
+version = "0.1.0"
+description = "Browser worker (Playwright) and video tools (ffmpeg) for the playable agent"
+requires-python = ">=3.11"
+dependencies = [
+  "playwright==1.63.0",
+  "numpy>=2.0",
+  "pillow>=11.0",
+]
+
+[tool.uv]
+package = false
