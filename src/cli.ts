@@ -131,7 +131,7 @@ export async function runSession(playableArg: string, opts: { session?: string; 
  *  candidates are shipped as 540×960 versions (the full-resolution ones stay in the session directory). */
 async function exportDeliverable(dir: string, outDir: string): Promise<void> {
 	ensureDir(outDir);
-	const files = ["highlight.mp4", "friction.md", "friction.json", "eval.json", "trace.html", "game_model.json", "moments.json", "session.json", "summary.json", "plans.jsonl", "actions.jsonl", "observations.jsonl", "ledger.jsonl", "trace.jsonl", "config.json", "state.json"];
+	const files = ["highlight.mp4", "friction.md", "friction.json", "eval.json", "trace.html", "game_model.json", "moments.json", "session.json", "summary.json", "plans.jsonl", "actions.jsonl", "observations.jsonl", "reflexes.jsonl", "ledger.jsonl", "trace.jsonl", "config.json", "state.json"];
 	for (const f of files) if (existsSync(join(dir, f))) copyFileSync(join(dir, f), join(outDir, f));
 	for (const f of readdirSync(dir).filter((x) => /^edl_.*\.json$/.test(x))) copyFileSync(join(dir, f), join(outDir, f));
 	if (existsSync(join(dir, "raw.mp4"))) {

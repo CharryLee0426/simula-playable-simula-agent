@@ -86,8 +86,9 @@ export class BrowserWorker {
 	observe(p: { width?: number; quality?: number; dom?: boolean; marks?: boolean } = {}) {
 		return this.call<Observation>("observe", p, 120_000);
 	}
-	peek(width = 360) {
-		return this.call<{ path: string; frame: number }>("peek", { width }, 60_000);
+	/** Quick screenshot for frame-by-frame checks; `zone` = [y0, x0, y1, x1] (0-1000) crops to an attention window. */
+	peek(width = 360, zone?: [number, number, number, number]) {
+		return this.call<{ path: string; frame: number }>("peek", { width, ...(zone ? { zone } : {}) }, 60_000);
 	}
 	async close(): Promise<any> {
 		if (this.exited) return {};

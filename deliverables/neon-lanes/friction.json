@@ -1,44 +1,32 @@
 {
-  "summary": "The core 3-lane runner loop and jump tutorial worked well, taking the player to 246m with 21 coins. However, late-registering swipes caused frustrating crashes, and both the revive popup and game-over transition suffered from low-contrast UI and dead-air delays.",
+  "summary": "The first-time experience is mostly smooth with clear lane-switching and jumping tutorials, but high-speed crashes feel unresponsive when late swipes fail to register. Additionally, the Game Over end card fades in with low-contrast text and no immediately visible call-to-action, leaving the player briefly unsure of what to do.",
   "items": [
     {
-      "t": 11.1,
-      "end": 20.2,
-      "type": "frustration",
-      "severity": "high",
-      "title": "Swipes fail to register before crashing into tall blocks",
-      "evidence": "At t=11.1s and t=20.2s, the player saw tall pink X blocks ahead and attempted to swipe away, but crashed before the input registered (no_effect).",
-      "suggestion": "Increase swipe input responsiveness and add input buffering during lane transitions, or slightly increase the spacing before tall pink X blocks at higher speeds.",
-      "signals": [
-        "S3",
-        "S4"
-      ],
-      "image": "obs/obs_0010.jpg"
-    },
-    {
-      "t": 20.2,
-      "end": 22.2,
+      "t": 23.4,
+      "end": null,
       "type": "ui",
-      "severity": "medium",
-      "title": "Faint Game Over screen with no buttons before end card",
-      "evidence": "At t=20.2s, the screen showed faint, low-contrast 'GAME OVER' text with SPD 0 and no actionable buttons, leaving a 2-second dead-air gap until the end card appeared at t=22.2s.",
-      "suggestion": "Make the 'GAME OVER' text high-contrast immediately on crash and transition directly to the end card or display a 'PLAY NOW' button right away.",
+      "severity": "high",
+      "title": "Low-contrast Game Over screen with missing initial CTA",
+      "evidence": "At t=23.4s, the end card appeared (S7) but the decider rated only 32% confidence that a first-time player knows what to do (S2). In the screenshot, 'GAME OVER' is very faint inside the sun and no 'Play now' button is visible yet.",
+      "suggestion": "Increase the contrast and opacity of the 'GAME OVER' header on the end card, and display the 'Play now' CTA button immediately without a fade-in delay.",
       "signals": [
         "S2",
         "S6",
         "S7"
       ],
-      "image": "obs/obs_0014.jpg"
+      "image": "obs/obs_0013_marks.jpg"
     },
     {
-      "t": 11.1,
-      "end": null,
-      "type": "ui",
+      "t": 15.7,
+      "end": 23.4,
+      "type": "frustration",
       "severity": "medium",
-      "title": "Low-contrast Revive button on crash popup",
-      "evidence": "On the 'CRASHED! Keep your run going?' popup at t=11.1s, the central 'REVIVE' button is dark and blends into the road, while 'No thanks' is bright white and underlined.",
-      "suggestion": "Style the 'REVIVE (1 FREE)' button with a bright neon fill and glowing border so it clearly stands out as the primary action over 'No thanks'.",
+      "title": "Late swipes fail to register before high-speed collisions",
+      "evidence": "At t=15.7s (S3, S5) and t=23.4s (S4), the player's swipe input had no visible effect right before crashing into a pink block, particularly at high speed (SPD 81 at 273m).",
+      "suggestion": "Add input buffering and slightly faster lane-switch interpolation at higher speeds (SPD 60+) so late-frame dodges still register cleanly.",
       "signals": [
+        "S3",
+        "S4",
         "S5"
       ],
       "image": "obs/obs_0010.jpg"
@@ -48,9 +36,9 @@
       "end": 2,
       "type": "pacing",
       "severity": "low",
-      "title": "Slight delay to first successful lane switch",
-      "evidence": "It took 2.0s from the first playable frame for the player's first swipe to visibly register during the 'Swipe to switch lanes!' tutorial.",
-      "suggestion": "Trigger the lane-switch tutorial prompt immediately at 0.0s with a slightly slower initial car speed so first-time players can complete their first dodge within 1 second.",
+      "title": "2.0s delay before first swipe visibly works",
+      "evidence": "From t=0.0s to t=2.0s (S1), it took 2.0s for the player's first input to visibly move the car despite the 'Swipe to switch lanes!' prompt and hand icon being on screen.",
+      "suggestion": "Enable swipe detection immediately from the first playable frame (t=0.0s) so the player can switch lanes without waiting for any intro lock.",
       "signals": [
         "S1"
       ],
@@ -65,53 +53,53 @@
       "kind": "time_to_first_success",
       "detail": "2.0 s from the first playable frame until an input visibly worked",
       "obs": 5,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0005.jpg"
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0005.jpg"
     },
     {
       "id": "S2",
-      "t": 20.16666666666665,
+      "t": 23.4333333333332,
       "kind": "unclear_screen",
-      "detail": "decider: only 30% that a first-time player knows what to do (screen: fail)",
-      "obs": 14,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+      "detail": "decider: only 32% that a first-time player knows what to do (screen: end_card)",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0013_marks.jpg"
     },
     {
       "id": "S3",
-      "t": 11.06666666666669,
+      "t": 15.666666666666773,
       "kind": "no_effect",
-      "detail": "previous input had no visible effect (decider 9%, 30.2% of pixels changed) — the player had tried: Car in right lane approaching tall pink X block; coins in middle lane",
+      "detail": "previous input had no visible effect (decider 22%, 44.4% of pixels changed) — the player had tried: 3-lane synthwave runner, car in center lane, pink block ahead",
       "obs": 10,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0010.jpg"
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0010.jpg"
     },
     {
       "id": "S4",
-      "t": 20.16666666666665,
+      "t": 23.4333333333332,
       "kind": "no_effect",
-      "detail": "previous input had no visible effect (decider 2%, 29.6% of pixels changed) — the player had tried: 241m, car in middle lane, tall pink X block directly ahead, coins in right lane",
-      "obs": 14,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+      "detail": "previous input had no visible effect (decider 8%, 43.9% of pixels changed) — the player had tried: Gameplay at 273m, SPD 81, Magnet active",
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0013.jpg"
     },
     {
       "id": "S5",
-      "t": 11.06666666666669,
+      "t": 15.666666666666773,
       "kind": "fail_screen",
       "detail": "a fail / game-over screen",
       "obs": 10,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0010.jpg"
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0010.jpg"
     },
     {
       "id": "S6",
-      "t": 20.16666666666665,
+      "t": 23.4333333333332,
       "kind": "fail_screen",
       "detail": "a fail / game-over screen",
-      "obs": 14,
-      "image": "/home/user/simula-playable-simula-agent/runs/neon-lanes-029180-20261122-1033/obs/obs_0014.jpg"
+      "obs": 13,
+      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-3/obs/obs_0013.jpg"
     },
     {
       "id": "S7",
-      "t": 22.166666666666575,
+      "t": 23.4333333333332,
       "kind": "end_card",
-      "detail": "end card appeared at 22.2 s (session 26.9 s)"
+      "detail": "end card appeared at 23.4 s (session 28.1 s)"
     }
   ]
 }

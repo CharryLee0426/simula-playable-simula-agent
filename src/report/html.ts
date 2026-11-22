@@ -1,7 +1,7 @@
 // trace.html: one self-contained page per session, next to its files. Everything the agent saw, decided and spent,
 // linked to the exact moment of the raw recording (click any time to seek).
 import { existsSync } from "node:fs";
-import { relative } from "node:path";
+import { join, relative } from "node:path";
 import type { ActionRecord, ObsRecord, SessionSummary } from "../agent/play.ts";
 import type { CandidateEval } from "../eval/evaluate.ts";
 import { humanTiming } from "../eval/evaluate.ts";
@@ -41,6 +41,7 @@ export function writeReport(): void {
 	const actions = readJsonl<ActionRecord>(paths.actions);
 	const obs = readJsonl<ObsRecord>(paths.observations);
 	const plans = readJsonl<{ turn: number; obs: number; t: number; ms: number; usd: number; error?: string; plan: any; decider: any }>(paths.plans);
+	const reflexes = readJsonl<{ turn: number; zone?: number[]; situations: { name: string; when: string }[]; checks: number; fired: number; counts: Record<string, number>; ended: string }>(join(paths.dir, "reflexes.jsonl"));
 	const edls: Record<string, Edl> = {};
 	for (const c of ev?.candidates ?? []) { const e = readJsonIf<Edl>(paths.edl(c.id)); if (e) edls[c.id] = e; }
 	const best = ev ? edls[ev.best] : undefined;
@@ -65,7 +66,7 @@ export function writeReport(): void {
 		const acts = actions.filter((a) => a.turn === p.turn);
 		return `<tr><td>${seek(p.t)}<br><small>turn ${p.turn}</small></td><td>${o ? `<img src="${esc(rel(o.marks_path ?? o.path))}" width="96" loading="lazy">` : ""}</td>
 <td><b>${esc(p.plan.phase)}</b>${p.decider?.phase ? `<br><small>decider: ${esc(p.decider.phase)} ${((p.decider.phase_p ?? 0) * 100).toFixed(0)}%</small>` : ""}${p.decider?.clarity !== undefined ? `<br><small>clarity ${(p.decider.clarity * 100).toFixed(0)}%</small>` : ""}${p.decider?.effect !== undefined ? `<br><small>last input worked: ${(p.decider.effect * 100).toFixed(0)}%</small>` : ""}</td>
-<td><small><b>sees:</b> ${esc(p.plan.screen)}<br><b>progress:</b> ${esc(p.plan.progress)}${p.error ? `<br><span class="err">planner error: ${esc(p.error.slice(0, 200))}</span>` : ""}</small></td>
+<td><small><b>sees:</b> ${esc(p.plan.screen)}<br><b>progress:</b> ${esc(p.plan.progress)}${p.error ? `<br><span class="err">planner error: ${esc(p.error.slice(0, 200))}</span>` : ""}${reflexes.filter((r) => r.turn === p.turn).map((r) => `<br><b>reflex policy</b>${r.zone ? ` (zone ${esc(r.zone.join(","))})` : ""}: ${r.situations.map((x) => `<i>${esc(x.name)}</i> — ${esc(x.when)}`).join("; ")}<br>→ ${r.checks} checks, fired ${r.fired}${r.fired ? ` (${esc(Object.entries(r.counts).map(([k, v]) => `${k}×${v}`).join(", "))})` : ""}, ended by ${esc(r.ended)}`).join("")}</small></td>
 <td><small>${acts.map((a) => `${seek(a.t0)} <b>${esc(a.kind)}</b>${a.target_label ? ` “${esc(a.target_label.slice(0, 50))}”` : ""} ${esc(a.intent)}${a.reaction_ms ? ` <span class="dim">(+${Math.round(a.reaction_ms)} ms)</span>` : ""}${a.slipped ? " <i>slipped</i>" : ""}`).join("<br>")}</small></td>
 <td><small class="dim">${esc(p.plan.notes)}</small></td><td class="num"><small>${(p.ms / 1000).toFixed(1)}s<br>$${(p.usd ?? 0).toFixed(4)}</small></td></tr>`;
 	}).join("");

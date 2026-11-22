@@ -66,6 +66,16 @@ export class Humanizer {
 		return this.uniform(...this.p.chainGapMs);
 	}
 
+	/** A trained reflex (a stimulus you were waiting for): faster than a decision, still human — lognormal around
+	 *  ~210 ms (scaled by the persona), clamped to 150-400 ms, and now and then noticeably late. */
+	reflexMs(): { ms: number; late: boolean } {
+		const median = 210 * (this.p.reactionMedianMs / 430);
+		let ms = Math.min(400, Math.max(150, median * Math.exp(0.25 * this.rng.normal())));
+		const late = this.rng.next() < this.p.slipRate;
+		if (late) ms += this.uniform(80, 160);
+		return { ms, late };
+	}
+
 	/** Fitts-law movement time for a drag of `dist` px towards a target `width` px wide. */
 	movementMs(dist: number, width = 40): number {
 		return 180 + 110 * Math.log2(1 + dist / Math.max(12, width));

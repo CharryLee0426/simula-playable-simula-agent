@@ -24,6 +24,12 @@ export type Config = {
 		policy?: "agent" | "random";
 		/** Experimental: offer the planner `tap_when` (decider-timed taps for timing games). Off by default. */
 		timing_actions?: boolean;
+		/** Offer the planner `react` reflex policies for fast real-time games (default on). */
+		reflex_actions?: boolean;
+		/** How often a reflex policy looks at the game, in ms of game time (default 100). */
+		reflex_check_ms?: number;
+		/** Minimum decider probability for the winning situation to fire (default 0.33, with "none" <= 0.4). */
+		reflex_threshold?: number;
 		stuck_after: number;
 	};
 	highlight: { duration_s: number; max_source_s: number; max_speed: number; candidates: number; width: number; height: number; touch_overlay: boolean; include_end_card: boolean };

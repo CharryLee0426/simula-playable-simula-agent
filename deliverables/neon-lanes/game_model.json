@@ -1,19 +1,20 @@
 {
   "title": "Neon Lanes",
-  "genre": "3-lane endless runner",
-  "objective": "Drive as far as possible down a synthwave highway, dodging obstacles and collecting coins.",
-  "controls": "Swipe left or right to switch between three lanes, swipe up to jump over barriers, and tap on-screen buttons to revive or play.",
-  "core_loop": "Swipe to switch lanes or jump over neon obstacles to collect coins and push your distance further.",
+  "genre": "Endless Runner",
+  "objective": "Dodge pink block obstacles, jump over orange barriers, and collect as many coins as possible along a 3-lane synthwave highway.",
+  "controls": "Swipe left or right to switch lanes, swipe up to jump over barriers, and tap on-screen buttons to revive or install.",
+  "core_loop": "Swipe to dodge obstacles and jump barriers -> survive at increasing speeds -> collect coins and power-ups to maximize your score.",
   "features": [
-    "3-lane lane switching",
-    "Jump over barriers",
+    "3-lane switching",
+    "Jumping over barriers",
     "Coin collection",
+    "Magnet power-up",
     "Free Revive",
-    "Speed progression",
-    "Dodge/Jump combo callouts"
+    "Speed and distance progression",
+    "Action callouts (NICE DODGE!, GREAT JUMP!)"
   ],
-  "progression": "Speed steadily increases as distance climbs from 6m past 246m, with tighter obstacle patterns.",
+  "progression": "Car speed (SPD) and distance (m) continuously climb throughout the run, demanding quicker reflex dodges.",
   "end_card": true,
-  "tone": "retro synthwave, neon, fast-paced",
-  "hook_idea": "Swiping up to leap over the glowing orange barriers with the 'GREAT JUMP!' banner at t=7.8-8.8s"
+  "tone": "Retro synthwave, neon, fast-paced",
+  "hook_idea": "Collecting the Magnet power-up at t=19.4s-21.2s, pulling a stream of gold coins into the car at top speed (SPD 81)."
 }

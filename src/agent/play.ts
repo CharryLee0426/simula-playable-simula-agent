@@ -15,7 +15,12 @@ import { appendJsonl, errMsg, Rng, run, writeJson } from "../util/core.ts";
 import { Humanizer, PERSONAS, type Gesture, type Performed, type Pt } from "./humanize.ts";
 
 export type PlanAction = {
-	type: "tap" | "drag" | "hold" | "swipe" | "wait" | "tap_when";
+	type: "tap" | "drag" | "hold" | "swipe" | "wait" | "tap_when" | "react";
+	/** react: a reflex policy for fast real-time play — situations watched every ~0.1 s, each with the gesture to fire. */
+	situations?: Situation[];
+	cooldown_ms?: number;
+	/** react: attention window [y0, x0, y1, x1] (0-1000) — where a hazard must be to need a reaction now. */
+	zone?: [number, number, number, number];
 	/** tap_when: a visual condition checked frame by frame; the tap fires on the first frame where it holds. */
 	condition?: string;
 	timeout_ms?: number;
@@ -27,6 +32,7 @@ export type PlanAction = {
 	direction?: "up" | "down" | "left" | "right";
 	intent?: string;
 };
+export type Situation = { name: string; when: string; do?: PlanAction };
 export type Plan = { screen: string; phase: string; progress: string; notes: string; actions: PlanAction[]; watch_ms: number };
 export type ActionRecord = {
 	i: number; turn: number; kind: string; intent: string; t0: number; t1: number; f0: number; f1: number;
@@ -46,8 +52,13 @@ export type SessionSummary = {
 const PHASES = ["loading", "title", "tutorial", "gameplay", "reward", "level_end", "fail", "end_card", "other"];
 
 const TIMING_GESTURE = `- {"type":"tap_when","point":[y,x],"condition":"the sliding block is exactly above the tower","timeout_ms":N} for TIMING: when success depends on tapping at the right moment (a moving/sliding/swinging target, a power or timing meter, a rhythm cue), describe the visual moment to tap; the game is watched frame by frame and the tap fires when the condition holds (or at the timeout, max 6000).`;
-/** The planner prompt; the experimental timing gesture is only offered when play.timing_actions is on. */
-const systemPrompt = (timing: boolean) => (timing ? SYSTEM.replace("Give 1-4 actions per turn", `${TIMING_GESTURE}\nGive 1-4 actions per turn`) : SYSTEM);
+const REFLEX_GESTURE = `- {"type":"react","duration_ms":N,"zone":[y0,x0,y1,x1],"situations":[{"name":"dodge_left","when":"a red block is in the same lane as the car and the lane to its left is empty","do":{"type":"swipe","point":[750,500],"direction":"left"}}, ...],"intent":"..."} for FAST REAL-TIME play (runners, dodgers, tap-to-fly, shooters with moving targets: anything where hazards arrive faster than one decision per screenshot). You define reflexes; the game is then watched every ~0.1 s and the gesture of whichever situation appears fires, with human reaction time, for duration_ms (1000-8000) or until play is interrupted (crash, popup, menu).
+  "zone" is the attention window: the region where a hazard must be for it to need a reaction NOW — usually the strip just ahead of the player, covering what reaches the player within ~0.5 s, including the player itself. Only that crop is watched, so "inside the zone" already means "close"; do not add distance words.
+  "situations": 2-5, mutually exclusive, each describing what is visible INSIDE the zone (what, which lane/side relative to the player) with a "do" gesture (tap|swipe|drag|hold). Cover every hazard type you have seen or the tutorial mentioned (e.g. a barrier you must jump, a block you must dodge), plus pickups if worth it. "none" is added automatically. If something new appears the policy hands control back to you early.
+  Give react as the only action of its turn. Keep policies short (2000-3500 ms) while you are still learning the game, longer once it is familiar. If the player got hit before reacting, the game got faster: move the zone's far edge further ahead.`;
+/** The planner prompt: reflex policies on by default (play.reflex_actions), the timing gesture only when play.timing_actions is on. */
+const systemPrompt = (timing: boolean, reflex: boolean) =>
+	SYSTEM.replace("Give 1-4 actions per turn", `${reflex ? `${REFLEX_GESTURE}\n` : ""}${timing ? `${TIMING_GESTURE}\n` : ""}Give 1-4 actions per turn`);
 const SYSTEM = `You are playing a mobile HTML5 game (a "playable ad") on a phone, like a real person who has never seen it before, so that a gameplay video can be recorded. The game is paused while you think. You see one screenshot per turn.
 
 What a good session looks like:
@@ -98,9 +109,32 @@ function validatePlan(p: Plan, domCount: number): string[] {
 	if (p.actions.length > 6) e.push("at most 6 actions per turn");
 	if (p.actions.length === 0 && p.phase !== "end_card" && p.phase !== "loading") e.push("give at least one action (use wait if you want to watch)");
 	const pt = (v: unknown) => Array.isArray(v) && v.length === 2 && v.every((n) => typeof n === "number" && n >= 0 && n <= 1000);
-	p.actions.forEach((a, i) => {
-		const k = `action ${i + 1} (${a?.type})`;
-		if (!a || !["tap", "drag", "hold", "swipe", "wait", "tap_when"].includes(a.type)) return void e.push(`${k}: type must be tap|drag|hold|swipe|wait|tap_when`);
+	p.actions.forEach((a, i) => validateAction(a, `action ${i + 1} (${a?.type})`, domCount, e, true));
+	if (p.actions.some((a) => a?.type === "react") && p.actions.length > 1) e.push("react must be the only action of its turn");
+	return e;
+}
+
+function validateAction(a: PlanAction, k: string, domCount: number, e: string[], top: boolean): void {
+		const pt = (v: unknown) => Array.isArray(v) && v.length === 2 && v.every((n) => typeof n === "number" && n >= 0 && n <= 1000);
+		if (!a || !["tap", "drag", "hold", "swipe", "wait", "tap_when", "react"].includes(a.type)) return void e.push(`${k}: type must be tap|drag|hold|swipe|wait|tap_when|react`);
+		if (a.type === "react") {
+			if (!top) return void e.push(`${k}: a situation's "do" must be tap|swipe|drag|hold`);
+			if (typeof a.duration_ms !== "number" || a.duration_ms < 500 || a.duration_ms > 8000) e.push(`${k}: react needs "duration_ms" 500-8000`);
+			if (!Array.isArray(a.situations) || a.situations.length < 1 || a.situations.length > 6) return void e.push(`${k}: react needs 1-6 "situations"`);
+			if (a.zone !== undefined && !(Array.isArray(a.zone) && a.zone.length === 4 && a.zone.every((n) => typeof n === "number" && n >= 0 && n <= 1000) && a.zone[2] - a.zone[0] >= 80 && a.zone[3] - a.zone[1] >= 80)) e.push(`${k}: "zone" must be [y0, x0, y1, x1] in 0-1000 with y1-y0 >= 80 and x1-x0 >= 80`);
+			const names = new Set<string>();
+			a.situations.forEach((s, j) => {
+				const sk = `${k} situation ${j + 1}`;
+				if (!s || typeof s.name !== "string" || !/^[a-z0-9_]{1,24}$/.test(s.name) || s.name === "none") e.push(`${sk}: "name" must be a short snake_case id (not "none")`);
+				else if (names.has(s.name)) e.push(`${sk}: duplicate name ${s.name}`);
+				else names.add(s.name);
+				if (typeof s?.when !== "string" || s.when.trim().length < 8) e.push(`${sk}: "when" must describe the visual situation`);
+				if (!s?.do || !["tap", "swipe", "drag", "hold"].includes(s.do.type)) e.push(`${sk}: "do" must be a tap|swipe|drag|hold gesture`);
+				else validateAction(s.do, `${sk} do`, domCount, e, false);
+			});
+			return;
+		}
+		if (!top && !["tap", "swipe", "drag", "hold"].includes(a.type)) return void e.push(`${k}: must be tap|swipe|drag|hold`);
 		if (a.type === "tap_when" && (typeof a.condition !== "string" || a.condition.trim().length < 6)) e.push(`${k}: tap_when needs a "condition" describing the visual moment to tap`);
 		if (a.type === "tap_when" && a.timeout_ms !== undefined && (typeof a.timeout_ms !== "number" || a.timeout_ms < 200 || a.timeout_ms > 6000)) e.push(`${k}: timeout_ms must be 200-6000`);
 		const tgtOk = (t: unknown) => typeof t === "number" && Number.isInteger(t) && t >= 1 && t <= domCount;
@@ -114,8 +148,6 @@ function validatePlan(p: Plan, domCount: number): string[] {
 			if (!okPath && !okT) e.push(`${k}: needs "path" with >= 2 [y,x] points in 0-1000${domCount ? ` or "path_targets" with >= 2 element numbers` : ""}`);
 		}
 		if (a.duration_ms !== undefined && (typeof a.duration_ms !== "number" || a.duration_ms < 0 || a.duration_ms > 6000)) e.push(`${k}: duration_ms must be 0-6000`);
-	});
-	return e;
 }
 
 /** Plan action (normalized coords / element numbers) -> gesture in CSS px. */
@@ -137,7 +169,7 @@ function toGesture(a: PlanAction, dom: DomCandidate[], vw: number, vh: number): 
 		const dir = { up: [0, -d], down: [0, d], left: [-d, 0], right: [d, 0] }[a.direction ?? "up"]!;
 		return { g: { kind: "swipe", points: [p0, { x: p0.x + dir[0]!, y: p0.y + dir[1]! }] }, label: tgt?.label };
 	}
-	return { g: { kind: a.type === "tap_when" ? "tap" : a.type, points: [p0], durationMs: a.duration_ms, target: tgt ? { x: tgt.x, y: tgt.y, w: tgt.w, h: tgt.h } : undefined }, label: tgt?.label };
+	return { g: { kind: a.type === "tap_when" || a.type === "react" ? "tap" : a.type, points: [p0], durationMs: a.duration_ms, target: tgt ? { x: tgt.x, y: tgt.y, w: tgt.w, h: tgt.h } : undefined }, label: tgt?.label };
 }
 
 /** The calibration baseline's policy: uniform random taps and drags anywhere on screen. */
@@ -207,6 +239,84 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		return rec;
 	};
 
+	// ---------------------------------------------------------------- reflexes
+	// A reflex policy (react): the planner named the situations and the gesture for each; now the game is stepped a few
+	// frames at a time and the decider, on the frozen frame, says which situation is happening (one multi-option call,
+	// ~0.3-0.7 s of wall time, invisible on video). A situation that wins fires its gesture after a human reflex delay,
+	// then a short cooldown lets the move play out. Play interrupted (crash, popup, menu) hands control back to the planner.
+	const runReflex = async (a: PlanAction, turn: number, dom: DomCandidate[], inputMode: "touch" | "mouse") => {
+		const sits = (a.situations ?? []).filter((x) => x.do);
+		const criteria: Record<string, string> = {};
+		for (const x of sits) criteria[x.name] = x.when;
+		criteria.none = "none of the other situations: nothing needs a reaction right now";
+		const checkEvery = Math.max(1, Math.round((cfg.play.reflex_check_ms ?? 100) / (1000 / fps)));
+		const threshold = cfg.play.reflex_threshold ?? 0.33;
+		let frame = (await w.call<{ value: number }>("eval", { expr: "__sim.frame" })).value;
+		const startT = frame / fps;
+		const end = frame + hz.framesFor(Math.min(8000, Math.max(500, a.duration_ms ?? 4000)));
+		const counts: Record<string, number> = {};
+		const log: { f: number; c: string; p: number }[] = [];
+		let checks = 0, fired = 0, ended = "duration";
+		let lastFired: { name: string; frame: number } | undefined;
+		while (frame < end) {
+			// Every ~0.5 s, a look at the whole screen: is play interrupted, or did something appear that the policy does
+			// not cover (a new hazard type, a new instruction, a power-up)? Then hand back to the planner — the game is
+			// frozen, so the planner sees the new thing before it can hurt.
+			if (a.zone && checks % 5 === 0) {
+				const full = await w.peek(vw);
+				const g = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone):", { image: full.path }],
+					questions: {
+						interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." },
+						novel: { type: "noul", instructions: `Something is on screen that none of these covers and that may need a different reaction (a new kind of obstacle, a new instruction or tutorial prompt, a power-up to grab): ${sits.map((x) => x.when).join(" / ")}` },
+					} });
+				if ((noul(g?.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
+				if ((noul(g?.answers.novel) ?? 0) > 0.7 && checks > 0) { ended = "something_new"; break; }
+			}
+			const pk = await w.peek(vw, a.zone);
+			const d = await decide({ model: cfg.models.decider, ledger, phase: "play", state: [a.zone ? "Close-up of the area just in front of the player in a fast real-time mobile game:" : "Current frame of a fast real-time mobile game (portrait phone):", { image: pk.path }],
+				questions: {
+					now: { type: "choice", instructions: "Which of these situations is happening right now?", criteria },
+					...(a.zone ? {} : { interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." } }),
+				} });
+			checks++;
+			if (!d) { ended = "decider_unavailable"; break; }
+			const now = d.answers.now;
+			const c = choice(now) ?? "none";
+			const probs = now && now.type === "choice" ? now.probabilities : {};
+			const p = probs[c] ?? 0;
+			const second = Math.max(0, ...Object.entries(probs).filter(([k]) => k !== c).map(([, v]) => v));
+			log.push({ f: frame, c, p: Math.round(p * 100) / 100, m: Math.round((p - second) * 100) / 100 } as any);
+			if ((noul(d.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
+			const sit = sits.find((x) => x.name === c);
+			// Fire when something clearly needs a reaction (little mass on "none") and an action is the top answer; two
+			// equally good actions (dodge left / dodge right with both lanes free) split their probability, so the action
+			// itself only has to be the argmax. Right after a move, a *different* reflex needs strong evidence: a person
+			// commits to a swerve instead of flip-flopping (which steers straight back into danger).
+			const pNone = probs.none ?? 0;
+			const committed = lastFired !== undefined && lastFired.name !== c && frame - lastFired.frame < hz.framesFor(400);
+			const fire = !!sit && (committed ? (p >= 0.6 && p - second >= 0.25) || (p >= 0.5 && pNone <= 0.2) : p >= threshold && pNone <= 0.4);
+			if (sit && fire) {
+				const { ms, late } = hz.reflexMs();
+				await w.step(hz.framesFor(ms));
+				const { g, label } = toGesture(sit.do!, dom, vw, vh);
+				const st = await w.call<{ value: number }>("eval", { expr: "__sim.frame" });
+				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: false });
+				const r = await w.ops(ops);
+				const rec: ActionRecord = { i: history.length, turn, kind: g.kind, intent: `reflex ${sit.name}${late ? " (late)" : ""}: ${sit.when.slice(0, 90)}`, t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: false, reaction_ms: ms, target_label: label };
+				history.push(rec);
+				appendJsonl(paths.actions, rec);
+				fired++;
+				counts[sit.name] = (counts[sit.name] ?? 0) + 1;
+				lastFired = { name: sit.name, frame: r.frame };
+				frame = (await w.step(hz.framesFor(Math.min(1500, Math.max(100, a.cooldown_ms ?? 250))))).frame;
+			} else frame = (await w.step(checkEvery)).frame;
+		}
+		const summary = `${checks} checks over ${(frame / fps - startT).toFixed(1)} s, fired ${fired}${fired ? ` (${Object.entries(counts).map(([k, v]) => `${k}×${v}`).join(", ")})` : ""}, ended by ${ended}`;
+		appendJsonl(join(paths.dir, "reflexes.jsonl"), { turn, t: startT, zone: a.zone, situations: sits.map((x) => ({ name: x.name, when: x.when, do: x.do })), checks, fired, counts, ended, log });
+		trace.emit("play", "decide", `reflex policy (${sits.map((x) => x.name).join(", ")}): ${summary}`, { counts, ended, checks }, { game_t: startT });
+		return { fired, checks, ended, summary };
+	};
+
 	try {
 		// ---------------------------------------------------------------- boot: run until the loading screen is gone
 		let obs = await w.observe({ width: vw, dom: true });
@@ -228,6 +338,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		let prevObs: Observation | undefined;
 		let lastIntents = "";
 		let noEffectStreak = 0;
+		let lastReflex = "";
 		for (let turn = 1; ; turn++) {
 			const t = tNow(obs);
 			if (t >= cfg.play.max_game_s) { endedBy = "time_limit"; break; }
@@ -243,15 +354,17 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 				prevObs ? `Visible change since your last screenshot: ${(obs.changed_frac * 100).toFixed(0)}% of the screen.` : "",
 				noEffectStreak >= cfg.play.stuck_after ? `WARNING: your last ${noEffectStreak} turns had no visible effect. Do something different: another location, another gesture type (drag instead of tap, or the reverse), or look for a button/hint you missed.` : "",
 				events.length ? `Signals from the game: ${events.join("; ")}.` : "",
+				lastReflex ? `Your last reflex policy: ${lastReflex}.` : "",
 				dom.length ? `Numbered interactive elements (HTML):\n${domList(dom, vw, vh)}` : "",
 			].filter(Boolean).join("\n\n");
+			lastReflex = ""; // reported once, on the turn right after the policy ran
 
 			// Planner (VLM) and decider checks run concurrently on the same frozen frame.
 			let plan: Plan;
 			let planMs = 0, planUsd = 0, planErr: string | undefined;
 			const [dec, planRes] = robot ? [null, { value: randomPlan(rng), ms: 0, usd: 0 }] : await Promise.all([
 				deciderObs(obs, prevObs, lastIntents).catch(() => null),
-				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: systemPrompt(!!cfg.play.timing_actions), ledger, phase: "play", kind: "planner",
+				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: systemPrompt(!!cfg.play.timing_actions, cfg.play.reflex_actions !== false), ledger, phase: "play", kind: "planner",
 					parts: [{ text }, { image: obs.marks_path ?? obs.path }], validate: (p) => validatePlan(p, dom.length), maxTokens: 4000, estimateUsd: 0.015 })
 					.then((r) => r, (e) => e as Error),
 			]);
@@ -305,6 +418,13 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			const intents: string[] = [];
 			for (let k = 0; k < plan.actions.length; k++) {
 				const a = plan.actions[k]!;
+				if (a.type === "react") {
+					const rr = await runReflex(a, turn, dom, inputMode);
+					actionsDone += rr.fired;
+					lastReflex = rr.summary;
+					intents.push(`react (${rr.summary})`);
+					continue;
+				}
 				const delay = robot ? 1000 / fps : k === 0 ? hz.reactionMs(obs.changed_frac > 0.25 || turn === 1, turn === 1) : hz.chainGapMs();
 				let timing = "";
 				if (a.type === "tap_when") {
@@ -344,7 +464,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			lastIntents = intents.join("; ");
 			// ------------------------------------------------------------ watch
 			const watch = robot ? 200 : Math.min(2500, Math.max(300, Number(plan.watch_ms) || 800));
-			await w.step(hz.framesFor(watch));
+			if (!plan.actions.some((a) => a.type === "react")) await w.step(hz.framesFor(watch)); // a reflex policy already watched
 			prevObs = obs;
 			obs = await w.observe({ width: vw, dom: true });
 		}

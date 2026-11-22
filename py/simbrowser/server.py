@@ -299,9 +299,19 @@ class Worker:
     async def peek(self, p: dict) -> dict:
         """A quick screenshot for a frame-by-frame check (timing actions); does not move the observation baseline."""
         width = int(p.get("width", 360))
-        vw, _ = self.cfg.get("viewport", [360, 640])
-        jpeg = await self._shot(quality=int(p.get("quality", 65)), scale=width / vw)
-        path = self.run_dir / "obs" / "peek.jpg"
+        vw, vh = self.cfg.get("viewport", [360, 640])
+        zone = p.get("zone")  # [y0, x0, y1, x1] normalized 0-1000: an attention window, e.g. the area just ahead of the player
+        if zone:
+            y0, x0, y1, x1 = [float(v) / 1000.0 for v in zone]
+            clip = {"x": x0 * vw, "y": y0 * vh, "width": max(8.0, (x1 - x0) * vw), "height": max(8.0, (y1 - y0) * vh)}
+            clip["scale"] = min(2.0, width / clip["width"])
+            t = time.time()
+            r = await self.cdp.send("Page.captureScreenshot", {"format": "jpeg", "quality": int(p.get("quality", 70)), "optimizeForSpeed": True, "clip": clip})
+            self.shot_ms.append((time.time() - t) * 1000)
+            jpeg = base64.b64decode(r["data"])
+        else:
+            jpeg = await self._shot(quality=int(p.get("quality", 65)), scale=width / vw)
+        path = self.run_dir / "obs" / ("peek_zone.jpg" if zone else "peek.jpg")
         path.write_bytes(jpeg)
         return {"path": str(path), "frame": await self.page.evaluate("__sim.frame")}
 

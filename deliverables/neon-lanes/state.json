@@ -1,44 +1,43 @@
 {
-  "session_id": "neon-lanes-029180-20261122-1033",
+  "session_id": "reflex-neon-3",
   "playable": "/home/user/simula-playable-simula-agent/games/generated/neon-lanes.html",
   "playable_sha": "c135ac3c7b8fd508",
-  "created_at": "2026-11-22T10:33:28.715Z",
-  "out": "/home/user/simula-playable-simula-agent/deliverables/neon-lanes/highlight.mp4",
+  "created_at": "2026-11-22T16:27:02.957Z",
   "phases": {
     "play": {
-      "at": "2026-11-22T10:35:03.805Z",
-      "ms": 95017,
-      "note": "26.9 s recorded, 6 inputs, 11 planner turns, ended by end_card"
+      "at": "2026-11-22T16:29:12.542Z",
+      "ms": 129557,
+      "note": "28.1 s recorded, 19 inputs, 9 planner turns, ended by end_card"
     },
     "index": {
-      "at": "2026-11-22T10:35:35.425Z",
-      "ms": 31617,
-      "note": "9 moments, genre: 3-lane endless runner"
+      "at": "2026-11-22T16:29:48.089Z",
+      "ms": 35544,
+      "note": "12 moments, genre: Endless Runner"
     },
     "cut": {
-      "at": "2026-11-22T10:36:18.280Z",
-      "ms": 42852,
+      "at": "2026-11-22T16:30:43.395Z",
+      "ms": 55299,
       "note": "3 EDLs"
     },
     "render": {
-      "at": "2026-11-22T10:39:14.639Z",
-      "ms": 176356,
+      "at": "2026-11-22T16:35:09.267Z",
+      "ms": 265870,
       "note": "5 candidates"
     },
     "eval": {
-      "at": "2026-11-22T10:41:15.581Z",
-      "ms": 120938,
-      "note": "best b (learn-then-escalate) score 90.6"
+      "at": "2026-11-22T16:37:47.431Z",
+      "ms": 158159,
+      "note": "best b (learn-then-escalate) score 89.5"
     },
     "friction": {
-      "at": "2026-11-22T10:41:27.284Z",
-      "ms": 11698,
-      "note": "4 items"
+      "at": "2026-11-22T16:37:57.159Z",
+      "ms": 9723,
+      "note": "3 items"
     },
     "report": {
-      "at": "2026-11-22T10:41:27.293Z",
-      "ms": 3,
-      "note": "trace.html written · total spend $0.311"
+      "at": "2026-11-22T16:37:57.168Z",
+      "ms": 5,
+      "note": "trace.html written · total spend $0.345"
     }
   },
   "task": 7,

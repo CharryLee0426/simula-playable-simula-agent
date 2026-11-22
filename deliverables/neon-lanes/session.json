@@ -1,12 +1,12 @@
 {
-  "game_s": 26.933333333333334,
-  "frames": 808,
+  "game_s": 28.1,
+  "frames": 843,
   "fps": 30,
-  "planner_calls": 11,
+  "planner_calls": 9,
   "planner_failures": 0,
-  "actions": 6,
-  "turns": 11,
-  "end_card_at": 22.166666666666575,
+  "actions": 19,
+  "turns": 9,
+  "end_card_at": 23.4333333333332,
   "cta_tapped": true,
   "ended_by": "end_card",
   "input_mode": "touch",
@@ -26,28 +26,28 @@
   },
   "events": [
     {
-      "t": 25099.999999999804,
-      "frame": 753,
+      "t": 26266.666666666428,
+      "frame": 788,
       "kind": "cta",
       "via": "mraid.open",
       "url": "https://example.com/app"
     }
   ],
   "audio": {
-    "sounds": 372,
+    "sounds": 446,
     "skipped": 0,
     "has_audio": true,
-    "peak": 1.048
+    "peak": 3.012
   },
   "perf": {
     "step_ms_avg": 9.5,
-    "shot_ms_avg": 57.2
+    "shot_ms_avg": 51.4
   },
   "title": "Neon Lanes",
   "frame_size": [
     720,
     1280
   ],
-  "notes": "Synthwave 3-lane car runner. Reached end card after crashing at 246m with 21 coins collected.",
+  "notes": "3-lane synthwave runner. Swipe left/right to switch lanes, swipe up to jump. Crashed and reached the end card.",
   "stuck_events": 0
 }

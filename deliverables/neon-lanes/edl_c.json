@@ -1,62 +1,62 @@
 {
   "id": "c",
-  "title": "Feature-montage: fast-paced showcase of jumps, dodges, revive, and speed",
+  "title": "Fast-paced feature montage highlighting mechanics, revive, and Magnet",
   "clips": [
     {
-      "start": 7.4,
-      "end": 9.2,
+      "start": 19.4,
+      "end": 21.4,
       "speed": 1,
       "role": "hook",
-      "why": "Opens on the high-energy barrier jump and GREAT JUMP! banner"
+      "why": "Instant Magnet power-up action pulling coins at top speed"
     },
     {
-      "start": 2.9,
-      "end": 5.4,
+      "start": 3.5,
+      "end": 7.1,
       "speed": 1,
       "role": "core_loop",
-      "why": "Quick cut to lane-switching dodge and NICE DODGE! callout"
+      "why": "Tightened lane-switching dodges and coin pickups"
     },
     {
-      "start": 5.4,
-      "end": 7.4,
-      "speed": 1,
-      "role": "core_loop",
-      "why": "Tightened stretch showing speed ramping up toward barriers"
-    },
-    {
-      "start": 9.2,
-      "end": 12.6,
-      "speed": 1,
+      "start": 7.3,
+      "end": 10.7,
+      "speed": 1.2,
       "role": "feature",
-      "why": "Demonstrates obstacle collision and Free Revive recovery"
+      "why": "Quickly showcases the barrier-jump mechanic and mid-air coins"
     },
     {
-      "start": 12.6,
-      "end": 15.5,
+      "start": 10.7,
+      "end": 14.2,
+      "speed": 1.2,
+      "role": "core_loop",
+      "why": "Sped-up weaving through blocks and barriers at SPD 70"
+    },
+    {
+      "start": 14.2,
+      "end": 17.4,
+      "speed": 1.3,
+      "role": "feature",
+      "why": "Snappy look at the crash and Free Revive tap"
+    },
+    {
+      "start": 17.4,
+      "end": 19.4,
       "speed": 1,
       "role": "progression",
-      "why": "Fast highway run collecting coins as speed climbs"
+      "why": "Shows the immediate speed boost after reviving"
     },
     {
-      "start": 15.5,
-      "end": 17.6,
-      "speed": 1,
-      "role": "progression",
-      "why": "Tight obstacle dodging at speed 76 near 235m"
-    },
-    {
-      "start": 17.6,
-      "end": 20.4,
+      "start": 21.4,
+      "end": 23.2,
       "speed": 1,
       "role": "climax",
-      "why": "Final high-speed crash at 246m and Game Over explosion"
+      "why": "Final high-speed dash into dramatic 286m crash"
     },
     {
-      "start": 23.4,
-      "end": 25.9,
+      "start": 23.433,
+      "end": 25.8,
       "speed": 1,
       "role": "end_card",
-      "why": "Call to action end card with PLAY NOW tap"
+      "why": "NEON LANES end card with coin total and PLAY NOW CTA"
     }
   ],
   "strategy": "feature-montage",

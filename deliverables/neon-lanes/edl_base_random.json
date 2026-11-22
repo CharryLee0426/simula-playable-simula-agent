@@ -6,36 +6,37 @@
   "clips": [
     {
       "start": 0,
-      "end": 4.654,
+      "end": 4.484,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 14.173,
-      "end": 18.173,
+      "start": 14.895,
+      "end": 18.895,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 5.414,
-      "end": 9.414,
+      "start": 5.689,
+      "end": 9.689,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 19.587,
-      "end": 23.587,
+      "start": 20.584,
+      "end": 24.584,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 10.827,
-      "end": 14.173,
+      "start": 11.378,
+      "end": 14.895,
       "speed": 1,
       "role": "core_loop"
     }
   ],
   "fixes": [
+    "clip 11.4-15.4 → 11.38-15.61 (bounds/gesture snap)",
     "overlap trimmed (core_loop)"
   ]
 }

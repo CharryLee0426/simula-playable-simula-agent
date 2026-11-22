@@ -1,55 +1,55 @@
 {
   "id": "a",
-  "title": "Hook-first: barrier jump opener into lane dodging, free revive, and high-speed crash",
+  "title": "Magnet hook into full-run escalation and free revive comeback",
   "clips": [
     {
-      "start": 7.3,
-      "end": 9.2,
+      "start": 19.4,
+      "end": 21.4,
       "speed": 1,
       "role": "hook",
-      "why": "High-motion jump over glowing orange barriers with GREAT JUMP! callout"
+      "why": "Opens on the Magnet power-up at SPD 81 pulling a stream of coins"
     },
     {
-      "start": 2.8,
-      "end": 5.4,
+      "start": 3.5,
+      "end": 7.1,
       "speed": 1,
       "role": "core_loop",
-      "why": "Shows lane-switching swipe to dodge a pink X block and collect coins"
+      "why": "Shows 3-lane dodging, coin pickup, and NICE DODGE feedback"
     },
     {
-      "start": 5.4,
-      "end": 7.3,
-      "speed": 1,
-      "role": "core_loop",
-      "why": "Speed climbs to 61 while racing down the right lane toward barriers"
-    },
-    {
-      "start": 9.2,
-      "end": 12.6,
+      "start": 7.3,
+      "end": 10.7,
       "speed": 1,
       "role": "feature",
-      "why": "Shows crash stakes and tapping the Free Revive button to keep running"
+      "why": "Demonstrates jumping over the orange barrier for mid-air coins"
     },
     {
-      "start": 12.6,
-      "end": 17.6,
+      "start": 10.7,
+      "end": 14.2,
       "speed": 1,
-      "role": "progression",
-      "why": "High-speed run from 141m to 235m dodging blocks and stacking 21 coins"
+      "role": "core_loop",
+      "why": "Fast-paced weaving and jumping as speed climbs to SPD 70"
     },
     {
-      "start": 17.6,
-      "end": 20.4,
+      "start": 14.2,
+      "end": 17.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Shows the crash stakes and tapping Free Revive to keep going"
+    },
+    {
+      "start": 17.4,
+      "end": 19.333,
       "speed": 1,
       "role": "climax",
-      "why": "Top-speed crash at 246m with neon explosion and Game Over screen"
+      "why": "Rapid post-revive acceleration from SPD 41 to SPD 78"
     },
     {
-      "start": 23.5,
-      "end": 25.9,
+      "start": 23.433,
+      "end": 25.8,
       "speed": 1,
       "role": "end_card",
-      "why": "Neon Lanes end card with coin total and PLAY NOW tap"
+      "why": "Synthwave transition into NEON LANES end card and PLAY NOW CTA"
     }
   ],
   "strategy": "hook-first",
