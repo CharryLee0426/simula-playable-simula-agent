@@ -101,7 +101,7 @@ function domList(dom: DomCandidate[], vw: number, vh: number): string {
 	return dom.map((c, i) => `${i + 1}) ${c.tag}${c.label ? ` "${c.label}"` : ""} at [${Math.round(((c.y + c.h / 2) / vh) * 1000)}, ${Math.round(((c.x + c.w / 2) / vw) * 1000)}] size ${Math.round(c.w)}x${Math.round(c.h)}px`).join("\n");
 }
 
-function validatePlan(p: Plan, domCount: number): string[] {
+export function validatePlan(p: Plan, domCount: number): string[] {
 	const e: string[] = [];
 	if (!p || typeof p !== "object") return ["answer must be a JSON object"];
 	if (!PHASES.includes(p.phase)) e.push(`phase must be one of ${PHASES.join("|")}`);

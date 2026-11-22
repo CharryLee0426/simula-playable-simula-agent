@@ -58,7 +58,7 @@ One OpenRouter key. Defaults (`config/default.json`, all overridable):
 | role | model | used for |
 | --- | --- | --- |
 | planner | `google/gemini-4-hydrogen` (low reasoning) | one call per decision: reads the screenshot, keeps running notes, returns 1–4 gestures |
-| decider | `perplexity/pplx-decider-v1.3:free` (Decisions API) | typed, probabilistic answers in ~0.3 s: screen phase, "did that input work" (before/after images), "would a first-timer know what to do", frame excitement |
+| decider | `perplexity/pplx-decider-v1.3:free` (Decisions API) | typed, probabilistic answers in ~0.3 s: screen phase, "did that input work" (before/after images), "would a first-timer know what to do", frame excitement — and the reflexes of fast games: "which of these situations is happening right now", every 0.1 s of game time |
 | director | `google/gemini-4-hydrogen` (video in) | watches the whole session once → game model + moments; writes the EDLs; writes the friction report |
 | judge | `google/gemini-4-hydrogen` (video in) | scores each candidate highlight; pairwise comparisons |
 
@@ -112,6 +112,18 @@ isn't measuring anything. See [Goal 4](#goal-4--evaluating-without-watching).
 
 **8. The end card is part of the ad.** The agent lets the playable's end card breathe for 2.5 s, then taps its CTA
 once (the SDK stubs log it); the editor ends every cut on it when the game showed one.
+
+**9. Reflexes for fast games: a brain and a spinal cord.** One decision per screenshot is too slow for runners and
+dodgers. For those the planner writes a *reflex policy* instead of a gesture: an attention **zone** (the strip just
+ahead of the player, so "inside the zone" already means "close") and 2–5 **situations**, each with the gesture that
+answers it ("a pink block in the car's lane, left lane empty → swipe left"; "an orange barrier across all lanes →
+swipe up"). The executor then steps the frozen game 3 frames (0.1 s) at a time and asks the decider, on the cropped
+frame, which situation is happening — one multi-option call, free, invisible on video. It fires when an action clearly
+beats "nothing needs a reaction", after a human reflex delay (~210 ms, occasionally late), commits to a swerve for
+0.4 s instead of flip-flopping, and every 0.5 s glances at the whole screen: a crash/popup, or *anything the policy
+doesn't cover* (a new obstacle type, a new tutorial prompt, a power-up), hands control back to the planner, which sees
+the new thing while the game is frozen and writes a better policy. Every check and fire is in `reflexes.jsonl` and
+in `trace.html`.
 
 ---
 
@@ -215,6 +227,9 @@ What the numbers say:
 | friction report claimed "no tutorial" where there was one | reading the report | the writer only saw signals and a few frames | it now also gets the player's own turn-by-turn screen descriptions and must not contradict them |
 | director EDLs failed on one game (`finish_reason: length`) | trace | reasoning tokens used up the output budget | larger budgets + automatic retry with more tokens and less reasoning; heuristic EDL as the last fallback |
 | cutting from a late hook back to tutorial footage felt jarring | the judge | the editor treated tutorial footage as ordinary core-loop footage | editor rule: at most one short tutorial clip, never after later gameplay |
+| reflex v1 bounced between lanes and drove into the block it was dodging | crash frames + per-check decider log | situations without distance fired on far obstacles; with both side lanes free, "left" and "right" split ~0.4/0.4 and alternated | attention **zone** crop (offline test on the crash frames: jump fires 0.5 s before impact instead of 1.7 s); fire on "action vs none" not "winner vs runner-up"; commit to a swerve |
+| reflex v2 hit a jump barrier it had never seen | crash frames | the policy was written before the game introduced barriers, so every check said "none" | every 0.5 s a full-screen "is there anything this policy does not cover?" check hands back to the planner — it then read the jump tutorial and jumped |
+| reflex v2 missed a dodge of a new block | per-check log | the anti-flip-flop commitment (0.7 s) was too sticky | 0.4 s, overridden by strong danger |
 
 **Time allocation (80/20).** Most of the effort went into the capture layer (virtual clock, audio, sandbox), because
 it is what makes both "30 fps" and "looks like a person" possible on any machine, and into the evaluator, because
@@ -232,6 +247,10 @@ picks the story, code enforces the rules.
   hand-set heuristic weights. In production both get calibrated on human review decisions and online CTR/IPM.
 - **The decider is a classifier, not a planner.** Its "did that work" check is less reliable in games where the
   whole screen moves all the time (scrolling 3D); the pixel-change fallback is weaker there too.
+- **Reflexes are limited by the decider's spatial sense.** It reliably sees *that* a hazard is close (inside the
+  zone), much less reliably *which lane the player is in*; in a 3-lane runner it sometimes "dodges right" from the
+  rightmost lane. Next: a zone that follows the player (track the controlled object from the action log and frame
+  differences) so each lane gets its own crop, and a second look 2 frames later to confirm motion direction.
 - **Effects nodes in audio** (filters, panners, convolvers) are not reproduced in the offline mix; gain and timing are.
 - **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
 - **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation

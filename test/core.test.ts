@@ -73,3 +73,31 @@ test("humanTiming() flags robotic input", () => {
 	assert.ok(robot.score < 0.3, `robot ${robot.score}`);
 	assert.equal(robot.robotic, 7);
 });
+
+test("reflex policies: valid ones pass, malformed ones are explained", async () => {
+	const { validatePlan } = await import("../src/agent/play.ts");
+	const base = { screen: "", phase: "gameplay", progress: "", notes: "", watch_ms: 500 };
+	const react = { type: "react", duration_ms: 3000, zone: [450, 100, 800, 900], intent: "dodge", situations: [
+		{ name: "dodge_left", when: "a block is in the car's lane and the left lane is empty", do: { type: "swipe", point: [750, 500], direction: "left" } },
+		{ name: "jump", when: "a low barrier spans all lanes", do: { type: "swipe", point: [750, 500], direction: "up" } },
+	] };
+	assert.deepEqual(validatePlan({ ...base, actions: [react] } as any, 0), []);
+	assert.ok(validatePlan({ ...base, actions: [react, { type: "tap", point: [1, 1] }] } as any, 0).some((e) => e.includes("only action")));
+	const noDo = { ...react, situations: [{ name: "x_y", when: "something happens here" }] };
+	assert.ok(validatePlan({ ...base, actions: [noDo] } as any, 0).some((e) => e.includes('"do"')));
+	const badZone = { ...react, zone: [500, 0, 520, 1000] };
+	assert.ok(validatePlan({ ...base, actions: [badZone] } as any, 0).some((e) => e.includes("zone")));
+	const nested = { ...react, situations: [{ name: "a_b", when: "a thing is close by", do: { type: "wait", duration_ms: 300 } }] };
+	assert.ok(validatePlan({ ...base, actions: [nested] } as any, 0).length > 0);
+});
+
+test("reflex timing is faster than a decision but human (150-560 ms)", () => {
+	const h = new Humanizer(PERSONAS.casual_competent!, 3, 30, [360, 640]);
+	let late = 0;
+	for (let i = 0; i < 500; i++) {
+		const r = h.reflexMs();
+		assert.ok(r.ms >= 150 && r.ms <= 560, `reflex ${r.ms}`);
+		if (r.late) late++;
+	}
+	assert.ok(late > 5 && late < 60, `late reflexes ${late}/500`);
+});
