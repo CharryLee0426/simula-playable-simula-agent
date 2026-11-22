@@ -277,6 +277,10 @@ What the numbers say:
 | a static zone kept shouting "dodge" at a block in the *next* lane, and missed one in the car's new lane | offline decider runs on crash frames | a fixed crop does not know which lane the car is in | the zone follows the tracked player (offline on the same frames: false dodges → "none", the missed block → seen) |
 | "snap the template to the most contrasted patch near the planner's point" | offline tracking from 5 start points | the most contrasted patch was road lines and headlight glow, not the car | removed: plain tracking held the car from all 5 starts (error ≤ 56/1000); with the snap it lost it from 3 |
 | a working lane change was learned as a "wall" | per-check log (track confidence 0.39) | coin sparkles and glow lowered the match; a held stale position looked like "did not move" | wall learning only trusts a confident track (≥ 0.6) before and after the move |
+| "were you just hit?" asked on the zone crop | offline decider runs on crash frames | 0.28 at the impact vs up to 0.51 on normal frames: the crop shows too little of the aftermath | impact signatures in the recorded frames, confirmed on the whole screen |
+| hit detection saw none of the Neon Lanes crashes live | per-frame change/brightness around the crashes | that game does not flash on a crash — its popup *stops the world* | a freeze signature next to the flash one (replayed on 6 recorded sessions: every first crash found), plus the same question on the periodic full-screen look for game-overs that fade in |
+| the first look of a new policy "saw a hit" (0.88) | trace | it read the "REVIVED! Go go go!" banner after the previous crash as a hit | no hit on a policy's first look (nothing to date it from), and the question excludes "revived, keep going" messages (0.03); crash screens stay at 0.99–1.00 |
+| a crash in a policy's last moments taught nothing | trace (the planner saw CRASHED, the policy had "ended by duration") | the freeze needs 5 still frames to be sure, and the next policy forgets older impacts | one more full-screen look when a policy runs out |
 
 **Time allocation (80/20).** Most of the effort went into the capture layer (virtual clock, audio, sandbox), because
 it is what makes both "30 fps" and "looks like a person" possible on any machine, and into the evaluator, because
@@ -296,10 +300,11 @@ picks the story, code enforces the rules.
   whole screen moves all the time (scrolling 3D); the pixel-change fallback is weaker there too.
 - **Reflexes are still limited by perception.** The player-following zone fixed "is the danger in *my* lane?", and
   learned walls fix repeated moves into an edge, but the decider still picks the wrong *first* direction near a wall
-  sometimes, the tracker can lose lock under heavy particle effects (it then holds the last position), and how far
-  ahead the zone reaches is the planner's guess — too deep, and jumps come early. Next: learn the zone depth from
-  hits (a hazard that hit the player after it entered the zone → the zone was too shallow, and vice versa), and
-  re-acquire a lost track from the frame difference right after the player's own move.
+  sometimes, and the tracker can lose lock under heavy particle effects (it then holds the last position). Zone depth
+  is now learned from hits, but a game that ends after two crashes gives it one lesson at most, so its effect on
+  survival is not measurable from a handful of runs; the lead-time thresholds (0.5 / 1.2 s) are set by hand and
+  belong in the same calibration loop as the evaluator. Next: re-acquire a lost track from the frame difference
+  right after the player's own move, and carry learned depth across sessions of the same game.
 - **Effects nodes in audio** (filters, panners, convolvers) are not reproduced in the offline mix; gain and timing are.
 - **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
 - **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation

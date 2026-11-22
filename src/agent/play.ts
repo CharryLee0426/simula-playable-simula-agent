@@ -309,7 +309,17 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		const hits: Record<string, unknown>[] = [];
 		let lastHitF = -Infinity, lastCandF = -Infinity, lastGlanceF = frame;
 		if (learn) await w.call("impacts", {}); // forget impacts from before this policy
-		const HIT_Q = { type: "noul" as const, instructions: "The player was just hit or crashed: an explosion, crash or damage effect at the player, a crash / fail / revive / game-over screen, or a life lost. Not a pickup, a reward, a tutorial pause or an ordinary menu." };
+		const HIT_Q = { type: "noul" as const, instructions: "The player was just hit or crashed: an explosion, crash or damage effect at the player, a crash / fail / game-over screen or an offer to revive, or a life lost. Not a pickup, a reward, a \"revived, keep going\" message, a tutorial pause or an ordinary menu." };
+		// A hit the look found: date it from the frames since the previous look (where the screen froze or changed most),
+		// else halfway between the two looks.
+		const learnFromLook = async (pHit: number, fullPath: string) => {
+			const on = await w.call<{ f: number | null; how?: string }>("impact_onset", { since_f: lastGlanceF });
+			const hitF = on.f ?? Math.round((lastGlanceF + frame) / 2);
+			const evidence = join(paths.dir, "obs", `hit_${++hitCount}.jpg`);
+			try { copyFileSync(fullPath, evidence); } catch { /* best-effort */ }
+			log.push({ f: hitF, impact: `look${on.how ? `/${on.how}` : ""}`, p_hit: Math.round(pHit * 100) / 100 });
+			learnFrom(hitF, `look${on.how ? `, dated by ${on.how}` : ""}`, pHit, evidence);
+		};
 		const zoneNow = () => (a.zone && learn ? applyDepth(a.zone, depthAdj, a.player) : a.zone);
 		const learnFrom = (hitF: number, how: string, pHit: number, evidence?: string) => {
 			lastHitF = hitF;
@@ -373,17 +383,10 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 						novel: { type: "noul", instructions: `Something is on screen that none of these covers and that may need a different reaction (a new kind of obstacle, a new instruction or tutorial prompt, a power-up to grab): ${sits.map((x) => x.when).join(" / ")}` },
 						...(learn ? { hit: HIT_Q } : {}),
 					} });
-				// A hit neither impact signature caught (e.g. a game-over that fades in): date it from the frames since
-				// the previous look — where the screen froze or changed most — else halfway between the two looks.
+				// A hit neither impact signature caught (e.g. a game-over that fades in). Not on the policy's first look:
+				// the planner has just seen this screen, and there is nothing yet to date a hit from.
 				const pHit = noul(g?.answers.hit) ?? 0;
-				if (learn && pHit >= 0.5 && frame - lastHitF > hz.framesFor(1500)) {
-					const on = await w.call<{ f: number | null; how?: string }>("impact_onset", { since_f: lastGlanceF });
-					const hitF = on.f ?? Math.round((lastGlanceF + frame) / 2);
-					const evidence = join(paths.dir, "obs", `hit_${++hitCount}.jpg`);
-					try { copyFileSync(pk.full_path, evidence); } catch { /* best-effort */ }
-					log.push({ f: hitF, impact: `glance${on.how ? `/${on.how}` : ""}`, p_hit: Math.round(pHit * 100) / 100 });
-					learnFrom(hitF, `look${on.how ? `, dated by ${on.how}` : ""}`, pHit, evidence);
-				}
+				if (learn && checks > 0 && pHit >= 0.5 && frame - lastHitF > hz.framesFor(1500)) await learnFromLook(pHit, pk.full_path);
 				lastGlanceF = frame;
 				if ((noul(g?.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
 				if ((noul(g?.answers.novel) ?? 0) > 0.7 && checks > 0) { ended = "something_new"; break; }
@@ -446,6 +449,13 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			} else frame = (await w.step(checkEvery)).frame;
 		}
 		if (tracking) await w.call("track_stop", {});
+		// A hit in the last moments of a policy would otherwise reach only the planner: one more look when it ran out.
+		if (learn && ended === "duration" && checks > 0 && frame - lastHitF > hz.framesFor(1500)) {
+			const full = (await w.peek(vw)).path;
+			const hq = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone):", { image: full }], questions: { hit: HIT_Q } });
+			const pHit = noul(hq?.answers.hit) ?? 0;
+			if (pHit >= 0.5) await learnFromLook(pHit, full);
+		}
 		const moved = tracking ? ` · player tracked (moved ${Math.round(Math.hypot(delta[0], delta[1]))}/1000)` : "";
 		const hitNote = hits.length
 			? ` · hit ${hits.length}×: ${hits.map((h) => h.reason).join("; ")}${depthAdj !== depth0 ? ` (zone depth adjusted automatically: ${depth0} → ${depthAdj}/1000 beyond the far edge you drew)` : ""}`
