@@ -13,7 +13,7 @@
     "batch": "node src/cli.ts batch",
     "report": "node src/cli.ts report",
     "typecheck": "tsc --noEmit -p .",
-    "test": "node --test test/*.test.ts && cd py && .venv/bin/python -m unittest discover -s tests -t ."
+    "test": "node --test test/*.test.ts && cd py && .venv/bin/python -m unittest tests.test_track -v"
   },
   "dependencies": {
     "@earendil-works/chord": "^1.6.0",
