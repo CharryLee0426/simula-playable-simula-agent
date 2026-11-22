@@ -20,6 +20,8 @@ export type Config = {
 		end_card_hold_s: number;
 		tap_cta_at_end: boolean;
 		persona: "casual_competent" | "first_timer" | "expert";
+		/** "agent" (default) or "random": a model-free random player with machine timing, used to calibrate the evaluator. */
+		policy?: "agent" | "random";
 		stuck_after: number;
 	};
 	highlight: { duration_s: number; max_source_s: number; max_speed: number; candidates: number; width: number; height: number; touch_overlay: boolean; include_end_card: boolean };

@@ -11,7 +11,7 @@ import { BudgetExceeded } from "../ledger.ts";
 import { chatJson, choice, decide, noul, type Answer } from "../llm.ts";
 import { sc } from "../runtime.ts";
 import { ROOT } from "../config.ts";
-import { appendJsonl, errMsg, run, writeJson } from "../util/core.ts";
+import { appendJsonl, errMsg, Rng, run, writeJson } from "../util/core.ts";
 import { Humanizer, PERSONAS, type Gesture, type Performed, type Pt } from "./humanize.ts";
 
 export type PlanAction = {
@@ -132,6 +132,13 @@ function toGesture(a: PlanAction, dom: DomCandidate[], vw: number, vh: number): 
 	return { g: { kind: a.type, points: [p0], durationMs: a.duration_ms, target: tgt ? { x: tgt.x, y: tgt.y, w: tgt.w, h: tgt.h } : undefined }, label: tgt?.label };
 }
 
+/** The calibration baseline's policy: uniform random taps and drags anywhere on screen. */
+function randomPlan(rng: Rng): Plan {
+	const p = (): [number, number] => [Math.round(100 + rng.next() * 800), Math.round(60 + rng.next() * 880)];
+	const actions: PlanAction[] = Array.from({ length: 1 + rng.int(3) }, () => (rng.next() < 0.6 ? { type: "tap", point: p(), intent: "random tap" } : { type: "drag", path: [p(), p()], duration_ms: 250, intent: "random drag" }));
+	return { screen: "(random policy)", phase: "other", progress: "", notes: "", actions, watch_ms: 200 };
+}
+
 /** Generic probes for when the planner is unavailable: they exercise the common control schemes. */
 function fallbackPlan(turn: number): Plan {
 	const probes: PlanAction[][] = [
@@ -157,6 +164,9 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 	let ctaTapped = false;
 	let endedBy = "time_limit";
 	const history: ActionRecord[] = [];
+	// Calibration baseline: "random" plays uniformly random gestures with machine timing and no model at all.
+	const robot = cfg.play.policy === "random";
+	const rng = new Rng(`${cfg.browser.seed}|random-policy`);
 
 	const opened = await w.open({ playable: resolve(playable), run_dir: paths.dir, viewport: [vw, vh], dpr: cfg.browser.dpr, fps, seed: cfg.browser.seed, display: cfg.browser.display });
 	trace.emit("play", "boot", `loaded in ${opened.load_s}s · ${opened.frame_size.join("×")} @ ${fps} fps · GL: ${opened.gl ?? "none"} · "${opened.summary.title}"`, opened);
@@ -231,13 +241,13 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			// Planner (VLM) and decider checks run concurrently on the same frozen frame.
 			let plan: Plan;
 			let planMs = 0, planUsd = 0, planErr: string | undefined;
-			const [dec, planRes] = await Promise.all([
+			const [dec, planRes] = robot ? [null, { value: randomPlan(rng), ms: 0, usd: 0 }] : await Promise.all([
 				deciderObs(obs, prevObs, lastIntents).catch(() => null),
 				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: SYSTEM, ledger, phase: "play", kind: "planner",
 					parts: [{ text }, { image: obs.marks_path ?? obs.path }], validate: (p) => validatePlan(p, dom.length), maxTokens: 2500, estimateUsd: 0.015 })
 					.then((r) => r, (e) => e as Error),
 			]);
-			plannerCalls++;
+			if (!robot) plannerCalls++;
 			if (planRes instanceof Error) {
 				plannerFailures++;
 				planErr = errMsg(planRes);
@@ -287,11 +297,11 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			const intents: string[] = [];
 			for (let k = 0; k < plan.actions.length; k++) {
 				const a = plan.actions[k]!;
-				const delay = k === 0 ? hz.reactionMs(obs.changed_frac > 0.25 || turn === 1, turn === 1) : hz.chainGapMs();
+				const delay = robot ? 1000 / fps : k === 0 ? hz.reactionMs(obs.changed_frac > 0.25 || turn === 1, turn === 1) : hz.chainGapMs();
 				if (a.type !== "wait") await w.step(hz.framesFor(delay));
 				const { g, label } = toGesture(a, dom, vw, vh);
 				const st = await w.call<{ value: number }>("eval", { expr: "__sim.frame" });
-				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse" });
+				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: !robot });
 				const r = await w.ops(ops);
 				const rec: ActionRecord = { i: history.length, turn, kind: a.type, intent: a.intent ?? "", t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: performed.slipped, reaction_ms: a.type === "wait" ? 0 : delay, target_label: label };
 				history.push(rec);
@@ -301,7 +311,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			}
 			lastIntents = intents.join("; ");
 			// ------------------------------------------------------------ watch
-			const watch = Math.min(2500, Math.max(300, Number(plan.watch_ms) || 800));
+			const watch = robot ? 200 : Math.min(2500, Math.max(300, Number(plan.watch_ms) || 800));
 			await w.step(hz.framesFor(watch));
 			prevObs = obs;
 			obs = await w.observe({ width: vw, dom: true });

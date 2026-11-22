@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# One command for everything:  ./run --playable ./game.html --out highlight.mp4
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Node's fetch ignores HTTPS_PROXY unless asked; honour it when a proxy is configured.
+if [[ -n "${HTTPS_PROXY:-${https_proxy:-}}" ]]; then export NODE_USE_ENV_PROXY=1; fi
+if [[ ! -d "$HERE/node_modules" ]]; then (cd "$HERE" && npm install --no-fund --no-audit >/dev/null); fi
+if [[ ! -x "$HERE/py/.venv/bin/python" ]] && command -v uv >/dev/null; then uv sync --project "$HERE/py" >/dev/null; fi
+exec node --disable-warning=UNDICI-EHPA --disable-warning=ExperimentalWarning "$HERE/src/cli.ts" "$@"
