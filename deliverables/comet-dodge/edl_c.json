@@ -1,0 +1,68 @@
+{
+  "id": "c",
+  "title": "Feature-montage: Fast cuts across near-misses, Comet Walls, Zig-Zag, Combo x2, and Shield",
+  "clips": [
+    {
+      "start": 4.1,
+      "end": 7.4,
+      "speed": 1.05,
+      "role": "core_loop",
+      "why": "Fast intro to horizontal steering, stars, and CLOSE! +5 near-miss"
+    },
+    {
+      "start": 10.8,
+      "end": 13.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights COMET WALL! gap-threading mechanic"
+    },
+    {
+      "start": 17.2,
+      "end": 19.2,
+      "speed": 1,
+      "role": "feature",
+      "why": "Showcases COMBO x2 (+20) and ZIG-ZAG! purple comets"
+    },
+    {
+      "start": 19.2,
+      "end": 21.58,
+      "speed": 1,
+      "role": "climax",
+      "why": "Intense swerving comet evasion and explosion"
+    },
+    {
+      "start": 28.013,
+      "end": 31.4,
+      "speed": 1.35,
+      "role": "progression",
+      "why": "Second-chance run hitting 567m ZIG-ZAG! wave"
+    },
+    {
+      "start": 31.4,
+      "end": 34,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Chains CLOSE! +5 near-miss into COMBO x2 (+20)"
+    },
+    {
+      "start": 34.6,
+      "end": 37.3,
+      "speed": 1,
+      "role": "feature",
+      "why": "Features the SHIELD! power-up spawn under pressure"
+    },
+    {
+      "start": 42.5,
+      "end": 44.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "End card with BEST SCORE 60 and PLAY NOW tap"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": [
+    "clip 19.2-21.1 → 19.20-21.58 (bounds/gesture snap)",
+    "clip 28.5-31.4 → 28.01-31.40 (bounds/gesture snap)"
+  ]
+}

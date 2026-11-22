@@ -1,0 +1,65 @@
+{
+  "id": "c",
+  "title": "Fast-paced feature montage showcasing every hazard and power-up",
+  "clips": [
+    {
+      "start": 4.3,
+      "end": 7.4,
+      "speed": 1.1,
+      "role": "core_loop",
+      "why": "Sped-up intro showing star collection and comet dodging"
+    },
+    {
+      "start": 11.3,
+      "end": 14.2,
+      "speed": 1.2,
+      "role": "feature",
+      "why": "Comet Wall obstacle and CLOSE! +5 near-miss reward"
+    },
+    {
+      "start": 14.3,
+      "end": 17.6,
+      "speed": 1.3,
+      "role": "progression",
+      "why": "Rapid consecutive walls pushing combo multiplier to x6"
+    },
+    {
+      "start": 17.8,
+      "end": 20.8,
+      "speed": 1.2,
+      "role": "feature",
+      "why": "Zig-Zag swerving comets and COMBO x8"
+    },
+    {
+      "start": 23.4,
+      "end": 25.9,
+      "speed": 1.2,
+      "role": "feature",
+      "why": "Shield power-up introduction under LAST LIFE! pressure"
+    },
+    {
+      "start": 26,
+      "end": 28.8,
+      "speed": 1.1,
+      "role": "feature",
+      "why": "Split Rocks hazard paired with a clutch Shield pickup"
+    },
+    {
+      "start": 44.1,
+      "end": 46.933,
+      "speed": 1,
+      "role": "climax",
+      "why": "Full-speed Double Wall weave and explosion climax"
+    },
+    {
+      "start": 51.033,
+      "end": 53.3,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Comet Dodge end card with PLAY NOW call to action"
+    }
+  ],
+  "strategy": "feature-montage",
+  "source": "director",
+  "fixes": []
+}

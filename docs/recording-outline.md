@@ -34,6 +34,13 @@ A suggested script for the walkthrough. Times are targets; every claim points at
 - Show one failure and recovery (e.g. the word game's first swipe not registering → it used the hint → solved it;
   that was also a real bug in my Bézier sampler, now a unit test).
 
+## 3b. Reflexes for fast games (1 min)
+- Show `deliverables/neon-lanes/trace.html`: a reflex policy (zone + situations), its checks and fires with reflex
+  times; the "something new" hand-back when the game introduced jump barriers → the planner read the tutorial and jumped.
+- The evidence: Neon Lanes 6 inputs / crash at 11 s without reflexes vs 17–19 inputs / first crash at 13–16 s with them.
+- The honest twist: on the slower hold-out dodger a planner-only ablation did as well (frozen clock = exact
+  positioning), so reflexes became an escalation, not a default. What limits them: the decider's sense of lanes.
+
 ## 4. The cut (1.5 min)
 - Index: per-0.5 s signals + one director call watching the timestamped session → game model + moments.
 - Three EDL strategies; code enforces 20.0 s / ≤1.5× / ≤30 s source / no mid-gesture cuts / dead air trimmed /

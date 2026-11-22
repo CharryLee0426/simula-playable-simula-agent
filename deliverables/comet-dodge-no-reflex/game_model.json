@@ -1,0 +1,21 @@
+{
+  "title": "Comet Dodge",
+  "genre": "Space arcade dodger",
+  "objective": "Dodge falling comets and asteroid walls while collecting stars to maximize score and distance across two ships.",
+  "controls": "Hold or drag left and right on the screen to steer the rocket horizontally.",
+  "core_loop": "Steer the rocket left and right to dodge incoming comets and catch falling stars, earning points, combo multipliers, and near-miss bonuses.",
+  "features": [
+    "Stars and Combo Multiplier",
+    "Close Call Near-Miss Bonus",
+    "Comet Wall",
+    "Zig-Zag Comets",
+    "Shield Power-up",
+    "Split Rocks",
+    "Double Wall",
+    "Two-Ship Retry System"
+  ],
+  "progression": "As distance increases in kilometers, the game introduces harder obstacle patterns in sequence: Comet Walls, Zig-Zag swerving comets, Split Rocks, and Double Walls.",
+  "end_card": true,
+  "tone": "Fast-paced neon space arcade",
+  "hook_idea": "Threading the Comet Wall gap with a 'CLOSE! +5' near-miss bonus at t=12.4-14.0s, or weaving into the Double Wall explosion at t=44.4-46.8s."
+}

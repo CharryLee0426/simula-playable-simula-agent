@@ -1,0 +1,340 @@
+{
+  "best": "a",
+  "score": 84.3,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "c",
+    "a_first": "A",
+    "b_first": "A",
+    "winner": "a"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.091,
+        "loading_ratio": 0,
+        "action": 0.505,
+        "hook_ratio": 1.086,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": false,
+          "end_card": true
+        },
+        "human_timing": 0.98,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 9.999,
+        "moment_quality": 0.903,
+        "arc": 1,
+        "H": 88.5
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8,
+        "action": 8,
+        "hook": 7.5,
+        "polish": 7.5,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 17,
+          "issue": "Player gets hit and dies right before reaching the Shield power-up, leaving the shield mechanic unfulfilled."
+        },
+        "best_moment": {
+          "t": 1,
+          "why": "Slipping through the Comet Wall gap to trigger COMBO x2 (+20) right as the ZIG-ZAG! banner appears."
+        },
+        "summary": "A clear, fast-paced highlight that effectively demonstrates the core dodging loop, combo system, and escalating hazards. The jarring cuts between different runs and failing to actually grab the showcased shield slightly hurt the polish, but it's a strong ad overall.",
+        "J": 80.8,
+        "J_samples": [
+          79.8,
+          81.8
+        ]
+      },
+      "score": 84.3,
+      "wins": 1
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.116,
+        "loading_ratio": 0,
+        "action": 0.492,
+        "hook_ratio": 0.765,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.98,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 9.499,
+        "moment_quality": 0.902,
+        "arc": 1,
+        "H": 88.7
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 7.5,
+        "human_play": 8,
+        "action": 7,
+        "hook": 6.5,
+        "polish": 5.5,
+        "would_run": 6.5,
+        "worst_moment": {
+          "t": 15,
+          "issue": "Abruptly cuts from the 'SHIP DOWN' death screen back to an earlier run (1.28 km) to show the shield, then cuts to the end card before the player even grabs it."
+        },
+        "best_moment": {
+          "t": 11,
+          "why": "Slipping through the Comet Wall gap to hit COMBO x2 (+20) right as the ZIG-ZAG! swerving comets arrive."
+        },
+        "summary": "The video clearly communicates the core loop and showcases escalating hazards like Comet Walls and Zig-Zag comets with natural, human-like gameplay. However, starting with basic tutorial prompts and featuring a jarring cut from the death screen to an unrelated shield clip hurts the overall polish.",
+        "J": 72.1,
+        "J_samples": [
+          68.6,
+          75.6
+        ]
+      },
+      "score": 79.6
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.089,
+        "loading_ratio": 0,
+        "action": 0.497,
+        "hook_ratio": 0.758,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.98,
+        "shots": 8,
+        "avg_shot_s": 2.504,
+        "touches_per_10s": 10.483,
+        "moment_quality": 0.888,
+        "arc": 1,
+        "H": 89.2
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 8,
+        "human_play": 8,
+        "action": 7.5,
+        "hook": 6,
+        "polish": 7.5,
+        "would_run": 7.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 2 seconds are slow tutorial text ('CATCH!', 'AVOID!') with no action, which is a weak hook."
+        },
+        "best_moment": {
+          "t": 6,
+          "why": "Slipping through the Comet Wall gap to hit COMBO x2 (+20) right as the ZIG-ZAG! comets are announced."
+        },
+        "summary": "This highlight clearly demonstrates the core loop, human-like steering, and escalating features like Comet Walls, Zig-Zag comets, and the Shield power-up. However, it starts slowly with tutorial text and cuts abruptly at t=17s just before the player can grab the Shield, though it does end cleanly on a Play Now card.",
+        "J": 77.7,
+        "J_samples": [
+          74.6,
+          80.8
+        ]
+      },
+      "score": 82.9,
+      "wins": 1
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.05,
+        "loading_ratio": 0,
+        "action": 0.48,
+        "hook_ratio": 0.531,
+        "coverage": 0.5,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": false,
+          "end_card": false
+        },
+        "human_timing": 0.98,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 8.5,
+        "moment_quality": 0.782,
+        "arc": 0.7,
+        "H": 70.8
+      },
+      "judge": {
+        "core_loop_clarity": 8.5,
+        "features": 6.5,
+        "human_play": 8,
+        "action": 6.5,
+        "hook": 4,
+        "polish": 5.5,
+        "would_run": 6,
+        "worst_moment": {
+          "t": 0,
+          "issue": "Starts on a static 3.5-second tutorial overlay instead of immediate gameplay action."
+        },
+        "best_moment": {
+          "t": 17,
+          "why": "The player threads the needle through a Comet Wall gap to collect a star for COMBO x2 (+20) right as the Zig-Zag wave begins."
+        },
+        "summary": "The video clearly demonstrates the core loop and features believable human play, including mistakes and a tense recovery through the Comet Walls. However, it opens with a slow 3.5-second tutorial screen and cuts off abruptly just as the Zig-Zag comets arrive, missing both a strong hook and an end-card CTA.",
+        "J": 66.6,
+        "J_samples": [
+          61,
+          72.2
+        ]
+      },
+      "score": 68.5
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.098,
+        "loading_ratio": 0,
+        "action": 0.463,
+        "hook_ratio": 0.521,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.98,
+        "shots": 5,
+        "avg_shot_s": 4.001,
+        "touches_per_10s": 8.497,
+        "moment_quality": 0.724,
+        "arc": 0.85,
+        "H": 75.8
+      },
+      "judge": {
+        "core_loop_clarity": 7.5,
+        "features": 6.5,
+        "human_play": 6,
+        "action": 5.5,
+        "hook": 3,
+        "polish": 4.5,
+        "would_run": 4,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 3.5 seconds are a static tutorial overlay instead of immediate high-action gameplay, killing the hook."
+        },
+        "best_moment": {
+          "t": 7,
+          "why": "The ZIG-ZAG! wave and Comet Wall introduce escalating hazards while the player weaves to grab stars."
+        },
+        "summary": "The highlight clearly demonstrates the core dodging loop and escalating hazards like Comet Walls and Zig-Zag comets, but wastes the crucial first 3.5 seconds on a tutorial screen. The player also dies repeatedly, misses the Shield power-up, and has a jarring cut between 0:14 and 0:16.",
+        "J": 54.6,
+        "J_samples": [
+          57.4,
+          51.8
+        ]
+      },
+      "score": 64.1
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 68.5
+    },
+    {
+      "id": "base_random",
+      "score": 64.1
+    }
+  ],
+  "separation": 15.8,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

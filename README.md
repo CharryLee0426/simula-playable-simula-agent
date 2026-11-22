@@ -36,6 +36,7 @@ decision by decision), plus the logs. Results: [Results](#results).
                JSON lines: step / touch / observe                          │ screenshots, DOM, listeners
  ┌───────────────────────────────┴───── agent (TypeScript · Pi Durable) ───▼──────────────────────────────┐
  │ play      observe ─► planner VLM ‖ decider checks ─► validate ─► humanize ─► act ─► watch (loop)       │
+ │           fast games: planner writes a reflex policy, decider picks the situation every 0.1 s          │
  │ index     per-0.5 s signals (motion, audio, touches, decider phase + excitement) + director VLM       │
  │           watches the time-stamped session → game model + labelled moments                            │
  │ cut       director writes 3 EDLs (3 editing strategies) → code makes them exact (20.0 s, ≤1.5×,       │
@@ -177,37 +178,50 @@ All runs: default config, seed 7, one take per playable, CPU-only Linux VM (4 co
 | sample | West Game II (3D) | joystick-drag near outlaws to auto-shoot, collect gold, build defenses on pads | 93 s, 20 inputs | **83.4** | 81.5 · 85.7 | 40.6 / 64.9 | 2/2 |
 | generated | Castle Toss (2D physics) | pull back and release the catapult; tap mid-air to split; upgrades between levels | 47 s, all 3 levels → end card | **88.2** | 88.2 · 88.3 | 69.1 / 65.3 | 2/2 |
 | generated | Bakery Rush (DOM idle) | tap the cake, buy upgrades, rush order, frenzy | 49 s, 64 inputs → end card | **84.9** | 81.2 · 89.5 | 59.9 / 50.7 | 2/2 |
-| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump; revive after a crash | 27 s, crashed twice → end card | **90.6** | 85.4 · 96.9 | 81.2 / 78.2 | 2/2 |
+| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump — played with **reflex policies** | 32 s, 17 inputs incl. 3 jumps; crashed at 13 s (revive) and 25 s → end card | **90.0** | 83.7 · 97.6 | 76.9 / 73.5 | 2/2 |
 | generated | Orb Merge (2D physics) | drag to aim and drop orbs, merge equal values, bomb power-up | 59 s → end card | **87.2** | 86.2 · 88.4 | 69.5 / 59.9 | 2/2 |
 | hold-out | Gem Swap (match-3) | swipe gems into lines of 3–4, cascades, row blaster, fever | 25 s, target smashed → end card | **89.9** | 87.9 · 92.4 | 81.5 / 71.5 | 2/2 |
 | hold-out | Sky Stack (raw WebGL 3D stacker) | tap to drop a sliding slab onto the tower | 29 s, 7 floors, missed, retry, missed → end card | **80.3** | 78.1 · 82.9 | 72.8 / 60.8 | 2/2 |
+| hold-out | Comet Dodge (2D reflex dodger, hold left/right) | hold a side to steer; dodge comet walls, zig-zags, catch stars — with reflex policies | 46 s, 35 inputs; first ship lost at 20 s, retry → end card | **84.3** | 80.8 · 88.5 | 68.5 / 64.1 | 2/2 |
+| ablation | Comet Dodge, planner only (`play.reflex_actions=false`) | precise drags to exact x positions, one decision per screenshot | 56 s, 21 inputs; first ship lost at 28 s, retry → end card | **86.4** | 84.4 · 88.8 | 71.3 / 68.3 | 2/2 |
 | calibration | Word Hunt, *random player* | random taps/drags with machine timing, no model | 46 s | **54.4** | 28.3 · 86.4 | 48.8 / 50.9 | — |
 
 What the numbers say:
 
 - **It plays games it has never seen**, across 2D canvas, DOM and WebGL 3D, tap/swipe/drag/joystick/slingshot
   controls, with no per-game code: it read every tutorial, used upgrades/power-ups when offered, reached the end card
-  in 7 of 10 games (the three that did not — Boom Castle, Raid, West — simply last longer than the 90 s cap), and recovered from fail
+  in 8 of 11 games (the three that did not — Boom Castle, Raid, West — simply last longer than the 90 s cap), and recovered from fail
   screens via retry/revive.
 - **The evaluator separates real edits from lazy ones**: the chosen cut beat the best naive baseline head to head
-  in 9 of 10 games, by +7.5 to +25 points. The exception is informative: Word Hunt's whole game lasts 26 s, so "the
+  in 10 of 11 games, by +7.5 to +25 points. The exception is informative: Word Hunt's whole game lasts 26 s, so "the
   first 20 s" already *is* the story; the evaluator calls it a tie, correctly.
 - **It catches bad play, not just bad editing**: the random player on Word Hunt scores 54.4 (judge 28.3: "no
   coherent play") vs 85.5 for the agent. The heuristics alone don't (86.4 — random taps still produce motion), which
   is why the judge carries the larger weight.
-- **Two honest weaknesses surfaced by the generated/hold-out games** (both genres the samples don't have):
-  *pure timing* (Sky Stack: tap when the slab is aligned) and *fast reflexes* (Neon Lanes: dodge in time). Both come
-  from the decide → react → watch cadence being slower than the game's events. The judge still rates those highlights
-  well (a crash and a retry make good drama), which is itself a limitation worth knowing: the judge scores the video,
-  not the player's competence.
+- **Two weaknesses surfaced by the generated/hold-out games** (both genres the samples don't have): *pure timing*
+  (Sky Stack: tap when the slab is aligned) and *fast reflexes* (Neon Lanes: dodge in time). Both come from the
+  decide → react → watch cadence being slower than the game's events. The judge still rates those highlights well (a
+  crash and a retry make good drama), which is itself a limitation worth knowing: the judge scores the video, not the
+  player's competence — so for these games I compare *play* (survival, inputs) directly.
+- **Reflex policies (decision 9) fix much of the fast-game problem — where the game is really fast.** On Neon Lanes,
+  without reflexes the agent made 6 inputs and crashed at 11 s and 20 s; across three reflex runs it made 17–19 inputs,
+  executed the jumps the game teaches, picked up coins, and first crashed at 13–16 s. The "anything new?" hand-back
+  fired exactly when the game introduced barriers and a power-up. On the reflex hold-out (Comet Dodge, a different
+  control scheme, written after the reflex code and never used for tuning) the policies transferred without changes
+  — but a planner-only ablation did as well or better (first ship lost at 28 s vs 20 s): its comets fall slowly enough
+  that the frozen-clock planner can position the ship *exactly*, which coarse reflexes cannot; a second planner-only
+  run lost its first ship at 21 s, so the gap is within run-to-run noise. The resulting rule, now in the planner's
+  instructions: play turn by turn with a short watch time, and escalate to reflexes only when things reach the player
+  between screenshots or the world rushes at it (runners). On re-runs the planner chose reflexes for Neon Lanes and
+  precise turn-by-turn play for Comet Dodge. What still limits reflexes is the decider's spatial sense (see
+  Limitations).
 - **A negative result, kept honest.** I tried a generic fix for timing: `tap_when`, where the planner describes the
   visual moment ("the sliding block is exactly above the tower") and the executor steps the frozen game frame by
   frame, asking the decider until that moment comes (free and invisible on video). The decider's probability does
   peak periodically as the slab passes, but a per-frame classifier is not precise enough for a stacker's tolerance:
   re-runs reached 2 and 1 floors vs 7 without it. It ships **off by default** (`--set play.timing_actions=true`
   to try it). The better next step is to estimate the moving object's phase from pixel motion over one period and
-  time the tap from that, and the same frame-stepping loop with a reflex policy ("when an obstacle is ahead in my
-  lane, swipe away") for runners. (Sky Stack is no longer a clean hold-out for timing work after this.)
+  time the tap from that. (Sky Stack is no longer a clean hold-out for timing work after this.)
 - **Cost and time**: $0.29–0.71 per playable (median ≈ $0.35); 6–11 min wall time for 2D/DOM games, 17–20 min for
   the 3D samples on CPU (capture is ~0.2–0.4 s per frame on llvmpipe; a GPU worker removes most of that). The three 3D
   samples were re-cut once after evaluator changes (play reused), so their cost includes both cut/eval passes.

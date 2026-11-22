@@ -1,60 +1,58 @@
 {
   "id": "b",
-  "title": "Chronological run from first dodge to revive and Magnet climax",
+  "title": "Learn-then-escalate chronological run from first dodge to top speed",
   "clips": [
     {
-      "start": 2.5,
-      "end": 7.28,
+      "start": 3.5,
+      "end": 6.5,
       "speed": 1,
       "role": "core_loop",
-      "why": "Clean first dodge and coin collection without slow tutorial intro"
+      "why": "Clear first action showing swipe-to-dodge and coin collection"
     },
     {
-      "start": 8.547,
-      "end": 10.7,
+      "start": 8.9,
+      "end": 10.5,
       "speed": 1,
       "role": "feature",
-      "why": "Leaps over the orange barrier for mid-air coins and GREAT JUMP"
+      "why": "Introduces jumping over full-width orange barriers"
     },
     {
-      "start": 10.7,
-      "end": 14.2,
+      "start": 10.5,
+      "end": 12.4,
       "speed": 1,
-      "role": "progression",
-      "why": "Escalates speed to SPD 70 with rapid lane switches and jumps"
+      "role": "core_loop",
+      "why": "Rapid lane switching through denser pink X blocks"
     },
     {
-      "start": 14.2,
-      "end": 17.4,
+      "start": 12.8,
+      "end": 16.5,
       "speed": 1,
       "role": "feature",
-      "why": "High-speed crash at 209m saved by tapping Free Revive"
+      "why": "Crash triggers the free Revive save to continue the run"
     },
     {
-      "start": 17.4,
-      "end": 19.4,
+      "start": 16.5,
+      "end": 19.5,
       "speed": 1,
       "role": "progression",
-      "why": "Post-revive surge accelerating back up to SPD 78"
+      "why": "Speed escalates toward SPD 79 with tighter obstacles and magnet power-up"
     },
     {
-      "start": 19.4,
-      "end": 21.4,
+      "start": 19.5,
+      "end": 23.8,
       "speed": 1,
       "role": "climax",
-      "why": "Peak payoff grabbing the Magnet at SPD 81 and doubling coins"
+      "why": "Peak intensity at SPD 81-85 with tight dodges and consecutive barrier jumps"
     },
     {
-      "start": 23.433,
-      "end": 25.8,
+      "start": 26.9,
+      "end": 29.4,
       "speed": 1,
       "role": "end_card",
-      "why": "Ends on the NEON LANES synthwave end card and PLAY NOW button"
+      "why": "Closes on the Neon Lanes end card with PLAY NOW CTA"
     }
   ],
   "strategy": "learn-then-escalate",
   "source": "director",
-  "fixes": [
-    "clip 8.9-10.7 → 8.55-10.70 (bounds/gesture snap)"
-  ]
+  "fixes": []
 }

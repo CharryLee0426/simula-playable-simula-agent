@@ -1,0 +1,123 @@
+{
+  "summary": "The first-time experience is smooth overall, with clear controls and engaging progression through Comet Walls and Zig-Zag comets. The main friction is a ~2.2-second delay on both 'SHIP DOWN' fail screens before the 'TRY AGAIN' button or end card appears, leaving players with no clear action and unresponsive inputs.",
+  "items": [
+    {
+      "t": 21.7,
+      "end": 23.9,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Delayed 'TRY AGAIN' button on first fail screen",
+      "evidence": "At t=21.7s, the 'SHIP DOWN' screen appeared with 'Score 60 · 1.78 km' but no button, causing the player's input to have no effect (S4) and only 23% clarity on what to do (S2) until 'TRY AGAIN' finally appeared at t=23.9s.",
+      "suggestion": "Show the 'TRY AGAIN' button immediately when the 'SHIP DOWN' screen appears, or add a brief, visible countdown/transition indicator so players know not to tap yet.",
+      "signals": [
+        "S2",
+        "S4",
+        "S6",
+        "S7"
+      ],
+      "image": "obs/obs_0011.jpg"
+    },
+    {
+      "t": 39.3,
+      "end": 41.5,
+      "type": "ui",
+      "severity": "medium",
+      "title": "Dead-air delay before end card on final fail screen",
+      "evidence": "At t=39.3s, the 'SHIP DOWN' screen showed 'Out of ships' with no CTA, resulting in 26% clarity (S3) and an unresponsive input (S5) for 2.2 seconds until the end card appeared at t=41.5s.",
+      "suggestion": "Transition directly to the end card or display a 'Loading...' / 'Final Score' progress indicator immediately on the 'Out of ships' screen.",
+      "signals": [
+        "S3",
+        "S5",
+        "S8",
+        "S9"
+      ],
+      "image": "obs/obs_0017.jpg"
+    },
+    {
+      "t": 0,
+      "end": 2,
+      "type": "pacing",
+      "severity": "low",
+      "title": "Brief 2-second delay before first input registers",
+      "evidence": "It took 2.0s from the first playable frame (tutorial overlay showing 'HOLD LEFT / RIGHT TO DODGE' and a hand pointing right) until an input visibly moved the rocket.",
+      "suggestion": "Allow the player's first touch-and-hold to immediately dismiss the tutorial overlay and steer the rocket without any initial lock-out.",
+      "signals": [
+        "S1"
+      ],
+      "image": "obs/obs_0005.jpg"
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 1.9999999999999982,
+      "kind": "time_to_first_success",
+      "detail": "2.0 s from the first playable frame until an input visibly worked",
+      "obs": 5,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0005.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 21.73333333333326,
+      "kind": "unclear_screen",
+      "detail": "decider: only 23% that a first-time player knows what to do (screen: fail)",
+      "obs": 11,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0011.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 39.266666666666666,
+      "kind": "unclear_screen",
+      "detail": "decider: only 26% that a first-time player knows what to do (screen: fail)",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 21.73333333333326,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 7%, 39.5% of pixels changed) — the player had tried: ZIG-ZAG! banner, rocket centered below a star, comet walls on sides",
+      "obs": 11,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0011.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 39.266666666666666,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 18%, 20.4% of pixels changed) — the player had tried: Space dodger gameplay, 1 heart left, shield power-up and asteroids incoming",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 21.73333333333326,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 11,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0011.jpg"
+    },
+    {
+      "id": "S7",
+      "t": 23.93333333333318,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 12,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0012.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 39.266666666666666,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 17,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/obs/obs_0017.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 41.466666666666825,
+      "kind": "end_card",
+      "detail": "end card appeared at 41.5 s (session 46.2 s)"
+    }
+  ]
+}

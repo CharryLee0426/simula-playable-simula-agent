@@ -1,0 +1,58 @@
+{
+  "id": "a",
+  "title": "Near-miss hook into escalating comet hazards and Double Wall climax",
+  "clips": [
+    {
+      "start": 12.067,
+      "end": 14.2,
+      "speed": 1,
+      "role": "hook",
+      "why": "Opens on threading the Comet Wall gap for a CLOSE! +5 near-miss and COMBO x4"
+    },
+    {
+      "start": 7.2,
+      "end": 10.5,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Establishes the core loop of weaving between comets and catching stars for combos"
+    },
+    {
+      "start": 14.2,
+      "end": 17.6,
+      "speed": 1,
+      "role": "progression",
+      "why": "Shows rising speed and consecutive comet walls up to COMBO x6"
+    },
+    {
+      "start": 17.8,
+      "end": 20.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces Zig-Zag swerving comets and a CLOSE! +5 dodge at COMBO x8"
+    },
+    {
+      "start": 25.9,
+      "end": 28.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Highlights Split Rocks and a clutch Shield power-up pickup on impact"
+    },
+    {
+      "start": 44.1,
+      "end": 47,
+      "speed": 1,
+      "role": "climax",
+      "why": "High-intensity Double Wall weave ending in a full-screen explosion"
+    },
+    {
+      "start": 51.033,
+      "end": 53.4,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Comet Dodge end card with PLAY NOW call to action"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

@@ -1,45 +1,45 @@
 {
-  "session_id": "reflex-neon-3",
+  "session_id": "reflex-neon-4",
   "playable": "/home/user/simula-playable-simula-agent/games/generated/neon-lanes.html",
   "playable_sha": "c135ac3c7b8fd508",
-  "created_at": "2026-11-22T16:27:02.957Z",
+  "created_at": "2026-11-22T16:55:57.405Z",
   "phases": {
     "play": {
-      "at": "2026-11-22T16:29:12.542Z",
-      "ms": 129557,
-      "note": "28.1 s recorded, 19 inputs, 9 planner turns, ended by end_card"
+      "at": "2026-11-22T16:58:32.617Z",
+      "ms": 155183,
+      "note": "31.9 s recorded, 17 inputs, 10 planner turns, ended by end_card"
     },
     "index": {
-      "at": "2026-11-22T16:29:48.089Z",
-      "ms": 35544,
-      "note": "12 moments, genre: Endless Runner"
+      "at": "2026-11-22T16:59:06.951Z",
+      "ms": 34330,
+      "note": "13 moments, genre: 3-lane endless runner"
     },
     "cut": {
-      "at": "2026-11-22T16:30:43.395Z",
-      "ms": 55299,
+      "at": "2026-11-22T17:00:01.209Z",
+      "ms": 54256,
       "note": "3 EDLs"
     },
     "render": {
-      "at": "2026-11-22T16:35:09.267Z",
-      "ms": 265870,
+      "at": "2026-11-22T17:04:00.554Z",
+      "ms": 239342,
       "note": "5 candidates"
     },
     "eval": {
-      "at": "2026-11-22T16:37:47.431Z",
-      "ms": 158159,
-      "note": "best b (learn-then-escalate) score 89.5"
+      "at": "2026-11-22T17:06:12.098Z",
+      "ms": 131542,
+      "note": "best c (feature-montage) score 90"
     },
     "friction": {
-      "at": "2026-11-22T16:37:57.159Z",
-      "ms": 9723,
+      "at": "2026-11-22T17:06:21.285Z",
+      "ms": 9178,
       "note": "3 items"
     },
     "report": {
-      "at": "2026-11-22T16:37:57.168Z",
-      "ms": 5,
-      "note": "trace.html written · total spend $0.345"
+      "at": "2026-11-22T17:06:21.295Z",
+      "ms": 7,
+      "note": "trace.html written · total spend $0.336"
     }
   },
   "task": 7,
-  "best": "b"
+  "best": "c"
 }

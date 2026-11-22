@@ -6,14 +6,18 @@
   "clips": [
     {
       "start": 0,
-      "end": 20.013,
+      "end": 20,
+      "speed": 1,
+      "role": "core_loop"
+    },
+    {
+      "start": 20,
+      "end": 20,
       "speed": 1,
       "role": "core_loop"
     }
   ],
   "fixes": [
-    "clip 0.0-20.0 → 0.00-20.35 (bounds/gesture snap)",
-    "clip 20.0-20.1 → 19.81-20.80 (bounds/gesture snap)",
-    "overlap trimmed (core_loop)"
+    "clip 20.0-20.1 → 20.00-20.80 (bounds/gesture snap)"
   ]
 }

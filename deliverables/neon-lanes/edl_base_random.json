@@ -6,37 +6,36 @@
   "clips": [
     {
       "start": 0,
-      "end": 4.484,
+      "end": 4,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 14.895,
-      "end": 18.895,
+      "start": 17.243,
+      "end": 21.447,
+      "speed": 1.05,
+      "role": "core_loop"
+    },
+    {
+      "start": 6.586,
+      "end": 10.586,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 5.689,
-      "end": 9.689,
+      "start": 23.829,
+      "end": 27.829,
       "speed": 1,
       "role": "core_loop"
     },
     {
-      "start": 20.584,
-      "end": 24.584,
-      "speed": 1,
-      "role": "core_loop"
-    },
-    {
-      "start": 11.378,
-      "end": 14.895,
+      "start": 13.172,
+      "end": 17.172,
       "speed": 1,
       "role": "core_loop"
     }
   ],
   "fixes": [
-    "clip 11.4-15.4 → 11.38-15.61 (bounds/gesture snap)",
-    "overlap trimmed (core_loop)"
+    "clip 17.2-21.2 → 17.24-21.45 (bounds/gesture snap)"
   ]
 }

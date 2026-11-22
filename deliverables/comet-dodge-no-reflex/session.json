@@ -1,0 +1,51 @@
+{
+  "game_s": 56.03333333333333,
+  "frames": 1681,
+  "fps": 30,
+  "planner_calls": 25,
+  "planner_failures": 0,
+  "actions": 21,
+  "turns": 25,
+  "end_card_at": 51.033333333334184,
+  "cta_tapped": true,
+  "ended_by": "end_card",
+  "input_mode": "touch",
+  "persona": "casual_competent",
+  "gl": "ANGLE (Mesa, llvmpipe (LLVM 20.1.2 256 bits), OpenGL 4.5)",
+  "listeners": {
+    "pointerdown@canvas": 1,
+    "pointermove@canvas": 1,
+    "pointerup@canvas": 1,
+    "pointercancel@canvas": 1,
+    "contextmenu@canvas": 1,
+    "keydown@window": 1,
+    "keyup@window": 1,
+    "click@element": 2
+  },
+  "events": [
+    {
+      "t": 54200.000000001084,
+      "frame": 1626,
+      "kind": "cta",
+      "via": "mraid.open",
+      "url": "https://example.com/app"
+    }
+  ],
+  "audio": {
+    "sounds": 803,
+    "skipped": 0,
+    "has_audio": true,
+    "peak": 1.904
+  },
+  "perf": {
+    "step_ms_avg": 7.8,
+    "shot_ms_avg": 76.4
+  },
+  "title": "Comet Dodge",
+  "frame_size": [
+    720,
+    1280
+  ],
+  "notes": "End card reached. Tapping PLAY NOW.",
+  "stuck_events": 0
+}

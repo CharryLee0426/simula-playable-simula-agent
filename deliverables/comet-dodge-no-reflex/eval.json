@@ -1,0 +1,340 @@
+{
+  "best": "c",
+  "score": 86.4,
+  "pass": true,
+  "pairwise": {
+    "a": "a",
+    "b": "c",
+    "a_first": "B",
+    "b_first": "A",
+    "winner": "c"
+  },
+  "vs_baseline": {
+    "baseline": "base_first",
+    "chosen_wins": 2,
+    "of": 2,
+    "orders": [
+      "A",
+      "B"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "a",
+      "strategy": "hook-first",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/candidates/cut_a.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.119,
+        "loading_ratio": 0,
+        "action": 0.563,
+        "hook_ratio": 1.117,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.933,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.901,
+        "arc": 1,
+        "H": 93.4
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 8,
+        "hook": 8.5,
+        "polish": 8,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 2,
+          "issue": "Hard cut from 1.04 km back to 388 m slows down the pacing right after the strong opening hook."
+        },
+        "best_moment": {
+          "t": 0,
+          "why": "Opens immediately with a high-action Comet Wall dodge, 'CLOSE! +5' near-miss bonus, and a 'COMBO x5!' popup."
+        },
+        "summary": "This 20-second highlight effectively showcases the core dodging loop, escalating obstacle types, and combo mechanics with natural human-like gameplay. Aside from a minor pacing dip at the 2-second cut, it is a polished, high-energy ad ready to run.",
+        "J": 84.6,
+        "J_samples": [
+          86,
+          83.2
+        ]
+      },
+      "score": 88.6,
+      "wins": 0
+    },
+    {
+      "id": "b",
+      "strategy": "learn-then-escalate",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/candidates/cut_b.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.119,
+        "loading_ratio": 0,
+        "action": 0.542,
+        "hook_ratio": 0.711,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.933,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 3.5,
+        "moment_quality": 0.871,
+        "arc": 1,
+        "H": 87.9
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8,
+        "action": 8,
+        "hook": 7,
+        "polish": 8,
+        "would_run": 8,
+        "worst_moment": {
+          "t": 14.5,
+          "issue": "Hard jump cut from 2.87 km to 1.60 km right after taking a hit, which slightly breaks continuity."
+        },
+        "best_moment": {
+          "t": 8,
+          "why": "Threading the Comet Wall gap while stacking a COMBO x5 and triggering a CLOSE! +5 near-miss bonus."
+        },
+        "summary": "A tight 19-second highlight that clearly demonstrates the core dodge-and-collect loop, escalating obstacle patterns, and end card. Natural touch movement and rapid progression make it a strong ad candidate despite a slightly abrupt mid-video cut.",
+        "J": 82.2,
+        "J_samples": [
+          82.2,
+          82.2
+        ]
+      },
+      "score": 84.8
+    },
+    {
+      "id": "c",
+      "strategy": "feature-montage",
+      "source": "director",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/candidates/cut_c.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.114,
+        "loading_ratio": 0,
+        "action": 0.552,
+        "hook_ratio": 0.688,
+        "coverage": 1,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": true
+        },
+        "human_timing": 0.933,
+        "shots": 8,
+        "avg_shot_s": 2.5,
+        "touches_per_10s": 4.5,
+        "moment_quality": 0.915,
+        "arc": 1,
+        "H": 88.8
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 9,
+        "human_play": 8.5,
+        "action": 8,
+        "hook": 7.5,
+        "polish": 8,
+        "would_run": 8.5,
+        "worst_moment": {
+          "t": 15,
+          "issue": "Noticeable jump cut where the score resets from 430 to 50 and distance drops from 2.87 km to 1.61 km."
+        },
+        "best_moment": {
+          "t": 4,
+          "why": "Threading the Comet Wall gap while triggering the 'CLOSE! +5' near-miss bonus and '+40' combo."
+        },
+        "summary": "A fast-paced, well-paced 19-second highlight that clearly demonstrates the core loop, natural touch controls, and nearly every major obstacle and power-up. Aside from a slight score/distance reset on the cut to the Double Wall, it is a very strong ad highlight with a clean end card.",
+        "J": 84.4,
+        "J_samples": [
+          82.2,
+          86.6
+        ]
+      },
+      "score": 86.4,
+      "wins": 2
+    },
+    {
+      "id": "base_first",
+      "strategy": "baseline: first 20 s",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/candidates/cut_base_first.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.05,
+        "loading_ratio": 0,
+        "action": 0.512,
+        "hook_ratio": 0.516,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.933,
+        "shots": 2,
+        "avg_shot_s": 10,
+        "touches_per_10s": 4.5,
+        "moment_quality": 0.799,
+        "arc": 0.7,
+        "H": 76.2
+      },
+      "judge": {
+        "core_loop_clarity": 9,
+        "features": 6,
+        "human_play": 7.5,
+        "action": 7,
+        "hook": 4,
+        "polish": 6,
+        "would_run": 6,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 3.5 seconds are spent on a static tutorial overlay instead of jumping straight into exciting gameplay."
+        },
+        "best_moment": {
+          "t": 13,
+          "why": "Threading the Comet Wall gap while catching a star and triggering the 'CLOSE! +5' near-miss bonus."
+        },
+        "summary": "The highlight clearly demonstrates the core loop, combo system, and Comet Wall mechanic with natural-looking touch controls. However, starting with a 3.5-second tutorial overlay hurts the hook, and the clip cuts off abruptly right as the Zig-Zag mechanic is introduced.",
+        "J": 67.2,
+        "J_samples": [
+          68,
+          66.4
+        ]
+      },
+      "score": 71.3
+    },
+    {
+      "id": "base_random",
+      "strategy": "baseline: random clips",
+      "source": "baseline",
+      "path": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/candidates/cut_base_random.mp4",
+      "gate": {
+        "ok": true,
+        "problems": [],
+        "width": 1080,
+        "height": 1920,
+        "fps": 30,
+        "duration": 20,
+        "vcodec": "h264",
+        "acodec": "aac"
+      },
+      "heuristics": {
+        "dead_ratio": 0.095,
+        "loading_ratio": 0,
+        "action": 0.5,
+        "hook_ratio": 0.492,
+        "coverage": 0.75,
+        "coverage_detail": {
+          "core_loop": true,
+          "feature": true,
+          "progression": true,
+          "end_card": false
+        },
+        "human_timing": 0.933,
+        "shots": 5,
+        "avg_shot_s": 4.001,
+        "touches_per_10s": 3.999,
+        "moment_quality": 0.802,
+        "arc": 0.7,
+        "H": 75.9
+      },
+      "judge": {
+        "core_loop_clarity": 8,
+        "features": 8,
+        "human_play": 7.5,
+        "action": 7,
+        "hook": 3,
+        "polish": 3.5,
+        "would_run": 4.5,
+        "worst_moment": {
+          "t": 0,
+          "issue": "The first 3 seconds are a slow tutorial screen followed by an abrupt cut to a 'SHIP DOWN' screen at 0:04."
+        },
+        "best_moment": {
+          "t": 9,
+          "why": "Threading the comet wall gap while stacking a COMBO x5 and CLOSE! +5 bonus."
+        },
+        "summary": "The video clearly demonstrates the core dodging loop and major features like shields, comet walls, and split rocks. However, it opens with a slow tutorial instead of action and suffers from jarring cuts between different runs with inconsistent scores.",
+        "J": 62,
+        "J_samples": [
+          62.6,
+          61.4
+        ]
+      },
+      "score": 68.3
+    }
+  ],
+  "baselines": [
+    {
+      "id": "base_first",
+      "score": 71.3
+    },
+    {
+      "id": "base_random",
+      "score": 68.3
+    }
+  ],
+  "separation": 15.1,
+  "weights": {
+    "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
+    "note": "J and H are 0-100"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "session_id": "holdout-comet-dodge",
+  "playable": "/home/user/simula-playable-simula-agent/games/holdout/comet-dodge.html",
+  "playable_sha": "9fc14ae815bc9a9c",
+  "created_at": "2026-11-22T16:47:08.811Z",
+  "phases": {
+    "play": {
+      "at": "2026-11-22T16:50:52.151Z",
+      "ms": 223298,
+      "note": "46.2 s recorded, 35 inputs, 14 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T16:51:27.717Z",
+      "ms": 35561,
+      "note": "16 moments, genre: Arcade Space Dodger"
+    },
+    "cut": {
+      "at": "2026-11-22T16:52:14.782Z",
+      "ms": 47062,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T16:55:00.141Z",
+      "ms": 165357,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T16:57:04.457Z",
+      "ms": 124311,
+      "note": "best a (hook-first) score 84.3"
+    },
+    "friction": {
+      "at": "2026-11-22T16:57:13.114Z",
+      "ms": 8654,
+      "note": "3 items"
+    },
+    "report": {
+      "at": "2026-11-22T16:57:13.141Z",
+      "ms": 11,
+      "note": "trace.html written · total spend $0.376"
+    }
+  },
+  "task": 7,
+  "best": "a"
+}

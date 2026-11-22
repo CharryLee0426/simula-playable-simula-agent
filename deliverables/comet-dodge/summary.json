@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge/highlight.mp4",
+  "score": 84.3,
+  "best": "a",
+  "usd": 0.3758,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T16:50:52.151Z",
+      "ms": 223298,
+      "note": "46.2 s recorded, 35 inputs, 14 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T16:51:27.717Z",
+      "ms": 35561,
+      "note": "16 moments, genre: Arcade Space Dodger"
+    },
+    "cut": {
+      "at": "2026-11-22T16:52:14.782Z",
+      "ms": 47062,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T16:55:00.141Z",
+      "ms": 165357,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T16:57:04.457Z",
+      "ms": 124311,
+      "note": "best a (hook-first) score 84.3"
+    },
+    "friction": {
+      "at": "2026-11-22T16:57:13.114Z",
+      "ms": 8654,
+      "note": "3 items"
+    }
+  }
+}

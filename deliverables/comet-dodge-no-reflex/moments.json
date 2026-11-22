@@ -1,0 +1,1283 @@
+{
+  "duration": 56.03333333333333,
+  "bins": [
+    {
+      "t": 0,
+      "motion": 0.007992857142857144,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.14059999999999997,
+      "frame": "index_frames/f_00001.jpg",
+      "phase": "tutorial",
+      "excitement": 0.9310337509120655
+    },
+    {
+      "t": 0.5,
+      "motion": 0.0018213333333333332,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.15880000000000002,
+      "frame": "index_frames/f_00002.jpg",
+      "phase": "tutorial",
+      "excitement": 0.940117740536869
+    },
+    {
+      "t": 1,
+      "motion": 0.004527333333333333,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.15429333333333334,
+      "frame": "index_frames/f_00003.jpg",
+      "phase": "tutorial",
+      "excitement": 1.0186600933214602
+    },
+    {
+      "t": 1.5,
+      "motion": 0.006844,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.14886666666666667,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00004.jpg",
+      "excitement": 0.9840659832376522
+    },
+    {
+      "t": 2,
+      "motion": 0.0013613333333333333,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.16021333333333335,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00005.jpg",
+      "excitement": 1.0279899582493148
+    },
+    {
+      "t": 2.5,
+      "motion": 0.008204,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.1458466666666667,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00006.jpg",
+      "excitement": 0.9317998298722893
+    },
+    {
+      "t": 3,
+      "motion": 0.0031193333333333333,
+      "audio_db": -180,
+      "touches": 0,
+      "luma": 0.1568933333333333,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00007.jpg",
+      "excitement": 1.0963088539576846
+    },
+    {
+      "t": 3.5,
+      "motion": 0.005702,
+      "audio_db": -88.8,
+      "touches": 1,
+      "luma": 0.1372266666666667,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00008.jpg",
+      "excitement": 1.1558169594420393
+    },
+    {
+      "t": 4,
+      "motion": 0.00303,
+      "audio_db": -17.9,
+      "touches": 1,
+      "luma": 0.11714666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00009.jpg",
+      "excitement": 1.3868049516874104
+    },
+    {
+      "t": 4.5,
+      "motion": 0.0030966666666666664,
+      "audio_db": -15.2,
+      "touches": 0,
+      "luma": 0.11971333333333334,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00010.jpg",
+      "excitement": 1.6609565964933926
+    },
+    {
+      "t": 5,
+      "motion": 0.004753333333333333,
+      "audio_db": -16,
+      "touches": 1,
+      "luma": 0.12104666666666665,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00011.jpg",
+      "excitement": 1.7135994067921048
+    },
+    {
+      "t": 5.5,
+      "motion": 0.006005333333333335,
+      "audio_db": -15.3,
+      "touches": 1,
+      "luma": 0.1231533333333333,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00012.jpg",
+      "excitement": 1.8150247713380365
+    },
+    {
+      "t": 6,
+      "motion": 0.004551333333333334,
+      "audio_db": -16.5,
+      "touches": 0,
+      "luma": 0.12411333333333335,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00013.jpg",
+      "excitement": 1.9853785121807066
+    },
+    {
+      "t": 6.5,
+      "motion": 0.006248,
+      "audio_db": -14.8,
+      "touches": 1,
+      "luma": 0.12549333333333332,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00014.jpg",
+      "excitement": 2.1495530599928845
+    },
+    {
+      "t": 7,
+      "motion": 0.005195333333333334,
+      "audio_db": -12,
+      "touches": 1,
+      "luma": 0.12568666666666664,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00015.jpg",
+      "excitement": 2.2522646932716093
+    },
+    {
+      "t": 7.5,
+      "motion": 0.004163333333333333,
+      "audio_db": -14.9,
+      "touches": 0,
+      "luma": 0.12597333333333338,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00016.jpg",
+      "excitement": 2.236777412975607
+    },
+    {
+      "t": 8,
+      "motion": 0.004138,
+      "audio_db": -15.5,
+      "touches": 1,
+      "luma": 0.12469333333333336,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00017.jpg",
+      "excitement": 2.0190484014266734
+    },
+    {
+      "t": 8.5,
+      "motion": 0.006686666666666668,
+      "audio_db": -12.6,
+      "touches": 1,
+      "luma": 0.12792,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00018.jpg",
+      "excitement": 2.407152810488934
+    },
+    {
+      "t": 9,
+      "motion": 0.004430666666666667,
+      "audio_db": -15.4,
+      "touches": 0,
+      "luma": 0.12906666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00019.jpg",
+      "excitement": 2.3916559210989368
+    },
+    {
+      "t": 9.5,
+      "motion": 0.0040806666666666665,
+      "audio_db": -16.2,
+      "touches": 0,
+      "luma": 0.12798666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00020.jpg",
+      "excitement": 2.170965867226015
+    },
+    {
+      "t": 10,
+      "motion": 0.004334,
+      "audio_db": -16,
+      "touches": 0,
+      "luma": 0.12879333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00021.jpg",
+      "excitement": 2.1299882626843507
+    },
+    {
+      "t": 10.5,
+      "motion": 0.006596666666666667,
+      "audio_db": -12.7,
+      "touches": 1,
+      "luma": 0.13523333333333334,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00022.jpg",
+      "excitement": 2.3045262371779778
+    },
+    {
+      "t": 11,
+      "motion": 0.0075773333333333335,
+      "audio_db": -12.9,
+      "touches": 1,
+      "luma": 0.14953999999999998,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00023.jpg",
+      "excitement": 2.677313184709855
+    },
+    {
+      "t": 11.5,
+      "motion": 0.008632,
+      "audio_db": -15.5,
+      "touches": 0,
+      "luma": 0.14900666666666668,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00024.jpg",
+      "excitement": 2.699151450511816
+    },
+    {
+      "t": 12,
+      "motion": 0.008751333333333333,
+      "audio_db": -16.6,
+      "touches": 0,
+      "luma": 0.13949999999999999,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00025.jpg",
+      "excitement": 2.457205255109036
+    },
+    {
+      "t": 12.5,
+      "motion": 0.007803333333333333,
+      "audio_db": -15.5,
+      "touches": 1,
+      "luma": 0.13717333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00026.jpg",
+      "excitement": 2.4906293146946044
+    },
+    {
+      "t": 13,
+      "motion": 0.008444666666666665,
+      "audio_db": -13,
+      "touches": 1,
+      "luma": 0.13774666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00027.jpg",
+      "excitement": 2.722736803961552
+    },
+    {
+      "t": 13.5,
+      "motion": 0.010084666666666669,
+      "audio_db": -13.3,
+      "touches": 0,
+      "luma": 0.1427066666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00028.jpg",
+      "excitement": 2.780407279835879
+    },
+    {
+      "t": 14,
+      "motion": 0.008005333333333333,
+      "audio_db": -15.8,
+      "touches": 0,
+      "luma": 0.14052000000000003,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00029.jpg",
+      "excitement": 2.776568842262355
+    },
+    {
+      "t": 14.5,
+      "motion": 0.009348000000000002,
+      "audio_db": -16,
+      "touches": 1,
+      "luma": 0.13945333333333332,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00030.jpg",
+      "excitement": 2.31179882697412
+    },
+    {
+      "t": 15,
+      "motion": 0.008117999999999998,
+      "audio_db": -16.3,
+      "touches": 1,
+      "luma": 0.13910666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00031.jpg",
+      "excitement": 2.304685714618723
+    },
+    {
+      "t": 15.5,
+      "motion": 0.007564,
+      "audio_db": -11.4,
+      "touches": 0,
+      "luma": 0.13868666666666668,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00032.jpg",
+      "excitement": 2.665315342386142
+    },
+    {
+      "t": 16,
+      "motion": 0.007799333333333335,
+      "audio_db": -14.5,
+      "touches": 0,
+      "luma": 0.14006000000000002,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00033.jpg",
+      "excitement": 2.3722757019587526
+    },
+    {
+      "t": 16.5,
+      "motion": 0.008282000000000001,
+      "audio_db": -14.5,
+      "touches": 1,
+      "luma": 0.13815333333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00034.jpg",
+      "excitement": 2.1413380131061035
+    },
+    {
+      "t": 17,
+      "motion": 0.008535333333333334,
+      "audio_db": -15.8,
+      "touches": 1,
+      "luma": 0.1393,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00035.jpg",
+      "excitement": 2.3141545433982875
+    },
+    {
+      "t": 17.5,
+      "motion": 0.008456666666666664,
+      "audio_db": -13.5,
+      "touches": 0,
+      "luma": 0.14312,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00036.jpg",
+      "excitement": 2.353730423029381
+    },
+    {
+      "t": 18,
+      "motion": 0.009067333333333335,
+      "audio_db": -11.8,
+      "touches": 0,
+      "luma": 0.15130000000000002,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00037.jpg",
+      "excitement": 2.8311506209420036
+    },
+    {
+      "t": 18.5,
+      "motion": 0.007312666666666665,
+      "audio_db": -16.9,
+      "touches": 1,
+      "luma": 0.14611999999999994,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00038.jpg",
+      "excitement": 2.5155099353242654
+    },
+    {
+      "t": 19,
+      "motion": 0.007092666666666666,
+      "audio_db": -15.8,
+      "touches": 1,
+      "luma": 0.13391999999999998,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00039.jpg",
+      "excitement": 2.4063064500634503
+    },
+    {
+      "t": 19.5,
+      "motion": 0.005215333333333334,
+      "audio_db": -15.8,
+      "touches": 0,
+      "luma": 0.13417333333333337,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00040.jpg",
+      "excitement": 2.345725049156863
+    },
+    {
+      "t": 20,
+      "motion": 0.00697,
+      "audio_db": -14.4,
+      "touches": 0,
+      "luma": 0.13718666666666665,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00041.jpg",
+      "excitement": 2.753644226728589
+    },
+    {
+      "t": 20.5,
+      "motion": 0.0064086666666666675,
+      "audio_db": -15.4,
+      "touches": 1,
+      "luma": 0.13697333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00042.jpg",
+      "excitement": 2.556380994568633
+    },
+    {
+      "t": 21,
+      "motion": 0.022483333333333338,
+      "audio_db": -12.9,
+      "touches": 1,
+      "luma": 0.16524666666666665,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00043.jpg",
+      "excitement": 3.0305033657867986
+    },
+    {
+      "t": 21.5,
+      "motion": 0.0063613333333333326,
+      "audio_db": -11.7,
+      "touches": 1,
+      "luma": 0.13393333333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00044.jpg",
+      "excitement": 2.9924945170935553
+    },
+    {
+      "t": 22,
+      "motion": 0.006139333333333333,
+      "audio_db": -16.5,
+      "touches": 0,
+      "luma": 0.1334066666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00045.jpg",
+      "excitement": 1.9459281150796297
+    },
+    {
+      "t": 22.5,
+      "motion": 0.007362,
+      "audio_db": -14,
+      "touches": 1,
+      "luma": 0.13552666666666666,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00046.jpg",
+      "excitement": 2.144157470934293
+    },
+    {
+      "t": 23,
+      "motion": 0.006892666666666667,
+      "audio_db": -11.8,
+      "touches": 1,
+      "luma": 0.14715333333333336,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00047.jpg",
+      "excitement": 2.3187638652160825
+    },
+    {
+      "t": 23.5,
+      "motion": 0.007223999999999999,
+      "audio_db": -16.9,
+      "touches": 0,
+      "luma": 0.14892000000000002,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00048.jpg",
+      "excitement": 2.4614094738440926
+    },
+    {
+      "t": 24,
+      "motion": 0.022122000000000006,
+      "audio_db": -15.6,
+      "touches": 0,
+      "luma": 0.17131999999999997,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00049.jpg",
+      "excitement": 2.110214041107808
+    },
+    {
+      "t": 24.5,
+      "motion": 0.009040000000000001,
+      "audio_db": -13.6,
+      "touches": 0,
+      "luma": 0.13960666666666663,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00050.jpg",
+      "excitement": 2.5550832306974085
+    },
+    {
+      "t": 25,
+      "motion": 0.008912,
+      "audio_db": -16.4,
+      "touches": 1,
+      "luma": 0.14062666666666665,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00051.jpg",
+      "excitement": 2.3979692441272054
+    },
+    {
+      "t": 25.5,
+      "motion": 0.009140666666666667,
+      "audio_db": -15.5,
+      "touches": 1,
+      "luma": 0.14103333333333337,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00052.jpg",
+      "excitement": 2.4397765644023632
+    },
+    {
+      "t": 26,
+      "motion": 0.009191333333333334,
+      "audio_db": -16.2,
+      "touches": 0,
+      "luma": 0.14205999999999996,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00053.jpg",
+      "excitement": 2.5253645705853294
+    },
+    {
+      "t": 26.5,
+      "motion": 0.009705333333333333,
+      "audio_db": -13.6,
+      "touches": 0,
+      "luma": 0.1535933333333333,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00054.jpg",
+      "excitement": 2.6303374425529076
+    },
+    {
+      "t": 27,
+      "motion": 0.008681333333333334,
+      "audio_db": -15.8,
+      "touches": 0,
+      "luma": 0.15127333333333332,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00055.jpg",
+      "excitement": 2.313952441496589
+    },
+    {
+      "t": 27.5,
+      "motion": 0.01228333333333333,
+      "audio_db": -14.9,
+      "touches": 0,
+      "luma": 0.1503666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00056.jpg",
+      "excitement": 3.1331015289054522
+    },
+    {
+      "t": 28,
+      "motion": 0.08412333333333333,
+      "audio_db": -10.1,
+      "touches": 1,
+      "luma": 0.34775333333333336,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00057.jpg",
+      "excitement": 2.3822429952602038
+    },
+    {
+      "t": 28.5,
+      "motion": 0.016548666666666666,
+      "audio_db": -12.5,
+      "touches": 0,
+      "luma": 0.14347333333333337,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00058.jpg",
+      "excitement": 2.5195498643561844
+    },
+    {
+      "t": 29,
+      "motion": 0.003598000000000001,
+      "audio_db": -16.1,
+      "touches": 0,
+      "luma": 0.09086666666666667,
+      "phase": "fail",
+      "frame": "index_frames/f_00059.jpg",
+      "excitement": 2.0632151998286683
+    },
+    {
+      "t": 29.5,
+      "motion": 0.0008926666666666667,
+      "audio_db": -20.5,
+      "touches": 0,
+      "luma": 0.08716,
+      "phase": "fail",
+      "frame": "index_frames/f_00060.jpg",
+      "excitement": 1.2562946385955687
+    },
+    {
+      "t": 30,
+      "motion": 0.003992,
+      "audio_db": -18.6,
+      "touches": 0,
+      "luma": 0.11703999999999999,
+      "phase": "fail",
+      "frame": "index_frames/f_00061.jpg",
+      "excitement": 0.5508704607736878
+    },
+    {
+      "t": 30.5,
+      "motion": 0.0007233333333333332,
+      "audio_db": -19.4,
+      "touches": 0,
+      "luma": 0.12581333333333333,
+      "phase": "fail",
+      "frame": "index_frames/f_00062.jpg",
+      "excitement": 0.5625053150104316
+    },
+    {
+      "t": 31,
+      "motion": 0.0008040000000000001,
+      "audio_db": -19.9,
+      "touches": 0,
+      "luma": 0.12332666666666665,
+      "phase": "fail",
+      "frame": "index_frames/f_00063.jpg",
+      "excitement": 0.559104655038489
+    },
+    {
+      "t": 31.5,
+      "motion": 0.0008633333333333335,
+      "audio_db": -18.9,
+      "touches": 0,
+      "luma": 0.12720666666666666,
+      "phase": "fail",
+      "frame": "index_frames/f_00064.jpg",
+      "excitement": 0.6165234254673312
+    },
+    {
+      "t": 32,
+      "motion": 0.000598,
+      "audio_db": -18.4,
+      "touches": 0,
+      "luma": 0.12268,
+      "phase": "fail",
+      "frame": "index_frames/f_00065.jpg",
+      "excitement": 0.5801375335643633
+    },
+    {
+      "t": 32.5,
+      "motion": 0.0009980000000000002,
+      "audio_db": -18.2,
+      "touches": 1,
+      "luma": 0.12722666666666665,
+      "phase": "fail",
+      "frame": "index_frames/f_00066.jpg",
+      "excitement": 0.5526575017920621
+    },
+    {
+      "t": 33,
+      "motion": 0.009764,
+      "audio_db": -15.3,
+      "touches": 0,
+      "luma": 0.12721999999999997,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00067.jpg",
+      "excitement": 1.2222605643871998
+    },
+    {
+      "t": 33.5,
+      "motion": 0.0039433333333333325,
+      "audio_db": -15.6,
+      "touches": 0,
+      "luma": 0.13244666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00068.jpg",
+      "excitement": 1.4826932831967095
+    },
+    {
+      "t": 34,
+      "motion": 0.005498000000000001,
+      "audio_db": -16.1,
+      "touches": 0,
+      "luma": 0.13159333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00069.jpg",
+      "excitement": 1.9164854430600238
+    },
+    {
+      "t": 34.5,
+      "motion": 0.006921333333333333,
+      "audio_db": -13.8,
+      "touches": 1,
+      "luma": 0.13895333333333332,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00070.jpg",
+      "excitement": 1.8845407059988601
+    },
+    {
+      "t": 35,
+      "motion": 0.007234000000000001,
+      "audio_db": -16.2,
+      "touches": 1,
+      "luma": 0.14177333333333336,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00071.jpg",
+      "excitement": 2.025293488377322
+    },
+    {
+      "t": 35.5,
+      "motion": 0.008934666666666667,
+      "audio_db": -13.9,
+      "touches": 0,
+      "luma": 0.14415333333333327,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00072.jpg",
+      "excitement": 2.315544126795026
+    },
+    {
+      "t": 36,
+      "motion": 0.007687333333333333,
+      "audio_db": -16.5,
+      "touches": 0,
+      "luma": 0.14063333333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00073.jpg",
+      "excitement": 2.151490303261132
+    },
+    {
+      "t": 36.5,
+      "motion": 0.009272666666666667,
+      "audio_db": -12.1,
+      "touches": 1,
+      "luma": 0.1416933333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00074.jpg",
+      "excitement": 2.527836242502095
+    },
+    {
+      "t": 37,
+      "motion": 0.00883,
+      "audio_db": -15.8,
+      "touches": 1,
+      "luma": 0.14298666666666668,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00075.jpg",
+      "excitement": 2.2405436690471436
+    },
+    {
+      "t": 37.5,
+      "motion": 0.007730000000000001,
+      "audio_db": -14.7,
+      "touches": 0,
+      "luma": 0.14428,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00076.jpg",
+      "excitement": 2.531835481612334
+    },
+    {
+      "t": 38,
+      "motion": 0.021942666666666666,
+      "audio_db": -12.3,
+      "touches": 0,
+      "luma": 0.17287333333333335,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00077.jpg",
+      "excitement": 2.15651955288934
+    },
+    {
+      "t": 38.5,
+      "motion": 0.010314,
+      "audio_db": -12.7,
+      "touches": 1,
+      "luma": 0.15103333333333335,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00078.jpg",
+      "excitement": 2.7800563450697213
+    },
+    {
+      "t": 39,
+      "motion": 0.011271999999999999,
+      "audio_db": -15.3,
+      "touches": 0,
+      "luma": 0.14598666666666668,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00079.jpg",
+      "excitement": 2.5707670436700774
+    },
+    {
+      "t": 39.5,
+      "motion": 0.011813333333333334,
+      "audio_db": -12.3,
+      "touches": 1,
+      "luma": 0.14769333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00080.jpg",
+      "excitement": 2.6800304482019284
+    },
+    {
+      "t": 40,
+      "motion": 0.008735333333333336,
+      "audio_db": -15.8,
+      "touches": 1,
+      "luma": 0.14233333333333334,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00081.jpg",
+      "excitement": 2.5349469799631077
+    },
+    {
+      "t": 40.5,
+      "motion": 0.006836000000000001,
+      "audio_db": -15.5,
+      "touches": 0,
+      "luma": 0.14010666666666666,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00082.jpg",
+      "excitement": 2.4020106874785623
+    },
+    {
+      "t": 41,
+      "motion": 0.007155333333333334,
+      "audio_db": -16.5,
+      "touches": 0,
+      "luma": 0.13936666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00083.jpg",
+      "excitement": 2.4441609337443895
+    },
+    {
+      "t": 41.5,
+      "motion": 0.007803333333333333,
+      "audio_db": -13.2,
+      "touches": 1,
+      "luma": 0.13815333333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00084.jpg",
+      "excitement": 2.5018411680374877
+    },
+    {
+      "t": 42,
+      "motion": 0.009337333333333331,
+      "audio_db": -15.3,
+      "touches": 1,
+      "luma": 0.13714666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00085.jpg",
+      "excitement": 2.7197920335897954
+    },
+    {
+      "t": 42.5,
+      "motion": 0.02052066666666667,
+      "audio_db": -13.3,
+      "touches": 0,
+      "luma": 0.16618666666666668,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00086.jpg",
+      "excitement": 2.3732269939634056
+    },
+    {
+      "t": 43,
+      "motion": 0.0073426666666666675,
+      "audio_db": -15.3,
+      "touches": 0,
+      "luma": 0.13871333333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00087.jpg",
+      "excitement": 2.466707971966058
+    },
+    {
+      "t": 43.5,
+      "motion": 0.009795333333333333,
+      "audio_db": -12.5,
+      "touches": 1,
+      "luma": 0.14005333333333334,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00088.jpg",
+      "excitement": 2.260426104303267
+    },
+    {
+      "t": 44,
+      "motion": 0.012032666666666665,
+      "audio_db": -11.6,
+      "touches": 1,
+      "luma": 0.15414,
+      "phase": "tutorial",
+      "frame": "index_frames/f_00089.jpg",
+      "excitement": 2.935523128320529
+    },
+    {
+      "t": 44.5,
+      "motion": 0.012421333333333333,
+      "audio_db": -13.6,
+      "touches": 0,
+      "luma": 0.15353999999999998,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00090.jpg",
+      "excitement": 2.7227511686699755
+    },
+    {
+      "t": 45,
+      "motion": 0.019637333333333333,
+      "audio_db": -15.6,
+      "touches": 1,
+      "luma": 0.16180666666666668,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00091.jpg",
+      "excitement": 2.542411734269308
+    },
+    {
+      "t": 45.5,
+      "motion": 0.017952,
+      "audio_db": -12.9,
+      "touches": 1,
+      "luma": 0.16271333333333335,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00092.jpg",
+      "excitement": 2.8674187739341406
+    },
+    {
+      "t": 46,
+      "motion": 0.052930000000000005,
+      "audio_db": -15.6,
+      "touches": 0,
+      "luma": 0.22570666666666667,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00093.jpg",
+      "excitement": 2.7161241695760365
+    },
+    {
+      "t": 46.5,
+      "motion": 0.045052666666666664,
+      "audio_db": -11.2,
+      "touches": 0,
+      "luma": 0.2791133333333333,
+      "phase": "gameplay",
+      "frame": "index_frames/f_00094.jpg",
+      "excitement": 2.811414380663933
+    },
+    {
+      "t": 47,
+      "motion": 0.011560000000000003,
+      "audio_db": -17.4,
+      "touches": 0,
+      "luma": 0.11950666666666665,
+      "phase": "fail",
+      "frame": "index_frames/f_00095.jpg",
+      "excitement": 1.851608826916426
+    },
+    {
+      "t": 47.5,
+      "motion": 0.0006960000000000001,
+      "audio_db": -16.8,
+      "touches": 0,
+      "luma": 0.08681333333333334,
+      "phase": "fail",
+      "frame": "index_frames/f_00096.jpg",
+      "excitement": 0.8081189869541143
+    },
+    {
+      "t": 48,
+      "motion": 0.00030133333333333336,
+      "audio_db": -18.1,
+      "touches": 0,
+      "luma": 0.08628666666666669,
+      "phase": "fail",
+      "frame": "index_frames/f_00097.jpg",
+      "excitement": 0.7731537680217717
+    },
+    {
+      "t": 48.5,
+      "motion": 0.009541333333333334,
+      "audio_db": -21.1,
+      "touches": 0,
+      "luma": 0.10328000000000001,
+      "phase": "fail",
+      "frame": "index_frames/f_00098.jpg",
+      "excitement": 0.8540995277861902
+    },
+    {
+      "t": 49,
+      "motion": 0.005203333333333333,
+      "audio_db": -18,
+      "touches": 0,
+      "luma": 0.22435333333333335,
+      "phase": "title",
+      "frame": "index_frames/f_00099.jpg",
+      "excitement": 0.31039101635337646
+    },
+    {
+      "t": 49.5,
+      "motion": 0.0012413333333333334,
+      "audio_db": -18.3,
+      "touches": 0,
+      "luma": 0.22976,
+      "phase": "title",
+      "frame": "index_frames/f_00100.jpg",
+      "excitement": 0.36622806127745255
+    },
+    {
+      "t": 50,
+      "motion": 0.0009720000000000001,
+      "audio_db": -18.2,
+      "touches": 0,
+      "luma": 0.22614666666666672,
+      "phase": "title",
+      "frame": "index_frames/f_00101.jpg",
+      "excitement": 0.30375814128284323
+    },
+    {
+      "t": 50.5,
+      "motion": 0.000998,
+      "audio_db": -17.8,
+      "touches": 0,
+      "luma": 0.2287533333333333,
+      "phase": "title",
+      "frame": "index_frames/f_00102.jpg",
+      "excitement": 0.3100353433971643
+    },
+    {
+      "t": 51,
+      "motion": 0.0011213333333333331,
+      "audio_db": -18.7,
+      "touches": 0,
+      "luma": 0.22760000000000005,
+      "phase": "title",
+      "frame": "index_frames/f_00103.jpg",
+      "excitement": 0.33681886608840694
+    },
+    {
+      "t": 51.5,
+      "motion": 0.0009506666666666667,
+      "audio_db": -18,
+      "touches": 0,
+      "luma": 0.22852000000000003,
+      "phase": "title",
+      "frame": "index_frames/f_00104.jpg",
+      "excitement": 0.3194080373698711
+    },
+    {
+      "t": 52,
+      "motion": 0.001121333333333333,
+      "audio_db": -18.3,
+      "touches": 0,
+      "luma": 0.2269866666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00105.jpg",
+      "excitement": 0.3243870923936318
+    },
+    {
+      "t": 52.5,
+      "motion": 0.0010586666666666667,
+      "audio_db": -18.2,
+      "touches": 0,
+      "luma": 0.22847999999999996,
+      "phase": "title",
+      "frame": "index_frames/f_00106.jpg",
+      "excitement": 0.33623878475087793
+    },
+    {
+      "t": 53,
+      "motion": 0.0010186666666666666,
+      "audio_db": -17.8,
+      "touches": 0,
+      "luma": 0.2270666666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00107.jpg",
+      "excitement": 0.3141774264087118
+    },
+    {
+      "t": 53.5,
+      "motion": 0.0011253333333333334,
+      "audio_db": -18.7,
+      "touches": 0,
+      "luma": 0.22865333333333335,
+      "phase": "title",
+      "frame": "index_frames/f_00108.jpg",
+      "excitement": 0.34080828865484625
+    },
+    {
+      "t": 54,
+      "motion": 0.0017793333333333335,
+      "audio_db": -18.3,
+      "touches": 1,
+      "luma": 0.2282266666666667,
+      "phase": "title",
+      "frame": "index_frames/f_00109.jpg",
+      "excitement": 0.32323883198648495
+    },
+    {
+      "t": 54.5,
+      "motion": 0.0010646666666666667,
+      "audio_db": -18.3,
+      "touches": 0,
+      "luma": 0.2264733333333333,
+      "phase": "title",
+      "frame": "index_frames/f_00110.jpg",
+      "excitement": 0.3143085532076739
+    },
+    {
+      "t": 55,
+      "motion": 0.0011273333333333333,
+      "audio_db": -18.2,
+      "touches": 0,
+      "luma": 0.22983999999999996,
+      "phase": "title",
+      "frame": "index_frames/f_00111.jpg",
+      "excitement": 0.3267932356821216
+    },
+    {
+      "t": 55.5,
+      "motion": 0.000926,
+      "audio_db": -17.8,
+      "touches": 0,
+      "luma": 0.2252,
+      "phase": "title",
+      "frame": "index_frames/f_00112.jpg",
+      "excitement": 0.30544013192768993
+    },
+    {
+      "t": 56,
+      "motion": 0.00114,
+      "audio_db": -18.1,
+      "touches": 0,
+      "luma": 0.2299,
+      "phase": "title"
+    }
+  ],
+  "moments": [
+    {
+      "start": 0,
+      "end": 4,
+      "kind": "tutorial",
+      "label": "Tutorial screen 'HOLD LEFT / RIGHT TO DODGE' with animated hand prompt; player holds right at 3.6s to launch",
+      "intensity": 2
+    },
+    {
+      "start": 4,
+      "end": 7.5,
+      "kind": "core_loop",
+      "label": "First stars and comets fall with 'CATCH!' and 'AVOID!' labels; player steers left to collect the first star",
+      "intensity": 3
+    },
+    {
+      "start": 7.5,
+      "end": 11,
+      "kind": "core_loop",
+      "label": "Player weaves between comets and collects stars to build COMBO x2 and COMBO x3",
+      "intensity": 3
+    },
+    {
+      "start": 11,
+      "end": 14.2,
+      "kind": "feature",
+      "label": "'COMET WALL!' banner appears; player slips through the right-side gap, earning 'CLOSE! +5' and COMBO x4",
+      "intensity": 4,
+      "feature": "Comet Wall"
+    },
+    {
+      "start": 14.2,
+      "end": 17.8,
+      "kind": "progression",
+      "label": "Player navigates consecutive comet walls, grabbing stars on the left then right to reach COMBO x6 and 1.50 km",
+      "intensity": 4
+    },
+    {
+      "start": 17.8,
+      "end": 20.8,
+      "kind": "feature",
+      "label": "'ZIG-ZAG!' swerving comets appear; player dodges left and scores 'CLOSE! +5' at COMBO x8",
+      "intensity": 4,
+      "feature": "Zig-Zag Comets"
+    },
+    {
+      "start": 20.8,
+      "end": 22.8,
+      "kind": "fail",
+      "label": "Rocket takes a hit ('OUCH!') while catching a star, dropping to 2 hearts and resetting the combo",
+      "intensity": 3
+    },
+    {
+      "start": 22.8,
+      "end": 26,
+      "kind": "feature",
+      "label": "'SHIELD!' power-up is introduced; rocket takes another hit ('LAST LIFE!' warning) while collecting stars",
+      "intensity": 4,
+      "feature": "Shield Power-up"
+    },
+    {
+      "start": 26,
+      "end": 28.8,
+      "kind": "feature",
+      "label": "'SPLIT ROCKS!' banner appears; player grabs the Shield power-up at 28.0s just as a comet strikes",
+      "intensity": 4,
+      "feature": "Split Rocks"
+    },
+    {
+      "start": 28.8,
+      "end": 33.2,
+      "kind": "fail",
+      "label": "'SHIP DOWN' screen (Score 430, 2.87 km); player taps 'TRY AGAIN' at 32.9s to launch their final ship",
+      "intensity": 2
+    },
+    {
+      "start": 33.2,
+      "end": 37.8,
+      "kind": "core_loop",
+      "label": "'GO! Last ship - make it count' run begins; player dodges comets, scores 'CLOSE! +5', and grabs a Shield",
+      "intensity": 3
+    },
+    {
+      "start": 37.8,
+      "end": 41.2,
+      "kind": "fail",
+      "label": "'SPLIT ROCKS!' returns; rocket takes a hit ('OUCH!') and misses the incoming Shield power-up",
+      "intensity": 3
+    },
+    {
+      "start": 41.2,
+      "end": 44,
+      "kind": "core_loop",
+      "label": "Player dodges falling comets for 'CLOSE! +5' and takes a hit, triggering the 'LAST LIFE!' warning",
+      "intensity": 4
+    },
+    {
+      "start": 44,
+      "end": 45.6,
+      "kind": "feature",
+      "label": "'DOUBLE WALL!' banner appears; player weaves right through the first asteroid wall gap to grab a star",
+      "intensity": 4,
+      "feature": "Double Wall"
+    },
+    {
+      "start": 45.6,
+      "end": 47,
+      "kind": "climax",
+      "label": "Rocket slams into the second asteroid wall at x=600 in a full-screen explosion flash",
+      "intensity": 5
+    },
+    {
+      "start": 47,
+      "end": 49.2,
+      "kind": "fail",
+      "label": "'SHIP DOWN' screen showing Score 70, 1.87 km, and 'Out of ships'",
+      "intensity": 2
+    },
+    {
+      "start": 49.2,
+      "end": 56,
+      "kind": "end_card",
+      "label": "End card for Comet Dodge ('BEST SCORE 430 · 2.87 km', 'PLAY NOW' button); player taps PLAY NOW at 54.1s",
+      "intensity": 2
+    }
+  ],
+  "game": {
+    "title": "Comet Dodge",
+    "genre": "Space arcade dodger",
+    "objective": "Dodge falling comets and asteroid walls while collecting stars to maximize score and distance across two ships.",
+    "controls": "Hold or drag left and right on the screen to steer the rocket horizontally.",
+    "core_loop": "Steer the rocket left and right to dodge incoming comets and catch falling stars, earning points, combo multipliers, and near-miss bonuses.",
+    "features": [
+      "Stars and Combo Multiplier",
+      "Close Call Near-Miss Bonus",
+      "Comet Wall",
+      "Zig-Zag Comets",
+      "Shield Power-up",
+      "Split Rocks",
+      "Double Wall",
+      "Two-Ship Retry System"
+    ],
+    "progression": "As distance increases in kilometers, the game introduces harder obstacle patterns in sequence: Comet Walls, Zig-Zag swerving comets, Split Rocks, and Double Walls.",
+    "end_card": true,
+    "tone": "Fast-paced neon space arcade",
+    "hook_idea": "Threading the Comet Wall gap with a 'CLOSE! +5' near-miss bonus at t=12.4-14.0s, or weaving into the Double Wall explosion at t=44.4-46.8s."
+  },
+  "end_card_t": 51.033333333334184,
+  "playable_from": 0,
+  "has_audio": true
+}

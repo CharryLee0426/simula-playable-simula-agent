@@ -1,0 +1,58 @@
+{
+  "id": "b",
+  "title": "Chronological arcade run from first dodge to Double Wall explosion",
+  "clips": [
+    {
+      "start": 4.3,
+      "end": 7.433,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Quickly teaches catching stars and avoiding comets without slow tutorial text"
+    },
+    {
+      "start": 7.5,
+      "end": 10.5,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Builds momentum with star combos and comet weaving"
+    },
+    {
+      "start": 11.3,
+      "end": 14.2,
+      "speed": 1,
+      "role": "feature",
+      "why": "First major obstacle: Comet Wall gap thread with CLOSE! +5 bonus"
+    },
+    {
+      "start": 17.8,
+      "end": 20.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Escalates difficulty with Zig-Zag comets and COMBO x8"
+    },
+    {
+      "start": 25.9,
+      "end": 28.8,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces Split Rocks and a last-second Shield power-up save"
+    },
+    {
+      "start": 44.1,
+      "end": 47,
+      "speed": 1,
+      "role": "climax",
+      "why": "Culminates in the Double Wall gauntlet and dramatic explosion"
+    },
+    {
+      "start": 51.033,
+      "end": 53.2,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Comet Dodge end card with PLAY NOW button"
+    }
+  ],
+  "strategy": "learn-then-escalate",
+  "source": "director",
+  "fixes": []
+}

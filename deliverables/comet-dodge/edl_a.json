@@ -1,0 +1,65 @@
+{
+  "id": "a",
+  "title": "Hook-first: Zig-Zag Combo opener into rising hazards and shield climax",
+  "clips": [
+    {
+      "start": 17.2,
+      "end": 19.2,
+      "speed": 1,
+      "role": "hook",
+      "why": "Slipping through a Comet Wall gap to hit COMBO x2 (+20) as ZIG-ZAG! comets arrive"
+    },
+    {
+      "start": 4.1,
+      "end": 7.4,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Clear steering, star collection, and CLOSE! +5 near-miss bonus"
+    },
+    {
+      "start": 10.8,
+      "end": 13.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "Introduces the COMET WALL! obstacle with narrow survival gaps"
+    },
+    {
+      "start": 13.4,
+      "end": 17.2,
+      "speed": 1.3,
+      "role": "core_loop",
+      "why": "High-stakes dodging through successive Comet Walls on the last heart"
+    },
+    {
+      "start": 31.2,
+      "end": 34,
+      "speed": 1.1,
+      "role": "progression",
+      "why": "Second-run escalation with CLOSE! +5 and COMBO x2 (+20)"
+    },
+    {
+      "start": 34.6,
+      "end": 37.4,
+      "speed": 1,
+      "role": "feature",
+      "why": "SHIELD! power-up spawns ahead during intense last-life dodging"
+    },
+    {
+      "start": 37.4,
+      "end": 39.133,
+      "speed": 1,
+      "role": "climax",
+      "why": "Dramatic comet explosion just shy of the shield"
+    },
+    {
+      "start": 42.5,
+      "end": 44.6,
+      "speed": 1,
+      "role": "end_card",
+      "why": "Displays BEST SCORE 60 and PLAY NOW tap CTA"
+    }
+  ],
+  "strategy": "hook-first",
+  "source": "director",
+  "fixes": []
+}

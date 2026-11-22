@@ -1,0 +1,20 @@
+{
+  "title": "Comet Dodge",
+  "genre": "Arcade Space Dodger",
+  "objective": "Steer a rocket through space to dodge incoming comets and asteroids while collecting stars to maximize score and distance.",
+  "controls": "Touch and hold the left or right side of the screen to steer the rocket horizontally.",
+  "core_loop": "Hold left or right to weave between falling comets -> catch stars and perform near-misses -> build combos and survive escalating hazard waves for a higher score.",
+  "features": [
+    "Star collection (+10 points)",
+    "Close-call near-miss bonus (CLOSE! +5)",
+    "Score combo multiplier (COMBO x2)",
+    "Comet Wall obstacles with narrow gaps",
+    "Zig-Zag swerving purple comets",
+    "Shield power-up (blocks one hit)",
+    "3-heart health system and second-chance run"
+  ],
+  "progression": "As distance increases, standard falling comets escalate into full-width Comet Walls with small gaps, swerving Zig-Zag comets, and Shield power-up spawns.",
+  "end_card": true,
+  "tone": "Fast-paced, arcade, neon space action",
+  "hook_idea": "Slipping through a Comet Wall gap to hit COMBO x2 (+20) right as the ZIG-ZAG! swerving comets arrive at t=17.4-19.4s."
+}

@@ -1,0 +1,130 @@
+{
+  "summary": "The first-time player understood the controls quickly and enjoyed a smooth two-run session through Comet Walls, Zig-Zag comets, and Double Walls. The main friction points were multi-second delays on both 'SHIP DOWN' fail screens before any button or end card appeared.",
+  "items": [
+    {
+      "t": 29.5,
+      "end": 32.5,
+      "type": "ui",
+      "severity": "medium",
+      "title": "3-second delay before 'TRY AGAIN' button appears",
+      "evidence": "At t=29.5s, the 'SHIP DOWN' screen appeared with Score 430 and 2.87 km, but no button was visible (S2, S7), resulting in 31% clarity and an ineffective input (S4). The 'TRY AGAIN' button did not appear until t=32.5s (S8).",
+      "suggestion": "Show the 'TRY AGAIN' button immediately when the 'SHIP DOWN' screen appears (or within 0.5s) so players know right away how to start their second ship.",
+      "signals": [
+        "S2",
+        "S4",
+        "S7",
+        "S8"
+      ],
+      "image": "obs/obs_0018.jpg"
+    },
+    {
+      "t": 48.5,
+      "end": 51,
+      "type": "pacing",
+      "severity": "medium",
+      "title": "Dead-end 'Out of ships' screen before end card",
+      "evidence": "After the second ship was destroyed at t=48.5s, the 'SHIP DOWN' screen displayed 'Out of ships' with no button or transition cue (S3, S9), yielding 22% clarity and contributing to a 4.5s idle gap (S6) before the end card appeared at t=51.0s (S10).",
+      "suggestion": "Transition directly from the final ship explosion to the end card, or add a brief animated 'FINAL SCORE...' transition indicator on the 'Out of ships' screen.",
+      "signals": [
+        "S3",
+        "S6",
+        "S9",
+        "S10"
+      ],
+      "image": "obs/obs_0028.jpg"
+    },
+    {
+      "t": 49.5,
+      "end": 54,
+      "type": "boredom",
+      "severity": "low",
+      "title": "Static end card with no idle motion",
+      "evidence": "Between the 'Out of ships' screen and the end card at t=51.0s (S10), the session recorded 4.5s with no on-screen motion or input (S6).",
+      "suggestion": "Add a subtle pulsing animation to the 'PLAY NOW' button and keep background stars drifting on the end card to draw attention to the CTA.",
+      "signals": [
+        "S6",
+        "S10"
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "id": "S1",
+      "t": 0,
+      "end": 1.9999999999999982,
+      "kind": "time_to_first_success",
+      "detail": "2.0 s from the first playable frame until an input visibly worked",
+      "obs": 5,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0005.jpg"
+    },
+    {
+      "id": "S2",
+      "t": 29.499999999999645,
+      "kind": "unclear_screen",
+      "detail": "decider: only 31% that a first-time player knows what to do (screen: fail)",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0018.jpg"
+    },
+    {
+      "id": "S3",
+      "t": 48.53333333333401,
+      "kind": "unclear_screen",
+      "detail": "decider: only 22% that a first-time player knows what to do (screen: fail)",
+      "obs": 28,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0028.jpg"
+    },
+    {
+      "id": "S4",
+      "t": 29.499999999999645,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 8%, 35.0% of pixels changed) — the player had tried: Rocket at x=730, SHIELD at x=650, star at x=790, SPLIT ROCKS banner",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0018.jpg"
+    },
+    {
+      "id": "S5",
+      "t": 38.099999999999916,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 26%, 17.0% of pixels changed) — the player had tried: Rocket at x=215, SHIELD power-up ahead at x=500, comets falling",
+      "obs": 22,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0022.jpg"
+    },
+    {
+      "id": "S6",
+      "t": 49.5,
+      "end": 54,
+      "kind": "idle",
+      "detail": "4.5 s with no on-screen motion and no input"
+    },
+    {
+      "id": "S7",
+      "t": 29.499999999999645,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 18,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0018.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 32.49999999999953,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 19,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0019.jpg"
+    },
+    {
+      "id": "S9",
+      "t": 48.53333333333401,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 28,
+      "image": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/obs/obs_0028.jpg"
+    },
+    {
+      "id": "S10",
+      "t": 51.033333333334184,
+      "kind": "end_card",
+      "detail": "end card appeared at 51.0 s (session 56.0 s)"
+    }
+  ]
+}

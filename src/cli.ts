@@ -151,7 +151,7 @@ async function exportDeliverable(dir: string, outDir: string): Promise<void> {
 
 /** deliverables/README.md: one row per exported session (folders tagged .samples / .generated / .holdout / .calibration). */
 function summarize(dir: string): void {
-	const groups = ["samples", "generated", "holdout", "calibration"];
+	const groups = ["samples", "generated", "holdout", "calibration", "ablation"];
 	const groupOf = (n: string) => groups.find((g) => existsSync(join(dir, n, `.${g}`))) ?? "";
 	const names = readdirSync(dir)
 		.filter((n) => existsSync(join(dir, n, "eval.json")))

@@ -1,55 +1,62 @@
 {
   "id": "a",
-  "title": "Magnet hook into full-run escalation and free revive comeback",
+  "title": "Hook-first high-speed double jump into full neon run",
   "clips": [
     {
-      "start": 19.4,
-      "end": 21.4,
+      "start": 21.4,
+      "end": 24.7,
       "speed": 1,
       "role": "hook",
-      "why": "Opens on the Magnet power-up at SPD 81 pulling a stream of coins"
+      "why": "Opens on top-speed dodging and consecutive orange barrier jumps at SPD 84-85"
     },
     {
       "start": 3.5,
-      "end": 7.1,
+      "end": 5.6,
       "speed": 1,
       "role": "core_loop",
-      "why": "Shows 3-lane dodging, coin pickup, and NICE DODGE feedback"
+      "why": "Shows clean lane-switching around a pink X block and collecting coins"
     },
     {
-      "start": 7.3,
-      "end": 10.7,
+      "start": 8.8,
+      "end": 10.5,
       "speed": 1,
       "role": "feature",
-      "why": "Demonstrates jumping over the orange barrier for mid-air coins"
+      "why": "Highlights barrier jumping with GREAT JUMP! feedback"
     },
     {
-      "start": 10.7,
-      "end": 14.2,
+      "start": 10.5,
+      "end": 12.4,
       "speed": 1,
       "role": "core_loop",
-      "why": "Fast-paced weaving and jumping as speed climbs to SPD 70"
+      "why": "Escalates with rapid multi-lane dodging and coin collection up to 156m"
     },
     {
-      "start": 14.2,
-      "end": 17.4,
+      "start": 12.8,
+      "end": 16.5,
       "speed": 1,
       "role": "feature",
-      "why": "Shows the crash stakes and tapping Free Revive to keep going"
+      "why": "Demonstrates the free Revive mechanic after a crash to keep the run alive"
     },
     {
-      "start": 17.4,
-      "end": 19.333,
+      "start": 16.5,
+      "end": 19,
+      "speed": 1,
+      "role": "progression",
+      "why": "Shows speed ramping from SPD 72 to 79 while weaving past a magnet power-up"
+    },
+    {
+      "start": 19,
+      "end": 21.4,
       "speed": 1,
       "role": "climax",
-      "why": "Rapid post-revive acceleration from SPD 41 to SPD 78"
+      "why": "Builds to high-speed reflex dodging through tight pink X formations"
     },
     {
-      "start": 23.433,
-      "end": 25.8,
+      "start": 26.9,
+      "end": 29.3,
       "speed": 1,
       "role": "end_card",
-      "why": "Synthwave transition into NEON LANES end card and PLAY NOW CTA"
+      "why": "Displays final coin count and pulsing PLAY NOW call to action"
     }
   ],
   "strategy": "hook-first",

@@ -1,0 +1,39 @@
+{
+  "highlight": "/home/user/simula-playable-simula-agent/runs/holdout-comet-dodge-noreflex/highlight.mp4",
+  "score": 86.4,
+  "best": "c",
+  "usd": 0.4311,
+  "pass": true,
+  "phases": {
+    "play": {
+      "at": "2026-11-22T16:55:27.632Z",
+      "ms": 259874,
+      "note": "56.0 s recorded, 21 inputs, 25 planner turns, ended by end_card"
+    },
+    "index": {
+      "at": "2026-11-22T16:56:19.153Z",
+      "ms": 51518,
+      "note": "17 moments, genre: Space arcade dodger"
+    },
+    "cut": {
+      "at": "2026-11-22T16:57:02.943Z",
+      "ms": 43787,
+      "note": "3 EDLs"
+    },
+    "render": {
+      "at": "2026-11-22T17:00:39.123Z",
+      "ms": 216178,
+      "note": "5 candidates"
+    },
+    "eval": {
+      "at": "2026-11-22T17:02:43.593Z",
+      "ms": 124467,
+      "note": "best c (feature-montage) score 86.4"
+    },
+    "friction": {
+      "at": "2026-11-22T17:02:58.068Z",
+      "ms": 14469,
+      "note": "3 items"
+    }
+  }
+}
