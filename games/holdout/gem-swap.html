@@ -98,11 +98,14 @@ function rr(g, x, y, w, h, r) {
 var SFX = (function () {
   var ac = null, sfx = null, mus = null, noiseBuf = null, nextT = 0, step = 0, timer = null;
   function mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  // browsers only allow audio after a user activation (pointerdown for mouse,
+  // pointerup/touchend for touch), so init() is called from all of them
+  function canStart() { var ua = navigator.userActivation; return !ua || ua.isActive || ua.hasBeenActive; }
   function init() {
     try {
       if (!ac) {
         var AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
+        if (!AC || !canStart()) return;
         ac = new AC();
         var comp = ac.createDynamicsCompressor();
         comp.connect(ac.destination);
@@ -114,7 +117,7 @@ var SFX = (function () {
         nextT = ac.currentTime + 0.1;
         timer = setInterval(sched, 40);
       }
-      if (ac.state === 'suspended') ac.resume();
+      if (ac.state === 'suspended' && canStart()) ac.resume();
     } catch (e) { /* audio is optional */ }
   }
   function tone(f, dur, type, vol, delay, f2, dest) {
@@ -161,6 +164,7 @@ var SFX = (function () {
     if (!ac) return;
     if (document.hidden) ac.suspend(); else ac.resume();
   });
+  ['pointerdown', 'pointerup', 'touchend', 'click'].forEach(function (ev) { window.addEventListener(ev, init, true); });
   var PENTA = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24];
   return {
     init: init,

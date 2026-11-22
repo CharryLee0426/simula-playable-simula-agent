@@ -99,7 +99,9 @@ export function normalize(e: Edl, ix: IndexResult, actions: ActionRecord[], opts
 	// a short pause on each side — a person pausing to read looks natural, two seconds of a frozen board does not.
 	const deadAt = (t: number) => {
 		const b = ix.bins[Math.floor(t / 0.5)];
-		return !!b && b.motion < 0.0025 && b.touches === 0 && b.phase !== "end_card"; // dead air is about change, not content
+		// Dead air is about change, not content. Popups/menus are exempt: a player reading an upgrade card IS the
+		// human pause the viewer should see (the judge flagged instant-looking card taps when these were tightened).
+		return !!b && b.motion < 0.0025 && b.touches === 0 && !["end_card", "reward", "level_end", "title", "tutorial", "fail"].includes(b.phase ?? "");
 	};
 	const tight: Clip[] = [];
 	for (const c of clips) {
@@ -112,7 +114,7 @@ export function normalize(e: Edl, ix: IndexResult, actions: ActionRecord[], opts
 			if (!d && runStart !== undefined) {
 				const runEnd = Math.min(t, c.end);
 				if (runEnd - runStart >= 1.5) {
-					const cutA = runStart + 0.35, cutB = runEnd - 0.35;
+					const cutA = runStart + 0.4, cutB = runEnd - 0.55; // keep ~1 s of pause in total: reading time before the next move
 					if (cutA - segStart >= 0.6) tight.push({ ...c, start: segStart, end: cutA });
 					fixes.push(`dead air ${runStart.toFixed(1)}-${runEnd.toFixed(1)} s cut out of a ${c.role} clip`);
 					segStart = cutB;

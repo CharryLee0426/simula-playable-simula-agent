@@ -36,7 +36,7 @@ export function writeReport(): void {
 	const rel = (p?: string) => (p ? relative(paths.dir, p) : "");
 	const session = readJsonIf<SessionSummary>(paths.session);
 	const ix = readJsonIf<IndexResult>(paths.moments);
-	const ev = readJsonIf<{ best: string; score: number; pass: boolean; candidates: CandidateEval[]; separation: number | null; pairwise?: any }>(paths.eval);
+	const ev = readJsonIf<{ best: string; score: number; pass: boolean; candidates: CandidateEval[]; separation: number | null; pairwise?: any; vs_baseline?: any }>(paths.eval);
 	const fr = readJsonIf<{ summary: string; items: FrictionItem[]; signals: Signal[] }>(paths.frictionJson);
 	const actions = readJsonl<ActionRecord>(paths.actions);
 	const obs = readJsonl<ObsRecord>(paths.observations);
@@ -52,9 +52,9 @@ export function writeReport(): void {
 	const candRows = (ev?.candidates ?? []).map((c) => `<tr class="${c.id === ev!.best ? "best" : ""}"><td><b>${esc(c.id)}</b>${c.id === ev!.best ? " ★" : ""}<br><small>${esc(c.strategy)}</small></td>
 <td><video src="${esc(rel(c.path))}" controls preload="none" width="135" height="240"></video></td>
 <td class="num"><b>${c.score}</b></td><td>${c.gate.ok ? "✓" : `✗ ${esc(c.gate.problems.join("; "))}`}</td>
-<td class="num">${c.heuristics.H}<br><small>dead ${(c.heuristics.dead_ratio * 100).toFixed(0)}% · action ${c.heuristics.action} · hook ${c.heuristics.hook_ratio} · coverage ${(c.heuristics.coverage * 100).toFixed(0)}% ${esc(JSON.stringify(c.heuristics.coverage_detail))} · ${c.heuristics.shots} shots</small></td>
-<td class="num">${c.judge?.J ?? "-"}${c.judge ? `<br><small>loop ${c.judge.core_loop_clarity} · features ${c.judge.features} · human ${c.judge.human_play} · action ${c.judge.action} · hook ${c.judge.hook} · polish ${c.judge.polish} · run ${c.judge.would_run}</small>` : ""}</td>
-<td><small>${esc(c.judge?.summary ?? "")}${c.judge?.worst_moment ? `<br><i>worst @${c.judge.worst_moment.t}s: ${esc(c.judge.worst_moment.issue)}</i>` : ""}</small></td></tr>`).join("");
+<td style="width:210px"><b>${c.heuristics.H}</b><br><small>dead air ${(c.heuristics.dead_ratio * 100).toFixed(0)}% · action ${c.heuristics.action} · hook ${c.heuristics.hook_ratio}<br>moments ${c.heuristics.moment_quality ?? "-"} · arc ${c.heuristics.arc ?? "-"} · ${c.heuristics.shots} shots<br>${Object.entries(c.heuristics.coverage_detail).map(([k, v]) => `${v ? "✓" : "✗"} ${esc(k.replace("_", " "))}`).join(" · ")}</small></td>
+<td style="width:150px"><b>${c.judge?.J ?? "-"}</b>${c.judge ? `<br><small>loop ${c.judge.core_loop_clarity} · features ${c.judge.features}<br>human ${c.judge.human_play} · action ${c.judge.action}<br>hook ${c.judge.hook} · polish ${c.judge.polish} · run ${c.judge.would_run}</small>` : ""}</td>
+<td style="min-width:260px"><small>${esc(c.judge?.summary ?? "")}${c.judge?.worst_moment ? `<br><i>worst @${c.judge.worst_moment.t}s: ${esc(c.judge.worst_moment.issue)}</i>` : ""}</small></td></tr>`).join("");
 
 	const edlTable = best ? `<ol class="edl">${best.clips.map((c) => `<li><b>${esc(c.role)}</b> ${seek(c.start)}–${fmt(c.end)}${c.speed > 1 ? ` @${c.speed}×` : ""} <small>${esc(c.why ?? "")}</small></li>`).join("")}</ol>${best.fixes?.length ? `<details><summary>${best.fixes.length} adjustments made by code</summary><small>${best.fixes.map(esc).join("<br>")}</small></details>` : ""}` : "";
 
@@ -106,7 +106,7 @@ ${ev?.separation !== null && ev?.separation !== undefined ? `<span>vs naive base
 <h2>Chosen cut (EDL)</h2><div class="card">${edlTable}</div></div></div>
 
 <h2>Candidates and evaluation</h2>
-<div class="dim"><small>final = gate × (0.55 × judge J + 0.45 × heuristics H). Baselines (base_*) are naive cuts scored the same way: they show the score separates a real edit from a lazy one.${ev?.pairwise ? ` Pairwise: ${esc(JSON.stringify(ev.pairwise))}` : ""}</small></div>
+<div class="dim"><small>final = gate × (0.55 × judge J + 0.45 × heuristics H). Baselines (base_*) are naive cuts scored the same way: they show the score separates a real edit from a lazy one.${ev?.pairwise ? ` Pairwise between the top two: ${esc(ev.pairwise.a)} vs ${esc(ev.pairwise.b)} → ${esc(ev.pairwise.winner)}.` : ""}${ev?.vs_baseline ? ` Head to head vs ${esc(ev.vs_baseline.baseline)}: the chosen cut wins ${ev.vs_baseline.chosen_wins}/${ev.vs_baseline.of}.` : ""}</small></div>
 <table><tr><th>cut</th><th>video</th><th>score</th><th>gate</th><th>H</th><th>J</th><th>judge</th></tr>${candRows}</table>
 
 <h2>Friction for a first-time player</h2><p>${esc(fr?.summary)}</p>

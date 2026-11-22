@@ -77,7 +77,7 @@ export function frictionSignals(ix: IndexResult): Signal[] {
 
 const SYSTEM = `You are a UX researcher for playable ads. An AI agent played this playable as a first-time player; you get code-extracted signals from its session (with ids) and a few screenshots. Write the friction report: where a real first-time player would get confused, stuck or bored, each with a concrete, actionable fix for the playable's designers.
 
-Rules: 3-8 items, most important first. Every item cites the signal ids it is based on ("signals": ["S3", ...]); do not invent problems that no signal supports. Use the signal's time. If the session went smoothly, say so with fewer, low-severity items. Fixes are specific (what to change on which screen), not generic advice.
+Rules: 3-8 items, most important first. Never claim something is missing (a tutorial, a hint, a button) if the player's own screen descriptions mention it; describe what was there and why it still was not enough. Every item cites the signal ids it is based on ("signals": ["S3", ...]); do not invent problems that no signal supports. Use the signal's time. If the session went smoothly, say so with fewer, low-severity items. Fixes are specific (what to change on which screen), not generic advice.
 
 Reply with JSON: {"summary": "two sentences on the first-time experience", "items": [{"t": seconds, "end": seconds|null, "type": "confusion|stuck|boredom|frustration|unclear_goal|ui|pacing", "severity": "low|medium|high", "title": "short", "evidence": "what happened, citing what the player saw/did", "suggestion": "the fix", "signals": ["S1"]}]}`;
 
@@ -87,8 +87,9 @@ export async function writeFriction(ix: IndexResult): Promise<{ summary: string;
 	const session = readJson<SessionSummary>(paths.session);
 	const ids = new Set(signals.map((s) => s.id));
 	const images = signals.filter((s) => s.image && existsSync(s.image)).slice(0, 6);
+	const turns = readJsonl<{ t: number; plan: { phase?: string; screen?: string; progress?: string } }>(paths.plans).map((p) => `t=${p.t.toFixed(1)}s [${p.plan.phase}] saw: ${p.plan.screen ?? ""} | ${p.plan.progress ?? ""}`).join("\n");
 	const parts: Part[] = [
-		{ text: `Game: ${JSON.stringify(ix.game)}\nSession: ${session.game_s.toFixed(1)} s, playable from ${ix.playable_from.toFixed(1)} s, ${session.actions} inputs, ended by ${session.ended_by}.\nPlayer's final notes: ${session.notes}\n\nSignals:\n${signals.map((s) => `${s.id} t=${s.t.toFixed(1)}${s.end !== undefined ? `-${s.end.toFixed(1)}` : ""}s [${s.kind}] ${s.detail}${s.image ? " (screenshot attached)" : ""}`).join("\n")}` },
+		{ text: `Game: ${JSON.stringify(ix.game)}\nSession: ${session.game_s.toFixed(1)} s, playable from ${ix.playable_from.toFixed(1)} s, ${session.actions} inputs, ended by ${session.ended_by}.\nPlayer's final notes: ${session.notes}\n\nWhat the player saw and concluded at each decision (ground truth for what was on screen):\n${turns}\n\nSignals:\n${signals.map((s) => `${s.id} t=${s.t.toFixed(1)}${s.end !== undefined ? `-${s.end.toFixed(1)}` : ""}s [${s.kind}] ${s.detail}${s.image ? " (screenshot attached)" : ""}`).join("\n")}` },
 		...images.flatMap((s) => [{ text: `Screenshot for ${s.id} (t=${s.t.toFixed(1)}s):` } as Part, { image: s.image! } as Part]),
 	];
 	let summary = "";

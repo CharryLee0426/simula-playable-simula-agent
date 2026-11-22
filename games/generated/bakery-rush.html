@@ -41,7 +41,7 @@ button{font:inherit;color:inherit;touch-action:manipulation;-webkit-tap-highligh
 #cake .glow{position:absolute;left:50%;top:55%;width:240px;height:240px;margin:-120px 0 0 -120px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.75),rgba(255,255,255,0) 65%);z-index:-1;animation:breathe 2.4s ease-in-out infinite}
 @keyframes breathe{50%{transform:scale(1.1);opacity:.7}}
 .tier{transform-origin:100px 170px}
-.tier.pop{animation:tierPop .6s cubic-bezier(.3,1.6,.5,1) both}
+.tier.grow{animation:tierPop .6s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes tierPop{from{transform:scale(0) translateY(-60px);opacity:0}to{transform:none;opacity:1}}
 .flame{transform-origin:center bottom;animation:flick .25s ease-in-out infinite alternate}
 @keyframes flick{to{transform:scale(.85,1.12) skewX(4deg)}}
@@ -177,19 +177,19 @@ button{font:inherit;color:inherit;touch-action:manipulation;-webkit-tap-highligh
           <path d="M26 118 v42 a74 13 0 0 0 148 0 v-42z" fill="url(#t1G)"/>
           <path d="M26 140 a74 13 0 0 0 148 0" fill="none" stroke="#fff" stroke-width="5" opacity=".85"/>
           <ellipse cx="100" cy="118" rx="74" ry="14" fill="#fff6f9"/>
-          <path d="M26 118 q0 14 8 16 q6 1 6 -8 q2 14 10 13 q7 -1 7 -6 q3 12 11 11 q8 -1 7 -9 q4 14 13 12 q8 -2 6 -8 q4 12 12 10 q7 -2 6 -9 q4 12 12 10 q7 -2 6 -8 q4 10 11 8 q7 -3 6 -9 q4 9 10 6 q4 -2 3 -16 a74 14 0 0 1 -148 0z" fill="#fff6f9"/>
+          <path data-frost="100,118,74,14,13,9" fill="#fff6f9"/>
           <g fill="#ff5c8d"><rect x="52" y="112" width="7" height="3" rx="1.5" transform="rotate(25 55 113)"/><rect x="138" y="114" width="7" height="3" rx="1.5" fill="#4fc3f7" transform="rotate(-30 141 115)"/><rect x="80" y="122" width="7" height="3" rx="1.5" fill="#ffd23f" transform="rotate(60 83 123)"/><rect x="118" y="109" width="7" height="3" rx="1.5" fill="#8bd16a" transform="rotate(-10 121 110)"/><rect x="65" y="124" width="7" height="3" rx="1.5" fill="#4fc3f7" transform="rotate(80 68 125)"/><rect x="150" y="122" width="7" height="3" rx="1.5" fill="#ffd23f" transform="rotate(20 153 123)"/></g>
         </g>
         <g class="tier" id="tier2" style="display:none">
           <path d="M46 80 v34 a54 10 0 0 0 108 0 v-34z" fill="url(#t2G)"/>
           <ellipse cx="100" cy="80" rx="54" ry="11" fill="#fff3d6"/>
-          <path d="M46 80 q0 12 7 13 q6 0 6 -7 q2 11 9 10 q6 -1 6 -6 q3 10 10 9 q7 -1 6 -8 q4 11 11 9 q7 -2 6 -7 q4 10 10 8 q6 -2 5 -9 q3 9 9 7 q4 -2 3 -12 a54 11 0 0 1 -108 0z" fill="#fff3d6"/>
+          <path data-frost="100,80,54,11,11,7" fill="#fff3d6"/>
           <circle cx="62" cy="104" r="3" fill="#ffd23f"/><circle cx="100" cy="108" r="3" fill="#ff5c8d"/><circle cx="138" cy="104" r="3" fill="#4fc3f7"/>
         </g>
         <g class="tier" id="tier3" style="display:none">
           <path d="M64 46 v30 a36 8 0 0 0 72 0 v-30z" fill="url(#t3G)"/>
           <ellipse cx="100" cy="46" rx="36" ry="9" fill="#fffdf0"/>
-          <path d="M64 46 q0 10 6 11 q5 0 5 -6 q2 9 8 8 q5 -1 5 -5 q3 9 9 8 q6 -1 5 -7 q3 9 9 7 q5 -2 5 -7 q3 8 8 6 q4 -2 4 -15 a36 9 0 0 1 -72 0z" fill="#fffdf0"/>
+          <path data-frost="100,46,36,9,9,5" fill="#fffdf0"/>
           <g><rect x="78" y="22" width="6" height="22" rx="2" fill="#7fd3ff"/><path class="flame" d="M81 10 q5 7 0 12 q-5 -5 0 -12z" fill="#ffb11f"/></g>
           <g><rect x="116" y="22" width="6" height="22" rx="2" fill="#ff9ad0"/><path class="flame" d="M119 10 q5 7 0 12 q-5 -5 0 -12z" fill="#ffb11f"/></g>
         </g>
@@ -361,11 +361,29 @@ layout();
 function stagePt(clientX, clientY) { const r = stage.getBoundingClientRect(); return { x: (clientX - r.left) / SC, y: (clientY - r.top) / SC }; }
 function elCenter(el) { const r = el.getBoundingClientRect(); return stagePt(r.left + r.width / 2, r.top + r.height / 2); }
 
+// frosting with drips along the front edge of each tier (generated once)
+document.querySelectorAll('[data-frost]').forEach(function (el) {
+  const a = el.getAttribute('data-frost').split(',').map(Number);
+  const cx = a[0], cy = a[1], rx = a[2], ry = a[3], depth = a[4], n = a[5];
+  const amp = []; for (let i = 0; i < n; i++) amp.push(0.45 + ((i * 37) % 11) / 11 * 0.55);
+  let d = 'M' + (cx - rx) + ' ' + cy;
+  const N = 72;
+  for (let i = 0; i <= N; i++) {
+    const th = Math.PI * i / N;
+    const x = cx - rx * Math.cos(th), y0 = cy + ry * Math.sin(th);
+    const u = th / Math.PI * n, k = Math.floor(Math.min(u, n - 0.001));
+    const bump = Math.pow(Math.sin((u - k) * Math.PI), 2.5) * depth * amp[k] * Math.min(1, Math.sin(th) * 3);
+    d += ' L' + x.toFixed(1) + ' ' + (y0 + 3 + bump).toFixed(1);
+  }
+  d += ' L' + (cx + rx) + ' ' + cy + ' A' + rx + ' ' + ry + ' 0 0 0 ' + (cx - rx) + ' ' + cy + 'Z';
+  el.setAttribute('d', d);
+});
+
 // ================= Economy =================
 const SHOPS = [
   { name: 'Sweet Corner', goal: 150 },
   { name: 'Bakery Lane', goal: 2500 },
-  { name: 'Cake Palace', goal: 25000 }
+  { name: 'Cake Palace', goal: 30000 }
 ];
 const G = { coins: 0, earned: 0, shop: 0, lv: { pin: 0, auto: 0, cas: 0, van: 0 }, vanOpen: false, frenzy: 0, taps: 0, combo: 0, lastTap: 0 };
 const UPG = [
@@ -453,6 +471,7 @@ function flyCoins(x, y, n) {
   }
 }
 function plus(x, y, text, size, color) {
+  if (fx.querySelectorAll('.plus').length > 7) return;
   const el = document.createElement('div');
   el.className = 'plus'; el.textContent = text;
   el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.fontSize = (size || 26) + 'px';
@@ -582,11 +601,11 @@ function openShop(i) {
   $('shopName').textContent = SHOPS[i].name;
   $('shopLv').textContent = 'Shop ' + (i + 1) + '/3';
   const t = $('tier' + (i + 1));
-  t.style.display = ''; t.classList.add('pop');
+  t.style.display = ''; t.classList.add('grow');
   $('cherry').setAttribute('transform', i === 1 ? 'translate(0,-38)' : 'translate(0,-74)');
   if (i === 1) { G.lv.cas = G.lv.cas; }
   AU.fanfare(); shake(); confetti(8);
-  showPopup('NEW SHOP UNLOCKED!', SHOPS[i].name, i === 1 ? 'A second tier! Tap value grows with every upgrade.' : 'Royal three-tier cakes. Build your empire!');
+  showPopup('NEW SHOP UNLOCKED!', SHOPS[i].name, i === 1 ? 'Two-tier cakes! The whole street is lining up.' : 'Royal three-tier cakes. Build your empire!');
 }
 let popTimer = 0;
 function showPopup(ribbon, title, text) {
@@ -605,7 +624,7 @@ function startOrder() {
   $('orderTxt').textContent = 'Bake ' + order.target + ' cakes in ' + order.time + 's!';
   $('order').classList.add('show');
   AU.alarm();
-  bigText('RUSH ORDER!', '#ffd23f', '35%');
+  bigText('RUSH ORDER!', '#ffd23f', '58%');
 }
 function orderSuccess() {
   order.done = true;
