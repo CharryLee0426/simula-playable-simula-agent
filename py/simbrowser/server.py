@@ -276,7 +276,25 @@ class Worker:
                "luma": round(float(th.mean()) / 255.0, 3), "summary": await self.page.evaluate("__sim.summary()")}
         if p.get("dom", True):
             res["dom"] = await self.page.evaluate("__sim.domCandidates(40)")
+            if p.get("marks", True) and res["dom"]:
+                res["marks_path"] = str(self._draw_marks(jpeg, res["dom"], width / vw, path))
         return res
+
+    def _draw_marks(self, jpeg: bytes, dom: list, scale: float, path: Path) -> Path:
+        """Set-of-marks: numbered tags on interactive DOM elements, so the model can answer "tap 7" exactly."""
+        from PIL import ImageDraw
+        im = Image.open(io.BytesIO(jpeg)).convert("RGB")
+        d = ImageDraw.Draw(im, "RGBA")
+        for i, c in enumerate(dom, 1):
+            x0, y0, x1, y1 = c["x"] * scale, c["y"] * scale, (c["x"] + c["w"]) * scale, (c["y"] + c["h"]) * scale
+            d.rectangle([x0, y0, x1, y1], outline=(255, 40, 160, 200), width=1)
+            tag = str(i)
+            tw = 7 * len(tag) + 4
+            d.rectangle([x0, y0, x0 + tw, y0 + 12], fill=(255, 40, 160, 230))
+            d.text((x0 + 2, y0), tag, fill=(255, 255, 255, 255))
+        out = path.with_name(path.stem + "_marks.jpg")
+        im.save(out, quality=80)
+        return out
 
     async def motion_probe(self, p: dict) -> dict:
         """Change between now and after `frames` more frames, without moving the observation baseline."""
