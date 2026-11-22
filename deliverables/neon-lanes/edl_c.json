@@ -1,62 +1,62 @@
 {
   "id": "c",
-  "title": "Fast-Paced Feature & Mechanic Montage",
+  "title": "Fast-Paced Neon Feature Montage",
   "clips": [
     {
       "start": 4.4,
-      "end": 7.4,
+      "end": 6.7,
       "speed": 1,
       "role": "core_loop",
-      "why": "Sped-up opening cruise demonstrating 3-lane switching and coins"
+      "why": "Tightened opening showing lane-switching and coin collection"
     },
     {
-      "start": 8.5,
-      "end": 10,
+      "start": 7.1,
+      "end": 9.7,
       "speed": 1,
       "role": "feature",
-      "why": "Quick punchy shot of jumping an orange barrier"
+      "why": "Orange barrier jump mechanic and GREAT JUMP banner"
     },
     {
-      "start": 10.6,
-      "end": 13,
+      "start": 9.7,
+      "end": 11.3,
       "speed": 1,
       "role": "core_loop",
-      "why": "Rapid back-and-forth lane dodging between pink X blocks"
+      "why": "Rapid dodging through pink X-blocks at SPD 65"
     },
     {
-      "start": 13,
-      "end": 15.2,
-      "speed": 1,
+      "start": 11.8,
+      "end": 15.5,
+      "speed": 1.15,
+      "role": "feature",
+      "why": "Sped-up crash and Free Revive tap to keep momentum high"
+    },
+    {
+      "start": 15.5,
+      "end": 18.8,
+      "speed": 1.1,
       "role": "progression",
-      "why": "Rising speed escalation up to SPD 72"
+      "why": "Post-revive speed ramp at SPD 72-78 across lanes and barriers"
     },
     {
-      "start": 15.3,
-      "end": 19.6,
-      "speed": 1.4,
-      "role": "feature",
-      "why": "Fast-forwarded crash and instant free Revive recovery"
-    },
-    {
-      "start": 19.6,
-      "end": 22,
+      "start": 18.8,
+      "end": 20.9,
       "speed": 1,
       "role": "feature",
-      "why": "Coin Magnet power-up and 50 Coins milestone reward"
+      "why": "Magnet power-up pulling streams of coins at SPD 81"
     },
     {
-      "start": 22,
-      "end": 24.933,
+      "start": 20.9,
+      "end": 23.767,
       "speed": 1,
       "role": "climax",
-      "why": "Full-speed SPD 84-87 climax weaving and jumping at 357m"
+      "why": "50 COINS milestone banner at peak SPD 84 into final obstacle rush"
     },
     {
-      "start": 29.2,
-      "end": 31.7,
+      "start": 28.1,
+      "end": 30.4,
       "speed": 1,
       "role": "end_card",
-      "why": "Neon Lanes end card and PLAY NOW call to action"
+      "why": "Neon Lanes end card with PLAY NOW button tap"
     }
   ],
   "strategy": "feature-montage",

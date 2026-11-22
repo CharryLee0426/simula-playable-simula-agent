@@ -203,7 +203,7 @@ All runs: default config, seed 7, one take per playable, CPU-only Linux VM (4 co
 | sample | West Game II (3D) | joystick-drag near outlaws to auto-shoot, collect gold, build defenses on pads | 93 s, 20 inputs | **83.4** | 81.5 · 85.7 | 40.6 / 64.9 | 2/2 |
 | generated | Castle Toss (2D physics) | pull back and release the catapult; tap mid-air to split; upgrades between levels | 47 s, all 3 levels → end card | **88.2** | 88.2 · 88.3 | 69.1 / 65.3 | 2/2 |
 | generated | Bakery Rush (DOM idle) | tap the cake, buy upgrades, rush order, frenzy | 49 s, 64 inputs → end card | **84.9** | 81.2 · 89.5 | 59.9 / 50.7 | 2/2 |
-| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump — played with **reflex policies + a zone that follows the car** | 34 s, 19 inputs, 79 coins; crashed at 17 s (revive) and 27 s → end card | **91.1** | 85.6 · 97.8 | 75.2 / 66.5 | 2/2 |
+| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump — played with **reflex policies + a zone that follows the car and learns its depth from hits** | 32 s, 22 inputs, 64 coins; crashed at 13 s (revive) and 23 s → end card; both crashes detected, zone deepened twice | **91.8** | 86.8 · 97.8 | 78.2 / 77.9 | 2/2 |
 | generated | Orb Merge (2D physics) | drag to aim and drop orbs, merge equal values, bomb power-up | 59 s → end card | **87.2** | 86.2 · 88.4 | 69.5 / 59.9 | 2/2 |
 | hold-out | Gem Swap (match-3) | swipe gems into lines of 3–4, cascades, row blaster, fever | 25 s, target smashed → end card | **89.9** | 87.9 · 92.4 | 81.5 / 71.5 | 2/2 |
 | hold-out | Sky Stack (raw WebGL 3D stacker) | tap to drop a sliding slab onto the tower | 29 s, 7 floors, missed, retry, missed → end card | **80.3** | 78.1 · 82.9 | 72.8 / 60.8 | 2/2 |
@@ -245,6 +245,16 @@ What the numbers say:
   read the trend, not the decimals): no reflexes — first crash 11 s, game over 20 s, 21 coins; static-zone reflexes —
   13–16 s, 23–25 s, 25–35 coins; following zone — 17 s, 27 s, 79 coins. The tracker held the car with median match
   confidence 0.74–0.94 per policy.
+- **Learning the zone depth from hits** took three live runs to get the *detection* right, which is the hard part:
+  the first run found neither crash (Neon Lanes does not flash on a crash — its popup stops the world, hence the
+  freeze signature); the second found the game-over but also "hit" on a REVIVED banner and missed a crash in a
+  policy's last moments; the third found both crashes (the freeze at 13.1 s ended the policy at once; the game-over
+  at 23.4 s was caught by the full-screen look and dated by the freeze) with no false hits. Both lessons were
+  "seen too late" (the reflex fired 0.13 s and 0.10 s before impact), so the far edge moved out 44, then 95/1000.
+  The evidence frames agree with the first: when the dodge fired, the block already filled the bottom of the zone.
+  Survival in that run (13 s / 23 s) is inside the spread of the previous reflex runs, so I make no claim that
+  depth learning made it play better — a game that ends after two crashes leaves one lesson to act on. The deliverable
+  is this run.
 - **A negative result, kept honest.** I tried a generic fix for timing: `tap_when`, where the planner describes the
   visual moment ("the sliding block is exactly above the tower") and the executor steps the frozen game frame by
   frame, asking the decider until that moment comes (free and invisible on video). The decider's probability does

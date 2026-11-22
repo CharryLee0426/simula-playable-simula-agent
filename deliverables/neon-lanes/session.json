@@ -1,12 +1,12 @@
 {
-  "game_s": 34.13333333333333,
-  "frames": 1024,
+  "game_s": 31.833333333333332,
+  "frames": 955,
   "fps": 30,
-  "planner_calls": 11,
+  "planner_calls": 9,
   "planner_failures": 0,
-  "actions": 19,
-  "turns": 11,
-  "end_card_at": 29.166666666666323,
+  "actions": 22,
+  "turns": 9,
+  "end_card_at": 26.866666666666404,
   "cta_tapped": true,
   "ended_by": "end_card",
   "input_mode": "touch",
@@ -26,28 +26,28 @@
   },
   "events": [
     {
-      "t": 32299.99999999954,
-      "frame": 969,
+      "t": 29999.999999999625,
+      "frame": 900,
       "kind": "cta",
       "via": "mraid.open",
       "url": "https://example.com/app"
     }
   ],
   "audio": {
-    "sounds": 600,
+    "sounds": 534,
     "skipped": 0,
     "has_audio": true,
-    "peak": 3.757
+    "peak": 4.247
   },
   "perf": {
-    "step_ms_avg": 8.6,
-    "shot_ms_avg": 38.9
+    "step_ms_avg": 4.3,
+    "shot_ms_avg": 31.5
   },
   "title": "Neon Lanes",
   "frame_size": [
     720,
     1280
   ],
-  "notes": "3-lane runner. Swipe left/right to switch lanes, up to jump orange barriers. Dodge pink X blocks. Crashed at 384m, reached end card.",
+  "notes": "3-lane synthwave runner. Swipe left/right to switch lanes, swipe up to jump over orange barriers. Dodge pink blocks, collect yellow coins. Reached end card with 64 coins.",
   "stuck_events": 0
 }

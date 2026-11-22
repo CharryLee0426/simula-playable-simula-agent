@@ -1,13 +1,13 @@
 {
-  "best": "c",
-  "score": 91.1,
+  "best": "b",
+  "score": 91.8,
   "pass": true,
   "pairwise": {
-    "a": "c",
-    "b": "b",
+    "a": "b",
+    "b": "c",
     "a_first": "tie",
     "b_first": "tie",
-    "winner": "c"
+    "winner": "b"
   },
   "vs_baseline": {
     "baseline": "base_first",
@@ -23,7 +23,7 @@
       "id": "a",
       "strategy": "hook-first",
       "source": "director",
-      "path": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/candidates/cut_a.mp4",
+      "path": "/home/user/simula-playable-simula-agent/runs/depth-neon-3/candidates/cut_a.mp4",
       "gate": {
         "ok": true,
         "problems": [],
@@ -35,10 +35,10 @@
         "acodec": "aac"
       },
       "heuristics": {
-        "dead_ratio": 0.048,
+        "dead_ratio": 0.047,
         "loading_ratio": 0,
-        "action": 0.601,
-        "hook_ratio": 1.198,
+        "action": 0.612,
+        "hook_ratio": 1.205,
         "coverage": 1,
         "coverage_detail": {
           "core_loop": true,
@@ -46,44 +46,44 @@
           "progression": true,
           "end_card": true
         },
-        "human_timing": 0.963,
-        "shots": 8,
-        "avg_shot_s": 2.5,
-        "touches_per_10s": 7.501,
-        "moment_quality": 0.943,
+        "human_timing": 0.968,
+        "shots": 7,
+        "avg_shot_s": 2.857,
+        "touches_per_10s": 10,
+        "moment_quality": 0.964,
         "arc": 1,
-        "H": 97.2
+        "H": 97.7
       },
       "judge": {
         "core_loop_clarity": 9,
         "features": 9,
         "human_play": 8,
         "action": 8,
-        "hook": 8,
-        "polish": 6.5,
-        "would_run": 7.5,
+        "hook": 8.5,
+        "polish": 7.5,
+        "would_run": 8,
         "worst_moment": {
-          "t": 2,
-          "issue": "Jarring cut backwards in progression from 278m (SPD 81, 45 coins) to 57m (SPD 56, 9 coins)"
+          "t": 1.6,
+          "issue": "Abrupt jump cut from the high-speed magnet hook (264m, SPD 80) back to an earlier, slower part of a run (62m, SPD 57)."
         },
         "best_moment": {
-          "t": 15,
-          "why": "High-speed magnet run pulling in coins and jumping an orange barrier at SPD 87"
+          "t": 13.5,
+          "why": "Fast-paced lane weaving at SPD 82-84 with the magnet active, pulling in a stream of coins while dodging double pink X-blocks."
         },
-        "summary": "A fast-paced, clear highlight that showcases the core loop, magnet power-up, jumping, and free revive with natural human-like swipes. However, the jarring backwards cut at 00:02 and the abrupt transition to the end card mid-run hurt the overall polish.",
-        "J": 80.8,
+        "summary": "A strong, energetic 19-second highlight that clearly demonstrates the core 3-lane runner loop, jumping, magnet power-up, and free revive, ending with a clean Play Now CTA. The abrupt jump cut at t=1.6s from the high-speed hook back to a slower run is a bit jarring, and the player's hesitation before the final crash feels slightly unnatural, but overall it's very effective ad creative.",
+        "J": 83.2,
         "J_samples": [
-          79.4,
-          82.2
+          82.2,
+          84.2
         ]
       },
-      "score": 88.2
+      "score": 89.7
     },
     {
       "id": "b",
       "strategy": "learn-then-escalate",
       "source": "director",
-      "path": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/candidates/cut_b.mp4",
+      "path": "/home/user/simula-playable-simula-agent/runs/depth-neon-3/candidates/cut_b.mp4",
       "gate": {
         "ok": true,
         "problems": [],
@@ -95,9 +95,9 @@
         "acodec": "aac"
       },
       "heuristics": {
-        "dead_ratio": 0.048,
+        "dead_ratio": 0.045,
         "loading_ratio": 0,
-        "action": 0.601,
+        "action": 0.612,
         "hook_ratio": 1.157,
         "coverage": 1,
         "coverage_detail": {
@@ -106,45 +106,45 @@
           "progression": true,
           "end_card": true
         },
-        "human_timing": 0.963,
+        "human_timing": 0.968,
         "shots": 7,
         "avg_shot_s": 2.857,
-        "touches_per_10s": 7.501,
-        "moment_quality": 0.943,
+        "touches_per_10s": 9.5,
+        "moment_quality": 0.965,
         "arc": 1,
-        "H": 97.2
+        "H": 97.8
       },
       "judge": {
         "core_loop_clarity": 9,
         "features": 9,
-        "human_play": 8,
-        "action": 8.5,
+        "human_play": 8.5,
+        "action": 8,
         "hook": 8,
-        "polish": 8.5,
-        "would_run": 8.5,
+        "polish": 9,
+        "would_run": 9,
         "worst_moment": {
-          "t": 8.5,
-          "issue": "The player crashes into a pink X block, which interrupts the flow, though it's quickly recovered with the free revive."
+          "t": 7,
+          "issue": "The 2-second pause on the Revive screen slightly slows down the pacing, though it does demonstrate the free revive mechanic."
         },
         "best_moment": {
-          "t": 13,
-          "why": "Picking up the magnet power-up, hitting the 50 coins milestone, and weaving through obstacles at high speed."
+          "t": 14,
+          "why": "The Magnet power-up activates at high speed, pulling in streams of coins while the player weaves past obstacles and hits the 50 Coins milestone."
         },
-        "summary": "This is a strong, fast-paced highlight that clearly demonstrates the core endless runner loop, jumping, coin magnet power-up, and revive mechanic. The gameplay feels natural and engaging, ending cleanly on a call-to-action end card.",
-        "J": 85.3,
+        "summary": "This is a strong, fast-paced highlight that clearly demonstrates the core endless runner loop, jumping, magnet power-up, and free revive mechanic. It feels like genuine human play with a natural mistake and ends cleanly on a call-to-action card.",
+        "J": 86.8,
         "J_samples": [
-          83.2,
-          87.4
+          86,
+          87.6
         ]
       },
-      "score": 90.7,
+      "score": 91.8,
       "wins": 0
     },
     {
       "id": "c",
       "strategy": "feature-montage",
       "source": "director",
-      "path": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/candidates/cut_c.mp4",
+      "path": "/home/user/simula-playable-simula-agent/runs/depth-neon-3/candidates/cut_c.mp4",
       "gate": {
         "ok": true,
         "problems": [],
@@ -156,10 +156,10 @@
         "acodec": "aac"
       },
       "heuristics": {
-        "dead_ratio": 0.024,
+        "dead_ratio": 0.044,
         "loading_ratio": 0,
-        "action": 0.603,
-        "hook_ratio": 1.141,
+        "action": 0.624,
+        "hook_ratio": 1.13,
         "coverage": 1,
         "coverage_detail": {
           "core_loop": true,
@@ -167,45 +167,45 @@
           "progression": true,
           "end_card": true
         },
-        "human_timing": 0.963,
+        "human_timing": 0.968,
         "shots": 8,
-        "avg_shot_s": 2.501,
-        "touches_per_10s": 7.998,
-        "moment_quality": 0.934,
+        "avg_shot_s": 2.498,
+        "touches_per_10s": 9.507,
+        "moment_quality": 0.963,
         "arc": 1,
-        "H": 97.8
+        "H": 97.7
       },
       "judge": {
         "core_loop_clarity": 9,
         "features": 9,
         "human_play": 8.5,
-        "action": 8.5,
+        "action": 8,
         "hook": 7.5,
-        "polish": 8.5,
+        "polish": 9,
         "would_run": 8.5,
         "worst_moment": {
-          "t": 2.5,
-          "issue": "The 'Swipe UP to jump!' tutorial prompt briefly slows down the momentum early in the clip."
+          "t": 6.5,
+          "issue": "The crash and revive screen slows down the momentum right as the action was picking up."
         },
         "best_moment": {
-          "t": 13,
-          "why": "Picking up the Magnet power-up and rapidly pulling in coins while hitting the 50 Coins milestone at high speed."
+          "t": 12,
+          "why": "Picking up the Magnet power-up creates an exciting, fast-paced coin frenzy while weaving through obstacles."
         },
-        "summary": "This highlight effectively showcases Neon Lanes' fast-paced core loop, including lane switching, jumping, the Magnet power-up, and the free revive mechanic. The gameplay feels natural and ends cleanly with a strong call-to-action end card.",
-        "J": 85.6,
+        "summary": "This highlight effectively demonstrates the core loop, jump mechanic, revive feature, and magnet power-up in a clean, readable 19-second run. The pacing is engaging, ending with a natural crash and a crisp call-to-action end card.",
+        "J": 85.4,
         "J_samples": [
-          82.2,
-          89
+          83.2,
+          87.6
         ]
       },
-      "score": 91.1,
+      "score": 90.9,
       "wins": 0
     },
     {
       "id": "base_first",
       "strategy": "baseline: first 20 s",
       "source": "baseline",
-      "path": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/candidates/cut_base_first.mp4",
+      "path": "/home/user/simula-playable-simula-agent/runs/depth-neon-3/candidates/cut_base_first.mp4",
       "gate": {
         "ok": true,
         "problems": [],
@@ -219,8 +219,8 @@
       "heuristics": {
         "dead_ratio": 0.05,
         "loading_ratio": 0,
-        "action": 0.622,
-        "hook_ratio": 0.844,
+        "action": 0.628,
+        "hook_ratio": 0.849,
         "coverage": 0.5,
         "coverage_detail": {
           "core_loop": true,
@@ -228,44 +228,44 @@
           "progression": false,
           "end_card": false
         },
-        "human_timing": 0.963,
+        "human_timing": 0.968,
         "shots": 2,
         "avg_shot_s": 10,
-        "touches_per_10s": 6.5,
-        "moment_quality": 0.817,
-        "arc": 0.503,
-        "H": 75.1
+        "touches_per_10s": 8,
+        "moment_quality": 0.875,
+        "arc": 0.7,
+        "H": 78.4
       },
       "judge": {
         "core_loop_clarity": 9,
-        "features": 7,
+        "features": 8,
         "human_play": 9,
         "action": 7,
-        "hook": 5.5,
+        "hook": 6,
         "polish": 7,
-        "would_run": 7,
+        "would_run": 7.5,
         "worst_moment": {
           "t": 0,
-          "issue": "Starts with a slow tutorial prompt ('Swipe to switch lanes!') rather than immediate high-speed action to hook the viewer."
+          "issue": "The video opens with a slow tutorial prompt ('Swipe to switch lanes!') rather than immediate high-speed action."
         },
         "best_moment": {
-          "t": 12,
-          "why": "Fast-paced lane switching between pink X blocks while collecting coins at high speed."
+          "t": 19,
+          "why": "The Magnet power-up activates at high speed (SPD 79), pulling a stream of coins into the car."
         },
-        "summary": "This highlight clearly demonstrates the core loop of lane switching, jumping, and reviving with very natural human-like play. However, starting with tutorial prompts and ending abruptly after the revive without an end card or power-up showcase limits its punch as an ad.",
-        "J": 75.3,
+        "summary": "This highlight clearly demonstrates the 3-lane endless runner core loop, including lane-switching, jumping, crashing, reviving, and the magnet power-up. However, it starts slowly with tutorial prompts and cuts off right as the exciting magnet frenzy begins.",
+        "J": 78.1,
         "J_samples": [
-          75.8,
-          74.8
+          77.2,
+          79
         ]
       },
-      "score": 75.2
+      "score": 78.2
     },
     {
       "id": "base_random",
       "strategy": "baseline: random clips",
       "source": "baseline",
-      "path": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/candidates/cut_base_random.mp4",
+      "path": "/home/user/simula-playable-simula-agent/runs/depth-neon-3/candidates/cut_base_random.mp4",
       "gate": {
         "ok": true,
         "problems": [],
@@ -277,62 +277,62 @@
         "acodec": "aac"
       },
       "heuristics": {
-        "dead_ratio": 0.073,
+        "dead_ratio": 0.075,
         "loading_ratio": 0,
-        "action": 0.592,
-        "hook_ratio": 0.909,
-        "coverage": 0.5,
+        "action": 0.575,
+        "hook_ratio": 0.955,
+        "coverage": 0.75,
         "coverage_detail": {
           "core_loop": true,
           "feature": true,
           "progression": false,
-          "end_card": false
+          "end_card": true
         },
-        "human_timing": 0.963,
+        "human_timing": 0.968,
         "shots": 5,
-        "avg_shot_s": 4.001,
-        "touches_per_10s": 5.998,
-        "moment_quality": 0.831,
-        "arc": 0.484,
-        "H": 76.6
+        "avg_shot_s": 3.998,
+        "touches_per_10s": 7.504,
+        "moment_quality": 0.873,
+        "arc": 0.6,
+        "H": 83.9
       },
       "judge": {
-        "core_loop_clarity": 7.5,
-        "features": 7.5,
-        "human_play": 6.5,
-        "action": 6.5,
-        "hook": 4.5,
-        "polish": 3,
-        "would_run": 4,
+        "core_loop_clarity": 8.5,
+        "features": 9,
+        "human_play": 8,
+        "action": 7.5,
+        "hook": 6,
+        "polish": 5,
+        "would_run": 6,
         "worst_moment": {
-          "t": 16,
-          "issue": "The video cuts back to gameplay and a crash screen after the 'PLAY NOW' end card has already been shown."
+          "t": 13.5,
+          "issue": "The Game Over and Play Now end card appears in the middle of the video, followed abruptly by a Revive screen and more gameplay."
         },
         "best_moment": {
-          "t": 6,
-          "why": "The Magnet power-up activates at high speed, pulling in streams of coins and hitting the 50 Coins milestone."
+          "t": 5.5,
+          "why": "The Magnet power-up activates at high speed, pulling in a stream of coins and triggering the '50 COINS!' milestone."
         },
-        "summary": "The video demonstrates the core endless runner mechanics and power-ups, but suffers from a slow tutorial hook. Disjointed, out-of-order jump cuts and gameplay appearing after the end card severely hurt its polish.",
-        "J": 58.2,
+        "summary": "The video clearly demonstrates the core mechanics, magnet power-up, and natural touch controls, but the clip sequencing is disjointed. Moving the high-speed magnet clip to the opening and placing the end card at the very end would make it much stronger.",
+        "J": 73,
         "J_samples": [
-          54.6,
-          61.8
+          71.4,
+          74.6
         ]
       },
-      "score": 66.5
+      "score": 77.9
     }
   ],
   "baselines": [
     {
       "id": "base_first",
-      "score": 75.2
+      "score": 78.2
     },
     {
       "id": "base_random",
-      "score": 66.5
+      "score": 77.9
     }
   ],
-  "separation": 15.9,
+  "separation": 13.6,
   "weights": {
     "final": "gate × (0.55 × judge J + 0.45 × heuristics H)",
     "note": "J and H are 0-100"

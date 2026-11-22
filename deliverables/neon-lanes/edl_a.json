@@ -1,62 +1,55 @@
 {
   "id": "a",
-  "title": "Magnet Hook to High-Speed Revive & Climax",
+  "title": "Magnet Hook to High-Speed Comeback",
   "clips": [
     {
-      "start": 19.6,
-      "end": 22,
+      "start": 18.8,
+      "end": 20.9,
       "speed": 1,
       "role": "hook",
-      "why": "High-speed magnet run jumping a barrier and hitting 50 Coins"
+      "why": "Magnet power-up pulls a rapid stream of coins at SPD 81 while dodging pink blocks"
     },
     {
       "start": 4.4,
       "end": 7.4,
       "speed": 1,
       "role": "core_loop",
-      "why": "Clean early lane-switching and coin collection at SPD 56-59"
+      "why": "Clear lane-switching to collect coins and dodge pink X-blocks"
     },
     {
-      "start": 8.5,
-      "end": 10,
-      "speed": 1,
-      "role": "feature",
-      "why": "Shows jumping over orange barriers with GREAT JUMP popup"
-    },
-    {
-      "start": 10.6,
-      "end": 13,
+      "start": 9.7,
+      "end": 11.3,
       "speed": 1,
       "role": "core_loop",
-      "why": "Rapid lane-switching around pink X blocks as pace picks up"
+      "why": "Fast weaving through denser pink X-blocks at SPD 65"
     },
     {
-      "start": 13,
-      "end": 15.2,
+      "start": 11.8,
+      "end": 15.5,
       "speed": 1,
-      "role": "progression",
-      "why": "Speed escalation climbing to SPD 72 with tight dodges"
-    },
-    {
-      "start": 16,
-      "end": 19.6,
-      "speed": 1.15,
       "role": "feature",
-      "why": "Crash stakes followed by tapping free Revive to continue the run"
+      "why": "Crash triggers the Free Revive popup and immediate resumption"
     },
     {
-      "start": 22,
-      "end": 24.967,
+      "start": 15.5,
+      "end": 18.8,
+      "speed": 1,
+      "role": "core_loop",
+      "why": "Post-revive run at SPD 72-78 swerving and jumping an orange barrier"
+    },
+    {
+      "start": 20.9,
+      "end": 24.8,
       "speed": 1,
       "role": "climax",
-      "why": "Peak speed SPD 84-87 magnet run weaving and jumping at 357m"
+      "why": "50 COINS milestone at peak SPD 84 ending in a dramatic 323m crash"
     },
     {
-      "start": 29.2,
-      "end": 31.6,
+      "start": 28,
+      "end": 30.4,
       "speed": 1,
       "role": "end_card",
-      "why": "Neon Lanes end card with 79 coins and PLAY NOW CTA"
+      "why": "Neon Lanes end card with 64 coins and PLAY NOW tap"
     }
   ],
   "strategy": "hook-first",

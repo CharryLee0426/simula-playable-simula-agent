@@ -84,5 +84,7 @@ upload (S3 / GCS)                                   ┌────────�
 
 1. GPU capture nodes (10× faster play phase) — the single biggest cost/latency win.
 2. A cheaper planner with escalation (above), and caching the game model per playable family (same template, new art).
-3. Hierarchical play: a policy cache per genre ("drag-to-aim" games, "word grid" games) learned from verified sessions,
+3. Carry what a session learned about a game into the next take: reflex zone depth (learned from hits), learned walls,
+   the policy situations that worked — keyed by playable hash, so take 2 starts where take 1's lessons left off.
+4. Hierarchical play: a policy cache per genre ("drag-to-aim" games, "word grid" games) learned from verified sessions,
    used as hints for the planner — kept genre-level, never per-game rules.

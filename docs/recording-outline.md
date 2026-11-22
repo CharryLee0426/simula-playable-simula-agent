@@ -36,16 +36,19 @@ A suggested script for the walkthrough. Times are targets; every claim points at
 
 ## 3b. Reflexes for fast games (1 min)
 - Show `deliverables/neon-lanes/trace.html`: a reflex policy (zone + situations), its checks and fires with reflex
-  times; the "something new" hand-back when the game introduced jump barriers → the planner read the tutorial and jumped.
+  times and evidence crops; then the "something new" hand-back (README lessons table, "reflex v2"): the game introduced
+  jump barriers mid-policy → the hand-back let the planner read the tutorial and jump.
 - The evidence: Neon Lanes 6 inputs / crash at 11 s without reflexes vs 17–19 inputs / first crash at 13–16 s with them.
 - The honest twist: on the slower hold-out dodger a planner-only ablation did as well (frozen clock = exact
   positioning), so reflexes became an escalation, not a default.
 - The zone that follows the player: show the tracked-car template and the evidence crops in the trace; the offline
   comparison (static zone: false dodges for the next lane's block; following zone: "none", then sees the real one);
   the learned walls; and the idea that failed (snapping the template to the most contrasted patch lost the car 3/5).
-- Zone depth learned from hits: a flash/shake spike confirmed on the whole screen → the lead time of the last reaction
-  decides deeper / shallower / "not a depth problem" (wrong reaction, greedy pickup). Show a ⚡ hit row in the trace
-  with its evidence frame and the depth change; mention why the crop-level "were you hit?" question was dropped.
+- Zone depth learned from hits: a flash or a sudden freeze in the recorded frames, confirmed by one question on the
+  whole screen → the lead time of the last reaction decides deeper / shallower / "not a depth problem" (wrong
+  reaction, greedy pickup). Show the two ⚡ hit rows in `deliverables/neon-lanes/trace.html` (evidence frame, lesson,
+  0 → 44 → 95). The story is the detection: run 1 found no crash (this game freezes instead of flashing), run 2 had a
+  false "hit" on the REVIVED banner, run 3 found both with none false. And the honest part: no survival claim.
 
 ## 4. The cut (1.5 min)
 - Index: per-0.5 s signals + one director call watching the timestamped session → game model + moments.
