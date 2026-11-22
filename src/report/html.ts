@@ -43,7 +43,7 @@ export function writeReport(): void {
 	const plans = readJsonl<{ turn: number; obs: number; t: number; ms: number; usd: number; error?: string; plan: any; decider: any }>(paths.plans);
 	const reflexes = readJsonl<{ turn: number; zone?: number[]; zone_used?: number[]; depth?: [number, number]; player?: number[]; template?: string; situations: { name: string; when: string; pickup?: boolean }[]; checks: number; fired: number; counts: Record<string, number>; ended: string; hits?: { t: number; confirmed: string; p_hit: number; delta: number; reason: string; depth: [number, number]; evidence?: string }[] }>(join(paths.dir, "reflexes.jsonl"));
 	const hitHtml = (h: NonNullable<(typeof reflexes)[number]["hits"]>[number]) =>
-		`<br>⚡ ${seek(h.t)} <b>hit</b> (${h.confirmed === "screen" ? `screen: p=${h.p_hit}` : "a crash followed"})${h.evidence ? ` <img src="${esc(rel(h.evidence))}" height="40" style="vertical-align:middle" title="the screen right after the hit">` : ""} — ${esc(h.reason)}${h.delta ? ` → <b>zone ${h.delta > 0 ? "deeper" : "shallower"}</b> (${h.depth[0]} → ${h.depth[1]})` : ""}`;
+		`<br>⚡ ${seek(h.t)} <b>hit</b> (${esc(h.confirmed)}, p=${h.p_hit})${h.evidence ? ` <img src="${esc(rel(h.evidence))}" height="40" style="vertical-align:middle" title="the screen right after the hit">` : ""} — ${esc(h.reason)}${h.delta ? ` → <b>zone ${h.delta > 0 ? "deeper" : "shallower"}</b> (${h.depth[0]} → ${h.depth[1]})` : ""}`;
 	const edls: Record<string, Edl> = {};
 	for (const c of ev?.candidates ?? []) { const e = readJsonIf<Edl>(paths.edl(c.id)); if (e) edls[c.id] = e; }
 	const best = ev ? edls[ev.best] : undefined;

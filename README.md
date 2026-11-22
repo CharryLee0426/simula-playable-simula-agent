@@ -136,6 +136,21 @@ that starts on the ship). And walls are learned, not known: a reflex that should
 a confidently tracked position unchanged hit an edge, so it is suppressed for 1.5 s and the best other action is
 taken instead. The frame each reflex reacted to is kept as evidence in the trace.
 
+How far ahead the zone looks is **learned from getting hit** (`src/agent/zone.ts`). The worker flags two generic
+impact signatures in the recorded frames: a *flash* (a spike of on-screen change with a jump in brightness, how games
+sell an impact) and a *freeze* (the screen of a moving game suddenly stops — a crash popup pauses the world). Pickups
+flash and tutorial prompts pause too, so one decider question on the whole screen confirms it ("hit or crashed, not a
+pickup or a tutorial pause?"); the periodic full-screen look asks the same question for hits neither signature
+caught, and the worker dates those from the frames since the previous look. A confirmed freeze also ends the policy
+at once (no frozen dead air on video). The lead time of the last reaction then says what went wrong: it fired
+< 0.5 s before the hit (or the hazard was never flagged) → seen too late, the zone's far edge moves out by 15 % of
+its depth; > 1.2 s before → too early (a jump that lands before the barrier), the edge moves in; in between, the
+reaction itself was wrong, and swerving into a hazard for a pickup (situations marked `"pickup": true`) is a
+judgement error — neither changes the depth, and the planner is told which it was so it can fix the situations
+instead. The far edge is the side opposite the player (the top for runners, the right for side-scrollers); the
+adjustment is session-wide because the game's speed carries over from one policy to the next. Hits, their evidence
+frame and each depth change are in `reflexes.jsonl` and `trace.html`.
+
 ---
 
 ## Goal 3 — Friction

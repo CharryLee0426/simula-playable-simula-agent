@@ -110,6 +110,8 @@ class Worker:
         self.step_ms: list[float] = []
         self.tracker: Tracker | None = None
         self.flash_scan = 0  # recorder frame index up to which hit flashes were scanned
+        self.freeze_scan = 0  # ... and sudden freezes
+        self.frozen = False
         self.shot_ms: list[float] = []
 
     # ------------------------------------------------------------------ lifecycle
@@ -350,7 +352,7 @@ class Worker:
         optionally save a full-screen copy (for the periodic "anything new?" look)."""
         rgb = await self._grab_rgb()
         h, w = rgb.shape[:2]
-        out: dict = {"frame": await self.page.evaluate("__sim.frame"), "flashes": self._flashes()}
+        out: dict = {"frame": await self.page.evaluate("__sim.frame"), "impacts": self._impacts()}
         dx = dy = 0.0
         if self.tracker is not None:
             cx, cy, conf = self.tracker.update(to_small_gray(rgb))
@@ -377,12 +379,15 @@ class Worker:
             out.setdefault("path", str(fpath))
         return out
 
-    def _flashes(self) -> list[dict]:
-        """Frames recorded since the last scan whose on-screen change spikes well above the recent baseline together
-        with a jump in brightness: the flash/shake games use to sell an impact (also pickups — the caller confirms)."""
+    def _impacts(self) -> list[dict]:
+        """Hit candidates recorded since the last scan, two generic signatures of an impact (frames in game frames):
+        "flash" — on-screen change spikes well above the recent baseline together with a jump in brightness (the
+        flash/shake games use to sell an impact; pickups flash too); "freeze" — the screen of a moving game suddenly
+        stops for 5+ frames (a crash/revive popup pauses the world; so do tutorial prompts). The caller confirms both."""
         if not self.rec:
             return []
-        st = self.rec.stats
+        st, fps = self.rec.stats, self.rec.fps
+        gf = lambda s: int(round(s["t"] * fps))
         out = []
         for i in range(max(self.flash_scan, 15), len(st)):
             prev = st[i - 15:i]
@@ -390,12 +395,50 @@ class Worker:
             lbase = float(np.median([x["luma"] for x in prev]))
             m, dl = st[i]["motion"], st[i]["luma"] - lbase
             if m > 0.03 and m > 2.5 * max(base, 0.004) and dl >= 0.04:
-                out.append({"f": st[i]["f"], "t": st[i]["t"], "motion": round(m, 4), "dl": round(dl, 3)})
+                out.append({"kind": "flash", "f": gf(st[i]), "t": st[i]["t"], "motion": round(m, 4), "dl": round(dl, 3)})
         self.flash_scan = len(st)
-        return out
+        hold = 5
+        for i in range(max(self.freeze_scan, 30), len(st) - hold + 1):
+            base = float(np.median([x["motion"] for x in st[i - 30:i]]))
+            fz = base >= 0.004 and all(x["motion"] < 0.25 * base and x["motion"] < 0.003 for x in st[i:i + hold])
+            if fz and not self.frozen:
+                out.append({"kind": "freeze", "f": gf(st[i]), "t": st[i]["t"], "motion": round(base, 4)})
+            if fz:
+                self.frozen = True
+            elif st[i]["motion"] >= 0.004:
+                self.frozen = False
+        self.freeze_scan = max(self.freeze_scan, len(st) - hold + 1)
+        return sorted(out, key=lambda x: x["f"])
 
-    async def flashes(self, p: dict) -> dict:
-        return {"flashes": self._flashes()}
+    async def impacts(self, p: dict) -> dict:
+        return {"impacts": self._impacts()}
+
+    async def impact_onset(self, p: dict) -> dict:
+        """When did an impact that a periodic look noticed late happen (game frames, at or after `since_f`)? Where the
+        screen froze (walking back from now while change stays well below the earlier baseline), else the biggest
+        spike of change, else unknown."""
+        if not self.rec or not self.rec.stats:
+            return {"f": None}
+        st, fps = self.rec.stats, self.rec.fps
+        gf = lambda s: int(round(s["t"] * fps))
+        since = int(p.get("since_f", 0))
+        i0 = next((i for i, x in enumerate(st) if gf(x) >= since), len(st))
+        if i0 >= len(st):
+            return {"f": None}
+        base = float(np.median([x["motion"] for x in st[max(0, i0 - 30):i0]])) if i0 > 0 else 0.0
+        if base >= 0.003:
+            j = len(st) - 1
+            while j >= i0 and st[j]["motion"] < 0.35 * base:
+                j -= 1
+            if j < i0:
+                return {"f": None}  # already still at `since_f`: the impact is not in this window
+            if len(st) - 1 - j >= 4:
+                return {"f": gf(st[j + 1]), "how": "freeze"}
+        best = max(range(i0, len(st)), key=lambda i: st[i]["motion"])
+        local = float(np.median([x["motion"] for x in st[max(0, best - 15):best]])) if best > 0 else 0.0
+        if st[best]["motion"] > 2.5 * max(local, 0.004):
+            return {"f": gf(st[best]), "how": "spike"}
+        return {"f": None}
 
     async def track_stop(self, p: dict) -> dict:
         self.tracker = None

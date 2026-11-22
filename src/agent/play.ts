@@ -296,18 +296,20 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		const blocked = new Map<string, number>();
 		let pending: { name: string; sign: number; x0: number; conf: number } | undefined;
 		let lastConf = 1;
-		// Getting hit teaches the zone's depth. A hit shows up as a flash/shake (a spike of on-screen change with a jump
-		// in brightness) and is confirmed on the whole screen, because games flash for pickups too; a flash the screen
-		// does not confirm still counts if a crash ends the policy within 3 s. The lead time of the last reaction says
-		// whether the zone saw the hazard too late (deeper) or reacted too early (shallower); see zone.ts.
+		// Getting hit teaches the zone's depth. The worker flags two generic impact signatures in the recorded frames — a
+		// flash/shake (a spike of on-screen change with a jump in brightness) and a sudden freeze (a crash popup stops
+		// the world) — and one decider question on the whole screen confirms it, because pickups flash and tutorial
+		// prompts pause too. The periodic full-screen look asks the same question, for hits neither signature caught;
+		// the worker then dates the impact from the frames since the previous look. The lead time of the last reaction
+		// says whether the zone saw the hazard too late (deeper) or reacted too early (shallower); see zone.ts.
 		const learn = !!a.zone && cfg.play.reflex_learn_depth !== false;
 		const startF = frame;
 		const depth0 = depthAdj;
 		const fires: Fire[] = [];
 		const hits: Record<string, unknown>[] = [];
-		let suspect: { f: number; p: number; evidence?: string } | undefined;
-		let lastHitF = -Infinity;
-		if (learn) await w.call("flashes", {}); // forget flashes from before this policy
+		let lastHitF = -Infinity, lastCandF = -Infinity, lastGlanceF = frame;
+		if (learn) await w.call("impacts", {}); // forget impacts from before this policy
+		const HIT_Q = { type: "noul" as const, instructions: "The player was just hit or crashed: an explosion, crash or damage effect at the player, a crash / fail / revive / game-over screen, or a life lost. Not a pickup, a reward, a tutorial pause or an ordinary menu." };
 		const zoneNow = () => (a.zone && learn ? applyDepth(a.zone, depthAdj, a.player) : a.zone);
 		const learnFrom = (hitF: number, how: string, pHit: number, evidence?: string) => {
 			lastHitF = hitF;
@@ -317,7 +319,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			const h = { f: hitF, t: Math.round((hitF / fps) * 100) / 100, confirmed: how, p_hit: Math.round(pHit * 100) / 100, delta: lesson.delta, reason: lesson.reason, lead: lesson.lead, depth: [before, depthAdj], zone: zoneNow(), evidence };
 			hits.push(h);
 			log.push({ f: hitF, hit: how });
-			trace.emit("play", "decide", `hit at ${(hitF / fps).toFixed(1)} s (${how === "screen" ? `screen says hit, p=${pHit.toFixed(2)}` : "a crash followed"}): ${lesson.reason}${lesson.delta ? ` → zone ${lesson.delta > 0 ? "deeper" : "shallower"} (${before} → ${depthAdj}/1000 beyond the drawn far edge)` : ""}`, h, { game_t: hitF / fps });
+			trace.emit("play", "decide", `hit at ${(hitF / fps).toFixed(1)} s (${how}, p=${pHit.toFixed(2)}): ${lesson.reason}${lesson.delta ? ` → zone ${lesson.delta > 0 ? "deeper" : "shallower"} (${before} → ${depthAdj}/1000 beyond the drawn far edge)` : ""}`, h, { game_t: hitF / fps });
 		};
 		const lateralSign = (g: PlanAction): number => {
 			if (g.type === "swipe") return g.direction === "left" ? -1 : g.direction === "right" ? 1 : 0;
@@ -328,25 +330,30 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		while (frame < end) {
 			const glance = (a.zone || tracking) && checks % 5 === 0;
 			const pk = a.zone || tracking
-				? await w.call<{ path: string; full_path?: string; player?: [number, number]; conf?: number; delta?: [number, number]; zone?: number[]; flashes?: { f: number; motion: number; dl: number }[] }>("peek_track", { zone: zoneNow(), width: 480, full: glance, follow: tracking })
+				? await w.call<{ path: string; full_path?: string; player?: [number, number]; conf?: number; delta?: [number, number]; zone?: number[]; impacts?: { kind: "flash" | "freeze"; f: number; motion: number }[] }>("peek_track", { zone: zoneNow(), width: 480, full: glance, follow: tracking })
 				: await w.peek(vw);
 			const tconf = "conf" in pk && typeof pk.conf === "number" ? pk.conf : 1;
 			if ("delta" in pk && pk.delta) { delta = pk.delta; player = pk.player; }
-			if (learn && "flashes" in pk && pk.flashes) {
-				const fl = pk.flashes.find((x) => x.f > startF && x.f - lastHitF > hz.framesFor(1500) && (!suspect || x.f - suspect.f > hz.framesFor(1000)));
-				if (fl) {
+			if (learn && "impacts" in pk && pk.impacts) {
+				const imp = pk.impacts.filter((x) => x.f > startF);
+				// a freeze right after a hit is that hit's crash screen: hand back to the planner without asking again
+				if (imp.some((x) => x.kind === "freeze" && x.f - lastHitF <= hz.framesFor(1500))) { ended = "hit"; break; }
+				const cand = imp.find((x) => x.f - lastHitF > hz.framesFor(1500) && x.f - lastCandF > hz.framesFor(1000));
+				if (cand) {
+					lastCandF = cand.f;
 					const full = "full_path" in pk && pk.full_path ? pk.full_path : (await w.peek(vw)).path;
 					const evidence = join(paths.dir, "obs", `hit_${++hitCount}.jpg`);
 					try { copyFileSync(full, evidence); } catch { /* best-effort */ }
-					const hq = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone), a moment after a sudden flash or shake:", { image: full }],
-						questions: { hit: { type: "noul", instructions: "The flash or shake is because the player was just hit or crashed (an explosion at the player, damage, a life lost), not because the player picked something up or earned a reward." } } });
+					const hq = await decide({ model: cfg.models.decider, ledger, phase: "play", state: [`Current screen of a fast real-time mobile game (portrait phone), a moment after the screen suddenly ${cand.kind === "freeze" ? "stopped moving" : "flashed or shook"}:`, { image: full }], questions: { hit: HIT_Q } });
 					const pHit = noul(hq?.answers.hit) ?? 0;
-					log.push({ f: fl.f, flash: fl.motion, p_hit: Math.round(pHit * 100) / 100 });
-					if (pHit >= 0.5) { suspect = undefined; learnFrom(fl.f, "screen", pHit, evidence); }
-					else suspect = { f: fl.f, p: pHit, evidence };
+					log.push({ f: cand.f, impact: cand.kind, p_hit: Math.round(pHit * 100) / 100 });
+					if (pHit >= 0.5) {
+						learnFrom(cand.f, cand.kind, pHit, evidence);
+						// the world stopped: a crash screen is up, and the planner deals with it (no frozen dead air on video)
+						if (cand.kind === "freeze") { ended = "hit"; break; }
+					}
 				}
 			}
-			if (suspect && frame - suspect.f > hz.framesFor(3000)) suspect = undefined; // a flash without a crash: a pickup or an effect
 			// Only a confident track can tell a wall from a lost track.
 			if (pending && player && (tconf < 0.6 || pending.conf < 0.6)) pending = undefined;
 			if (pending && player) {
@@ -364,7 +371,20 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 					questions: {
 						interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." },
 						novel: { type: "noul", instructions: `Something is on screen that none of these covers and that may need a different reaction (a new kind of obstacle, a new instruction or tutorial prompt, a power-up to grab): ${sits.map((x) => x.when).join(" / ")}` },
+						...(learn ? { hit: HIT_Q } : {}),
 					} });
+				// A hit neither impact signature caught (e.g. a game-over that fades in): date it from the frames since
+				// the previous look — where the screen froze or changed most — else halfway between the two looks.
+				const pHit = noul(g?.answers.hit) ?? 0;
+				if (learn && pHit >= 0.5 && frame - lastHitF > hz.framesFor(1500)) {
+					const on = await w.call<{ f: number | null; how?: string }>("impact_onset", { since_f: lastGlanceF });
+					const hitF = on.f ?? Math.round((lastGlanceF + frame) / 2);
+					const evidence = join(paths.dir, "obs", `hit_${++hitCount}.jpg`);
+					try { copyFileSync(pk.full_path, evidence); } catch { /* best-effort */ }
+					log.push({ f: hitF, impact: `glance${on.how ? `/${on.how}` : ""}`, p_hit: Math.round(pHit * 100) / 100 });
+					learnFrom(hitF, `look${on.how ? `, dated by ${on.how}` : ""}`, pHit, evidence);
+				}
+				lastGlanceF = frame;
 				if ((noul(g?.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
 				if ((noul(g?.answers.novel) ?? 0) > 0.7 && checks > 0) { ended = "something_new"; break; }
 			}
@@ -426,7 +446,6 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			} else frame = (await w.step(checkEvery)).frame;
 		}
 		if (tracking) await w.call("track_stop", {});
-		if (learn && suspect && ended === "interrupted" && frame - suspect.f <= hz.framesFor(3000)) learnFrom(suspect.f, "crash_followed", suspect.p, suspect.evidence);
 		const moved = tracking ? ` · player tracked (moved ${Math.round(Math.hypot(delta[0], delta[1]))}/1000)` : "";
 		const hitNote = hits.length
 			? ` · hit ${hits.length}×: ${hits.map((h) => h.reason).join("; ")}${depthAdj !== depth0 ? ` (zone depth adjusted automatically: ${depth0} → ${depthAdj}/1000 beyond the far edge you drew)` : ""}`

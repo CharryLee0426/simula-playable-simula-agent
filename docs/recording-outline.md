@@ -43,6 +43,9 @@ A suggested script for the walkthrough. Times are targets; every claim points at
 - The zone that follows the player: show the tracked-car template and the evidence crops in the trace; the offline
   comparison (static zone: false dodges for the next lane's block; following zone: "none", then sees the real one);
   the learned walls; and the idea that failed (snapping the template to the most contrasted patch lost the car 3/5).
+- Zone depth learned from hits: a flash/shake spike confirmed on the whole screen → the lead time of the last reaction
+  decides deeper / shallower / "not a depth problem" (wrong reaction, greedy pickup). Show a ⚡ hit row in the trace
+  with its evidence frame and the depth change; mention why the crop-level "were you hit?" question was dropped.
 
 ## 4. The cut (1.5 min)
 - Index: per-0.5 s signals + one director call watching the timestamped session → game model + moments.
