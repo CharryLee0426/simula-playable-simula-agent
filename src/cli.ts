@@ -10,8 +10,8 @@ import { ctx, openHarness, SessionTask, type SessionOutput } from "./durable/ses
 import { writeReport } from "./report/html.ts";
 import { loadState, makeSessionContext, saveState, setSession, type SessionState } from "./runtime.ts";
 import { doctor, setup } from "./setup.ts";
-import { ensureDir, errMsg, log, readJson, readJsonIf, sha256, writeJson } from "./util/core.ts";
-import { readFileSync } from "node:fs";
+import { ensureDir, errMsg, log, readJson, readJsonIf, run, sha256, writeJson } from "./util/core.ts";
+import { readFileSync, writeFileSync } from "node:fs";
 
 type Flags = { _: string[]; sets: string[]; [k: string]: string | boolean | string[] };
 function parseArgs(argv: string[]): Flags {
@@ -127,17 +127,63 @@ export async function runSession(playableArg: string, opts: { session?: string; 
 }
 
 /** Copy the reviewer-facing files of a session into deliverables/<name>/. */
-function exportDeliverable(dir: string, outDir: string): void {
+/** Copy a session's reviewer-facing files. The highlight stays full quality; the raw session and the scored
+ *  candidates are shipped as 540×960 versions (the full-resolution ones stay in the session directory). */
+async function exportDeliverable(dir: string, outDir: string): Promise<void> {
 	ensureDir(outDir);
-	const files = ["highlight.mp4", "raw.mp4", "friction.md", "friction.json", "eval.json", "trace.html", "game_model.json", "moments.json", "session.json", "summary.json", "plans.jsonl", "actions.jsonl", "observations.jsonl", "ledger.jsonl", "trace.jsonl", "config.json", "state.json"];
+	const files = ["highlight.mp4", "friction.md", "friction.json", "eval.json", "trace.html", "game_model.json", "moments.json", "session.json", "summary.json", "plans.jsonl", "actions.jsonl", "observations.jsonl", "ledger.jsonl", "trace.jsonl", "config.json", "state.json"];
 	for (const f of files) if (existsSync(join(dir, f))) copyFileSync(join(dir, f), join(outDir, f));
 	for (const f of readdirSync(dir).filter((x) => /^edl_.*\.json$/.test(x))) copyFileSync(join(dir, f), join(outDir, f));
+	if (existsSync(join(dir, "raw.mp4"))) {
+		const r = await run("ffmpeg", ["-loglevel", "error", "-y", "-i", join(dir, "raw.mp4"), "-vf", "scale=540:960", "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", join(outDir, "raw.mp4")]);
+		if (r.code !== 0) copyFileSync(join(dir, "raw.mp4"), join(outDir, "raw.mp4"));
+	}
 	if (existsSync(join(dir, "candidates"))) {
 		ensureDir(join(outDir, "candidates"));
-		for (const f of readdirSync(join(dir, "candidates")).filter((x) => /^cut_[a-z_]+\.mp4$/.test(x))) copyFileSync(join(dir, "candidates", f), join(outDir, "candidates", f));
+		for (const f of readdirSync(join(dir, "candidates")).filter((x) => /^cut_[a-z_]+\.mp4$/.test(x))) {
+			const proxy = join(dir, "candidates", f.replace(/\.mp4$/, ".judge.mp4"));
+			copyFileSync(existsSync(proxy) ? proxy : join(dir, "candidates", f), join(outDir, "candidates", f));
+		}
 	}
 	// screenshots referenced by the trace and the friction report
 	if (existsSync(join(dir, "obs"))) cpSync(join(dir, "obs"), join(outDir, "obs"), { recursive: true });
+}
+
+/** deliverables/README.md: one row per exported session (folders tagged .samples / .generated / .holdout / .calibration). */
+function summarize(dir: string): void {
+	const groups = ["samples", "generated", "holdout", "calibration"];
+	const groupOf = (n: string) => groups.find((g) => existsSync(join(dir, n, `.${g}`))) ?? "";
+	const names = readdirSync(dir)
+		.filter((n) => existsSync(join(dir, n, "eval.json")))
+		.sort((a, b) => groups.indexOf(groupOf(a)) - groups.indexOf(groupOf(b)) || a.localeCompare(b));
+	let total = 0;
+	const rows = names.map((n) => {
+		const ev = readJson<any>(join(dir, n, "eval.json"));
+		const se = readJsonIf<any>(join(dir, n, "session.json"));
+		const fr = readJsonIf<any>(join(dir, n, "friction.json"));
+		const gm = readJsonIf<any>(join(dir, n, "game_model.json"));
+		const st = readJsonIf<any>(join(dir, n, "state.json"));
+		const usd = readFileSync(join(dir, n, "ledger.jsonl"), "utf8").split("\n").filter(Boolean).reduce((a, l) => a + Number(JSON.parse(l).usd || 0), 0);
+		total += usd;
+		const mins = st?.phases ? Object.values(st.phases as Record<string, { ms: number }>).reduce((a, p) => a + p.ms, 0) / 60000 : 0;
+		const best = ev.candidates.find((c: any) => c.id === ev.best);
+		const vs = ev.vs_baseline ? `${ev.vs_baseline.chosen_wins}/${ev.vs_baseline.of}` : "-";
+		const high = fr?.items?.filter((i: any) => i.severity === "high").length ?? 0;
+		return `| ${groupOf(n)} | **${n}** | ${gm?.genre ?? ""} | [highlight](${n}/highlight.mp4) · [raw](${n}/raw.mp4) · [trace](${n}/trace.html) · [friction](${n}/friction.md) | **${ev.score}** | ${best?.judge?.J ?? "-"} / ${best?.heuristics?.H ?? "-"} | ${(ev.baselines ?? []).map((b: any) => b.score).join(" / ") || "-"} | ${ev.separation ?? "-"} | ${vs} | ${se ? `${se.game_s.toFixed(0)} s · ${se.actions} inputs · ${se.ended_by}` : ""} | ${fr?.items?.length ?? 0} (${high} high) | $${usd.toFixed(2)} | ${mins.toFixed(0)} min |`;
+	});
+	const md = [
+		"# Deliverables",
+		"",
+		"One folder per playable: `highlight.mp4` (20 s, 1080×1920, 30 fps, H.264 + AAC), `raw.mp4` (the full session in game time), `friction.md`/`.json`, `eval.json`, `trace.html` (open in a browser), `candidates/` (every cut that was scored, including the naive baselines), and the logs (`plans.jsonl`, `actions.jsonl`, `observations.jsonl`, `ledger.jsonl`, `trace.jsonl`).",
+		"",
+		"| set | playable | genre (as understood by the agent) | files | score | judge J / heuristics H | baselines (first 20 s / random) | separation | head-to-head vs best baseline | session | friction items | cost | wall time |",
+		"| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+		...rows,
+		"",
+		`Total model spend: $${total.toFixed(2)}. Score = gate × (0.55 × J + 0.45 × H). Separation = chosen cut − best baseline.`,
+	].join("\n");
+	writeFileSync(join(dir, "README.md"), md + "\n");
+	log.ok(`${join(dir, "README.md")} (${rows.length} rows)`);
 }
 
 async function main(): Promise<void> {
@@ -151,7 +197,7 @@ async function main(): Promise<void> {
 			if (!playable) throw new Error("usage: ./run --playable ./game.html --out highlight.mp4");
 			if (!process.env.OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY missing: put it in .env (see .env.example) or run ./run setup");
 			const r = await runSession(playable, { session: f.session as string | undefined, out: f.out as string | undefined, dotted, redo: f.redo as string | undefined });
-			if (f.export) exportDeliverable(r.dir, resolve(String(f.export)));
+			if (f.export) await exportDeliverable(r.dir, resolve(String(f.export)));
 			break;
 		}
 		case "batch": {
@@ -163,7 +209,8 @@ async function main(): Promise<void> {
 				const prev = results[name] as { dir?: string; status?: string } | undefined;
 				try {
 					const r = await runSession(p, { session: prev?.dir && existsSync(prev.dir) ? prev.dir : undefined, dotted, out: join(outDir, name, "highlight.mp4") });
-					exportDeliverable(r.dir, join(outDir, name));
+					await exportDeliverable(r.dir, join(outDir, name));
+					if (f.group) writeFileSync(join(outDir, name, `.${String(f.group)}`), "");
 					results[name] = { status: "ok", dir: r.dir, score: r.score, best: r.best, usd: r.usd };
 				} catch (e) {
 					log.err(`${name}: ${errMsg(e)}`);
@@ -177,7 +224,8 @@ async function main(): Promise<void> {
 		}
 		case "export": {
 			if (!f.session || !f.to) throw new Error("usage: ./run export --session <dir> --to <dir>");
-			exportDeliverable(resolve(String(f.session)), resolve(String(f.to)));
+			await exportDeliverable(resolve(String(f.session)), resolve(String(f.to)));
+			if (f.group) writeFileSync(join(resolve(String(f.to)), `.${String(f.group)}`), "");
 			break;
 		}
 		case "report": {
@@ -188,6 +236,9 @@ async function main(): Promise<void> {
 			log.ok(`report → ${join(dir, "trace.html")}`);
 			break;
 		}
+		case "summarize":
+			summarize(resolve(String(f.dir ?? join(ROOT, "deliverables"))));
+			break;
 		case "doctor":
 			await doctor();
 			break;

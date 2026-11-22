@@ -193,7 +193,7 @@ var SFX = (function () {
 // ---------------------------------------------------------------- canvas / layout
 var cv = document.getElementById('c');
 var ctx = cv.getContext('2d');
-var W = 360, H = 640, DPR = 1, S = 1, OX = 0, OY = 0;
+var W = 360, H = 640, DPR = 1, S = 1, OX = 0, OY = 0, OYT = 0, OYB = 0;
 var SPR = [], GLOW = null, BOARD = null;
 
 var GEMS = [
@@ -298,6 +298,7 @@ function resize() {
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   S = Math.min(W / 360, H / 640);
   OX = (W - 360 * S) / 2; OY = (H - 640 * S) / 2;
+  OYT = OY * 0.4; OYB = OY * 1.6; // on tall screens pull the HUD up and the tips down
   document.documentElement.style.setProperty('--u', (Math.min(W / 360, H / 640)).toFixed(4) + 'px');
   SPR = []; for (var i = 0; i < NT; i++) SPR.push(makeGemSprite(i));
   GLOW = makeGlow(); BOARD = makeBoard();
@@ -409,7 +410,7 @@ function floatText(x, y, txt, color, size, dur, tag) {
   texts.push({ x: x, y: y, txt: txt, color: color, size: size || 22, t: 0, dur: dur || 1.0, tag: tag || '' });
 }
 function banner(txt, sub, color, dur) { banners.push({ txt: txt, sub: sub || '', color: color || '#ffe27a', t: 0, dur: dur || 1.6 }); }
-function flyTo(x, y, color) { flyers.push({ x0: x, y0: y, x1: 70, y1: 50, t: 0, dur: rand(0.5, 0.7), color: color, cx: x + rand(-80, 80), cy: Math.min(y, 300) - rand(60, 140) }); }
+function flyTo(x, y, color) { flyers.push({ x0: x, y0: y, x1: 72, y1: 50 + (OYT - OY) / S, t: 0, dur: rand(0.5, 0.7), color: color, cx: x + rand(-80, 80), cy: Math.min(y, 300) - rand(60, 140) }); }
 function addScore(p) { score += p; }
 
 // ---------------------------------------------------------------- game flow
@@ -487,7 +488,7 @@ function startClear(runs, prefer) {
     gc.t = creates[i].t; gc.sp = 1; gc.flash = 1; gc.clearing = false;
     var pc = cellCenter(creates[i].r, creates[i].c);
     parts.push({ x: pc[0], y: pc[1], vx: 0, vy: 0, life: 0, max: 0.5, size: CELL * 0.9, color: '#ffffff', kind: 'ring' });
-    floatText(pc[0], pc[1] - 26, 'ROW BLASTER!', '#7ef9ff', 17, 1.2);
+    floatText(pc[0], pc[1] - 26, 'ROW BLASTER!', '#7ef9ff', 17, 1.2, 'blaster');
     SFX.make();
     madeBlaster = true;
   }
@@ -583,7 +584,7 @@ var retryBtn = document.getElementById('retry'), autoEl = document.getElementByI
 var resWin = false;
 function showResults(win) {
   resWin = win;
-  document.getElementById('rTitle').textContent = win ? 'TARGET SMASHED!' : 'SO CLOSE!';
+  document.getElementById('rTitle').textContent = win ? 'TARGET SMASHED!' : score >= TARGET * 0.6 ? 'SO CLOSE!' : "TIME'S UP!";
   document.getElementById('rSub').textContent = win ? 'You are a gem master!' : 'Only ' + Math.max(0, TARGET - score) + ' points to go!';
   document.getElementById('rScore').textContent = score;
   var st = starsFor(score), spans = document.getElementById('rStars').children;
@@ -1056,7 +1057,7 @@ function drawTexts() {
 }
 function drawBanners() {
   if (!banners.length) return;
-  var b = banners[0], p = b.t / b.dur;
+  var b = banners[0];
   var inT = clamp(b.t / 0.35, 0, 1), outT = clamp((b.dur - b.t) / 0.3, 0, 1);
   var y = 300;
   ctx.save();
@@ -1076,7 +1077,6 @@ function drawBanners() {
   text(b.txt, 0, b.sub ? -12 : 0, fs, b.color, '#2a0b62', fs * 0.2);
   if (b.sub) text(b.sub, 0, 26, 17, '#ffffff', '#2a0b62', 4);
   ctx.restore();
-  void p;
 }
 
 function drawHand(x, y, s, press) {
@@ -1106,6 +1106,7 @@ function drawTutorial() {
   var m = null, t = 0, showText = false;
   if (tut.active && phase === 'idle' && tut.move) { m = tut.move; t = tut.t; showText = true; }
   else if (hint && hint.move && phase === 'idle') { m = hint.move; t = hint.t; }
+  setT(OYB);
   if (showText || (tut.active && (phase === 'intro'))) {
     var a = 0.85 + 0.15 * Math.sin(bgT * 4);
     ctx.save(); ctx.globalAlpha = a;
@@ -1127,6 +1128,7 @@ function drawTutorial() {
       text(tip, 180, 566, 16, 'rgba(255,255,255,0.85)', '#2a0b62', 4);
     }
   }
+  setT(OY);
   if (!m) return;
   var cyc = (t % 1.6) / 1.6;
   var a0 = cellCenter(m.a[0], m.a[1]), b0 = cellCenter(m.b[0], m.b[1]);
@@ -1151,11 +1153,13 @@ function drawTutorial() {
   ctx.restore();
 }
 
+function setT(oy) { ctx.setTransform(DPR * S, 0, 0, DPR * S, DPR * OX, DPR * oy); }
 function render() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   drawBackground();
-  ctx.setTransform(DPR * S, 0, 0, DPR * S, DPR * OX, DPR * OY);
+  setT(OYT);
   drawHUD();
+  setT(OY);
   drawBoard();
   drawParticles();
   drawFlyers();

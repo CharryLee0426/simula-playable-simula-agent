@@ -211,17 +211,33 @@ var SFX = (function () {
 // ---------------------------------------------------------------- canvases
 var glc = document.getElementById('gl'), hud = document.getElementById('hud'), hc = hud.getContext('2d');
 var gl = null;
-try { gl = glc.getContext('webgl', { antialias: true, alpha: false }) || glc.getContext('experimental-webgl'); } catch (e) { gl = null; }
-var W = 360, H = 640, DPR = 1, GDPR = 1, S = 1, OX = 0, OY = 0;
+// probe the renderer first: software rasterisers get no MSAA and a lower resolution
+var SOFTWARE = false;
+try {
+  var probe = document.createElement('canvas').getContext('webgl');
+  if (probe) {
+    var dbg = probe.getExtension('WEBGL_debug_renderer_info');
+    var rname = String(dbg ? probe.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : probe.getParameter(probe.RENDERER));
+    SOFTWARE = /swiftshader|llvmpipe|software|softpipe|basic render/i.test(rname);
+    var lose = probe.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext();
+  }
+} catch (e) { SOFTWARE = false; }
+try { gl = glc.getContext('webgl', { antialias: !SOFTWARE, alpha: false, powerPreference: 'high-performance' }) || glc.getContext('experimental-webgl'); } catch (e) { gl = null; }
+var renderScale = 1;
+var W = 360, H = 640, DPR = 1, GDPR = 1, S = 1, OX = 0, OY = 0, OYT = 0, OYB = 0;
 var slowBtn = document.getElementById('slow');
 
+function sizeGL() {
+  glc.width = Math.max(1, Math.round(W * GDPR * renderScale)); glc.height = Math.max(1, Math.round(H * GDPR * renderScale));
+}
 function resize() {
   W = window.innerWidth || 360; H = window.innerHeight || 640;
   DPR = Math.min(window.devicePixelRatio || 1, 3);
-  GDPR = Math.min(DPR, 2);
-  glc.width = Math.round(W * GDPR); glc.height = Math.round(H * GDPR);
+  GDPR = Math.min(DPR, SOFTWARE ? 1 : 2);
+  sizeGL();
   hud.width = Math.round(W * DPR); hud.height = Math.round(H * DPR);
   S = Math.min(W / 360, H / 640); OX = (W - 360 * S) / 2; OY = (H - 640 * S) / 2;
+  OYT = OY * 0.25; OYB = OY * 1.75; // tall screens: HUD hugs the top, tips the bottom
   document.documentElement.style.setProperty('--u', S.toFixed(4) + 'px');
   var bs = 84 * S;
   slowBtn.style.width = slowBtn.style.height = bs + 'px';
@@ -285,11 +301,8 @@ function initGL() {
     'precision mediump float;',
     '#endif',
     'varying vec2 vUV; uniform vec3 uTop; uniform vec3 uBot; uniform float uStars; uniform float uTime;',
-    'uniform vec2 uSun; uniform vec3 uSunC; uniform float uAspect; uniform float uScroll; uniform vec3 uCloudC; uniform float uCloudA;',
+    'uniform vec2 uSun; uniform vec3 uSunC; uniform float uAspect; uniform float uScroll; uniform vec3 uCloudC; uniform float uCloudA; uniform sampler2D uNoise;',
     'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
-    'float vnoise(vec2 p){ vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);',
-    '  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y); }',
-    'float fbm(vec2 p){ float s = 0.0; float a = 0.5; for (int i = 0; i < 4; i++) { s += a * vnoise(p); p = p * 2.03 + 7.1; a *= 0.5; } return s; }',
     'void main(){',
     '  float y = vUV.y;',
     '  vec3 col = mix(uBot, uTop, smoothstep(0.0, 1.0, y));',
@@ -300,9 +313,9 @@ function initGL() {
     '  float s = smoothstep(0.09, 0.0, length(f - off * 0.7)) * step(0.86, h);',
     '  float tw = 0.55 + 0.45 * sin(uTime * 2.5 + h * 70.0);',
     '  col += vec3(s * tw * uStars * smoothstep(0.15, 0.7, y));',
-    '  vec2 q = vec2(vUV.x * uAspect * 2.4 + uTime * 0.015, vUV.y * 2.6 + uScroll);',
-    '  float n = fbm(q) * 0.75 + fbm(q * 0.5 + 3.3) * 0.25;',
-    '  float cl = smoothstep(0.43, 0.67, n);',
+    '  vec2 q = vec2(vUV.x * uAspect * 0.55 + uTime * 0.004, vUV.y * 0.6 + uScroll * 0.25);',
+    '  float n = texture2D(uNoise, q).r * 0.72 + texture2D(uNoise, q * 2.3 + vec2(0.37, 0.11)).r * 0.28;',
+    '  float cl = smoothstep(0.52, 0.78, n);',
     '  col = mix(col, uCloudC, cl * uCloudA);',
     '  gl_FragColor = vec4(col, 1.0);',
     '}'].join('\n');
@@ -321,7 +334,7 @@ function initGL() {
     return { p: p, u: u };
   }
   var box = prog(VS, FS, ['uVP', 'uPos', 'uScale', 'uSize', 'uRot', 'uColor', 'uAlpha', 'uEmis', 'uBevel', 'uCam', 'uTop', 'uBot', 'uResY', 'uFogR', 'uFogLow', 'uLight', 'uSkyC', 'uGndC'], ['aPos', 'aNor']);
-  var sky = prog(SVS, SFS, ['uTop', 'uBot', 'uStars', 'uTime', 'uSun', 'uSunC', 'uAspect', 'uScroll', 'uCloudC', 'uCloudA'], ['aP']);
+  var sky = prog(SVS, SFS, ['uTop', 'uBot', 'uStars', 'uTime', 'uSun', 'uSunC', 'uAspect', 'uScroll', 'uCloudC', 'uCloudA', 'uNoise'], ['aP']);
   // unit cube, CCW from outside
   var faces = [
     [[1, 0, 0], [0, 0, -1], [0, 1, 0]], [[-1, 0, 0], [0, 0, 1], [0, 1, 0]],
@@ -339,7 +352,30 @@ function initGL() {
   var vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(v), gl.STATIC_DRAW);
   var ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
   var sb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, sb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-  return { box: box, sky: sky, vb: vb, ib: ib, sb: sb };
+  // tileable value-noise fbm baked once into a 256x256 texture (cheap clouds)
+  var N = 256, lat = [], k, x, y;
+  function latt(o) { var L = []; for (var j = 0; j < o * o; j++) L.push(Math.random()); return L; }
+  var octs = [8, 16, 32, 64], amps = [0.5, 0.27, 0.15, 0.08];
+  for (k = 0; k < octs.length; k++) lat.push(latt(octs[k]));
+  var px = new Uint8Array(N * N), vals = new Float32Array(N * N), mn = 9, mx = -9;
+  for (y = 0; y < N; y++) for (x = 0; x < N; x++) {
+    var v = 0;
+    for (k = 0; k < octs.length; k++) {
+      var o = octs[k], fx = x / N * o, fy = y / N * o, ix = Math.floor(fx), iy = Math.floor(fy), tx = fx - ix, ty = fy - iy;
+      tx = tx * tx * (3 - 2 * tx); ty = ty * ty * (3 - 2 * ty);
+      var L = lat[k], x0 = ix % o, x1 = (ix + 1) % o, y0 = iy % o, y1 = (iy + 1) % o;
+      v += amps[k] * lerp(lerp(L[y0 * o + x0], L[y0 * o + x1], tx), lerp(L[y1 * o + x0], L[y1 * o + x1], tx), ty);
+    }
+    vals[y * N + x] = v; if (v < mn) mn = v; if (v > mx) mx = v;
+  }
+  for (k = 0; k < N * N; k++) px[k] = Math.round((vals[k] - mn) / (mx - mn) * 255);
+  var tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, N, N, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, px);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  return { box: box, sky: sky, vb: vb, ib: ib, sb: sb, tex: tex };
 }
 if (gl) { try { R = initGL(); } catch (e) { R = null; gl = null; } }
 
@@ -348,7 +384,7 @@ var blocks = [], cur = null, debris = [], confetti = [], ripples = [], clouds = 
 var state = 'intro', floors = 0, streak = 0, bestStreak = 0, perfects = 0;
 var timeLeft = SESSION, timerOn = false, sessT = 0, lastTick = 99, endReason = '';
 var slowCharges = 0, slowT = 0, timeScale = 1, slowGrantedAt = -1, speedUpDone = false, bonusGiven = false;
-var retries = 1, resT = 0, endShown = false, stateT = 0, firstTap = false, tutT = 0;
+var retries = 1, resT = 0, endShown = false, stateT = 0, firstTap = false;
 var cam = { y: 2, d: 26, yaw: Math.PI / 4, pitch: 0.46, shake: 0 };
 var camTarget = { y: 2 };
 var popups = [], banners = [], sparks = [], bgT = 0;
@@ -385,7 +421,7 @@ function buildScenery() {
     decor = decor.concat(islandBoxes(Math.cos(ang) * rad, -3 + i * 3.6 + rand(-1, 1), Math.sin(ang) * rad, rand(0.7, 1.25), false));
   }
   // cloud sea far below and wisps behind the tower
-  for (i = 0; i < 14; i++) {
+  for (i = 0; i < 10; i++) {
     var a = rand(0, Math.PI * 2), r = rand(5, 26);
     clouds.push({ x: Math.cos(a) * r, z: Math.sin(a) * r, y: rand(-12, -9), sx: rand(4, 8), sy: rand(0.8, 1.4), sz: rand(3, 6), drift: rand(0.2, 0.6) });
   }
@@ -416,7 +452,10 @@ function spawnSlab() {
 }
 
 // ---------------------------------------------------------------- effects
-function popup(txt, color, size, x, y, dur) { popups.push({ txt: txt, color: color, size: size, x: x, y: y, t: 0, dur: dur || 1.0 }); }
+function popup(txt, color, size, x, y, dur, tag) {
+  if (tag) for (var i = popups.length - 1; i >= 0; i--) if (popups[i].tag === tag) popups.splice(i, 1);
+  popups.push({ txt: txt, color: color, size: size, x: x, y: y, t: 0, dur: dur || 1.0, tag: tag || '' });
+}
 function banner(txt, sub, color, dur) { banners.push({ txt: txt, sub: sub || '', color: color || '#fff27a', t: 0, dur: dur || 1.5 }); }
 function sparkBurst(x, y, n, col) {
   for (var i = 0; i < n; i++) {
@@ -442,8 +481,9 @@ function drop() {
     cur[ax] = top[ax];
     var grew = false;
     if (streak >= 2 && cur[sk] < BASE - 0.001) { cur[sk] = Math.min(BASE, cur[sk] + GROW); grew = true; }
-    popup('PERFECT!', '#fff27a', 34, sp[0], sp[1] - 30, 1.1);
-    if (streak >= 2) popup('x' + streak + (grew ? '  GROW!' : ''), '#7ef9ff', 22, sp[0], sp[1] + 4, 1.1);
+    popup('PERFECT!', '#fff27a', 34, sp[0], sp[1] - 30, 1.1, 'p1');
+    if (streak >= 2) popup('x' + streak + (grew ? '  GROW!' : ''), '#7ef9ff', 22, sp[0], sp[1] + 4, 1.1, 'p2');
+    else popups = popups.filter(function (q) { return q.tag !== 'p2'; });
     SFX.perfect(streak);
     sparkBurst(sp[0], sp[1], 18, '#fff7c0');
     place(true);
@@ -456,7 +496,7 @@ function drop() {
     cam.shake = 0.5;
     popup('MISSED!', '#ff7a8a', 38, 180, 250, 1.4);
     state = 'fail'; stateT = 0; endReason = 'miss'; timerOn = false;
-    slowBtn.classList.remove('show');
+    slowBtn.classList.remove('show'); slowT = Math.min(slowT, 1.2);
   } else {
     streak = 0;
     var keep = size - ad, nc = top[ax] + delta / 2, sg = delta > 0 ? 1 : -1;
@@ -467,7 +507,8 @@ function drop() {
     deb.av = rand(2.2, 4.2);
     debris.push(deb);
     cur[ax] = nc; cur[sk] = keep;
-    if (ad < 0.4) popup('NICE!', '#ffffff', 26, sp[0], sp[1] - 26, 0.9);
+    popups = popups.filter(function (q) { return q.tag !== 'p1' && q.tag !== 'p2'; });
+    if (ad < 0.4) popup('NICE!', '#ffffff', 26, sp[0], sp[1] - 26, 0.9, 'p1');
     SFX.slice();
     place(false);
   }
@@ -625,7 +666,6 @@ function update(rdt) {
       SFX.lose();
     }
   }
-  if (tutT >= 0 && !firstTap) tutT += rdt;
 
   if (state === 'fail' && stateT > 1.7) { SFX.lose(); showResults(); }
   if (state === 'timeup' && stateT > 1.8) showResults();
@@ -652,7 +692,7 @@ function update(rdt) {
   var baseD = clamp(5.9 / Math.tan(hHalf), 16, 32);
   var ty = topY + 2.0, td = baseD, tyaw = Math.PI / 4;
   if (state === 'win' || ((state === 'results' || state === 'end') && endReason === 'win')) {
-    ty = topY * 0.5 + 1; td = Math.max(baseD, (topY + 6) * 1.25 / Math.tan(vfov / 2) * 0.5 + 6);
+    ty = (topY - 4) * 0.5 + 1.5; td = Math.max(baseD, (topY + 8) / (2 * Math.tan(vfov / 2)) / 0.62);
     tyaw = cam.yaw + rdt * 0.5;
   } else if (state === 'end') { tyaw = cam.yaw + rdt * 0.15; }
   var k = 1 - Math.exp(-rdt * (state === 'intro' ? 2.6 : 3.2));
@@ -681,12 +721,12 @@ function skyAt(a) {
   var L = SKY[SKY.length - 1]; return { top: L.top, bot: L.bot, sun: L.sun, sp: L.sp, st: L.st };
 }
 
-var curSky = skyAt(0);
+var curSky = skyAt(0), skyAlt = 0;
 function render3D() {
   if (!gl || !R) return;
   gl.viewport(0, 0, glc.width, glc.height);
-  var alt = (cam.y - 2) / (GOAL * SLAB_H);
-  curSky = skyAt(alt);
+  skyAlt += (floors / GOAL - skyAlt) * 0.03; // sky darkens towards night as the tower grows
+  curSky = skyAt(skyAlt);
   // sky
   gl.disable(gl.DEPTH_TEST); gl.depthMask(false); gl.disable(gl.BLEND);
   gl.useProgram(R.sky.p);
@@ -697,7 +737,8 @@ function render3D() {
   gl.uniform3fv(u.uTop, curSky.top); gl.uniform3fv(u.uBot, curSky.bot); gl.uniform1f(u.uStars, curSky.st);
   gl.uniform1f(u.uTime, bgT); gl.uniform2fv(u.uSun, curSky.sp); gl.uniform3fv(u.uSunC, curSky.sun);
   gl.uniform1f(u.uAspect, W / H); gl.uniform1f(u.uScroll, cam.y * 0.11);
-  gl.uniform3fv(u.uCloudC, lerp3([1, 1, 1], curSky.bot, 0.3)); gl.uniform1f(u.uCloudA, 0.62 - 0.35 * curSky.st);
+  gl.uniform3fv(u.uCloudC, lerp3([1, 1, 1], curSky.bot, 0.3)); gl.uniform1f(u.uCloudA, 0.7 - 0.4 * curSky.st);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, R.tex); gl.uniform1i(u.uNoise, 0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   // camera
@@ -825,11 +866,13 @@ function renderHUD() {
   if (timeScale < 0.98) {
     var va = (1 - timeScale) / 0.64;
     var vg = hc.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
-    vg.addColorStop(0, 'rgba(60,200,255,0)'); vg.addColorStop(1, 'rgba(60,200,255,' + (0.45 * va).toFixed(3) + ')');
+    vg.addColorStop(0, 'rgba(60,200,255,0)'); vg.addColorStop(1, 'rgba(60,200,255,' + (0.6 * va).toFixed(3) + ')');
     hc.fillStyle = vg; hc.fillRect(0, 0, W, H);
   }
-  hc.setTransform(DPR * S, 0, 0, DPR * S, DPR * OX, DPR * OY);
+  function setT(oy) { hc.setTransform(DPR * S, 0, 0, DPR * S, DPR * OX, DPR * oy); }
+  setT(OY);
   if (!gl) text('WebGL is not available', 180, 320, 20, '#fff', '#12307a', 4);
+  setT(OYT);
   var playing = state === 'play' || state === 'intro' || state === 'fail' || state === 'timeup' || state === 'win';
   if (playing) {
     // floors counter
@@ -867,14 +910,16 @@ function renderHUD() {
       text('★ x' + streak, 57, 46, 18, '#fff27a', 'rgba(18,48,122,0.9)', 4);
     }
     // slow-mo meter
-    if (slowT > 0) {
+    setT(OYB);
+    if (slowT > 0 && state === 'play') {
       var mw = 150 * (slowT / 6);
-      rr(hc, 105, 150, 150, 10, 5); hc.fillStyle = 'rgba(18,48,122,0.55)'; hc.fill();
-      rr(hc, 105, 150, Math.max(10, mw), 10, 5); hc.fillStyle = '#9ff3ff'; hc.fill();
-      text('SLOW-MO', 180, 140, 13, '#9ff3ff', 'rgba(18,48,122,0.9)', 4);
+      rr(hc, 105, 606, 150, 12, 6); hc.fillStyle = 'rgba(18,48,122,0.6)'; hc.fill();
+      rr(hc, 105, 606, Math.max(12, mw), 12, 6); hc.fillStyle = '#9ff3ff'; hc.fill();
+      text('SLOW-MO', 180, 590, 16, '#9ff3ff', 'rgba(18,48,122,0.9)', 4);
     }
   }
   // tutorial
+  setT(OYB);
   if (!firstTap && (state === 'intro' || state === 'play')) {
     var cyc = (bgT % 1.2) / 1.2, press = cyc < 0.25 ? cyc / 0.25 : cyc < 0.45 ? 1 - (cyc - 0.25) / 0.2 : 0;
     var hx = 196, hy = 470;
@@ -891,6 +936,7 @@ function renderHUD() {
     text('Tap to drop the block!', 180, 585, 21, '#ffffff', 'rgba(18,48,122,0.9)', 4);
   }
   // sparks
+  setT(OY);
   hc.globalCompositeOperation = 'lighter';
   for (var i = 0; i < sparks.length; i++) {
     var s = sparks[i], a = 1 - s.life / s.max;
@@ -908,7 +954,7 @@ function renderHUD() {
   // banners
   if (banners.length) {
     var b = banners[0], inT = clamp(b.t / 0.35, 0, 1), outT = clamp((b.dur - b.t) / 0.3, 0, 1);
-    hc.save(); hc.globalAlpha = outT; hc.translate(180, 236); hc.rotate(-0.04);
+    hc.save(); hc.globalAlpha = outT; hc.translate(180, 196); hc.rotate(-0.04);
     var rw = 420 * easeOutCubic(inT), rh = b.sub ? 100 : 76;
     var rg = hc.createLinearGradient(0, -rh / 2, 0, rh / 2);
     rg.addColorStop(0, 'rgba(18,40,110,0)'); rg.addColorStop(0.2, 'rgba(18,40,110,0.82)'); rg.addColorStop(0.8, 'rgba(18,40,110,0.82)'); rg.addColorStop(1, 'rgba(18,40,110,0)');
@@ -924,9 +970,21 @@ function renderHUD() {
 
 // ---------------------------------------------------------------- loop
 var lastTs = -1;
+var perf = { n: 0, acc: 0, t: 0 };
+function adapt(raw) {
+  // drop the 3D render resolution if the device can't keep ~40 fps
+  perf.t += raw;
+  if (!gl || perf.t < 1.2 || raw > 0.5) return;
+  perf.acc += raw; perf.n++;
+  if (perf.n >= 40) {
+    var avg = perf.acc / perf.n; perf.n = 0; perf.acc = 0;
+    if (avg > 1 / 40 && GDPR * renderScale > 0.6) { renderScale *= 0.75; sizeGL(); }
+  }
+}
 function frame(ts) {
   if (lastTs < 0) lastTs = ts;
   var dt = (ts - lastTs) / 1000; lastTs = ts;
+  adapt(dt);
   if (!(dt > 0)) dt = 0;
   if (dt > 0.1) dt = 0.1;
   update(dt);

@@ -33,6 +33,7 @@ Rules:
 - Total output (sum of (end-start)/speed) about ${target} s; code adjusts it to exactly ${target}.0 s, so aim for ${target - 1}-${target + 1} s.
 - 3-8 clips, each at least 1.2 s of output. No overlapping source ranges.
 - Avoid loading screens, idle stretches, menus and repeated identical moves; never cut while the finger is mid-gesture.
+- Tutorial footage (instruction banners, tutorial hands; phase "tutorial") makes an ad look like an onboarding screen: use at most one short tutorial clip, only if it is the clearest way to show the controls, and never jump back to tutorial footage after showing later gameplay. Prefer core_loop clips from after the tutorial.
 - roles: hook | core_loop | feature | progression | climax | end_card.${includeEnd ? "\n- If the session has an end card, the LAST clip is role end_card showing it for 1.5-2.5 s (it is the ad's call to action)." : ""}
 
 Reply with JSON: {"edls": [{"id": "a"|"b"|"c", "title": "one-line description of the cut", "clips": [{"start": s, "end": s, "speed": x, "role": "...", "why": "short"}]}]}`;
