@@ -3,7 +3,7 @@
 //   ./run --playable ./game.html --out highlight.mp4      one playable, end to end (resumable: --session <dir>)
 //   ./run batch games/samples/*.html --out-dir deliverables   many playables, one durable session each
 //   ./run doctor | setup | report --session <dir>
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, readdirSync, rmSync, statSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { loadConfig, loadDotEnv, newSessionId, ROOT, sessionPaths, type Config } from "./config.ts";
 import { ctx, openHarness, SessionTask, type SessionOutput } from "./durable/session.ts";
@@ -45,7 +45,23 @@ function overrides(f: Flags): Record<string, string> {
 }
 
 /** Run (or resume) one playable through the durable session task. Returns the session summary. */
-export async function runSession(playableArg: string, opts: { session?: string; out?: string; dotted: Record<string, string>; runsDir?: string }): Promise<SessionOutput & { dir: string }> {
+const REDO: Record<string, string[]> = {
+	play: ["raw.mp4", "raw_video.mp4", "session.json", "audio.wav", "audio_rms.json", "frames.jsonl", "actions.jsonl", "plans.jsonl", "observations.jsonl", "obs", "audio", "index_frames", "index_decider.json", "proxy.mp4"],
+	index: ["moments.json", "game_model.json", "proxy.mp4"],
+	cut: ["edl_a.json", "edl_b.json", "edl_c.json", "edl_h.json", "edl_base_first.json", "edl_base_random.json"],
+	render: ["candidates"],
+	eval: ["eval.json", "highlight.mp4"],
+	friction: ["friction.json", "friction.md"],
+	report: ["summary.json", "trace.html"],
+};
+const PHASES = ["play", "index", "cut", "render", "eval", "friction", "report"];
+function redoFrom(dir: string, phase: string): void {
+	const i = PHASES.indexOf(phase);
+	if (i < 0) throw new Error(`--redo must be one of ${PHASES.join(", ")}`);
+	for (const p of PHASES.slice(i)) for (const f of REDO[p]!) rmSync(join(dir, f), { recursive: true, force: true });
+}
+
+export async function runSession(playableArg: string, opts: { session?: string; out?: string; dotted: Record<string, string>; runsDir?: string; redo?: string }): Promise<SessionOutput & { dir: string }> {
 	const playable = resolve(playableArg);
 	if (!existsSync(playable)) throw new Error(`playable not found: ${playable}`);
 	const dir = resolve(opts.session ?? join(opts.runsDir ?? join(ROOT, "runs"), newSessionId(playable)));
@@ -57,6 +73,12 @@ export async function runSession(playableArg: string, opts: { session?: string; 
 	const sctx = makeSessionContext(cfg, dir);
 	setSession(sctx);
 	let st = loadState(paths);
+	if (st && opts.redo) {
+		redoFrom(dir, opts.redo);
+		st.task = undefined;
+		saveState(paths, st);
+		log.info(`redo from phase "${opts.redo}": outputs of that phase and later removed`);
+	}
 	if (!st) {
 		st = { session_id: basename(dir), playable, playable_sha: sha256(readFileSync(playable)).slice(0, 16), created_at: new Date().toISOString(), out: opts.out ? resolve(opts.out) : undefined, phases: {} };
 		saveState(paths, st);
@@ -128,7 +150,7 @@ async function main(): Promise<void> {
 			const playable = (f.playable as string) ?? f._.find((x) => x.endsWith(".html"));
 			if (!playable) throw new Error("usage: ./run --playable ./game.html --out highlight.mp4");
 			if (!process.env.OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY missing: put it in .env (see .env.example) or run ./run setup");
-			const r = await runSession(playable, { session: f.session as string | undefined, out: f.out as string | undefined, dotted });
+			const r = await runSession(playable, { session: f.session as string | undefined, out: f.out as string | undefined, dotted, redo: f.redo as string | undefined });
 			if (f.export) exportDeliverable(r.dir, resolve(String(f.export)));
 			break;
 		}

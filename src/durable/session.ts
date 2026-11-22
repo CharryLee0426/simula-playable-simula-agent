@@ -114,7 +114,7 @@ export const SessionTask = defineTask<SessionInput, State, SessionOutput>({
 			saveState(paths, st);
 			const base = r.evals.filter((e) => e.source === "baseline");
 			writeJson(paths.eval, {
-				best: r.best.id, score: r.best.score, pass: r.best.score >= cfg.eval.pass_score, pairwise: r.pairwise,
+				best: r.best.id, score: r.best.score, pass: r.best.score >= cfg.eval.pass_score, pairwise: r.pairwise, vs_baseline: r.vsBaseline,
 				candidates: r.evals, baselines: base.map((b) => ({ id: b.id, score: b.score })),
 				separation: base.length ? Math.round((r.best.score - Math.max(...base.map((b) => b.score))) * 10) / 10 : null,
 				weights: { final: "gate × (0.55 × judge J + 0.45 × heuristics H)", note: "J and H are 0-100" },

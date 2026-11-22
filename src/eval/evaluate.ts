@@ -20,7 +20,7 @@ import { readJsonl, run } from "../util/core.ts";
 export type Gate = { ok: boolean; problems: string[]; width?: number; height?: number; fps?: number; duration?: number; vcodec?: string; acodec?: string | null };
 export type Heuristics = {
 	dead_ratio: number; loading_ratio: number; action: number; hook_ratio: number; coverage: number; coverage_detail: Record<string, boolean>;
-	human_timing: number; shots: number; avg_shot_s: number; touches_per_10s: number; H: number;
+	human_timing: number; shots: number; avg_shot_s: number; touches_per_10s: number; moment_quality: number; arc: number; H: number;
 };
 export type Judge = {
 	core_loop_clarity: number; features: number; human_play: number; action: number; hook: number; polish: number; would_run: number;
@@ -76,7 +76,7 @@ export function heuristics(edl: Edl, ix: IndexResult, actions: ActionRecord[]): 
 	}
 	const n = Math.max(1, out.length);
 	const exc = (b: (typeof ix.bins)[number]) => (b.excitement ?? 1.2) / 4;
-	const dead = out.filter(({ bin }) => bin.motion < 0.0035 && bin.touches === 0 && (bin.excitement ?? 1) < 1.2 && bin.phase !== "end_card").length / n;
+	const dead = out.filter(({ bin }) => bin.motion < 0.0025 && bin.touches === 0 && bin.phase !== "end_card").length / n;
 	const loading = out.filter(({ bin }) => bin.phase === "loading" || bin.luma < 0.03).length / n;
 	const action = out.reduce((s, { bin }) => s + exc(bin), 0) / n;
 	const energy = (b: (typeof ix.bins)[number]) => exc(b) * 0.7 + Math.min(1, b.motion * 25) * 0.3;
@@ -92,16 +92,33 @@ export function heuristics(edl: Edl, ix: IndexResult, actions: ActionRecord[]): 
 	if (ix.end_card_t !== undefined) detail.end_card = edl.clips.some((c) => c.end > ix.end_card_t! + 0.8);
 	const vals = Object.values(detail);
 	const coverage = vals.filter(Boolean).length / Math.max(1, vals.length);
+	// moment quality: how intense are the moments the cut actually shows, vs the best 20 s the session had to offer
+	const overlapOf = (m: { start: number; end: number }) => edl.clips.reduce((s, c) => s + Math.max(0, Math.min(c.end, m.end) - Math.max(c.start, m.start)), 0);
+	const useful = ix.moments.filter((m) => !["loading", "idle"].includes(m.kind));
+	const shown = useful.map((m) => ({ m, o: overlapOf(m) })).filter((x) => x.o > 0.2);
+	const mq = shown.length ? shown.reduce((s, x) => s + x.m.intensity * x.o, 0) / shown.reduce((s, x) => s + x.o, 0) : 1;
+	const byIntensity = [...useful].sort((a, b) => b.intensity - a.intensity);
+	let acc = 0, num = 0;
+	for (const m of byIntensity) { if (acc >= outT) break; const d = Math.min(m.end - m.start, outT - acc); num += m.intensity * d; acc += d; }
+	const bestMq = acc > 0 ? num / acc : 5;
+	const momentQuality = Math.min(1, mq / Math.max(1, bestMq));
+	// arc: the last seconds pay off (end card, climax/reward, or the energy is at least average)
+	const tail = out.filter((o) => o.outT >= outT - 3);
+	const lastClip = edl.clips[edl.clips.length - 1];
+	const endsWell = lastClip && (lastClip.role === "end_card" && ix.end_card_t !== undefined && lastClip.end > ix.end_card_t + 0.5);
+	const tailMoment = ix.moments.some((m) => ["climax", "reward", "progression", "end_card"].includes(m.kind) && lastClip && Math.min(lastClip.end, m.end) - Math.max(lastClip.start, m.start) > 0.5);
+	const tailEnergy = tail.length ? tail.reduce((s, o) => s + energy(o.bin), 0) / tail.length / Math.max(0.05, out.reduce((s, o) => s + energy(o.bin), 0) / n) : 0;
+	const arc = endsWell ? 1 : tailMoment ? 0.85 : Math.min(0.7, tailEnergy * 0.6);
 	const used = actions.filter((a) => a.kind !== "wait" && edl.clips.some((c) => a.t0 >= c.start && a.t0 < c.end));
 	const total = outT;
 	const ht = humanTiming(actions);
 	const shots = edl.clips.length;
 	const avgShot = total / Math.max(1, shots);
 	const pace = avgShot >= 1.4 && avgShot <= 5 ? 1 : avgShot < 1.4 ? avgShot / 1.4 : Math.max(0, 1 - (avgShot - 5) / 10);
-	const H = 100 * (0.18 * (1 - Math.min(1, dead * 2)) + 0.2 * Math.min(1, action / 0.6) + 0.14 * Math.min(1, hookRatio / 1.1) + 0.24 * coverage + 0.1 * ht.score + 0.08 * (1 - Math.min(1, loading * 3)) + 0.06 * pace);
+	const H = 100 * (0.15 * (1 - Math.min(1, dead * 2)) + 0.1 * Math.min(1, action / 0.6) + 0.13 * Math.min(1, hookRatio / 1.1) + 0.2 * coverage + 0.2 * momentQuality + 0.1 * arc + 0.06 * ht.score + 0.03 * (1 - Math.min(1, loading * 3)) + 0.03 * pace);
 	const r3 = (x: number) => Math.round(x * 1000) / 1000;
 	return { dead_ratio: r3(dead), loading_ratio: r3(loading), action: r3(action), hook_ratio: r3(hookRatio), coverage: r3(coverage), coverage_detail: detail, human_timing: ht.score,
-		shots, avg_shot_s: r3(avgShot), touches_per_10s: r3((used.length / Math.max(1, total)) * 10), H: Math.round(H * 10) / 10 };
+		shots, avg_shot_s: r3(avgShot), touches_per_10s: r3((used.length / Math.max(1, total)) * 10), moment_quality: r3(momentQuality), arc: r3(arc), H: Math.round(H * 10) / 10 };
 }
 
 const JUDGE_SYSTEM = `You review highlight videos of mobile games for an ad network. A good highlight: about 20 seconds, shows a high-action stretch, makes the core loop obvious, shows the game's major features (upgrades, actions, goals, progression), and looks like a real person playing: natural timing, short pauses to read the screen, competent but not perfect, no instant robotic decisions. The white dot is the player's finger (touch indicator). Be strict and specific; a 10 is rare.
@@ -142,7 +159,7 @@ export async function pairwise(a: string, b: string): Promise<"A" | "B" | "tie">
 	return r.value.winner as "A" | "B" | "tie";
 }
 
-export async function evaluateCandidates(cands: { edl: Edl; path: string }[], ix: IndexResult): Promise<{ evals: CandidateEval[]; best: CandidateEval; pairwise?: unknown }> {
+export async function evaluateCandidates(cands: { edl: Edl; path: string }[], ix: IndexResult): Promise<{ evals: CandidateEval[]; best: CandidateEval; pairwise?: unknown; vsBaseline?: unknown }> {
 	const { cfg, paths, trace } = sc();
 	const actions = readJsonl<ActionRecord>(paths.actions);
 	const evals: CandidateEval[] = [];
@@ -170,8 +187,20 @@ export async function evaluateCandidates(cands: { edl: Edl; path: string }[], ix
 			trace.emit("eval", "eval", `pairwise ${x.id} vs ${y.id}: ${xw}-${yw} → ${best.id}`, pw);
 		} catch (e) { trace.emit("eval", "warn", `pairwise failed: ${String(e).slice(0, 160)}`); }
 	}
+	// Evaluator self-check: does the judge prefer the chosen cut over the strongest naive baseline head to head?
+	let vsBaseline: unknown;
+	const base = evals.filter((e) => e.source === "baseline" && e.gate.ok).sort((a, b) => b.score - a.score)[0];
+	if (cfg.eval.pairwise && base) {
+		try {
+			const r1 = await pairwise(best.path, base.path);
+			const r2 = await pairwise(base.path, best.path);
+			const w = (r1 === "A" ? 1 : 0) + (r2 === "B" ? 1 : 0);
+			vsBaseline = { baseline: base.id, chosen_wins: w, of: 2, orders: [r1, r2] };
+			trace.emit("eval", "eval", `head-to-head ${best.id} vs ${base.id}: chosen cut wins ${w}/2`, vsBaseline);
+		} catch (e) { trace.emit("eval", "warn", `baseline head-to-head failed: ${String(e).slice(0, 160)}`); }
+	}
 	copyFileSync(best.path, paths.highlight);
-	return { evals, best, pairwise: pw };
+	return { evals, best, pairwise: pw, vsBaseline };
 }
 
 

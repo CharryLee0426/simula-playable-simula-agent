@@ -177,26 +177,27 @@
 
 	// Web Animations / CSS animations and transitions: paused and seeked to virtual time on every step. When an
 	// animation reaches its end we call finish(), so animationend / transitionend / finish handlers still fire.
-	const anims = new WeakMap();
+	// Tracked in our own set: an animation seeked to (almost) its end drops out of document.getAnimations(), and must
+	// still be finished explicitly, or `.finished.then(remove)` never runs and effects stay frozen on screen.
+	const anims = new Map();
 	function syncAnimations() {
 		if (!document.getAnimations) return;
-		let list;
-		try { list = document.getAnimations(); } catch (_) { return; }
-		for (const a of list) {
+		try { for (const a of document.getAnimations()) if (!anims.has(a)) anims.set(a, null); } catch (_) {}
+		for (const [a, prev] of anims) {
 			try {
-				let st = anims.get(a);
+				let st = prev;
 				if (!st) {
-					st = { start: S.now - (Number(a.currentTime) || 0) / (a.playbackRate || 1), done: false };
+					st = { start: S.now - (Number(a.currentTime) || 0) / (a.playbackRate || 1) };
 					anims.set(a, st);
-					if (a.playState === "running") a.pause();
 				}
-				if (st.done || a.playState === "finished") continue;
+				if (a.playState === "finished" || a.playState === "idle") { anims.delete(a); continue; }
+				if (a.playState === "running") a.pause();
 				const timing = a.effect ? a.effect.getComputedTiming() : null;
 				const t = (S.now - st.start) * (a.playbackRate || 1);
 				const end = timing && Number.isFinite(timing.endTime) ? timing.endTime : Infinity;
-				if (t >= end) { st.done = true; a.finish(); }
-				else { if (a.playState === "running") a.pause(); a.currentTime = Math.max(0, t); }
-			} catch (_) {}
+				if (t >= end - 0.5) { anims.delete(a); a.finish(); }
+				else a.currentTime = Math.max(0, t);
+			} catch (_) { anims.delete(a); }
 		}
 	}
 

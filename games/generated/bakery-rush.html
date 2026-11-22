@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#ff8fb1">
+<link rel="icon" href="data:,">
+<title>Bakery Rush</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#ffc9d9;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#4a2232}
+button{font:inherit;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#stage{position:absolute;left:0;top:0;width:360px;height:640px;transform-origin:0 0;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 55%,var(--bg3) 100%);transition:background 1s}
+#stage.shop0{--bg1:#ffe3ec;--bg2:#ffc4d6;--bg3:#f7a7c0;--accent:#ff5c8d;--awn1:#ff6f9c;--awn2:#fff4f7}
+#stage.shop1{--bg1:#e4fff4;--bg2:#b6f0dc;--bg3:#86d9bf;--accent:#14a37f;--awn1:#25b98f;--awn2:#f2fffa}
+#stage.shop2{--bg1:#fff6dc;--bg2:#ffe199;--bg3:#f5c25c;--accent:#d98a00;--awn1:#8b5cf6;--awn2:#fff8e6}
+#stage.shake{animation:shake .45s ease-out}
+@keyframes shake{0%,100%{transform:var(--base) translate(0,0)}15%{transform:var(--base) translate(-7px,3px)}30%{transform:var(--base) translate(6px,-4px)}45%{transform:var(--base) translate(-5px,2px)}60%{transform:var(--base) translate(4px,-2px)}80%{transform:var(--base) translate(-2px,1px)}}
+.awning{position:relative;flex:0 0 50px;background:repeating-linear-gradient(90deg,var(--awn1) 0 30px,var(--awn2) 30px 60px);box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.awning::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:14px;background:radial-gradient(circle at 15px 0,var(--awn1) 14px,transparent 15px) 0 0/60px 14px repeat-x,radial-gradient(circle at 45px 0,var(--awn2) 14px,transparent 15px) 0 0/60px 14px repeat-x}
+.sign{position:absolute;left:50%;top:8px;transform:translateX(-50%);padding:5px 18px;border-radius:12px;background:#5b2a3c;color:#fff;font-weight:900;font-size:17px;letter-spacing:.5px;white-space:nowrap;box-shadow:0 3px 0 #2e1520,0 6px 12px rgba(0,0,0,.25);z-index:2}
+.sign small{font-weight:700;opacity:.75;font-size:12px;margin-left:6px}
+.hud{flex:0 0 auto;padding:16px 14px 4px;position:relative;z-index:1}
+.coins{display:flex;align-items:center;gap:8px;justify-content:center}
+.coin{display:inline-block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6b0 0 18%,#ffd23f 40%,#e09b00 100%);box-shadow:inset 0 0 0 3px #f7b500,0 2px 0 #a86a00;position:relative;flex:0 0 auto}
+.coin::after{content:"";position:absolute;inset:8px;background:#c47f00;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);opacity:.75}
+#coins{font-size:36px;font-weight:900;letter-spacing:.5px;color:#4a2232;text-shadow:0 2px 0 #fff;display:inline-block;min-width:60px}
+#coins.bump{animation:bump .25s ease-out}
+@keyframes bump{40%{transform:scale(1.18)}}
+#cps{font-weight:800;font-size:13px;background:rgba(255,255,255,.7);padding:3px 8px;border-radius:10px;color:var(--accent)}
+.goal{margin-top:6px;background:rgba(255,255,255,.55);border-radius:12px;padding:5px 10px 7px}
+.goalTxt{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:4px}
+.bar{height:9px;border-radius:5px;background:rgba(74,34,50,.15);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--accent),#ffd23f);transition:width .25s}
+.floor{flex:1 1 auto;position:relative;min-height:200px}
+.counter{position:absolute;left:-10px;right:-10px;bottom:0;height:46px;background:linear-gradient(180deg,#c98652,#9c5d33);border-top:6px solid #e3a874;box-shadow:inset 0 6px 0 rgba(0,0,0,.08)}
+#cake{position:absolute;left:50%;bottom:16px;width:200px;height:200px;margin-left:-100px;border:0;padding:0;background:none;cursor:pointer;outline-offset:4px;z-index:3}
+#cake svg{width:100%;height:100%;overflow:visible;transform-origin:50% 90%;display:block}
+#cake.squish svg{animation:squish .22s ease-out}
+@keyframes squish{0%{transform:scale(1,1)}35%{transform:scale(1.08,.88)}70%{transform:scale(.96,1.06)}100%{transform:scale(1,1)}}
+#cake .glow{position:absolute;left:50%;top:55%;width:240px;height:240px;margin:-120px 0 0 -120px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.75),rgba(255,255,255,0) 65%);z-index:-1;animation:breathe 2.4s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.1);opacity:.7}}
+.tier{transform-origin:100px 170px}
+.tier.pop{animation:tierPop .6s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes tierPop{from{transform:scale(0) translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.flame{transform-origin:center bottom;animation:flick .25s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scale(.85,1.12) skewX(4deg)}}
+.case{position:absolute;bottom:40px;width:74px;height:96px;border-radius:10px 10px 4px 4px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(200,240,255,.35));border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.15);display:none;z-index:2}
+.case.on{display:block;animation:popIn .5s both}
+.case.l{left:6px}.case.r{right:6px}
+.case i{position:absolute;width:20px;height:16px;border-radius:10px 10px 3px 3px}
+.case b{position:absolute;left:4px;right:4px;height:3px;background:#fff;border-radius:2px}
+#ovens{position:absolute;left:8px;top:6px;display:flex;gap:4px;z-index:2}
+.oven{width:26px;height:24px;border-radius:5px;background:linear-gradient(#7d8590,#4c535c);position:relative;box-shadow:0 2px 0 #2c3036;animation:popIn .4s both}
+.oven::before{content:"";position:absolute;left:4px;right:4px;top:7px;bottom:4px;border-radius:3px;background:radial-gradient(circle,#ffcf5a,#ff7a1f)}
+.oven.puff::after{content:"";position:absolute;left:6px;top:-12px;width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.85);animation:puff .7s ease-out forwards}
+@keyframes puff{from{transform:scale(.4);opacity:1}to{transform:translateY(-16px) scale(1.4);opacity:0}}
+#autoLbl{position:absolute;left:8px;top:34px;font-size:11px;font-weight:800;color:var(--accent);background:rgba(255,255,255,.7);padding:2px 6px;border-radius:8px;display:none;z-index:2}
+.shop{flex:0 0 auto;background:#fff8fa;border-radius:22px 22px 0 0;padding:8px 10px 10px;box-shadow:0 -6px 16px rgba(90,30,50,.15);position:relative;z-index:4}
+.shop h3{margin:0 4px 6px;font-size:13px;letter-spacing:1.5px;font-weight:900;color:#a0607a;display:flex;justify-content:space-between}
+#list{display:flex;flex-direction:column;gap:6px}
+.upg{position:relative;display:flex;align-items:center;gap:10px;width:100%;height:56px;padding:6px 10px 6px 6px;border:0;border-radius:16px;background:#fff;box-shadow:0 3px 0 #efd3dd,0 4px 10px rgba(120,40,70,.08);cursor:pointer;text-align:left;transition:transform .1s,filter .2s}
+.upg:active{transform:translateY(2px)}
+.upg .ic{position:relative;flex:0 0 46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center}
+.upg .lv{position:absolute;right:-5px;bottom:-5px;min-width:20px;height:20px;border-radius:10px;background:#4a2232;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fff}
+.upg .tx{flex:1 1 auto;min-width:0}
+.upg .nm{display:block;font-weight:900;font-size:15px;white-space:nowrap}
+.upg .ds{display:block;font-size:12px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upg .pr{flex:0 0 auto;display:flex;align-items:center;gap:4px;padding:7px 10px;border-radius:12px;font-weight:900;font-size:15px;background:#eee;color:#9a8790}
+.upg .pr .coin{width:17px;height:17px;box-shadow:inset 0 0 0 2px #f7b500}
+.upg .pr .coin::after{inset:4px}
+.upg.can .pr{background:linear-gradient(180deg,#62e08a,#27b25a);color:#fff;box-shadow:0 3px 0 #17803d}
+.upg.can{box-shadow:0 3px 0 #b9ecc9,0 0 0 2px #62e08a,0 6px 14px rgba(40,170,90,.25)}
+.upg.can::after{content:"";position:absolute;inset:0;border-radius:16px;box-shadow:0 0 0 0 rgba(98,224,138,.6);animation:ping 1.6s infinite;pointer-events:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(98,224,138,.55)}100%{box-shadow:0 0 0 10px rgba(98,224,138,0)}}
+.upg.locked{filter:grayscale(1);opacity:.6}
+.upg.locked .pr{background:#ddd;color:#777}
+.upg.new{animation:newItem .8s ease-out}
+@keyframes newItem{0%{transform:scale(.8)}50%{transform:scale(1.05)}100%{transform:none}}
+.upg.no{animation:no .3s}
+@keyframes no{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.upg.bought{animation:bought .35s ease-out}
+@keyframes bought{40%{transform:scale(1.04)}}
+#fx{position:absolute;inset:0;pointer-events:none;z-index:20;overflow:hidden}
+.pt{position:absolute;left:0;top:0;will-change:transform}
+.plus{position:absolute;font-weight:900;color:#fff;-webkit-text-stroke:1.5px #7a2343;paint-order:stroke fill;text-shadow:0 3px 0 #7a2343;animation:plus .9s ease-out forwards;white-space:nowrap;transform:translate(-50%,-50%)}
+@keyframes plus{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}15%{transform:translate(-50%,-70%) scale(1.2);opacity:1}100%{transform:translate(-50%,-260%) scale(1);opacity:0}}
+.big{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-weight:900;font-size:34px;white-space:nowrap;color:#fff;-webkit-text-stroke:2px #7a2343;paint-order:stroke fill;text-shadow:0 4px 0 #7a2343,0 8px 18px rgba(0,0,0,.25);animation:bigTxt 1.3s ease-out forwards}
+@keyframes bigTxt{0%{transform:translate(-50%,-50%) scale(.3) rotate(-8deg);opacity:0}20%{transform:translate(-50%,-50%) scale(1.15) rotate(3deg);opacity:1}35%{transform:translate(-50%,-50%) scale(1) rotate(0)}80%{opacity:1}100%{transform:translate(-50%,-90%) scale(1);opacity:0}}
+#hand{position:absolute;left:0;top:0;width:56px;height:68px;z-index:30;pointer-events:none;display:none;transition:left .5s cubic-bezier(.4,1.4,.5,1),top .5s cubic-bezier(.4,1.4,.5,1)}
+#hand svg{animation:tapHand .9s ease-in-out infinite;transform-origin:20% 10%}
+@keyframes tapHand{0%,100%{transform:translate(8px,10px) rotate(-12deg)}45%{transform:translate(0,0) rotate(-12deg) scale(.92)}}
+#hand .ring{position:absolute;left:-14px;top:-14px;width:34px;height:34px;border-radius:50%;border:3px solid #fff;animation:ringA .9s ease-out infinite}
+@keyframes ringA{0%,40%{transform:scale(.3);opacity:0}50%{opacity:1}100%{transform:scale(1.3);opacity:0}}
+#tip{position:absolute;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:20px;background:rgba(74,34,50,.88);color:#fff;font-weight:800;font-size:16px;white-space:nowrap;z-index:31;pointer-events:none;display:none;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+#tip.show{display:block;animation:popIn .35s both}
+@keyframes popIn{0%{transform:translateX(var(--tx,0)) scale(.5);opacity:0}70%{transform:translateX(var(--tx,0)) scale(1.06);opacity:1}100%{transform:translateX(var(--tx,0)) scale(1)}}
+#tip{--tx:-50%}
+#order{position:absolute;right:8px;top:6px;width:178px;padding:8px 10px 10px;border-radius:16px;background:#fff;box-shadow:0 6px 18px rgba(90,30,50,.25);z-index:6;display:none}
+#order.show{display:block;animation:slideIn .45s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes slideIn{from{transform:translateX(220px) rotate(8deg)}to{transform:none}}
+#order .who{display:flex;align-items:center;gap:8px}
+#order .who b{display:block;font-size:13px;font-weight:900;color:#ff3d6e;letter-spacing:.5px}
+#order .who span{display:block;font-size:12px;font-weight:700}
+#order .prog{margin-top:6px;font-size:12px;font-weight:900;display:flex;justify-content:space-between}
+#order .bar{margin-top:4px}
+#order .bar.t i{background:linear-gradient(90deg,#ff3d6e,#ff9a3d);transition:none}
+#order.urgent{animation:wobble .5s infinite}
+@keyframes wobble{50%{transform:rotate(-2deg) scale(1.02)}}
+#gold{position:absolute;left:0;top:0;width:64px;height:64px;border:0;padding:0;background:none;z-index:8;display:none;cursor:pointer}
+#gold svg{width:100%;height:100%;overflow:visible;animation:goldSpin 1.2s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,220,80,.95))}
+@keyframes goldSpin{50%{transform:rotate(10deg) scale(1.1)}}
+#gold .x{position:absolute;right:-6px;top:-6px;background:#ff3d6e;color:#fff;font-size:12px;font-weight:900;border-radius:9px;padding:2px 6px;border:2px solid #fff}
+#frenzy{position:absolute;left:50%;top:8px;transform:translateX(-50%);padding:6px 14px;border-radius:14px;background:linear-gradient(90deg,#ffb11f,#ff5c8d);color:#fff;font-weight:900;font-size:15px;letter-spacing:1px;display:none;z-index:7;box-shadow:0 4px 12px rgba(255,92,141,.4);white-space:nowrap}
+#frenzy.show{display:block;animation:pulse .5s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:translateX(-50%) scale(1.08)}}
+#van{position:absolute;left:0;bottom:4px;width:90px;height:52px;z-index:5;pointer-events:none;display:none}
+#van.go{display:block;animation:drive 3.2s linear forwards}
+@keyframes drive{from{transform:translateX(-120px)}to{transform:translateX(480px)}}
+#van .vb{position:absolute;left:30px;top:-18px;font-weight:900;font-size:16px;color:#fff;-webkit-text-stroke:1.2px #7a2343;paint-order:stroke fill;white-space:nowrap}
+.pop{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:40;background:rgba(74,34,50,.35)}
+.pop.show{display:flex;animation:fade .3s both}
+@keyframes fade{from{opacity:0}}
+.card{position:relative;width:290px;padding:20px 18px 18px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 14px 40px rgba(60,10,30,.35);animation:cardIn .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes cardIn{from{transform:scale(.4) rotate(-6deg);opacity:0}}
+.card .ribbon{margin:-38px auto 10px;width:230px;padding:9px 0;border-radius:12px;background:linear-gradient(180deg,#ff6f9c,#ff3d6e);color:#fff;font-weight:900;font-size:17px;letter-spacing:1px;box-shadow:0 4px 0 #b81e4a}
+.card h2{margin:6px 0 2px;font-size:28px;font-weight:900;color:#4a2232}
+.card p{margin:4px 0 14px;font-size:14px;font-weight:600;opacity:.8}
+.btn{position:relative;border:0;border-radius:999px;padding:13px 34px;font-size:19px;font-weight:900;letter-spacing:1px;color:#fff;background:linear-gradient(180deg,#62e08a,#27b25a);box-shadow:0 5px 0 #17803d,0 10px 18px rgba(0,0,0,.2);cursor:pointer}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #17803d}
+.btn.red{background:linear-gradient(180deg,#ff7d8f,#ff3d6e);box-shadow:0 5px 0 #b81e4a,0 10px 18px rgba(0,0,0,.2)}
+#end{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 35%,#fff0f5 0%,#ffb3cb 55%,#f27aa3 100%);color:#4a2232;overflow:hidden}
+#end.show{display:flex;animation:fade .45s both}
+#end .rays{position:absolute;left:50%;top:34%;width:1000px;height:1000px;margin:-500px 0 0 -500px;background:repeating-conic-gradient(rgba(255,255,255,.35) 0 9deg,transparent 9deg 18deg);animation:spin 26s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+#end .logo{position:relative;width:150px;height:150px;animation:cardIn .6s both,float 3s ease-in-out .6s infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+#end h1{position:relative;margin:4px 0 0;font-size:clamp(42px,13vw,60px);line-height:.95;font-weight:900;color:#fff;-webkit-text-stroke:3px #c2185b;paint-order:stroke fill;text-shadow:0 5px 0 #c2185b,0 10px 0 #7a1240,0 16px 26px rgba(80,0,30,.35);animation:cardIn .6s .1s both}
+#end .tag{position:relative;margin:16px 26px 6px;font-size:17px;font-weight:800;animation:cardIn .6s .2s both}
+#end .sc{position:relative;margin:2px 0 24px;font-size:14px;font-weight:700;opacity:.8;animation:cardIn .6s .25s both}
+.halo{position:relative;display:inline-block;border-radius:999px;animation:cardIn .6s .3s both}
+.halo::before{content:"";position:absolute;inset:-9px;border-radius:999px;border:4px solid rgba(255,255,255,.9);animation:ring 1.4s ease-out infinite;pointer-events:none}
+@keyframes ring{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.16);opacity:0}}
+#cta{position:relative;overflow:hidden;border:0;border-radius:999px;padding:20px 54px;font-size:28px;font-weight:900;letter-spacing:1px;color:#fff;background:linear-gradient(180deg,#62e08a,#1fa451);box-shadow:0 7px 0 #137a39,0 14px 26px rgba(0,0,0,.25);cursor:pointer}
+#cta span{display:inline-block;animation:beat 1.1s ease-in-out infinite}
+@keyframes beat{50%{transform:scale(1.08)}}
+#cta::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);animation:shine 2.2s ease-in-out infinite}
+@keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+#cta:active{transform:translateY(4px);box-shadow:0 3px 0 #137a39}
+</style>
+</head>
+<body>
+<div id="stage" class="shop0">
+  <header class="awning"><div class="sign" id="sign"><span id="shopName">Sweet Corner</span><small id="shopLv">Shop 1/3</small></div></header>
+  <section class="hud">
+    <div class="coins" role="status" aria-live="off"><i class="coin" id="coinIcon"></i><b id="coins">0</b><small id="cps">+0/s</small></div>
+    <div class="goal"><div class="goalTxt"><span id="goalName">Next: Bakery Lane</span><span id="goalNum">0 / 100</span></div><div class="bar"><i id="goalBar"></i></div></div>
+  </section>
+  <section class="floor" id="floor">
+    <div id="ovens" aria-hidden="true"></div><div id="autoLbl">+0/s</div>
+    <div class="case l" id="caseL" aria-hidden="true"></div><div class="case r" id="caseR" aria-hidden="true"></div>
+    <div class="counter" aria-hidden="true"></div>
+    <button id="cake" aria-label="Bake a cake: tap to earn coins">
+      <span class="glow"></span>
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <linearGradient id="plateG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d9c9d0"/></linearGradient>
+          <linearGradient id="t1G" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff8fb1"/><stop offset=".45" stop-color="#ffb3c9"/><stop offset="1" stop-color="#f06a95"/></linearGradient>
+          <linearGradient id="t2G" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a5130"/><stop offset=".45" stop-color="#b0724a"/><stop offset="1" stop-color="#6d3c22"/></linearGradient>
+          <linearGradient id="t3G" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8fe3c9"/><stop offset=".45" stop-color="#c2f5e4"/><stop offset="1" stop-color="#5fc9a8"/></linearGradient>
+          <radialGradient id="cherG" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#ff8a8a"/><stop offset="1" stop-color="#c2002f"/></radialGradient>
+        </defs>
+        <ellipse cx="100" cy="186" rx="70" ry="9" fill="rgba(80,20,40,.18)"/>
+        <rect x="88" y="168" width="24" height="16" rx="4" fill="#e8d6dd"/>
+        <ellipse cx="100" cy="170" rx="94" ry="13" fill="url(#plateG)" stroke="#cdb6c0" stroke-width="2"/>
+        <g class="tier" id="tier1">
+          <path d="M26 118 v42 a74 13 0 0 0 148 0 v-42z" fill="url(#t1G)"/>
+          <path d="M26 140 a74 13 0 0 0 148 0" fill="none" stroke="#fff" stroke-width="5" opacity=".85"/>
+          <ellipse cx="100" cy="118" rx="74" ry="14" fill="#fff6f9"/>
+          <path d="M26 118 q0 14 8 16 q6 1 6 -8 q2 14 10 13 q7 -1 7 -6 q3 12 11 11 q8 -1 7 -9 q4 14 13 12 q8 -2 6 -8 q4 12 12 10 q7 -2 6 -9 q4 12 12 10 q7 -2 6 -8 q4 10 11 8 q7 -3 6 -9 q4 9 10 6 q4 -2 3 -16 a74 14 0 0 1 -148 0z" fill="#fff6f9"/>
+          <g fill="#ff5c8d"><rect x="52" y="112" width="7" height="3" rx="1.5" transform="rotate(25 55 113)"/><rect x="138" y="114" width="7" height="3" rx="1.5" fill="#4fc3f7" transform="rotate(-30 141 115)"/><rect x="80" y="122" width="7" height="3" rx="1.5" fill="#ffd23f" transform="rotate(60 83 123)"/><rect x="118" y="109" width="7" height="3" rx="1.5" fill="#8bd16a" transform="rotate(-10 121 110)"/><rect x="65" y="124" width="7" height="3" rx="1.5" fill="#4fc3f7" transform="rotate(80 68 125)"/><rect x="150" y="122" width="7" height="3" rx="1.5" fill="#ffd23f" transform="rotate(20 153 123)"/></g>
+        </g>
+        <g class="tier" id="tier2" style="display:none">
+          <path d="M46 80 v34 a54 10 0 0 0 108 0 v-34z" fill="url(#t2G)"/>
+          <ellipse cx="100" cy="80" rx="54" ry="11" fill="#fff3d6"/>
+          <path d="M46 80 q0 12 7 13 q6 0 6 -7 q2 11 9 10 q6 -1 6 -6 q3 10 10 9 q7 -1 6 -8 q4 11 11 9 q7 -2 6 -7 q4 10 10 8 q6 -2 5 -9 q3 9 9 7 q4 -2 3 -12 a54 11 0 0 1 -108 0z" fill="#fff3d6"/>
+          <circle cx="62" cy="104" r="3" fill="#ffd23f"/><circle cx="100" cy="108" r="3" fill="#ff5c8d"/><circle cx="138" cy="104" r="3" fill="#4fc3f7"/>
+        </g>
+        <g class="tier" id="tier3" style="display:none">
+          <path d="M64 46 v30 a36 8 0 0 0 72 0 v-30z" fill="url(#t3G)"/>
+          <ellipse cx="100" cy="46" rx="36" ry="9" fill="#fffdf0"/>
+          <path d="M64 46 q0 10 6 11 q5 0 5 -6 q2 9 8 8 q5 -1 5 -5 q3 9 9 8 q6 -1 5 -7 q3 9 9 7 q5 -2 5 -7 q3 8 8 6 q4 -2 4 -15 a36 9 0 0 1 -72 0z" fill="#fffdf0"/>
+          <g><rect x="78" y="22" width="6" height="22" rx="2" fill="#7fd3ff"/><path class="flame" d="M81 10 q5 7 0 12 q-5 -5 0 -12z" fill="#ffb11f"/></g>
+          <g><rect x="116" y="22" width="6" height="22" rx="2" fill="#ff9ad0"/><path class="flame" d="M119 10 q5 7 0 12 q-5 -5 0 -12z" fill="#ffb11f"/></g>
+        </g>
+        <g id="cherry" transform="translate(0,0)">
+          <path d="M100 100 q6 -16 18 -18" stroke="#3d7a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="100" cy="106" r="11" fill="url(#cherG)"/>
+          <ellipse cx="96" cy="102" rx="3.5" ry="2.5" fill="#fff" opacity=".8"/>
+        </g>
+      </svg>
+    </button>
+    <div id="order" role="status" aria-live="polite">
+      <div class="who">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#ffd3a8" stroke="#c98652" stroke-width="2"/><circle cx="14" cy="18" r="2.5" fill="#4a2232"/><circle cx="26" cy="18" r="2.5" fill="#4a2232"/><path d="M13 26 q7 6 14 0" stroke="#4a2232" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M4 14 q16 -16 32 0 q-16 -6 -32 0z" fill="#5b2a3c"/></svg>
+        <div><b>RUSH ORDER!</b><span id="orderTxt">Bake 25 cakes!</span></div>
+      </div>
+      <div class="prog"><span id="orderNum">0 / 25</span><span id="orderTime">10s</span></div>
+      <div class="bar"><i id="orderBar"></i></div>
+      <div class="bar t"><i id="orderTimeBar" style="width:100%"></i></div>
+    </div>
+    <button id="gold" aria-label="Golden cupcake: tap for a 3x frenzy">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset="1" stop-color="#e0a000"/></linearGradient></defs>
+        <path d="M14 32 h36 l-5 24 h-26z" fill="#d48a00" stroke="#8a5600" stroke-width="2"/>
+        <path d="M22 34 l2 21 M32 34 v21 M42 34 l-2 21" stroke="#ffd23f" stroke-width="2"/>
+        <path d="M10 33 q-2 -14 12 -16 q4 -10 14 -8 q12 2 12 12 q8 2 6 12z" fill="url(#gc)" stroke="#8a5600" stroke-width="2"/>
+        <path d="M30 6 l2 -5 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2z" fill="#fff"/>
+      </svg>
+      <span class="x">x3</span>
+    </button>
+    <div id="frenzy">GOLDEN FRENZY x3</div>
+    <div id="van" aria-hidden="true">
+      <svg width="90" height="52" viewBox="0 0 90 52"><rect x="2" y="8" width="56" height="32" rx="6" fill="#ff5c8d" stroke="#7a2343" stroke-width="2.5"/><path d="M58 18 h16 l12 12 v10 h-28z" fill="#ffd23f" stroke="#7a2343" stroke-width="2.5"/><path d="M62 21 h10 l8 8 h-18z" fill="#bfefff"/><text x="30" y="30" font-size="11" font-weight="900" text-anchor="middle" fill="#fff" font-family="system-ui,Arial,sans-serif">CAKES</text><circle cx="18" cy="42" r="7" fill="#333" stroke="#fff" stroke-width="2"/><circle cx="70" cy="42" r="7" fill="#333" stroke="#fff" stroke-width="2"/></svg>
+      <span class="vb" id="vanTxt">+0</span>
+    </div>
+  </section>
+  <section class="shop" aria-label="Upgrades">
+    <h3><span>UPGRADES</span><span id="tapVal">+1 per tap</span></h3>
+    <div id="list"></div>
+  </section>
+  <div id="fx" aria-hidden="true"></div>
+  <div id="hand" aria-hidden="true"><span class="ring"></span><svg width="56" height="68" viewBox="-10 -4 50 66"><g stroke="#4a2232" stroke-width="4" stroke-linejoin="round"><rect x="-6" y="0" width="12" height="34" rx="6" fill="#fff"/><rect x="-9" y="22" width="34" height="30" rx="11" fill="#fff"/><rect x="5" y="17" width="9" height="15" rx="4.5" fill="#fff"/><rect x="13" y="19" width="9" height="15" rx="4.5" fill="#fff"/><ellipse cx="-11" cy="34" rx="6" ry="10" transform="rotate(-34 -11 34)" fill="#fff"/></g><g fill="#fff"><rect x="-6" y="2" width="12" height="30" rx="6"/><rect x="-7" y="24" width="30" height="26" rx="10"/><rect x="5" y="20" width="9" height="12" rx="4.5"/><rect x="13" y="22" width="9" height="12" rx="4.5"/></g></svg></div>
+  <div id="tip">Tap the cake to bake!</div>
+  <div id="popup" class="pop" role="dialog" aria-label="New shop unlocked">
+    <div class="card"><div class="ribbon" id="popRibbon">NEW SHOP UNLOCKED!</div><h2 id="popTitle">Bakery Lane</h2><p id="popText">Bigger cakes, bigger profits!</p><button class="btn" id="popBtn" aria-label="Awesome, continue">AWESOME!</button></div>
+  </div>
+  <div id="retry" class="pop" role="dialog" aria-label="Order missed">
+    <div class="card"><div class="ribbon">ORDER MISSED!</div><h2>So close!</h2><p>The customer walked away hungry...</p><button class="btn red" id="retryBtn" aria-label="Try again">TRY AGAIN</button></div>
+  </div>
+</div>
+
+<div id="end" role="dialog" aria-label="Bakery Rush - play now">
+  <div class="rays"></div>
+  <svg class="logo" viewBox="0 0 200 200" aria-hidden="true">
+    <ellipse cx="100" cy="176" rx="90" ry="14" fill="#fff" stroke="#e2bccb" stroke-width="3"/>
+    <path d="M28 120 v40 a72 13 0 0 0 144 0 v-40z" fill="#ff8fb1"/><ellipse cx="100" cy="120" rx="72" ry="14" fill="#fff6f9"/>
+    <path d="M48 84 v32 a52 10 0 0 0 104 0 v-32z" fill="#a8683f"/><ellipse cx="100" cy="84" rx="52" ry="11" fill="#fff3d6"/>
+    <path d="M66 52 v28 a34 8 0 0 0 68 0 v-28z" fill="#8fe3c9"/><ellipse cx="100" cy="52" rx="34" ry="9" fill="#fffdf0"/>
+    <circle cx="100" cy="40" r="12" fill="#e0123f"/><ellipse cx="96" cy="36" rx="4" ry="3" fill="#fff" opacity=".8"/>
+    <path d="M20 60 l4 -10 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4z M170 30 l3 -8 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3z" fill="#fff"/>
+  </svg>
+  <h1>BAKERY<br>RUSH</h1>
+  <p class="tag">Bake, upgrade &amp; build your sweet empire!</p>
+  <p class="sc">You earned <b id="endScore">0</b> coins</p>
+  <div class="halo"><button id="cta" aria-label="Play now"><span>PLAY NOW</span></button></div>
+</div>
+
+<script>
+'use strict';
+(function () {
+const QS = new URLSearchParams(location.search);
+const TS = QS.has('fast') ? 0.3 : 1;      // ?fast shortens the session for testing
+const SESSION_MS = 50000 * TS;
+const $ = (id) => document.getElementById(id);
+const rand = (a, b) => a + Math.random() * (b - a);
+const pick = (a) => a[(Math.random() * a.length) | 0];
+
+// ================= Audio =================
+const AU = (function () {
+  let ctx = null, sfx, mus, noiseBuf, nextT = 0, stepI = 0;
+  const STEP = 60 / 128 / 2;
+  const MEL = [76,0,79,0, 81,79,76,0, 74,0,76,79, 0,0,72,0, 76,0,79,0, 84,83,81,79, 77,0,76,74, 72,0,0,0];
+  const BAS = [48,0,55,0, 53,0,55,0, 50,0,57,0, 55,0,55,0, 48,0,55,0, 57,0,53,0, 50,0,55,0, 48,0,48,0];
+  const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  function unlock() {
+    try {
+      if (!ctx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (navigator.userActivation && !navigator.userActivation.isActive) return;
+        ctx = new AC();
+        const comp = ctx.createDynamicsCompressor(); comp.connect(ctx.destination);
+        const master = ctx.createGain(); master.gain.value = 0.9; master.connect(comp);
+        sfx = ctx.createGain(); sfx.gain.value = 0.5; sfx.connect(master);
+        mus = ctx.createGain(); mus.gain.value = 0.0001; mus.connect(master);
+        mus.gain.setTargetAtTime(0.06, ctx.currentTime + 0.1, 0.8);
+        noiseBuf = ctx.createBuffer(1, ctx.sampleRate | 0, ctx.sampleRate);
+        const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        nextT = ctx.currentTime + 0.15;
+        setInterval(schedule, 60);
+      }
+      if (ctx.state === 'suspended') ctx.resume().catch(function () {});
+    } catch (e) {}
+  }
+  function schedule() {
+    if (!ctx || ctx.state !== 'running') return;
+    while (nextT < ctx.currentTime + 0.25) {
+      const i = stepI % 32;
+      if (MEL[i]) note(mtof(MEL[i]), nextT, STEP * 1.5, 'square', 0.18);
+      if (BAS[i]) note(mtof(BAS[i]), nextT, STEP * 1.8, 'triangle', 0.7);
+      nextT += STEP; stepI++;
+    }
+  }
+  function note(f, t, dur, type, vol) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(mus); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function tone(f0, f1, dur, type, vol, delay) {
+    if (!ctx || ctx.state !== 'running') return;
+    const t = ctx.currentTime + (delay || 0);
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'square'; o.frequency.setValueAtTime(f0, t);
+    if (f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(sfx); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function noise(dur, vol, type, f, delay) {
+    if (!ctx || ctx.state !== 'running') return;
+    const t = ctx.currentTime + (delay || 0);
+    const s = ctx.createBufferSource(); s.buffer = noiseBuf;
+    const fl = ctx.createBiquadFilter(); fl.type = type || 'highpass'; fl.frequency.value = f || 3000;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(fl); fl.connect(g); g.connect(sfx); s.start(t, Math.random() * 0.4); s.stop(t + dur + 0.05);
+  }
+  document.addEventListener('visibilitychange', function () { if (ctx) (document.hidden ? ctx.suspend() : ctx.resume()).catch(function () {}); });
+  return {
+    unlock: unlock,
+    tap(c) { const k = Math.min(c, 24); tone(420 + k * 22, 820 + k * 30, 0.08, 'sine', 0.32); noise(0.04, 0.12, 'bandpass', 2500); },
+    coin() { tone(1318, 0, 0.06, 'square', 0.07); tone(1760, 0, 0.12, 'square', 0.07, 0.05); },
+    buy() { [0, 4, 7, 12].forEach((s, i) => tone(660 * Math.pow(2, s / 12), 0, 0.12, 'square', 0.12, i * 0.05)); noise(0.18, 0.18, 'highpass', 5000, 0.12); },
+    no() { tone(180, 120, 0.15, 'sawtooth', 0.12); },
+    fanfare() { [0, 4, 7, 12, 7, 12, 16].forEach((s, i) => tone(523 * Math.pow(2, s / 12), 0, i === 6 ? 0.5 : 0.14, 'square', 0.13, i * 0.1)); },
+    alarm() { for (let i = 0; i < 3; i++) { tone(988, 0, 0.1, 'square', 0.15, i * 0.18); tone(1318, 0, 0.1, 'square', 0.15, i * 0.18 + 0.09); } },
+    win() { [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => tone(523 * Math.pow(2, s / 12), 0, 0.2, 'triangle', 0.2, i * 0.07)); },
+    fail() { [7, 3, 0, -5].forEach((s, i) => tone(392 * Math.pow(2, s / 12), 0, 0.28, 'triangle', 0.2, i * 0.16)); },
+    sparkle() { for (let i = 0; i < 6; i++) tone(1500 + i * 220, 0, 0.1, 'sine', 0.1, i * 0.04); },
+    click() { tone(900, 1300, 0.06, 'square', 0.1); },
+    honk() { tone(330, 0, 0.12, 'square', 0.12); tone(330, 0, 0.16, 'square', 0.12, 0.16); }
+  };
+})();
+['pointerdown', 'pointerup', 'touchend', 'click'].forEach(function (ev) { window.addEventListener(ev, AU.unlock, true); });
+
+// ================= Layout (fixed 360-wide stage scaled to the viewport) =================
+const stage = $('stage');
+let SC = 1;
+function layout() {
+  const vw = Math.max(1, window.innerWidth || 360), vh = Math.max(1, window.innerHeight || 640);
+  SC = vw / 360; let h = vh / SC;
+  if (h < 640) { SC = vh / 640; h = 640; }
+  stage.style.height = h + 'px';
+  stage.style.left = ((vw - 360 * SC) / 2) + 'px';
+  const base = 'scale(' + SC + ')';
+  stage.style.setProperty('--base', base);
+  stage.style.transform = base;
+}
+window.addEventListener('resize', layout);
+layout();
+function stagePt(clientX, clientY) { const r = stage.getBoundingClientRect(); return { x: (clientX - r.left) / SC, y: (clientY - r.top) / SC }; }
+function elCenter(el) { const r = el.getBoundingClientRect(); return stagePt(r.left + r.width / 2, r.top + r.height / 2); }
+
+// ================= Economy =================
+const SHOPS = [
+  { name: 'Sweet Corner', goal: 150 },
+  { name: 'Bakery Lane', goal: 2500 },
+  { name: 'Cake Palace', goal: 25000 }
+];
+const G = { coins: 0, earned: 0, shop: 0, lv: { pin: 0, auto: 0, cas: 0, van: 0 }, vanOpen: false, frenzy: 0, taps: 0, combo: 0, lastTap: 0 };
+const UPG = [
+  { k: 'pin', name: 'Rolling Pin x2', base: 12, mul: 2.9, color: 'linear-gradient(135deg,#ffd9a8,#f5a65b)',
+    desc: () => 'Doubles coins per tap',
+    icon: '<svg width="38" height="38" viewBox="0 0 40 40"><rect x="9" y="14" width="22" height="12" rx="6" fill="#f3c48a" stroke="#8a5126" stroke-width="2"/><rect x="2" y="17" width="8" height="6" rx="3" fill="#b5713b" stroke="#8a5126" stroke-width="2"/><rect x="30" y="17" width="8" height="6" rx="3" fill="#b5713b" stroke="#8a5126" stroke-width="2"/><path d="M14 17v6M20 17v6M26 17v6" stroke="#e0a868" stroke-width="2"/></svg>' },
+  { k: 'auto', name: 'Auto-Baker', base: 25, mul: 1.75, color: 'linear-gradient(135deg,#d6dde6,#9aa6b4)',
+    desc: () => '+3 coins / sec each',
+    icon: '<svg width="38" height="38" viewBox="0 0 40 40"><rect x="5" y="6" width="30" height="28" rx="5" fill="#6c7682" stroke="#353b42" stroke-width="2"/><rect x="9" y="14" width="22" height="15" rx="3" fill="#ffb347" stroke="#353b42" stroke-width="2"/><circle cx="11" cy="10" r="1.8" fill="#ffd23f"/><circle cx="17" cy="10" r="1.8" fill="#ff6b6b"/><path d="M14 22 q6 -6 12 0" stroke="#fff3c4" stroke-width="2.5" fill="none"/></svg>' },
+  { k: 'cas', name: 'Display Case', base: 170, mul: 2.7, color: 'linear-gradient(135deg,#c8f1ff,#79c9ef)',
+    desc: () => '+50% all income',
+    icon: '<svg width="38" height="38" viewBox="0 0 40 40"><rect x="5" y="5" width="30" height="31" rx="4" fill="#e9f9ff" stroke="#3f8fb8" stroke-width="2"/><path d="M7 19h26M7 30h26" stroke="#3f8fb8" stroke-width="2"/><circle cx="13" cy="15" r="3.5" fill="#ff8fb1"/><circle cx="21" cy="15" r="3.5" fill="#ffd23f"/><circle cx="29" cy="15" r="3.5" fill="#8fe3c9"/><circle cx="15" cy="26" r="3.5" fill="#b0724a"/><circle cx="25" cy="26" r="3.5" fill="#ff8fb1"/><path d="M9 8 l5 8" stroke="#fff" stroke-width="2"/></svg>' },
+  { k: 'van', name: 'Delivery Van', base: 550, mul: 2.35, color: 'linear-gradient(135deg,#ffc2d6,#ff6f9c)',
+    desc: () => '+45 coins / sec each',
+    icon: '<svg width="40" height="40" viewBox="0 0 40 40"><rect x="2" y="11" width="22" height="16" rx="3" fill="#ff5c8d" stroke="#7a2343" stroke-width="2"/><path d="M24 15h7l6 6v6H24z" fill="#ffd23f" stroke="#7a2343" stroke-width="2"/><circle cx="10" cy="29" r="4" fill="#333" stroke="#fff" stroke-width="1.5"/><circle cx="30" cy="29" r="4" fill="#333" stroke="#fff" stroke-width="1.5"/></svg>' }
+];
+function price(u) { return Math.round(u.base * Math.pow(u.mul, G.lv[u.k])); }
+function mult() { return (1 + 0.5 * G.lv.cas) * (G.frenzy > 0 ? 3 : 1); }
+function tapValue() { return Math.round(Math.pow(2, G.lv.pin) * mult()); }
+function autoRate() { return (3 * G.lv.auto + 45 * G.lv.van) * mult(); }
+function isLocked(u) { return u.k === 'van' && !G.vanOpen; }
+function fmt(n) {
+  n = Math.floor(n);
+  if (n < 10000) return n.toLocaleString('en-US');
+  if (n < 1e6) return (n / 1000).toFixed(n < 1e5 ? 1 : 0) + 'K';
+  return (n / 1e6).toFixed(2) + 'M';
+}
+
+// ================= Upgrade list =================
+const list = $('list');
+const rows = {};
+UPG.forEach(function (u) {
+  const b = document.createElement('button');
+  b.className = 'upg';
+  b.id = 'upg-' + u.k;
+  b.innerHTML = '<span class="ic" style="background:' + u.color + '">' + u.icon + '<span class="lv">0</span></span>' +
+    '<span class="tx"><span class="nm">' + u.name + '</span><span class="ds"></span></span>' +
+    '<span class="pr"><i class="coin"></i><span class="pv">0</span></span>';
+  b.addEventListener('click', function () { buy(u, b); });
+  list.appendChild(b);
+  rows[u.k] = { el: b, lv: b.querySelector('.lv'), ds: b.querySelector('.ds'), pv: b.querySelector('.pv'), last: '' };
+});
+function refreshList() {
+  UPG.forEach(function (u) {
+    const r = rows[u.k], p = price(u), locked = isLocked(u), can = !locked && G.coins >= p;
+    const key = [p, locked, can, G.lv[u.k]].join('|');
+    if (key === r.last) return;
+    r.last = key;
+    r.el.classList.toggle('can', can);
+    r.el.classList.toggle('locked', locked);
+    r.el.setAttribute('aria-disabled', can ? 'false' : 'true');
+    r.lv.textContent = G.lv[u.k];
+    r.pv.textContent = locked ? 'LOCKED' : fmt(p);
+    r.ds.textContent = locked ? 'Unlocks with the Rush Order' : u.desc();
+    r.el.setAttribute('aria-label', locked ? ('Delivery Van, locked. Complete the rush order to unlock.') :
+      ('Buy ' + u.name + ', level ' + G.lv[u.k] + ', costs ' + p + ' coins. ' + u.desc() + (can ? '' : '. Not enough coins.')));
+  });
+}
+
+// ================= Effects =================
+const fx = $('fx');
+const parts = [];
+function sprinkle(x, y, n, big) {
+  const cols = ['#ff5c8d', '#ffd23f', '#4fc3f7', '#8bd16a', '#b388ff', '#fff'];
+  for (let i = 0; i < n; i++) {
+    if (parts.length > 160) break;
+    const el = document.createElement('i');
+    el.className = 'pt';
+    const w = big ? rand(6, 10) : rand(4, 7), h = big ? rand(10, 16) : rand(3, 4);
+    el.style.width = w + 'px'; el.style.height = h + 'px'; el.style.borderRadius = '3px'; el.style.background = pick(cols);
+    fx.appendChild(el);
+    const a = rand(-Math.PI * 0.95, -Math.PI * 0.05), s = rand(160, big ? 520 : 380);
+    parts.push({ el: el, x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, r: rand(0, 360), vr: rand(-720, 720), t: 0, life: rand(0.7, 1.2), g: 900 });
+  }
+}
+function flyCoins(x, y, n) {
+  const tgt = elCenter($('coinIcon'));
+  for (let i = 0; i < n; i++) {
+    if (parts.length > 160) break;
+    const el = document.createElement('i');
+    el.className = 'pt coin';
+    el.style.width = '18px'; el.style.height = '18px';
+    fx.appendChild(el);
+    parts.push({ el: el, coin: true, x0: x + rand(-20, 20), y0: y + rand(-20, 10), cx: x + rand(-90, 90), cy: y - rand(80, 180), x1: tgt.x, y1: tgt.y, t: -i * 0.05, life: rand(0.55, 0.75) });
+  }
+}
+function plus(x, y, text, size, color) {
+  const el = document.createElement('div');
+  el.className = 'plus'; el.textContent = text;
+  el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.fontSize = (size || 26) + 'px';
+  if (color) el.style.color = color;
+  fx.appendChild(el);
+  el.addEventListener('animationend', function () { el.remove(); });
+}
+function bigText(text, color, top) {
+  const el = document.createElement('div');
+  el.className = 'big'; el.textContent = text;
+  if (color) el.style.color = color;
+  if (top) el.style.top = top;
+  fx.appendChild(el);
+  el.addEventListener('animationend', function () { el.remove(); });
+}
+function shake() { stage.classList.remove('shake'); void stage.offsetWidth; stage.classList.add('shake'); }
+function bumpCoins() { const c = $('coins'); c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+function confetti(n) { for (let i = 0; i < n; i++) setTimeout(function () { sprinkle(rand(40, 320), rand(120, 260), 10, true); }, i * 90); }
+function updateParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.t += dt;
+    if (p.t >= p.life) {
+      p.el.remove(); parts.splice(i, 1);
+      if (p.coin) { bumpCoins(); if (Math.random() < 0.5) AU.coin(); }
+      continue;
+    }
+    if (p.coin) {
+      if (p.t < 0) { p.el.style.opacity = '0'; continue; }
+      const k = p.t / p.life, e = k * k * (3 - 2 * k);
+      const x = (1 - e) * (1 - e) * p.x0 + 2 * (1 - e) * e * p.cx + e * e * p.x1;
+      const y = (1 - e) * (1 - e) * p.y0 + 2 * (1 - e) * e * p.cy + e * e * p.y1;
+      p.el.style.opacity = '1';
+      p.el.style.transform = 'translate(' + (x - 9) + 'px,' + (y - 9) + 'px) scale(' + (1.2 - 0.5 * k) + ')';
+    } else {
+      p.vy += p.g * dt; p.vx *= 0.99; p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+      p.el.style.opacity = String(Math.min(1, (p.life - p.t) * 3));
+      p.el.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(' + p.r + 'deg)';
+    }
+  }
+}
+
+// ================= Game flow =================
+let state = 'play'; // play | popup | retry | end | over
+const startTs = performance.now();
+let lastInput = performance.now(), tutStage = 0, ended = false;
+let order = null, orderDone = false, orderFails = 0, orderTriggered = false;
+let goldShown = false, goldT = 0, goldActive = false, vanTimer = 0, autoAcc = 0, autoTickT = 0, lastPopupAt = 0;
+
+function earn(n) { G.coins += n; G.earned += n; checkMilestone(); }
+function bake(clientX, clientY) {
+  if (state !== 'play' && state !== 'popup') return;
+  lastInput = performance.now();
+  const now = performance.now();
+  G.combo = now - G.lastTap < 450 ? G.combo + 1 : 1; G.lastTap = now;
+  const v = tapValue();
+  earn(v); G.taps++;
+  const cake = $('cake');
+  cake.classList.remove('squish'); void cake.offsetWidth; cake.classList.add('squish');
+  let p;
+  if (clientX === undefined) { const c = elCenter(cake); p = { x: c.x, y: c.y - 30 }; } else p = stagePt(clientX, clientY);
+  plus(p.x + rand(-14, 14), p.y - 10, '+' + fmt(v), Math.min(40, 24 + Math.log2(v + 1) * 2), G.frenzy > 0 ? '#ffe86b' : null);
+  sprinkle(p.x, p.y, G.frenzy > 0 ? 9 : 5);
+  if (G.taps % 3 === 0) flyCoins(p.x, p.y, 1);
+  AU.tap(G.combo);
+  if (G.combo === 15) bigText('SWEET STREAK!', '#ffe86b', '30%');
+  if (G.combo === 40) bigText('BAKING MASTER!', '#7ef9ff', '30%');
+  if (order && !order.done) {
+    order.n++;
+    if (order.n >= order.target) orderSuccess();
+  }
+  if (tutStage === 0 && G.taps >= 3) tutStage = 1;
+  hideHand();
+}
+let lastPointerBake = 0;
+$('cake').addEventListener('pointerdown', function (e) { e.preventDefault(); lastPointerBake = performance.now(); bake(e.clientX, e.clientY); });
+$('cake').addEventListener('click', function () { if (performance.now() - lastPointerBake > 500) bake(); }); // keyboard / programmatic clicks
+
+function buy(u, el) {
+  lastInput = performance.now();
+  if (state !== 'play') return;
+  if (isLocked(u)) { el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); AU.no(); toast('Complete a Rush Order to unlock!'); return; }
+  const p = price(u);
+  if (G.coins < p) { el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); AU.no(); toast('Need ' + fmt(p - G.coins) + ' more coins'); return; }
+  G.coins -= p; G.lv[u.k]++;
+  AU.buy();
+  el.classList.remove('bought'); void el.offsetWidth; el.classList.add('bought');
+  const c = elCenter(el);
+  sprinkle(c.x, c.y, 14, true);
+  plus(c.x, c.y - 14, u.k === 'pin' ? 'x2 TAP!' : u.k === 'auto' ? '+AUTO!' : u.k === 'cas' ? '+50%!' : 'VROOM!', 24, '#8affb0');
+  if (u.k === 'auto') addOven();
+  if (u.k === 'cas') { $('caseL').classList.add('on'); if (G.lv.cas >= 2) $('caseR').classList.add('on'); fillCases(); }
+  if (u.k === 'van') { vanTimer = 0.5; }
+  tutStage = Math.max(tutStage, 2);
+  hideHand();
+  refreshList(); refreshHud();
+}
+function addOven() {
+  const box = $('ovens');
+  if (box.children.length < 6) { const o = document.createElement('div'); o.className = 'oven'; box.appendChild(o); }
+  $('autoLbl').style.display = 'block';
+}
+function fillCases() {
+  const cols = ['#ff8fb1', '#ffd23f', '#8fe3c9', '#b0724a', '#b388ff', '#ff9a3d'];
+  ['caseL', 'caseR'].forEach(function (id) {
+    const c = $(id); if (c.childElementCount) return;
+    let html = '<b style="top:36px"></b><b style="top:70px"></b>';
+    for (let r = 0; r < 2; r++) for (let i = 0; i < 3; i++) html += '<i style="left:' + (4 + i * 22) + 'px;top:' + (18 + r * 34) + 'px;background:' + cols[(r * 3 + i + (id === 'caseR' ? 2 : 0)) % 6] + '"></i>';
+    c.innerHTML = html;
+  });
+}
+let toastEl = null, toastT = 0;
+function toast(msg) {
+  if (!toastEl) { toastEl = document.createElement('div'); toastEl.style.cssText = 'position:absolute;left:50%;bottom:300px;transform:translateX(-50%);background:rgba(74,34,50,.9);color:#fff;font-weight:800;font-size:14px;padding:8px 14px;border-radius:14px;z-index:35;white-space:nowrap;pointer-events:none;transition:opacity .3s'; stage.appendChild(toastEl); }
+  toastEl.textContent = msg; toastEl.style.opacity = '1'; toastT = 1.4;
+}
+
+function checkMilestone() {
+  const s = SHOPS[G.shop];
+  if (G.earned >= s.goal && state !== 'end') {
+    if (G.shop < 2) { G.shop++; openShop(G.shop); }
+    else if (!ended && state !== 'over') { winEmpire(); }
+  }
+}
+function openShop(i) {
+  stage.className = 'shop' + i;
+  $('shopName').textContent = SHOPS[i].name;
+  $('shopLv').textContent = 'Shop ' + (i + 1) + '/3';
+  const t = $('tier' + (i + 1));
+  t.style.display = ''; t.classList.add('pop');
+  $('cherry').setAttribute('transform', i === 1 ? 'translate(0,-38)' : 'translate(0,-74)');
+  if (i === 1) { G.lv.cas = G.lv.cas; }
+  AU.fanfare(); shake(); confetti(8);
+  showPopup('NEW SHOP UNLOCKED!', SHOPS[i].name, i === 1 ? 'A second tier! Tap value grows with every upgrade.' : 'Royal three-tier cakes. Build your empire!');
+}
+let popTimer = 0;
+function showPopup(ribbon, title, text) {
+  $('popRibbon').textContent = ribbon; $('popTitle').textContent = title; $('popText').textContent = text;
+  $('popup').classList.add('show');
+  state = 'popup'; popTimer = 2.4; lastPopupAt = performance.now();
+}
+function closePopup() { if (state !== 'popup') return; $('popup').classList.remove('show'); state = 'play'; }
+$('popBtn').addEventListener('click', function () { AU.click(); closePopup(); });
+$('popup').addEventListener('pointerdown', function (e) { if (e.target === $('popup')) closePopup(); });
+
+// ---- rush order ----
+function startOrder() {
+  orderTriggered = true;
+  order = { n: 0, target: 25, time: 10, left: 10, done: false };
+  $('orderTxt').textContent = 'Bake ' + order.target + ' cakes in ' + order.time + 's!';
+  $('order').classList.add('show');
+  AU.alarm();
+  bigText('RUSH ORDER!', '#ffd23f', '35%');
+}
+function orderSuccess() {
+  order.done = true;
+  $('order').classList.remove('show', 'urgent');
+  const tip = Math.max(300, Math.round(autoRate() * 10 + tapValue() * 20));
+  earn(tip);
+  const c = elCenter($('cake'));
+  plus(c.x, c.y - 70, '+' + fmt(tip) + ' TIP!', 34, '#ffe86b');
+  flyCoins(c.x, c.y - 40, 10);
+  AU.win(); shake(); confetti(6);
+  orderDone = true;
+  G.vanOpen = true;
+  rows.van.el.classList.add('new');
+  setTimeout(function () { if (state === 'play') showPopup('ORDER COMPLETE!', 'Delivery Van unlocked!', 'Vans deliver cakes all over town for big passive income.'); }, 700);
+  order = null;
+  refreshList();
+}
+function orderFail() {
+  order.done = true;
+  $('order').classList.remove('show', 'urgent');
+  order = null;
+  orderFails++;
+  AU.fail();
+  closePopup();
+  if (orderFails === 1) { state = 'retry'; $('retry').classList.add('show'); retryShownAt = performance.now(); }
+  else { bigText('ORDER MISSED', '#ff8a8a'); state = 'over'; setTimeout(showEnd, 1400); }
+}
+let retryShownAt = 0;
+$('retryBtn').addEventListener('click', function () {
+  if (state !== 'retry') return;
+  AU.click();
+  $('retry').classList.remove('show');
+  state = 'play';
+  lastInput = performance.now();
+  startOrder();
+});
+
+// ---- golden cupcake ----
+const gold = $('gold');
+function spawnGold() {
+  goldShown = true; goldActive = true; goldT = 0;
+  gold.style.display = 'block';
+  AU.sparkle();
+}
+gold.addEventListener('click', function () {
+  if (!goldActive) return;
+  goldActive = false; gold.style.display = 'none';
+  G.frenzy = 7;
+  $('frenzy').classList.add('show');
+  AU.sparkle(); AU.fanfare(); shake();
+  const c = elCenter(gold);
+  sprinkle(c.x, c.y, 24, true);
+  bigText('GOLDEN FRENZY!', '#ffe86b');
+  lastInput = performance.now();
+});
+
+function winEmpire() {
+  state = 'over';
+  AU.win(); setTimeout(AU.fanfare, 400);
+  shake(); confetti(16);
+  bigText('DESSERT EMPIRE!', '#ffe86b');
+  $('goalName').textContent = 'Empire complete!';
+  setTimeout(showEnd, 2300);
+}
+function showEnd() {
+  if (ended) return;
+  ended = true; state = 'end';
+  $('popup').classList.remove('show'); $('retry').classList.remove('show'); hideHand();
+  $('endScore').textContent = fmt(G.earned);
+  $('end').classList.add('show');
+  document.body.setAttribute('data-state', 'endcard');
+  AU.win();
+}
+$('cta').addEventListener('click', function () {
+  AU.click();
+  try { if (window.mraid) mraid.open('https://example.com/app'); else window.open('https://example.com/app'); } catch (e) {}
+});
+setTimeout(showEnd, SESSION_MS + 1500);
+
+// ---- tutorial hand ----
+const hand = $('hand'), tip = $('tip');
+let handTarget = null;
+function showHand(el, text, above) {
+  if (handTarget === el && hand.style.display === 'block') return;
+  handTarget = el;
+  const c = elCenter(el);
+  hand.style.display = 'block';
+  hand.style.left = (c.x + (el.id === 'cake' ? 6 : 40)) + 'px';
+  hand.style.top = (c.y + (el.id === 'cake' ? 4 : -2)) + 'px';
+  tip.textContent = text;
+  tip.style.top = (above !== undefined ? above : c.y - 140) + 'px';
+  tip.classList.add('show');
+}
+function hideHand() { hand.style.display = 'none'; tip.classList.remove('show'); handTarget = null; }
+
+// ================= HUD =================
+let shownCoins = 0;
+function refreshHud() {
+  $('coins').textContent = fmt(shownCoins);
+  $('cps').textContent = '+' + fmt(autoRate()) + '/s';
+  $('tapVal').textContent = '+' + fmt(tapValue()) + ' per tap';
+  $('autoLbl').textContent = '+' + fmt(autoRate()) + '/s';
+  const s = SHOPS[G.shop];
+  const prev = G.shop > 0 ? SHOPS[G.shop - 1].goal : 0;
+  $('goalName').textContent = G.shop < 2 ? 'Next: ' + SHOPS[G.shop + 1].name : 'Goal: Dessert Empire';
+  $('goalNum').textContent = fmt(Math.min(G.earned, s.goal)) + ' / ' + fmt(s.goal);
+  $('goalBar').style.width = Math.min(100, (G.earned - prev) / (s.goal - prev) * 100) + '%';
+}
+
+// ================= Main loop =================
+let lastTs = 0, listT = 0;
+function frame(ts) {
+  requestAnimationFrame(frame);
+  if (!lastTs) lastTs = ts;
+  let dt = (ts - lastTs) / 1000; lastTs = ts;
+  if (dt > 0.1) dt = 0.1; if (dt < 0) dt = 0;
+  try { update(dt); } catch (err) { if (!frame.w) { frame.w = true; setTimeout(function () { throw err; }); } }
+}
+function update(dt) {
+  const now = performance.now(), el = now - startTs;
+  updateParts(dt);
+  if (toastT > 0) { toastT -= dt; if (toastT <= 0 && toastEl) toastEl.style.opacity = '0'; }
+  if (state === 'end') return;
+  // session cap
+  if (el > SESSION_MS && state !== 'over') {
+    state = 'over'; hideHand(); $('popup').classList.remove('show');
+    bigText('CLOSING TIME!', '#ffe86b'); AU.fanfare();
+    setTimeout(showEnd, 1500);
+  }
+  if (state === 'popup') { popTimer -= dt; if (popTimer <= 0) closePopup(); }
+  if (state === 'retry' && now - retryShownAt > 9000) { $('retry').classList.remove('show'); state = 'over'; showEnd(); }
+  const running = state === 'play' || state === 'popup';
+  if (running) {
+    // auto income, credited continuously, shown once per second
+    const r = autoRate();
+    if (r > 0) {
+      const gain = r * dt; autoAcc += gain; earn(gain);
+      autoTickT += dt;
+      if (autoTickT >= 1) {
+        autoTickT = 0;
+        const ov = $('ovens').children;
+        for (let i = 0; i < ov.length; i++) { const o = ov[i]; o.classList.remove('puff'); void o.offsetWidth; o.classList.add('puff'); }
+        if (autoAcc >= 1) { const c = elCenter($('autoLbl')); plus(c.x + 20, c.y + 26, '+' + fmt(autoAcc), 18, '#ffe86b'); }
+        autoAcc = 0;
+      }
+    }
+    if (G.frenzy > 0) { G.frenzy -= dt; if (G.frenzy <= 0) { G.frenzy = 0; $('frenzy').classList.remove('show'); } }
+    // vans
+    if (G.lv.van > 0) {
+      vanTimer -= dt;
+      if (vanTimer <= 0) {
+        vanTimer = 4;
+        const v = $('van'); $('vanTxt').textContent = '+' + fmt(45 * G.lv.van * mult() * 4);
+        v.classList.remove('go'); void v.offsetWidth; v.classList.add('go'); AU.honk();
+      }
+    }
+    // rush order
+    if (!orderTriggered && (el > 20000 * TS || (el > 11000 * TS && G.lv.auto > 0 && G.shop >= 1))) startOrder();
+    if (order && !order.done) {
+      order.left -= dt;
+      $('orderNum').textContent = order.n + ' / ' + order.target;
+      $('orderTime').textContent = Math.max(0, Math.ceil(order.left)) + 's';
+      $('orderBar').style.width = Math.min(100, order.n / order.target * 100) + '%';
+      $('orderTimeBar').style.width = Math.max(0, order.left / order.time * 100) + '%';
+      $('order').classList.toggle('urgent', order.left < 3.5);
+      if (order.left <= 0) orderFail();
+    }
+    // golden cupcake (mid-session power-up)
+    if (!goldShown && (el > 24000 * TS || (orderDone && el > 18000 * TS))) spawnGold();
+    if (goldActive) {
+      goldT += dt;
+      const fw = $('floor').clientHeight;
+      const x = 20 + (goldT * 46) % 260, y = 30 + Math.sin(goldT * 2.4) * 26 + fw * 0.15;
+      gold.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      if (goldT > 9) { goldActive = false; gold.style.display = 'none'; }
+    }
+    // tutorial / idle hints
+    const idle = now - lastInput;
+    if (state === 'play') {
+      const afford = UPG.find(function (u) { return !isLocked(u) && G.coins >= price(u); });
+      if (tutStage === 0 && idle > 400) showHand($('cake'), 'Tap the cake to bake!');
+      else if (tutStage === 1 && afford && idle > 300) showHand(rows[afford.k].el, 'Buy upgrades to earn more!', elCenter($('cake')).y - 120);
+      else if (tutStage >= 2 && idle > 3500) {
+        if (afford) showHand(rows[afford.k].el, 'Buy an upgrade!', elCenter($('cake')).y - 120);
+        else showHand($('cake'), 'Keep tapping!');
+      }
+      if (goldActive && idle > 1200 && tutStage >= 1) { tip.textContent = 'Tap the golden cupcake!'; }
+    }
+  }
+  // smooth coin counter
+  shownCoins += (G.coins - shownCoins) * Math.min(1, dt * 12);
+  if (Math.abs(G.coins - shownCoins) < 0.5) shownCoins = G.coins;
+  listT -= dt;
+  if (listT <= 0) { listT = 0.1; refreshList(); refreshHud(); }
+}
+document.body.setAttribute('data-state', 'play');
+refreshList(); refreshHud();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

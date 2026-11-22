@@ -95,6 +95,34 @@ export function normalize(e: Edl, ix: IndexResult, actions: ActionRecord[], opts
 		}
 	}
 	clips = clips.filter((c) => c.end - c.start >= 0.5);
+	// Tighten: a long dead stretch inside a clip (no motion, no finger, nothing exciting) becomes a jump cut that keeps
+	// a short pause on each side — a person pausing to read looks natural, two seconds of a frozen board does not.
+	const deadAt = (t: number) => {
+		const b = ix.bins[Math.floor(t / 0.5)];
+		return !!b && b.motion < 0.0025 && b.touches === 0 && b.phase !== "end_card"; // dead air is about change, not content
+	};
+	const tight: Clip[] = [];
+	for (const c of clips) {
+		if (c.role === "end_card" || c.role === "hook") { tight.push(c); continue; }
+		let segStart = c.start;
+		let runStart: number | undefined;
+		for (let t = Math.ceil(c.start * 2) / 2; t <= c.end; t += 0.5) {
+			const d = t < c.end && deadAt(t);
+			if (d && runStart === undefined) runStart = t;
+			if (!d && runStart !== undefined) {
+				const runEnd = Math.min(t, c.end);
+				if (runEnd - runStart >= 1.5) {
+					const cutA = runStart + 0.35, cutB = runEnd - 0.35;
+					if (cutA - segStart >= 0.6) tight.push({ ...c, start: segStart, end: cutA });
+					fixes.push(`dead air ${runStart.toFixed(1)}-${runEnd.toFixed(1)} s cut out of a ${c.role} clip`);
+					segStart = cutB;
+				}
+				runStart = undefined;
+			}
+		}
+		if (c.end - segStart >= 0.6) tight.push({ ...c, start: segStart, end: c.end });
+	}
+	clips = tight;
 	const outLen = () => clips.reduce((s, c) => s + (c.end - c.start) / c.speed, 0);
 	const flex = () => clips.filter((c) => c.role !== "end_card" && c.role !== "hook");
 	let guard = 0;
@@ -115,13 +143,24 @@ export function normalize(e: Edl, ix: IndexResult, actions: ActionRecord[], opts
 		let grown = false;
 		for (const c of cands) {
 			const nextStart = Math.min(hi, ...clips.filter((o) => o !== c && o.start >= c.end - 1e-6).map((o) => o.start));
-			const room = nextStart - c.end;
+			let room = nextStart - c.end;
+			if (c.role !== "end_card" && deadAt(c.end + 0.01)) room = 0; // never grow back into dead air
+			const cap = c.role === "end_card" ? 3.0 : c.role === "hook" ? 3.5 : Infinity; // a CTA or a hook that overstays drags
+			room = Math.min(room, cap - (c.end - c.start));
 			if (room > 0.05) { c.end += Math.min(room, need * c.speed, 0.5); grown = true; break; }
 			const prevEnd = Math.max(lo, ...clips.filter((o) => o !== c && o.end <= c.start + 1e-6).map((o) => o.end));
-			const back = c.start - prevEnd;
+			let back = c.start - prevEnd;
+			if (deadAt(c.start - 0.26)) back = 0;
+			back = Math.min(back, cap - (c.end - c.start));
 			if (back > 0.05 && c.role !== "end_card") { c.start -= Math.min(back, need * c.speed, 0.5); grown = true; break; }
 		}
-		if (!grown) break; // not enough footage: the gate will flag the length
+		if (!grown) {
+			// Out of lively footage: allow a pause rather than a short video.
+			const c = clips.find((x) => x.role !== "end_card" && x.role !== "hook" && Math.min(hi, ...clips.filter((o) => o !== x && o.start >= x.end - 1e-6).map((o) => o.start)) - x.end > 0.05);
+			if (!c) break; // not enough footage at all: the gate will flag the length
+			const nextStart = Math.min(hi, ...clips.filter((o) => o !== c && o.start >= c.end - 1e-6).map((o) => o.start));
+			c.end += Math.min(nextStart - c.end, need * c.speed, 0.5);
+		}
 	}
 	// exact frame count: adjust the last flexible clip by the remainder
 	const frames = clips.reduce((s, c) => s + Math.round(((c.end - c.start) / c.speed) * opts.fps), 0);

@@ -17,7 +17,7 @@
     "seed": 7
   },
   "play": {
-    "max_game_s": 70,
+    "max_game_s": 90,
     "min_game_s": 35,
     "max_planner_calls": 60,
     "boot_max_s": 12,
