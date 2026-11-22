@@ -101,3 +101,31 @@ test("reflex timing is faster than a decision but human (150-560 ms)", () => {
 	}
 	assert.ok(late > 5 && late < 60, `late reflexes ${late}/500`);
 });
+
+test("zone depth lessons from hits", async () => {
+	const { depthLesson, applyDepth, farEdge, depthStep } = await import("../src/agent/zone.ts");
+	const fps = 30, hit = 600; // hit at 20.0 s
+	// fired 0.3 s before the hit -> seen too late -> deeper
+	assert.equal(depthLesson([], [{ f: hit - 9, name: "dodge_left" }], hit, fps).delta, 1);
+	// fired 1.6 s before -> too early -> shallower
+	assert.equal(depthLesson([], [{ f: hit - 48, name: "jump" }], hit, fps).delta, -1);
+	// fired 0.8 s before -> in time, wrong reaction -> no depth change
+	assert.equal(depthLesson([], [{ f: hit - 24, name: "dodge_right" }], hit, fps).delta, 0);
+	// never flagged -> deeper
+	assert.equal(depthLesson([{ f: hit - 30, c: "none" }, { f: hit - 3, c: "none" }], [], hit, fps).delta, 1);
+	// flagged early but never fired -> not a depth problem
+	assert.equal(depthLesson([{ f: hit - 40, c: "dodge_left" }], [], hit, fps).delta, 0);
+	// swerved into danger while collecting -> judgement, not depth
+	const l = depthLesson([], [{ f: hit - 40, name: "dodge_left" }, { f: hit - 10, name: "collect_right", pickup: true }], hit, fps);
+	assert.equal(l.delta, 0);
+	assert.ok(l.reason.includes("pickup"));
+	// hit in the policy's first second -> says nothing about the zone
+	assert.equal(depthLesson([], [], hit, fps, hit - 12).delta, 0);
+	assert.equal(depthLesson([], [], hit, fps, hit - 60).delta, 1);
+	// geometry: runner (player low in the zone) -> the top edge moves; side-scroller (player on the left) -> the right edge
+	assert.equal(farEdge([450, 200, 750, 800], [700, 500]), "top");
+	assert.equal(farEdge([300, 100, 700, 900], [500, 150]), "right");
+	assert.deepEqual(applyDepth([450, 200, 750, 800], 60, [700, 500]), [390, 200, 750, 800]);
+	assert.deepEqual(applyDepth([450, 200, 750, 800], -500, [700, 500]), [630, 200, 750, 800]); // keeps >= 120 of depth
+	assert.equal(depthStep([450, 200, 750, 800], [700, 500]), 45);
+});

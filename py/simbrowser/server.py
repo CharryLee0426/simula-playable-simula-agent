@@ -109,6 +109,7 @@ class Worker:
         self.console: list[str] = []
         self.step_ms: list[float] = []
         self.tracker: Tracker | None = None
+        self.flash_scan = 0  # recorder frame index up to which hit flashes were scanned
         self.shot_ms: list[float] = []
 
     # ------------------------------------------------------------------ lifecycle
@@ -349,7 +350,7 @@ class Worker:
         optionally save a full-screen copy (for the periodic "anything new?" look)."""
         rgb = await self._grab_rgb()
         h, w = rgb.shape[:2]
-        out: dict = {"frame": await self.page.evaluate("__sim.frame")}
+        out: dict = {"frame": await self.page.evaluate("__sim.frame"), "flashes": self._flashes()}
         dx = dy = 0.0
         if self.tracker is not None:
             cx, cy, conf = self.tracker.update(to_small_gray(rgb))
@@ -375,6 +376,26 @@ class Worker:
             out["full_path"] = str(fpath)
             out.setdefault("path", str(fpath))
         return out
+
+    def _flashes(self) -> list[dict]:
+        """Frames recorded since the last scan whose on-screen change spikes well above the recent baseline together
+        with a jump in brightness: the flash/shake games use to sell an impact (also pickups — the caller confirms)."""
+        if not self.rec:
+            return []
+        st = self.rec.stats
+        out = []
+        for i in range(max(self.flash_scan, 15), len(st)):
+            prev = st[i - 15:i]
+            base = float(np.median([x["motion"] for x in prev]))
+            lbase = float(np.median([x["luma"] for x in prev]))
+            m, dl = st[i]["motion"], st[i]["luma"] - lbase
+            if m > 0.03 and m > 2.5 * max(base, 0.004) and dl >= 0.04:
+                out.append({"f": st[i]["f"], "t": st[i]["t"], "motion": round(m, 4), "dl": round(dl, 3)})
+        self.flash_scan = len(st)
+        return out
+
+    async def flashes(self, p: dict) -> dict:
+        return {"flashes": self._flashes()}
 
     async def track_stop(self, p: dict) -> dict:
         self.tracker = None

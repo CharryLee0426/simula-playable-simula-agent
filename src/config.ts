@@ -32,6 +32,8 @@ export type Config = {
 		reflex_follow_player?: boolean;
 		/** Minimum decider probability for the winning situation to fire (default 0.33, with "none" <= 0.4). */
 		reflex_threshold?: number;
+		/** Learn the reflex zone's depth from hits: deeper when a hazard was seen too late, shallower when too early (default on). */
+		reflex_learn_depth?: boolean;
 		stuck_after: number;
 	};
 	highlight: { duration_s: number; max_source_s: number; max_speed: number; candidates: number; width: number; height: number; touch_overlay: boolean; include_end_card: boolean };

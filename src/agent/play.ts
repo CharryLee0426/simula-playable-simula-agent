@@ -14,6 +14,7 @@ import { sc } from "../runtime.ts";
 import { ROOT } from "../config.ts";
 import { appendJsonl, errMsg, Rng, run, writeJson } from "../util/core.ts";
 import { Humanizer, PERSONAS, type Gesture, type Performed, type Pt } from "./humanize.ts";
+import { applyDepth, depthLesson, depthStep, type CheckLog, type Fire } from "./zone.ts";
 
 export type PlanAction = {
 	type: "tap" | "drag" | "hold" | "swipe" | "wait" | "tap_when" | "react";
@@ -38,7 +39,7 @@ export type PlanAction = {
 	direction?: "up" | "down" | "left" | "right";
 	intent?: string;
 };
-export type Situation = { name: string; when: string; do?: PlanAction };
+export type Situation = { name: string; when: string; do?: PlanAction; /** going for a reward, not avoiding a hazard */ pickup?: boolean };
 export type Plan = { screen: string; phase: string; progress: string; notes: string; actions: PlanAction[]; watch_ms: number };
 export type ActionRecord = {
 	i: number; turn: number; kind: string; intent: string; t0: number; t1: number; f0: number; f1: number;
@@ -64,8 +65,8 @@ const REFLEX_GESTURE = `- {"type":"react","duration_ms":N,"player":[y,x],"zone":
   "player" is the centre of the object YOU control on this screenshot (car, ship, character); it is tracked frame by frame and the zone moves with it, so the close-up always shows the player and what is around and ahead of it. Optional "player_size":[h,w] (0-1000, default [100,140]).
   "zone" is the attention window, drawn on this screenshot: the region where a hazard must be for it to need a reaction NOW — usually the area just ahead of the player and a little to each side, covering what reaches the player within ~0.5 s, including the player itself. Only that crop is watched, so "inside the zone" already means "close"; do not add distance words. Because the zone follows the player, describe situations relative to the player ("directly ahead of the player", "on the player's left").
   A "do" gesture with "relative_to_player": true moves with the player (e.g. a drag that starts on the ship).
-  "situations": 2-5, mutually exclusive, each describing what is visible INSIDE the zone (what, which lane/side relative to the player) with a "do" gesture (tap|swipe|drag|hold). Cover every hazard type you have seen or the tutorial mentioned (e.g. a barrier you must jump, a block you must dodge), plus pickups if worth it. "none" is added automatically. If something new appears the policy hands control back to you early.
-  Give react as the only action of its turn. Keep policies short (2000-3500 ms) while you are still learning the game, longer once it is familiar. If the player got hit before reacting, the game got faster: move the zone's far edge further ahead.`;
+  "situations": 2-5, mutually exclusive, each describing what is visible INSIDE the zone (what, which lane/side relative to the player) with a "do" gesture (tap|swipe|drag|hold). Cover every hazard type you have seen or the tutorial mentioned (e.g. a barrier you must jump, a block you must dodge), plus pickups if worth it (mark those "pickup": true). "none" is added automatically. If something new appears the policy hands control back to you early.
+  Give react as the only action of its turn. Keep policies short (2000-3500 ms) while you are still learning the game, longer once it is familiar. The zone's depth is tuned automatically from hits (deeper when a hazard was seen too late, shallower when reactions came too early), so keep drawing it the same way; when a hit was a wrong reaction, fix the situations instead.`;
 /** The planner prompt: reflex policies on by default (play.reflex_actions), the timing gesture only when play.timing_actions is on. */
 const systemPrompt = (timing: boolean, reflex: boolean) =>
 	SYSTEM.replace("Give 1-4 actions per turn", `${reflex ? `${REFLEX_GESTURE}\n` : ""}${timing ? `${TIMING_GESTURE}\n` : ""}Give 1-4 actions per turn`);
@@ -141,6 +142,7 @@ function validateAction(a: PlanAction, k: string, domCount: number, e: string[],
 				else if (names.has(s.name)) e.push(`${sk}: duplicate name ${s.name}`);
 				else names.add(s.name);
 				if (typeof s?.when !== "string" || s.when.trim().length < 8) e.push(`${sk}: "when" must describe the visual situation`);
+				if (s?.pickup !== undefined && typeof s.pickup !== "boolean") e.push(`${sk}: "pickup" must be true or false`);
 				if (!s?.do || !["tap", "swipe", "drag", "hold"].includes(s.do.type)) e.push(`${sk}: "do" must be a tap|swipe|drag|hold gesture`);
 				else validateAction(s.do, `${sk} do`, domCount, e, false);
 			});
@@ -262,6 +264,10 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 	// frames at a time and the decider, on the frozen frame, says which situation is happening (one multi-option call,
 	// ~0.3-0.7 s of wall time, invisible on video). A situation that wins fires its gesture after a human reflex delay,
 	// then a short cooldown lets the move play out. Play interrupted (crash, popup, menu) hands control back to the planner.
+	// How far beyond the planner's far edge the zone looks, learned from hits (0-1000 units). Session-wide: the game's
+	// speed carries over from one policy to the next, and the planner keeps drawing the zone the same way.
+	let depthAdj = 0;
+	let hitCount = 0;
 	const runReflex = async (a: PlanAction, turn: number, dom: DomCandidate[], inputMode: "touch" | "mouse") => {
 		const sits = (a.situations ?? []).filter((x) => x.do);
 		const criteria: Record<string, string> = {};
@@ -290,6 +296,29 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		const blocked = new Map<string, number>();
 		let pending: { name: string; sign: number; x0: number; conf: number } | undefined;
 		let lastConf = 1;
+		// Getting hit teaches the zone's depth. A hit shows up as a flash/shake (a spike of on-screen change with a jump
+		// in brightness) and is confirmed on the whole screen, because games flash for pickups too; a flash the screen
+		// does not confirm still counts if a crash ends the policy within 3 s. The lead time of the last reaction says
+		// whether the zone saw the hazard too late (deeper) or reacted too early (shallower); see zone.ts.
+		const learn = !!a.zone && cfg.play.reflex_learn_depth !== false;
+		const startF = frame;
+		const depth0 = depthAdj;
+		const fires: Fire[] = [];
+		const hits: Record<string, unknown>[] = [];
+		let suspect: { f: number; p: number; evidence?: string } | undefined;
+		let lastHitF = -Infinity;
+		if (learn) await w.call("flashes", {}); // forget flashes from before this policy
+		const zoneNow = () => (a.zone && learn ? applyDepth(a.zone, depthAdj, a.player) : a.zone);
+		const learnFrom = (hitF: number, how: string, pHit: number, evidence?: string) => {
+			lastHitF = hitF;
+			const lesson = depthLesson(log as unknown as CheckLog[], fires, hitF, fps, startF);
+			const before = depthAdj;
+			if (lesson.delta) depthAdj = Math.max(-400, Math.min(400, depthAdj + lesson.delta * depthStep(a.zone!, a.player)));
+			const h = { f: hitF, t: Math.round((hitF / fps) * 100) / 100, confirmed: how, p_hit: Math.round(pHit * 100) / 100, delta: lesson.delta, reason: lesson.reason, lead: lesson.lead, depth: [before, depthAdj], zone: zoneNow(), evidence };
+			hits.push(h);
+			log.push({ f: hitF, hit: how });
+			trace.emit("play", "decide", `hit at ${(hitF / fps).toFixed(1)} s (${how === "screen" ? `screen says hit, p=${pHit.toFixed(2)}` : "a crash followed"}): ${lesson.reason}${lesson.delta ? ` → zone ${lesson.delta > 0 ? "deeper" : "shallower"} (${before} → ${depthAdj}/1000 beyond the drawn far edge)` : ""}`, h, { game_t: hitF / fps });
+		};
 		const lateralSign = (g: PlanAction): number => {
 			if (g.type === "swipe") return g.direction === "left" ? -1 : g.direction === "right" ? 1 : 0;
 			if (g.type === "drag" && g.path && g.path.length >= 2) { const dx = g.path[g.path.length - 1]![1] - g.path[0]![1]; return Math.abs(dx) > 50 ? Math.sign(dx) : 0; }
@@ -299,10 +328,25 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		while (frame < end) {
 			const glance = (a.zone || tracking) && checks % 5 === 0;
 			const pk = a.zone || tracking
-				? await w.call<{ path: string; full_path?: string; player?: [number, number]; conf?: number; delta?: [number, number]; zone?: number[] }>("peek_track", { zone: a.zone, width: 480, full: glance, follow: tracking })
+				? await w.call<{ path: string; full_path?: string; player?: [number, number]; conf?: number; delta?: [number, number]; zone?: number[]; flashes?: { f: number; motion: number; dl: number }[] }>("peek_track", { zone: zoneNow(), width: 480, full: glance, follow: tracking })
 				: await w.peek(vw);
 			const tconf = "conf" in pk && typeof pk.conf === "number" ? pk.conf : 1;
 			if ("delta" in pk && pk.delta) { delta = pk.delta; player = pk.player; }
+			if (learn && "flashes" in pk && pk.flashes) {
+				const fl = pk.flashes.find((x) => x.f > startF && x.f - lastHitF > hz.framesFor(1500) && (!suspect || x.f - suspect.f > hz.framesFor(1000)));
+				if (fl) {
+					const full = "full_path" in pk && pk.full_path ? pk.full_path : (await w.peek(vw)).path;
+					const evidence = join(paths.dir, "obs", `hit_${++hitCount}.jpg`);
+					try { copyFileSync(full, evidence); } catch { /* best-effort */ }
+					const hq = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone), a moment after a sudden flash or shake:", { image: full }],
+						questions: { hit: { type: "noul", instructions: "The flash or shake is because the player was just hit or crashed (an explosion at the player, damage, a life lost), not because the player picked something up or earned a reward." } } });
+					const pHit = noul(hq?.answers.hit) ?? 0;
+					log.push({ f: fl.f, flash: fl.motion, p_hit: Math.round(pHit * 100) / 100 });
+					if (pHit >= 0.5) { suspect = undefined; learnFrom(fl.f, "screen", pHit, evidence); }
+					else suspect = { f: fl.f, p: pHit, evidence };
+				}
+			}
+			if (suspect && frame - suspect.f > hz.framesFor(3000)) suspect = undefined; // a flash without a crash: a pickup or an effect
 			// Only a confident track can tell a wall from a lost track.
 			if (pending && player && (tconf < 0.6 || pending.conf < 0.6)) pending = undefined;
 			if (pending && player) {
@@ -367,6 +411,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 				const act = sit.do!.relative_to_player && tracking ? shiftAction(sit.do!, delta) : sit.do!;
 				const { g, label } = toGesture(act, dom, vw, vh);
 				const st = await w.call<{ value: number }>("eval", { expr: "__sim.frame" });
+				fires.push({ f: st.value, name: sit.name, pickup: sit.pickup });
 				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: false });
 				const r = await w.ops(ops);
 				const rec: ActionRecord = { i: history.length, turn, kind: g.kind, intent: `reflex ${sit.name}${late ? " (late)" : ""}${redirected ? " (other way: wall)" : ""}: ${sit.when.slice(0, 90)}`, t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: false, reaction_ms: ms, target_label: label, evidence };
@@ -381,9 +426,13 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			} else frame = (await w.step(checkEvery)).frame;
 		}
 		if (tracking) await w.call("track_stop", {});
+		if (learn && suspect && ended === "interrupted" && frame - suspect.f <= hz.framesFor(3000)) learnFrom(suspect.f, "crash_followed", suspect.p, suspect.evidence);
 		const moved = tracking ? ` · player tracked (moved ${Math.round(Math.hypot(delta[0], delta[1]))}/1000)` : "";
-		const summary = `${checks} checks over ${(frame / fps - startT).toFixed(1)} s, fired ${fired}${fired ? ` (${Object.entries(counts).map(([k, v]) => `${k}×${v}`).join(", ")})` : ""}, ended by ${ended}${moved}`;
-		appendJsonl(join(paths.dir, "reflexes.jsonl"), { turn, t: startT, zone: a.zone, player: a.player, template, situations: sits.map((x) => ({ name: x.name, when: x.when, do: x.do })), checks, fired, counts, ended, log });
+		const hitNote = hits.length
+			? ` · hit ${hits.length}×: ${hits.map((h) => h.reason).join("; ")}${depthAdj !== depth0 ? ` (zone depth adjusted automatically: ${depth0} → ${depthAdj}/1000 beyond the far edge you drew)` : ""}`
+			: "";
+		const summary = `${checks} checks over ${(frame / fps - startT).toFixed(1)} s, fired ${fired}${fired ? ` (${Object.entries(counts).map(([k, v]) => `${k}×${v}`).join(", ")})` : ""}, ended by ${ended}${moved}${hitNote}`;
+		appendJsonl(join(paths.dir, "reflexes.jsonl"), { turn, t: startT, zone: a.zone, zone_used: zoneNow(), depth: [depth0, depthAdj], player: a.player, template, situations: sits.map((x) => ({ name: x.name, when: x.when, do: x.do, pickup: x.pickup })), checks, fired, counts, ended, hits, log });
 		trace.emit("play", "decide", `reflex policy (${sits.map((x) => x.name).join(", ")}): ${summary}`, { counts, ended, checks }, { game_t: startT });
 		return { fired, checks, ended, summary };
 	};
