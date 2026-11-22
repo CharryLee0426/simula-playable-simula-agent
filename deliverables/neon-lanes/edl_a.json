@@ -1,62 +1,62 @@
 {
   "id": "a",
-  "title": "Hook-first high-speed double jump into full neon run",
+  "title": "Magnet Hook to High-Speed Revive & Climax",
   "clips": [
     {
-      "start": 21.4,
-      "end": 24.7,
+      "start": 19.6,
+      "end": 22,
       "speed": 1,
       "role": "hook",
-      "why": "Opens on top-speed dodging and consecutive orange barrier jumps at SPD 84-85"
+      "why": "High-speed magnet run jumping a barrier and hitting 50 Coins"
     },
     {
-      "start": 3.5,
-      "end": 5.6,
+      "start": 4.4,
+      "end": 7.4,
       "speed": 1,
       "role": "core_loop",
-      "why": "Shows clean lane-switching around a pink X block and collecting coins"
+      "why": "Clean early lane-switching and coin collection at SPD 56-59"
     },
     {
-      "start": 8.8,
-      "end": 10.5,
+      "start": 8.5,
+      "end": 10,
       "speed": 1,
       "role": "feature",
-      "why": "Highlights barrier jumping with GREAT JUMP! feedback"
+      "why": "Shows jumping over orange barriers with GREAT JUMP popup"
     },
     {
-      "start": 10.5,
-      "end": 12.4,
+      "start": 10.6,
+      "end": 13,
       "speed": 1,
       "role": "core_loop",
-      "why": "Escalates with rapid multi-lane dodging and coin collection up to 156m"
+      "why": "Rapid lane-switching around pink X blocks as pace picks up"
     },
     {
-      "start": 12.8,
-      "end": 16.5,
-      "speed": 1,
-      "role": "feature",
-      "why": "Demonstrates the free Revive mechanic after a crash to keep the run alive"
-    },
-    {
-      "start": 16.5,
-      "end": 19,
+      "start": 13,
+      "end": 15.2,
       "speed": 1,
       "role": "progression",
-      "why": "Shows speed ramping from SPD 72 to 79 while weaving past a magnet power-up"
+      "why": "Speed escalation climbing to SPD 72 with tight dodges"
     },
     {
-      "start": 19,
-      "end": 21.4,
+      "start": 16,
+      "end": 19.6,
+      "speed": 1.15,
+      "role": "feature",
+      "why": "Crash stakes followed by tapping free Revive to continue the run"
+    },
+    {
+      "start": 22,
+      "end": 24.967,
       "speed": 1,
       "role": "climax",
-      "why": "Builds to high-speed reflex dodging through tight pink X formations"
+      "why": "Peak speed SPD 84-87 magnet run weaving and jumping at 357m"
     },
     {
-      "start": 26.9,
-      "end": 29.3,
+      "start": 29.2,
+      "end": 31.6,
       "speed": 1,
       "role": "end_card",
-      "why": "Displays final coin count and pulsing PLAY NOW call to action"
+      "why": "Neon Lanes end card with 79 coins and PLAY NOW CTA"
     }
   ],
   "strategy": "hook-first",

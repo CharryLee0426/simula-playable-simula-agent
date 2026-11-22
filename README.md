@@ -126,6 +126,16 @@ doesn't cover* (a new obstacle type, a new tutorial prompt, a power-up), hands c
 the new thing while the game is frozen and writes a better policy. Every check and fire is in `reflexes.jsonl` and
 in `trace.html`.
 
+The zone **follows the player**. The planner also says where the object it controls is (`"player": [y, x]`); the
+worker cuts a small template there and finds it again in every check by normalized cross-correlation within a window
+around its last position (numpy, a few ms; the template adapts slowly while matches are confident; a weak match holds
+the last position instead of jumping to a look-alike). The zone moves with the player's displacement, so the decider
+always sees a crop with the player in it — "to the player's left" is simply the left of the crop — and it also gets
+the player's screen position as text. Gestures can follow the player too (`"relative_to_player": true`, e.g. a drag
+that starts on the ship). And walls are learned, not known: a reflex that should move the player sideways but leaves
+a confidently tracked position unchanged hit an edge, so it is suppressed for 1.5 s and the best other action is
+taken instead. The frame each reflex reacted to is kept as evidence in the trace.
+
 ---
 
 ## Goal 3 — Friction
@@ -178,7 +188,7 @@ All runs: default config, seed 7, one take per playable, CPU-only Linux VM (4 co
 | sample | West Game II (3D) | joystick-drag near outlaws to auto-shoot, collect gold, build defenses on pads | 93 s, 20 inputs | **83.4** | 81.5 · 85.7 | 40.6 / 64.9 | 2/2 |
 | generated | Castle Toss (2D physics) | pull back and release the catapult; tap mid-air to split; upgrades between levels | 47 s, all 3 levels → end card | **88.2** | 88.2 · 88.3 | 69.1 / 65.3 | 2/2 |
 | generated | Bakery Rush (DOM idle) | tap the cake, buy upgrades, rush order, frenzy | 49 s, 64 inputs → end card | **84.9** | 81.2 · 89.5 | 59.9 / 50.7 | 2/2 |
-| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump — played with **reflex policies** | 32 s, 17 inputs incl. 3 jumps; crashed at 13 s (revive) and 25 s → end card | **90.0** | 83.7 · 97.6 | 76.9 / 73.5 | 2/2 |
+| generated | Neon Lanes (raw WebGL 3D runner) | swipe lanes / jump — played with **reflex policies + a zone that follows the car** | 34 s, 19 inputs, 79 coins; crashed at 17 s (revive) and 27 s → end card | **91.1** | 85.6 · 97.8 | 75.2 / 66.5 | 2/2 |
 | generated | Orb Merge (2D physics) | drag to aim and drop orbs, merge equal values, bomb power-up | 59 s → end card | **87.2** | 86.2 · 88.4 | 69.5 / 59.9 | 2/2 |
 | hold-out | Gem Swap (match-3) | swipe gems into lines of 3–4, cascades, row blaster, fever | 25 s, target smashed → end card | **89.9** | 87.9 · 92.4 | 81.5 / 71.5 | 2/2 |
 | hold-out | Sky Stack (raw WebGL 3D stacker) | tap to drop a sliding slab onto the tower | 29 s, 7 floors, missed, retry, missed → end card | **80.3** | 78.1 · 82.9 | 72.8 / 60.8 | 2/2 |
@@ -213,8 +223,13 @@ What the numbers say:
   run lost its first ship at 21 s, so the gap is within run-to-run noise. The resulting rule, now in the planner's
   instructions: play turn by turn with a short watch time, and escalate to reflexes only when things reach the player
   between screenshots or the world rushes at it (runners). On re-runs the planner chose reflexes for Neon Lanes and
-  precise turn-by-turn play for Comet Dodge. What still limits reflexes is the decider's spatial sense (see
-  Limitations).
+  precise turn-by-turn play for Comet Dodge.
+- **Following the player** (decision 9) fixed the decider's main spatial confusion. Offline, on the same Neon Lanes
+  frames, the static zone flagged "dodge" for a block in the *next* lane (0.5–0.76) and missed the block that appeared
+  in the car's new lane; the following zone answered "none" and then saw the new block. Live (one run per variant, so
+  read the trend, not the decimals): no reflexes — first crash 11 s, game over 20 s, 21 coins; static-zone reflexes —
+  13–16 s, 23–25 s, 25–35 coins; following zone — 17 s, 27 s, 79 coins. The tracker held the car with median match
+  confidence 0.74–0.94 per policy.
 - **A negative result, kept honest.** I tried a generic fix for timing: `tap_when`, where the planner describes the
   visual moment ("the sliding block is exactly above the tower") and the executor steps the frozen game frame by
   frame, asking the decider until that moment comes (free and invisible on video). The decider's probability does
@@ -244,6 +259,9 @@ What the numbers say:
 | reflex v1 bounced between lanes and drove into the block it was dodging | crash frames + per-check decider log | situations without distance fired on far obstacles; with both side lanes free, "left" and "right" split ~0.4/0.4 and alternated | attention **zone** crop (offline test on the crash frames: jump fires 0.5 s before impact instead of 1.7 s); fire on "action vs none" not "winner vs runner-up"; commit to a swerve |
 | reflex v2 hit a jump barrier it had never seen | crash frames | the policy was written before the game introduced barriers, so every check said "none" | every 0.5 s a full-screen "is there anything this policy does not cover?" check hands back to the planner — it then read the jump tutorial and jumped |
 | reflex v2 missed a dodge of a new block | per-check log | the anti-flip-flop commitment (0.7 s) was too sticky | 0.4 s, overridden by strong danger |
+| a static zone kept shouting "dodge" at a block in the *next* lane, and missed one in the car's new lane | offline decider runs on crash frames | a fixed crop does not know which lane the car is in | the zone follows the tracked player (offline on the same frames: false dodges → "none", the missed block → seen) |
+| "snap the template to the most contrasted patch near the planner's point" | offline tracking from 5 start points | the most contrasted patch was road lines and headlight glow, not the car | removed: plain tracking held the car from all 5 starts (error ≤ 56/1000); with the snap it lost it from 3 |
+| a working lane change was learned as a "wall" | per-check log (track confidence 0.39) | coin sparkles and glow lowered the match; a held stale position looked like "did not move" | wall learning only trusts a confident track (≥ 0.6) before and after the move |
 
 **Time allocation (80/20).** Most of the effort went into the capture layer (virtual clock, audio, sandbox), because
 it is what makes both "30 fps" and "looks like a person" possible on any machine, and into the evaluator, because
@@ -261,10 +279,12 @@ picks the story, code enforces the rules.
   hand-set heuristic weights. In production both get calibrated on human review decisions and online CTR/IPM.
 - **The decider is a classifier, not a planner.** Its "did that work" check is less reliable in games where the
   whole screen moves all the time (scrolling 3D); the pixel-change fallback is weaker there too.
-- **Reflexes are limited by the decider's spatial sense.** It reliably sees *that* a hazard is close (inside the
-  zone), much less reliably *which lane the player is in*; in a 3-lane runner it sometimes "dodges right" from the
-  rightmost lane. Next: a zone that follows the player (track the controlled object from the action log and frame
-  differences) so each lane gets its own crop, and a second look 2 frames later to confirm motion direction.
+- **Reflexes are still limited by perception.** The player-following zone fixed "is the danger in *my* lane?", and
+  learned walls fix repeated moves into an edge, but the decider still picks the wrong *first* direction near a wall
+  sometimes, the tracker can lose lock under heavy particle effects (it then holds the last position), and how far
+  ahead the zone reaches is the planner's guess — too deep, and jumps come early. Next: learn the zone depth from
+  hits (a hazard that hit the player after it entered the zone → the zone was too shallow, and vice versa), and
+  re-acquire a lost track from the frame difference right after the player's own move.
 - **Effects nodes in audio** (filters, panners, convolvers) are not reproduced in the offline mix; gain and timing are.
 - **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
 - **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation
@@ -280,6 +300,7 @@ On Linux, `Xvfb` (optional) makes WebGL capture ~3.5× faster.
 ```bash
 ./run setup          # python env (playwright, numpy, pillow), chromium, key → .env; then doctor
 ./run doctor         # checks tools, key, model ids, decider
+npm test             # unit tests: gestures, EDL normalization, timing, reflex plans (node) + player tracker (python)
 ./run --playable games/samples/word-hunt.html --out highlight.mp4
 ./run batch games/samples games/generated --out-dir deliverables     # many playables, resumable
 ./run --playable game.html --session runs/<id> --redo cut            # re-cut without re-playing

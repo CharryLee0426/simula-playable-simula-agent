@@ -39,7 +39,10 @@ A suggested script for the walkthrough. Times are targets; every claim points at
   times; the "something new" hand-back when the game introduced jump barriers → the planner read the tutorial and jumped.
 - The evidence: Neon Lanes 6 inputs / crash at 11 s without reflexes vs 17–19 inputs / first crash at 13–16 s with them.
 - The honest twist: on the slower hold-out dodger a planner-only ablation did as well (frozen clock = exact
-  positioning), so reflexes became an escalation, not a default. What limits them: the decider's sense of lanes.
+  positioning), so reflexes became an escalation, not a default.
+- The zone that follows the player: show the tracked-car template and the evidence crops in the trace; the offline
+  comparison (static zone: false dodges for the next lane's block; following zone: "none", then sees the real one);
+  the learned walls; and the idea that failed (snapping the template to the most contrasted patch lost the car 3/5).
 
 ## 4. The cut (1.5 min)
 - Index: per-0.5 s signals + one director call watching the timestamped session → game model + moments.

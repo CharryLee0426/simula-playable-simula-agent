@@ -5,6 +5,7 @@
 // The game clock is frozen between worker calls, so model latency never appears on video; the only delays the viewer
 // sees are the humanizer's reaction/reading times. Nothing in here knows any particular game: the planner reads the
 // screen, the DOM (when there is one) and which input events the game listens to, and keeps its own notes.
+import { copyFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { BrowserWorker, type DomCandidate, type Observation, type Op } from "../browser/worker.ts";
 import { BudgetExceeded } from "../ledger.ts";
@@ -21,6 +22,11 @@ export type PlanAction = {
 	cooldown_ms?: number;
 	/** react: attention window [y0, x0, y1, x1] (0-1000) — where a hazard must be to need a reaction now. */
 	zone?: [number, number, number, number];
+	/** react: centre [y, x] (0-1000) of the object the player controls; the zone then follows it. */
+	player?: [number, number];
+	player_size?: [number, number];
+	/** a reflex gesture whose points move with the tracked player (e.g. drag the ship from where it is now). */
+	relative_to_player?: boolean;
 	/** tap_when: a visual condition checked frame by frame; the tap fires on the first frame where it holds. */
 	condition?: string;
 	timeout_ms?: number;
@@ -37,6 +43,8 @@ export type Plan = { screen: string; phase: string; progress: string; notes: str
 export type ActionRecord = {
 	i: number; turn: number; kind: string; intent: string; t0: number; t1: number; f0: number; f1: number;
 	touches: Performed["touches"]; slipped: boolean; reaction_ms: number; target_label?: string;
+	/** reflex actions: the frame the reflex reacted to */
+	evidence?: string;
 };
 export type ObsRecord = {
 	n: number; turn: number; t: number; frame: number; path: string; marks_path?: string; change: number; changed_frac: number;
@@ -52,8 +60,10 @@ export type SessionSummary = {
 const PHASES = ["loading", "title", "tutorial", "gameplay", "reward", "level_end", "fail", "end_card", "other"];
 
 const TIMING_GESTURE = `- {"type":"tap_when","point":[y,x],"condition":"the sliding block is exactly above the tower","timeout_ms":N} for TIMING: when success depends on tapping at the right moment (a moving/sliding/swinging target, a power or timing meter, a rhythm cue), describe the visual moment to tap; the game is watched frame by frame and the tap fires when the condition holds (or at the timeout, max 6000).`;
-const REFLEX_GESTURE = `- {"type":"react","duration_ms":N,"zone":[y0,x0,y1,x1],"situations":[{"name":"dodge_left","when":"a red block is in the same lane as the car and the lane to its left is empty","do":{"type":"swipe","point":[750,500],"direction":"left"}}, ...],"intent":"..."} when turn-by-turn play is TOO SLOW for the game: things reach the player between your screenshots (you got hit by something you had not seen yet), or the world rushes at the player at high speed (runners, tap-to-fly). For slower dodging prefer precise turn-by-turn moves with a short watch_ms (300-600): you can position exactly with drag/hold, which reflexes cannot. You define reflexes; the game is then watched every ~0.1 s and the gesture of whichever situation appears fires, with human reaction time, for duration_ms (1000-8000) or until play is interrupted (crash, popup, menu).
-  "zone" is the attention window: the region where a hazard must be for it to need a reaction NOW — usually the strip just ahead of the player, covering what reaches the player within ~0.5 s, including the player itself. Only that crop is watched, so "inside the zone" already means "close"; do not add distance words.
+const REFLEX_GESTURE = `- {"type":"react","duration_ms":N,"player":[y,x],"zone":[y0,x0,y1,x1],"situations":[{"name":"dodge_left","when":"a red block is in the same lane as the car and the lane to its left is empty","do":{"type":"swipe","point":[750,500],"direction":"left"}}, ...],"intent":"..."} when turn-by-turn play is TOO SLOW for the game: things reach the player between your screenshots (you got hit by something you had not seen yet), or the world rushes at the player at high speed (runners, tap-to-fly). For slower dodging prefer precise turn-by-turn moves with a short watch_ms (300-600): you can position exactly with drag/hold, which reflexes cannot. You define reflexes; the game is then watched every ~0.1 s and the gesture of whichever situation appears fires, with human reaction time, for duration_ms (1000-8000) or until play is interrupted (crash, popup, menu).
+  "player" is the centre of the object YOU control on this screenshot (car, ship, character); it is tracked frame by frame and the zone moves with it, so the close-up always shows the player and what is around and ahead of it. Optional "player_size":[h,w] (0-1000, default [100,140]).
+  "zone" is the attention window, drawn on this screenshot: the region where a hazard must be for it to need a reaction NOW — usually the area just ahead of the player and a little to each side, covering what reaches the player within ~0.5 s, including the player itself. Only that crop is watched, so "inside the zone" already means "close"; do not add distance words. Because the zone follows the player, describe situations relative to the player ("directly ahead of the player", "on the player's left").
+  A "do" gesture with "relative_to_player": true moves with the player (e.g. a drag that starts on the ship).
   "situations": 2-5, mutually exclusive, each describing what is visible INSIDE the zone (what, which lane/side relative to the player) with a "do" gesture (tap|swipe|drag|hold). Cover every hazard type you have seen or the tutorial mentioned (e.g. a barrier you must jump, a block you must dodge), plus pickups if worth it. "none" is added automatically. If something new appears the policy hands control back to you early.
   Give react as the only action of its turn. Keep policies short (2000-3500 ms) while you are still learning the game, longer once it is familiar. If the player got hit before reacting, the game got faster: move the zone's far edge further ahead.`;
 /** The planner prompt: reflex policies on by default (play.reflex_actions), the timing gesture only when play.timing_actions is on. */
@@ -121,6 +131,8 @@ function validateAction(a: PlanAction, k: string, domCount: number, e: string[],
 			if (!top) return void e.push(`${k}: a situation's "do" must be tap|swipe|drag|hold`);
 			if (typeof a.duration_ms !== "number" || a.duration_ms < 500 || a.duration_ms > 8000) e.push(`${k}: react needs "duration_ms" 500-8000`);
 			if (!Array.isArray(a.situations) || a.situations.length < 1 || a.situations.length > 6) return void e.push(`${k}: react needs 1-6 "situations"`);
+			if (a.player !== undefined && !pt(a.player)) e.push(`${k}: "player" must be [y, x] in 0-1000 (the centre of the object you control)`);
+			if (a.player_size !== undefined && !(Array.isArray(a.player_size) && a.player_size.length === 2 && a.player_size.every((n) => typeof n === "number" && n >= 20 && n <= 500))) e.push(`${k}: "player_size" must be [h, w] with values 20-500`);
 			if (a.zone !== undefined && !(Array.isArray(a.zone) && a.zone.length === 4 && a.zone.every((n) => typeof n === "number" && n >= 0 && n <= 1000) && a.zone[2] - a.zone[0] >= 80 && a.zone[3] - a.zone[1] >= 80)) e.push(`${k}: "zone" must be [y0, x0, y1, x1] in 0-1000 with y1-y0 >= 80 and x1-x0 >= 80`);
 			const names = new Set<string>();
 			a.situations.forEach((s, j) => {
@@ -148,6 +160,12 @@ function validateAction(a: PlanAction, k: string, domCount: number, e: string[],
 			if (!okPath && !okT) e.push(`${k}: needs "path" with >= 2 [y,x] points in 0-1000${domCount ? ` or "path_targets" with >= 2 element numbers` : ""}`);
 		}
 		if (a.duration_ms !== undefined && (typeof a.duration_ms !== "number" || a.duration_ms < 0 || a.duration_ms > 6000)) e.push(`${k}: duration_ms must be 0-6000`);
+}
+
+/** Move a gesture's points by the player's displacement [dy, dx] (0-1000), clamped to the screen. */
+function shiftAction(a: PlanAction, delta: [number, number]): PlanAction {
+	const mv = (p: [number, number]): [number, number] => [Math.min(1000, Math.max(0, p[0] + delta[0])), Math.min(1000, Math.max(0, p[1] + delta[1]))];
+	return { ...a, ...(a.point ? { point: mv(a.point) } : {}), ...(a.path ? { path: a.path.map(mv) } : {}) };
 }
 
 /** Plan action (normalized coords / element numbers) -> gesture in CSS px. */
@@ -255,16 +273,50 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 		const startT = frame / fps;
 		const end = frame + hz.framesFor(Math.min(8000, Math.max(500, a.duration_ms ?? 4000)));
 		const counts: Record<string, number> = {};
-		const log: { f: number; c: string; p: number }[] = [];
+		const log: Record<string, unknown>[] = [];
 		let checks = 0, fired = 0, ended = "duration";
 		let lastFired: { name: string; frame: number } | undefined;
+		// Follow the player: the planner said where the object it controls is; the worker tracks it frame to frame and
+		// moves the attention zone with it, so the decider always sees the area around and ahead of the player.
+		const tracking = !!a.player && cfg.play.reflex_follow_player !== false;
+		let template: string | undefined;
+		if (tracking) template = (await w.call<{ template: string }>("track_init", { point: a.player, size: a.player_size ?? [100, 140] })).template;
+		let delta: [number, number] = [0, 0]; // player displacement since the policy started, [dy, dx] in 0-1000
+		let player: [number, number] | undefined = a.player;
+		const side = (x: number) => (x < 333 ? "left third" : x > 667 ? "right third" : "middle");
+		// Walls are learned, not known: a reflex that should move the player sideways but leaves the tracked position
+		// unchanged hit an edge — suppress it for a while and take the best other action instead (a person pressing
+		// against the wall notices and goes the other way).
+		const blocked = new Map<string, number>();
+		let pending: { name: string; sign: number; x0: number; conf: number } | undefined;
+		let lastConf = 1;
+		const lateralSign = (g: PlanAction): number => {
+			if (g.type === "swipe") return g.direction === "left" ? -1 : g.direction === "right" ? 1 : 0;
+			if (g.type === "drag" && g.path && g.path.length >= 2) { const dx = g.path[g.path.length - 1]![1] - g.path[0]![1]; return Math.abs(dx) > 50 ? Math.sign(dx) : 0; }
+			if (g.type === "hold" && g.point) return g.point[1] < 420 ? -1 : g.point[1] > 580 ? 1 : 0;
+			return 0;
+		};
 		while (frame < end) {
+			const glance = (a.zone || tracking) && checks % 5 === 0;
+			const pk = a.zone || tracking
+				? await w.call<{ path: string; full_path?: string; player?: [number, number]; conf?: number; delta?: [number, number]; zone?: number[] }>("peek_track", { zone: a.zone, width: 480, full: glance, follow: tracking })
+				: await w.peek(vw);
+			const tconf = "conf" in pk && typeof pk.conf === "number" ? pk.conf : 1;
+			if ("delta" in pk && pk.delta) { delta = pk.delta; player = pk.player; }
+			// Only a confident track can tell a wall from a lost track.
+			if (pending && player && (tconf < 0.6 || pending.conf < 0.6)) pending = undefined;
+			if (pending && player) {
+				if ((player[1] - pending.x0) * pending.sign < 12) {
+					blocked.set(pending.name, frame + hz.framesFor(1500));
+					log.push({ f: frame, blocked: pending.name, x: player[1] });
+				}
+				pending = undefined;
+			}
 			// Every ~0.5 s, a look at the whole screen: is play interrupted, or did something appear that the policy does
 			// not cover (a new hazard type, a new instruction, a power-up)? Then hand back to the planner — the game is
 			// frozen, so the planner sees the new thing before it can hurt.
-			if (a.zone && checks % 5 === 0) {
-				const full = await w.peek(vw);
-				const g = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone):", { image: full.path }],
+			if (glance && "full_path" in pk && pk.full_path) {
+				const g = await decide({ model: cfg.models.decider, ledger, phase: "play", state: ["Current screen of a fast real-time mobile game (portrait phone):", { image: pk.full_path }],
 					questions: {
 						interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." },
 						novel: { type: "noul", instructions: `Something is on screen that none of these covers and that may need a different reaction (a new kind of obstacle, a new instruction or tutorial prompt, a power-up to grab): ${sits.map((x) => x.when).join(" / ")}` },
@@ -272,20 +324,30 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 				if ((noul(g?.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
 				if ((noul(g?.answers.novel) ?? 0) > 0.7 && checks > 0) { ended = "something_new"; break; }
 			}
-			const pk = await w.peek(vw, a.zone);
-			const d = await decide({ model: cfg.models.decider, ledger, phase: "play", state: [a.zone ? "Close-up of the area just in front of the player in a fast real-time mobile game:" : "Current frame of a fast real-time mobile game (portrait phone):", { image: pk.path }],
+			const state: any[] = [
+				a.zone ? (tracking ? "Close-up that follows the player in a fast real-time mobile game (the player-controlled object is in it; left/right in this image = left/right of the player):" : "Close-up of the area just in front of the player in a fast real-time mobile game:") : "Current frame of a fast real-time mobile game (portrait phone):",
+				{ image: pk.path },
+			];
+			if (tracking && player) state.push(`The player-controlled object is in the ${side(player[1])} of the screen (x=${(player[1] / 1000).toFixed(2)} of the width).`);
+			const d = await decide({ model: cfg.models.decider, ledger, phase: "play", state,
 				questions: {
 					now: { type: "choice", instructions: "Which of these situations is happening right now?", criteria },
-					...(a.zone ? {} : { interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." } }),
+					...(a.zone || tracking ? {} : { interrupted: { type: "noul", instructions: "Normal play is interrupted: a crash, game over, popup, menu, level-complete or end screen is showing." } }),
 				} });
 			checks++;
 			if (!d) { ended = "decider_unavailable"; break; }
 			const now = d.answers.now;
-			const c = choice(now) ?? "none";
+			let c = choice(now) ?? "none";
 			const probs = now && now.type === "choice" ? now.probabilities : {};
+			let redirected = false;
+			if ((blocked.get(c) ?? -1) > frame) {
+				const alt = Object.entries(probs).filter(([k]) => k !== "none" && k !== c && !((blocked.get(k) ?? -1) > frame)).sort((x, y) => y[1] - x[1])[0];
+				if (alt && alt[1] >= 0.2) { c = alt[0]; redirected = true; } else c = "none";
+			}
 			const p = probs[c] ?? 0;
 			const second = Math.max(0, ...Object.entries(probs).filter(([k]) => k !== c).map(([, v]) => v));
-			log.push({ f: frame, c, p: Math.round(p * 100) / 100, m: Math.round((p - second) * 100) / 100 } as any);
+			lastConf = tconf;
+			log.push({ f: frame, c, p: Math.round(p * 100) / 100, m: Math.round((p - second) * 100) / 100, ...(tracking && "conf" in pk ? { px: player?.[1], py: player?.[0], tc: pk.conf } : {}) });
 			if ((noul(d.answers.interrupted) ?? 0) > 0.7) { ended = "interrupted"; break; }
 			const sit = sits.find((x) => x.name === c);
 			// Fire when something clearly needs a reaction (little mass on "none") and an action is the top answer; two
@@ -294,25 +356,34 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			// commits to a swerve instead of flip-flopping (which steers straight back into danger).
 			const pNone = probs.none ?? 0;
 			const committed = lastFired !== undefined && lastFired.name !== c && frame - lastFired.frame < hz.framesFor(400);
-			const fire = !!sit && (committed ? (p >= 0.6 && p - second >= 0.25) || (p >= 0.5 && pNone <= 0.2) : p >= threshold && pNone <= 0.4);
+			const fire = !!sit && (redirected ? pNone <= 0.4 : committed ? (p >= 0.6 && p - second >= 0.25) || (p >= 0.5 && pNone <= 0.2) : p >= threshold && pNone <= 0.4);
 			if (sit && fire) {
+				// The frame the reflex reacted to, kept as evidence for the trace.
+				const evidence = join(paths.dir, "obs", `reflex_t${turn}_${fired + 1}.jpg`);
+				try { copyFileSync(pk.path, evidence); } catch { /* evidence is best-effort */ }
 				const { ms, late } = hz.reflexMs();
 				await w.step(hz.framesFor(ms));
-				const { g, label } = toGesture(sit.do!, dom, vw, vh);
+				// A gesture marked relative_to_player moves with the player (e.g. drag the ship from where it is now).
+				const act = sit.do!.relative_to_player && tracking ? shiftAction(sit.do!, delta) : sit.do!;
+				const { g, label } = toGesture(act, dom, vw, vh);
 				const st = await w.call<{ value: number }>("eval", { expr: "__sim.frame" });
 				const { ops, performed } = hz.compile(g, st.value, { mouse: inputMode === "mouse", allowSlip: false });
 				const r = await w.ops(ops);
-				const rec: ActionRecord = { i: history.length, turn, kind: g.kind, intent: `reflex ${sit.name}${late ? " (late)" : ""}: ${sit.when.slice(0, 90)}`, t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: false, reaction_ms: ms, target_label: label };
+				const rec: ActionRecord = { i: history.length, turn, kind: g.kind, intent: `reflex ${sit.name}${late ? " (late)" : ""}${redirected ? " (other way: wall)" : ""}: ${sit.when.slice(0, 90)}`, t0: st.value / fps, t1: r.now / 1000, f0: st.value, f1: r.frame, touches: performed.touches, slipped: false, reaction_ms: ms, target_label: label, evidence };
 				history.push(rec);
 				appendJsonl(paths.actions, rec);
 				fired++;
 				counts[sit.name] = (counts[sit.name] ?? 0) + 1;
 				lastFired = { name: sit.name, frame: r.frame };
+				const sign = tracking && player ? lateralSign(sit.do!) : 0;
+				if (sign) pending = { name: sit.name, sign, x0: player![1], conf: lastConf };
 				frame = (await w.step(hz.framesFor(Math.min(1500, Math.max(100, a.cooldown_ms ?? 250))))).frame;
 			} else frame = (await w.step(checkEvery)).frame;
 		}
-		const summary = `${checks} checks over ${(frame / fps - startT).toFixed(1)} s, fired ${fired}${fired ? ` (${Object.entries(counts).map(([k, v]) => `${k}×${v}`).join(", ")})` : ""}, ended by ${ended}`;
-		appendJsonl(join(paths.dir, "reflexes.jsonl"), { turn, t: startT, zone: a.zone, situations: sits.map((x) => ({ name: x.name, when: x.when, do: x.do })), checks, fired, counts, ended, log });
+		if (tracking) await w.call("track_stop", {});
+		const moved = tracking ? ` · player tracked (moved ${Math.round(Math.hypot(delta[0], delta[1]))}/1000)` : "";
+		const summary = `${checks} checks over ${(frame / fps - startT).toFixed(1)} s, fired ${fired}${fired ? ` (${Object.entries(counts).map(([k, v]) => `${k}×${v}`).join(", ")})` : ""}, ended by ${ended}${moved}`;
+		appendJsonl(join(paths.dir, "reflexes.jsonl"), { turn, t: startT, zone: a.zone, player: a.player, template, situations: sits.map((x) => ({ name: x.name, when: x.when, do: x.do })), checks, fired, counts, ended, log });
 		trace.emit("play", "decide", `reflex policy (${sits.map((x) => x.name).join(", ")}): ${summary}`, { counts, ended, checks }, { game_t: startT });
 		return { fired, checks, ended, summary };
 	};

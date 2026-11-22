@@ -1,44 +1,58 @@
 {
-  "summary": "The first-time experience is smooth overall, with clear lane-switching and jumping tutorials that let the player quickly grasp the core loop. Minor friction occurs on the final Game Over screen, which lacks any prompt or button before transitioning to the end card.",
+  "summary": "The first-time experience is fast and intuitive early on, with clear lane-switching and jump tutorials leading to quick success. However, late-run speed escalation makes obstacles hard to react to, and the final Game Over screen leaves the player with no clear action before the end card appears.",
   "items": [
     {
-      "t": 24.9,
-      "end": 26.9,
+      "t": 27.2,
+      "end": 29.2,
       "type": "ui",
+      "severity": "high",
+      "title": "Game Over screen lacks any interactive button or transition cue",
+      "evidence": "After crashing at 384m, the screen displays only 'GAME OVER' floating over the track with no buttons or instructions, causing the player's input to have no effect (19% clarity, 2% input effect) before the end card finally appears 2 seconds later.",
+      "suggestion": "Add a brief, clear transition message (e.g., 'Calculating Score...') or immediately display a 'Continue' / 'Play Now' button on the Game Over overlay so players are not left tapping a static screen.",
+      "signals": [
+        "S3",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "image": "obs/obs_0014.jpg"
+    },
+    {
+      "t": 25.5,
+      "end": 27.2,
+      "type": "pacing",
       "severity": "medium",
-      "title": "Game Over screen lacks a prompt or button",
-      "evidence": "At t=24.9s, the GAME OVER screen appears over the frozen highway with no buttons or instructions (46% clarity), and the player's last input had no visible effect before the end card appeared 2 seconds later.",
-      "suggestion": "Add a brief 'Loading results...' indicator or a 'Continue' / 'Tap to continue' prompt on the GAME OVER screen so players know the end card is about to appear rather than thinking the playable froze.",
+      "title": "High speed at 381m leaves too little reaction time for obstacles",
+      "evidence": "At SPD 88, a pink X block appears directly in front of the player's car in the right lane, resulting in an immediate collision and low clarity (46%) on how to avoid it in time.",
+      "suggestion": "Cap the maximum speed slightly lower in the playable ad or increase the spawn distance/telegraphing of pink X blocks at speeds above SPD 80.",
       "signals": [
         "S2",
-        "S4",
-        "S6",
-        "S7"
+        "S5"
       ],
       "image": "obs/obs_0013.jpg"
     },
     {
-      "t": 13.4,
-      "end": null,
+      "t": 17,
+      "end": 19.2,
       "type": "frustration",
       "severity": "low",
-      "title": "Abrupt crash transition ignores final swipe",
-      "evidence": "At t=13.4s, the player's last input had no visible effect right as the car hit a pink X block and transitioned to the CRASHED! Revive popup.",
-      "suggestion": "Add a brief hit-stop or impact flash (e.g., 0.2s) before showing the CRASHED! popup so the player clearly registers the collision rather than feeling their last swipe was ignored.",
+      "title": "Sudden crash at 227m interrupts flow despite free revive",
+      "evidence": "The player's input had no visible effect right as they hit an obstacle at 227m, triggering the 'CRASHED! Keep your run going?' popup with a 'REVIVE 1 free' button.",
+      "suggestion": "Provide a brief invulnerability flash or slightly more forgiving hitbox on lane transitions so players feel they had a fair chance to dodge before the revive prompt.",
       "signals": [
-        "S3",
-        "S5"
+        "S4",
+        "S6"
       ],
-      "image": "obs/obs_0009.jpg"
+      "image": "obs/obs_0010.jpg"
     },
     {
       "t": 0,
       "end": 2,
       "type": "pacing",
       "severity": "low",
-      "title": "2.0s delay before first successful lane switch",
-      "evidence": "The car starts moving immediately at SPD 53 with the 'Swipe to switch lanes!' prompt and hand hint, taking 2.0s before the first input visibly works.",
-      "suggestion": "Allow swipe inputs to register immediately from t=0.0s and consider starting the car slightly slower during the first 1-2 seconds so the first lane switch feels instant.",
+      "title": "Smooth initial onboarding with 2.0s to first success",
+      "evidence": "The 'Swipe to switch lanes!' prompt with directional arrows and hand indicator allowed the player to successfully switch lanes and dodge within 2.0 seconds.",
+      "suggestion": "Keep the current tutorial pacing; optionally fade out the hand indicator slightly faster once the player begins swiping.",
       "signals": [
         "S1"
       ],
@@ -53,53 +67,61 @@
       "kind": "time_to_first_success",
       "detail": "2.0 s from the first playable frame until an input visibly worked",
       "obs": 5,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0005.jpg"
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0005.jpg"
     },
     {
       "id": "S2",
-      "t": 24.86666666666648,
+      "t": 25.466666666666455,
       "kind": "unclear_screen",
-      "detail": "decider: only 46% that a first-time player knows what to do (screen: fail)",
+      "detail": "decider: only 46% that a first-time player knows what to do (screen: gameplay)",
       "obs": 13,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0013.jpg"
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0013.jpg"
     },
     {
       "id": "S3",
-      "t": 13.366666666666731,
-      "kind": "no_effect",
-      "detail": "previous input had no visible effect (decider 14%, 44.3% of pixels changed) — the player had tried: 3-lane runner gameplay, GREAT JUMP! text, car in right lane, pink X block ahead ",
-      "obs": 9,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0009.jpg"
+      "t": 27.166666666666394,
+      "kind": "unclear_screen",
+      "detail": "decider: only 19% that a first-time player knows what to do (screen: fail)",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0014.jpg"
     },
     {
       "id": "S4",
-      "t": 24.86666666666648,
+      "t": 16.966666666666764,
       "kind": "no_effect",
-      "detail": "previous input had no visible effect (decider 14%, 52.7% of pixels changed) — the player had tried: 3-lane runner gameplay at 288m, SPD 82, car in left lane, pink X blocks ahead in",
-      "obs": 13,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0013.jpg"
+      "detail": "previous input had no visible effect (decider 13%, 42.7% of pixels changed) — the player had tried: 3-lane runner gameplay, car in left lane, 207m, 28 coins",
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0010.jpg"
     },
     {
       "id": "S5",
-      "t": 13.366666666666731,
-      "kind": "fail_screen",
-      "detail": "a fail / game-over screen",
-      "obs": 9,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0009.jpg"
+      "t": 27.166666666666394,
+      "kind": "no_effect",
+      "detail": "previous input had no visible effect (decider 2%, 66.1% of pixels changed) — the player had tried: 3-lane runner at 381m, SPD 88, pink X block directly in front of player in right",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0014.jpg"
     },
     {
       "id": "S6",
-      "t": 24.86666666666648,
+      "t": 16.966666666666764,
       "kind": "fail_screen",
       "detail": "a fail / game-over screen",
-      "obs": 13,
-      "image": "/home/user/simula-playable-simula-agent/runs/reflex-neon-4/obs/obs_0013.jpg"
+      "obs": 10,
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0010.jpg"
     },
     {
       "id": "S7",
-      "t": 26.866666666666404,
+      "t": 27.166666666666394,
+      "kind": "fail_screen",
+      "detail": "a fail / game-over screen",
+      "obs": 14,
+      "image": "/home/user/simula-playable-simula-agent/runs/follow-neon-2/obs/obs_0014.jpg"
+    },
+    {
+      "id": "S8",
+      "t": 29.166666666666323,
       "kind": "end_card",
-      "detail": "end card appeared at 26.9 s (session 31.9 s)"
+      "detail": "end card appeared at 29.2 s (session 34.1 s)"
     }
   ]
 }

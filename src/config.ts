@@ -28,6 +28,8 @@ export type Config = {
 		reflex_actions?: boolean;
 		/** How often a reflex policy looks at the game, in ms of game time (default 100). */
 		reflex_check_ms?: number;
+		/** Follow the player with the attention zone when the planner says where it is (default on). */
+		reflex_follow_player?: boolean;
 		/** Minimum decider probability for the winning situation to fire (default 0.33, with "none" <= 0.4). */
 		reflex_threshold?: number;
 		stuck_after: number;

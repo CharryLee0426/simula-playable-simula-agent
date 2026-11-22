@@ -1,62 +1,62 @@
 {
   "id": "c",
-  "title": "Fast-paced feature montage with tightened transitions",
+  "title": "Fast-Paced Feature & Mechanic Montage",
   "clips": [
     {
-      "start": 21.4,
-      "end": 23.8,
-      "speed": 1,
-      "role": "hook",
-      "why": "Immediate high-speed action with consecutive barrier jumps at SPD 84-85"
-    },
-    {
-      "start": 3.5,
-      "end": 6.5,
+      "start": 4.4,
+      "end": 7.4,
       "speed": 1,
       "role": "core_loop",
-      "why": "Quickly establishes lane switching and coins while tightening the cruise stretch"
+      "why": "Sped-up opening cruise demonstrating 3-lane switching and coins"
     },
     {
-      "start": 8.8,
-      "end": 10.5,
+      "start": 8.5,
+      "end": 10,
       "speed": 1,
       "role": "feature",
-      "why": "Showcases the barrier jump mechanic and GREAT JUMP! popup"
+      "why": "Quick punchy shot of jumping an orange barrier"
     },
     {
-      "start": 10.5,
-      "end": 12.4,
+      "start": 10.6,
+      "end": 13,
       "speed": 1,
       "role": "core_loop",
-      "why": "Fast rhythmic dodging through pink X blocks"
+      "why": "Rapid back-and-forth lane dodging between pink X blocks"
     },
     {
-      "start": 12.8,
-      "end": 16.5,
-      "speed": 1,
-      "role": "feature",
-      "why": "Tightens the crash-to-revive sequence to keep momentum high"
-    },
-    {
-      "start": 16.5,
-      "end": 19.5,
+      "start": 13,
+      "end": 15.2,
       "speed": 1,
       "role": "progression",
-      "why": "Shows escalating speed and magnet power-up on the synthwave highway"
+      "why": "Rising speed escalation up to SPD 72"
     },
     {
-      "start": 19.5,
-      "end": 21.3,
+      "start": 15.3,
+      "end": 19.6,
+      "speed": 1.4,
+      "role": "feature",
+      "why": "Fast-forwarded crash and instant free Revive recovery"
+    },
+    {
+      "start": 19.6,
+      "end": 22,
+      "speed": 1,
+      "role": "feature",
+      "why": "Coin Magnet power-up and 50 Coins milestone reward"
+    },
+    {
+      "start": 22,
+      "end": 24.933,
       "speed": 1,
       "role": "climax",
-      "why": "Delivers intense reflex dodging at SPD 81-82"
+      "why": "Full-speed SPD 84-87 climax weaving and jumping at 357m"
     },
     {
-      "start": 26.9,
-      "end": 29.4,
+      "start": 29.2,
+      "end": 31.7,
       "speed": 1,
       "role": "end_card",
-      "why": "Ends on the coins summary and PLAY NOW button"
+      "why": "Neon Lanes end card and PLAY NOW call to action"
     }
   ],
   "strategy": "feature-montage",

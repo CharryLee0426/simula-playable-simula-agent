@@ -26,6 +26,11 @@ import numpy as np
 from PIL import Image
 from playwright.async_api import async_playwright
 
+try:  # as a module (python -m simbrowser.server) or from tests that put py/ on the path
+    from simbrowser.track import Tracker, shift_zone, to_small_gray
+except ImportError:  # pragma: no cover
+    from .track import Tracker, shift_zone, to_small_gray
+
 HERE = Path(__file__).resolve().parent
 SHIM = (HERE / "shim.js").read_text()
 
@@ -103,6 +108,7 @@ class Worker:
         self.touch_active = False
         self.console: list[str] = []
         self.step_ms: list[float] = []
+        self.tracker: Tracker | None = None
         self.shot_ms: list[float] = []
 
     # ------------------------------------------------------------------ lifecycle
@@ -314,6 +320,65 @@ class Worker:
         path = self.run_dir / "obs" / ("peek_zone.jpg" if zone else "peek.jpg")
         path.write_bytes(jpeg)
         return {"path": str(path), "frame": await self.page.evaluate("__sim.frame")}
+
+    # ------------------------------------------------------------------ player tracking (reflex attention zones)
+    async def _grab_rgb(self) -> np.ndarray:
+        t = time.time()
+        r = await self.cdp.send("Page.captureScreenshot", {"format": "jpeg", "quality": 82, "optimizeForSpeed": True})
+        self.shot_ms.append((time.time() - t) * 1000)
+        return np.asarray(Image.open(io.BytesIO(base64.b64decode(r["data"]))).convert("RGB"))
+
+    async def track_init(self, p: dict) -> dict:
+        """Start following the player-controlled object at point [y, x] (0-1000), box size [h, w] (0-1000)."""
+        rgb = await self._grab_rgb()
+        g = to_small_gray(rgb)
+        gh, gw = g.shape
+        py, px = [float(v) for v in p["point"]]
+        sh, sw = [float(v) for v in p.get("size", [100, 140])]
+        self.tracker = Tracker(g, (px / 1000 * gw, py / 1000 * gh), (sw / 1000 * gw, sh / 1000 * gh))
+        # a picture of what is being tracked, for the trace
+        h, w = rgb.shape[:2]
+        y0, y1 = int(max(0, (py - sh / 2) / 1000 * h)), int(min(h, (py + sh / 2) / 1000 * h))
+        x0, x1 = int(max(0, (px - sw / 2) / 1000 * w)), int(min(w, (px + sw / 2) / 1000 * w))
+        tpath = self.run_dir / "obs" / f"track_{int(time.time() * 1000) % 10_000_000}.jpg"
+        Image.fromarray(rgb[y0:y1, x0:x1]).save(tpath, quality=85)
+        return {"player": [py, px], "template": str(tpath)}
+
+    async def peek_track(self, p: dict) -> dict:
+        """One screenshot per reflex check: update the player track, crop the attention zone moved with the player,
+        optionally save a full-screen copy (for the periodic "anything new?" look)."""
+        rgb = await self._grab_rgb()
+        h, w = rgb.shape[:2]
+        out: dict = {"frame": await self.page.evaluate("__sim.frame")}
+        dx = dy = 0.0
+        if self.tracker is not None:
+            cx, cy, conf = self.tracker.update(to_small_gray(rgb))
+            dx, dy = self.tracker.displacement()
+            out["player"] = [round(cy / self.tracker.h * 1000, 1), round(cx / self.tracker.w * 1000, 1)]
+            out["conf"] = round(conf, 3)
+            out["delta"] = [round(dy * 1000, 1), round(dx * 1000, 1)]
+        if p.get("zone"):
+            z = shift_zone([float(v) for v in p["zone"]], dx, dy) if p.get("follow", True) else [float(v) for v in p["zone"]]
+            out["zone"] = [round(v, 1) for v in z]
+            y0, x0, y1, x1 = z
+            crop = Image.fromarray(rgb[int(y0 / 1000 * h):int(y1 / 1000 * h), int(x0 / 1000 * w):int(x1 / 1000 * w)])
+            maxw = int(p.get("width", 480))
+            if crop.width > maxw:
+                crop = crop.resize((maxw, max(8, int(crop.height * maxw / crop.width))), Image.BILINEAR)
+            path = self.run_dir / "obs" / "peek_zone.jpg"
+            crop.save(path, quality=80)
+            out["path"] = str(path)
+        if p.get("full") or not p.get("zone"):
+            full = Image.fromarray(rgb).resize((360, int(360 * h / w)), Image.BILINEAR)
+            fpath = self.run_dir / "obs" / "peek.jpg"
+            full.save(fpath, quality=70)
+            out["full_path"] = str(fpath)
+            out.setdefault("path", str(fpath))
+        return out
+
+    async def track_stop(self, p: dict) -> dict:
+        self.tracker = None
+        return {"ok": True}
 
     async def motion_probe(self, p: dict) -> dict:
         """Change between now and after `frames` more frames, without moving the observation baseline."""

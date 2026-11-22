@@ -1,19 +1,19 @@
 {
   "title": "Neon Lanes",
-  "genre": "3-lane endless runner",
-  "objective": "Drive as far as possible down a synthwave highway, dodging pink X blocks and jumping over orange barriers while collecting coins.",
-  "controls": "Swipe left or right to switch between the 3 lanes; swipe up to jump over barriers.",
-  "core_loop": "Swipe to switch lanes or jump -> avoid obstacles and collect coins -> increase speed and distance.",
+  "genre": "Endless Runner",
+  "objective": "Drive as far as possible across three neon lanes, collecting coins while dodging pink X blocks and jumping over orange barriers.",
+  "controls": "Swipe left or right to switch lanes; swipe up to jump over barriers.",
+  "core_loop": "Switch lanes and jump to dodge obstacles while collecting coins to increase distance and score as speed escalates.",
   "features": [
-    "3-lane highway switching",
-    "Barrier jumping with 'GREAT JUMP!' feedback",
+    "3-lane switching",
+    "Jumping over barriers",
     "Coin collection",
-    "Magnet power-up",
-    "Free revive mechanic",
-    "Increasing speed and distance counter"
+    "Coin Magnet power-up",
+    "Free Revive",
+    "Speed escalation"
   ],
-  "progression": "Speed steadily escalates from SPD 51 to SPD 85 as distance increases, accompanied by tighter obstacle and barrier patterns.",
+  "progression": "Distance and speed (SPD) continuously increase the longer the player survives, punctuated by coin milestones like 50 Coins.",
   "end_card": true,
-  "tone": "Retro synthwave, neon, fast-paced, energetic",
-  "hook_idea": "High-speed dodging through tight pink X block formations and jumping consecutive orange barriers at SPD 81-85 (t=19.5-23.8s)."
+  "tone": "Retro synthwave, fast-paced, neon",
+  "hook_idea": "High-speed magnet run pulling in streams of coins and jumping an orange barrier at t=20.0-22.0s"
 }
