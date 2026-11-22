@@ -605,7 +605,6 @@ function openShop(i) {
   const t = $('tier' + (i + 1));
   t.style.display = ''; t.classList.add('grow');
   $('cherry').setAttribute('transform', i === 1 ? 'translate(0,-38)' : 'translate(0,-74)');
-  if (i === 1) { G.lv.cas = G.lv.cas; }
   AU.fanfare(); shake(); confetti(8);
   showPopup('NEW SHOP UNLOCKED!', SHOPS[i].name, i === 1 ? 'Two-tier cakes! The whole street is lining up.' : 'Royal three-tier cakes. Build your empire!');
 }

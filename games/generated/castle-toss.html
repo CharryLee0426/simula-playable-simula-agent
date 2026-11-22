@@ -99,7 +99,6 @@ html,body{margin:0;height:100%;overflow:hidden;background:#2a1650;touch-action:n
 const QS = new URLSearchParams(location.search);
 const TS = QS.has('fast') ? 0.3 : 1;          // ?fast shortens the session cap for testing
 const SESSION_MS = 50000 * TS;                // end card appears by itself at the latest after this
-const STORE_URL = 'https://example.com/app';
 const FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -1127,7 +1126,9 @@ function drawBanner() {
   const sc = easeOutBack(inK) * (0.6 + 0.4 * outK);
   g.save(); g.globalAlpha = outK; g.translate(180, 228); g.scale(sc, sc);
   g.fillStyle = 'rgba(25,8,50,.55)'; rr(-160, -44, 320, banner.sub ? 92 : 70, 22); g.fill();
-  text(banner.text, 0, -8, 36, banner.color, 'center', '#3a1060');
+  g.font = '900 36px ' + FONT;
+  const bw = g.measureText(banner.text).width;
+  text(banner.text, 0, -8, bw > 290 ? 36 * 290 / bw : 36, banner.color, 'center', '#3a1060');
   if (banner.sub) text(banner.sub, 0, 30, 16, '#fff', 'center', false, 700);
   g.restore();
 }

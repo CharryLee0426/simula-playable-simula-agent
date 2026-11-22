@@ -62,6 +62,8 @@ export async function chatJson<T>(args: {
 	let usd = 0, tin = 0, tout = 0;
 	const t0 = Date.now();
 	const maxAttempts = args.maxAttempts ?? 3;
+	let maxTokens = args.maxTokens ?? 3000;
+	let reasoning = args.reasoning;
 	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
 		args.ledger.guard(args.estimateUsd ?? 0.02, `${args.kind} call`);
 		let text = "";
@@ -71,10 +73,10 @@ export async function chatJson<T>(args: {
 				model: args.model,
 				messages,
 				temperature: args.temperature ?? 0.4,
-				max_tokens: args.maxTokens ?? 3000,
+				max_tokens: maxTokens,
 				response_format: { type: "json_object" },
 			};
-			if (args.reasoning) body.reasoning = args.reasoning === "none" ? { enabled: false } : { effort: args.reasoning };
+			if (reasoning) body.reasoning = reasoning === "none" ? { enabled: false } : { effort: reasoning };
 			const r = await fetch(`${OR}/v1/chat/completions`, { method: "POST", headers: headers(), body: JSON.stringify(body), signal: AbortSignal.timeout(args.timeoutMs ?? 120_000) });
 			const j: any = await r.json().catch(() => ({}));
 			if (j.usage) {
@@ -86,6 +88,8 @@ export async function chatJson<T>(args: {
 			if (!r.ok || !text) throw new Error(`HTTP ${r.status}: ${JSON.stringify(j.error ?? j.choices?.[0]?.finish_reason ?? j).slice(0, 240)}`);
 		} catch (e) {
 			lastErr = errMsg(e);
+			// Ran out of output tokens (reasoning ate the budget): give the next attempt more room and less thinking.
+			if (/"length"/.test(lastErr)) { maxTokens *= 2; if (reasoning && reasoning !== "none") reasoning = "low"; }
 			if (attempt < maxAttempts) await sleep(1200 * attempt);
 			continue;
 		}

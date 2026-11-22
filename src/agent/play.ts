@@ -244,7 +244,7 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 			const [dec, planRes] = robot ? [null, { value: randomPlan(rng), ms: 0, usd: 0 }] : await Promise.all([
 				deciderObs(obs, prevObs, lastIntents).catch(() => null),
 				chatJson<Plan>({ model: cfg.models.planner, reasoning: cfg.models.planner_reasoning, system: SYSTEM, ledger, phase: "play", kind: "planner",
-					parts: [{ text }, { image: obs.marks_path ?? obs.path }], validate: (p) => validatePlan(p, dom.length), maxTokens: 2500, estimateUsd: 0.015 })
+					parts: [{ text }, { image: obs.marks_path ?? obs.path }], validate: (p) => validatePlan(p, dom.length), maxTokens: 4000, estimateUsd: 0.015 })
 					.then((r) => r, (e) => e as Error),
 			]);
 			if (!robot) plannerCalls++;

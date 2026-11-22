@@ -843,14 +843,14 @@ function render() {
       bindMesh(B.cube);
       if (o.z > -45) glow(o.x, o.y, o.z, 1.0, C.coin, 0.3);
     } else if (o.type === 'magnet') {
-      const yy = o.y + Math.sin(elapsed * 4) * 0.15, r = o.spin;
-      const ca = Math.cos(r), sa = Math.sin(r);
-      box(o.x, yy - 0.35, o.z, 1.0, 0.28, 0.28, C.red, 0.35, r);
-      box(o.x - ca * 0.36, yy + 0.05, o.z + sa * 0.36, 0.28, 0.8, 0.28, C.red, 0.35, r);
-      box(o.x + ca * 0.36, yy + 0.05, o.z - sa * 0.36, 0.28, 0.8, 0.28, C.red, 0.35, r);
-      box(o.x - ca * 0.36, yy + 0.5, o.z + sa * 0.36, 0.3, 0.18, 0.3, C.silver, 0.6, r);
-      box(o.x + ca * 0.36, yy + 0.5, o.z - sa * 0.36, 0.3, 0.18, 0.3, C.silver, 0.6, r);
-      glow(o.x, yy, o.z, 2.6, C.red, 0.7);
+      const yy = o.y + 0.25 + Math.sin(elapsed * 4) * 0.15, r = o.spin, k = 1.45;
+      const ca = Math.cos(r) * k, sa = Math.sin(r) * k;
+      box(o.x, yy - 0.35 * k, o.z, 1.0 * k, 0.28 * k, 0.28 * k, C.red, 0.4, r);
+      box(o.x - ca * 0.36, yy + 0.05 * k, o.z + sa * 0.36, 0.28 * k, 0.8 * k, 0.28 * k, C.red, 0.4, r);
+      box(o.x + ca * 0.36, yy + 0.05 * k, o.z - sa * 0.36, 0.28 * k, 0.8 * k, 0.28 * k, C.red, 0.4, r);
+      box(o.x - ca * 0.36, yy + 0.5 * k, o.z + sa * 0.36, 0.3 * k, 0.18 * k, 0.3 * k, C.silver, 0.7, r);
+      box(o.x + ca * 0.36, yy + 0.5 * k, o.z - sa * 0.36, 0.3 * k, 0.18 * k, 0.3 * k, C.silver, 0.7, r);
+      glow(o.x, yy, o.z, 3.4, C.red, 0.85);
     } else if (o.type === 'gate') {
       const pulse = 0.7 + 0.3 * Math.sin(elapsed * 8);
       box(-3.6, 3, o.z, 0.5, 6, 0.5, C.dark, 0); box(3.6, 3, o.z, 0.5, 6, 0.5, C.dark, 0);

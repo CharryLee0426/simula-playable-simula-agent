@@ -230,7 +230,7 @@ export async function writeEdls(ix: IndexResult): Promise<Edl[]> {
 	try {
 		const r = await chatJson<{ edls: Edl[] }>({
 			model: cfg.models.director, reasoning: cfg.models.director_reasoning, system: editorSystem(H.duration_s, H.max_speed, includeEnd), ledger, phase: "cut", kind: "director",
-			parts: [{ text }], maxTokens: 6000, estimateUsd: 0.04,
+			parts: [{ text }], maxTokens: 16000, estimateUsd: 0.04,
 			validate: (v) => {
 				if (!Array.isArray(v?.edls) || v.edls.length < 1) return ["return {\"edls\": [...]}"];
 				return v.edls.flatMap((e) => edlProblems({ ...e, source: "director", strategy: "" }, ix, includeEnd, H.max_speed));

@@ -139,7 +139,7 @@ export async function buildIndex(): Promise<IndexResult> {
 	try {
 		const r = await chatJson<{ game: GameModel; moments: Moment[] }>({
 			model: cfg.models.director, reasoning: cfg.models.director_reasoning, system: DIRECTOR_SYSTEM, ledger, phase: "index", kind: "director",
-			parts: [{ text }, { video: proxy }], maxTokens: 8000, estimateUsd: 0.08, timeoutMs: 240_000,
+			parts: [{ text }, { video: proxy }], maxTokens: 16000, estimateUsd: 0.08, timeoutMs: 240_000,
 			validate: (v) => {
 				const e: string[] = [];
 				if (!v?.game || typeof v.game !== "object") e.push("missing game");

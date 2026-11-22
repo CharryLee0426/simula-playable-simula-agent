@@ -42,6 +42,7 @@
   },
   "eval": {
     "pairwise": true,
+    "judge_samples": 2,
     "pass_score": 70
   }
 }

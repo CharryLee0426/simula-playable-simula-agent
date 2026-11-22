@@ -138,7 +138,7 @@ export async function judge(path: string, game: unknown): Promise<Judge> {
 	const { cfg, ledger } = sc();
 	const keys = ["core_loop_clarity", "features", "human_play", "action", "hook", "polish", "would_run"] as const;
 	const r = await chatJson<Judge>({
-		model: cfg.models.judge, reasoning: "low", system: JUDGE_SYSTEM, ledger, phase: "eval", kind: "judge", estimateUsd: 0.03, maxTokens: 2500, temperature: 0.1,
+		model: cfg.models.judge, reasoning: "low", system: JUDGE_SYSTEM, ledger, phase: "eval", kind: "judge", estimateUsd: 0.03, maxTokens: 4000, temperature: 0.1,
 		parts: [{ text: `The game, as described by the agent that played it: ${JSON.stringify(game)}` }, { video: await judgeProxy(path) }],
 		validate: (v) => keys.filter((k) => typeof v?.[k] !== "number" || v[k] < 1 || v[k] > 10).map((k) => `${k} must be a number 1-10`),
 	});
@@ -166,8 +166,18 @@ export async function evaluateCandidates(cands: { edl: Edl; path: string }[], ix
 	for (const c of cands) {
 		const gate = await specGate(c.path, { target: cfg.highlight.duration_s, hasAudio: ix.has_audio, maxW: 1080, maxH: 1920, fps: cfg.browser.fps });
 		const h = heuristics(c.edl, ix, actions);
+		// Two independent judge samples, averaged: a single VLM score moves by up to ~8 points between runs.
+		const samples = (await Promise.all(Array.from({ length: Math.max(1, cfg.eval.judge_samples ?? 2) }, () => judge(c.path, ix.game).catch((e) => {
+			trace.emit("eval", "warn", `judge sample failed for ${c.edl.id}: ${String(e).slice(0, 160)}`);
+			return undefined;
+		})))).filter((x): x is Judge => !!x);
 		let j: Judge | undefined;
-		try { j = await judge(c.path, ix.game); } catch (e) { trace.emit("eval", "warn", `judge failed for ${c.edl.id}: ${String(e).slice(0, 160)}`); }
+		if (samples.length) {
+			const keys = ["core_loop_clarity", "features", "human_play", "action", "hook", "polish", "would_run", "J"] as const;
+			j = { ...samples[0]! };
+			for (const k of keys) (j as any)[k] = Math.round((samples.reduce((s, x) => s + (x[k] as number), 0) / samples.length) * 10) / 10;
+			if (samples.length > 1) (j as any).J_samples = samples.map((x) => x.J);
+		}
 		const score = gate.ok ? Math.round((j ? 0.55 * j.J + 0.45 * h.H : h.H) * 10) / 10 : 0;
 		evals.push({ id: c.edl.id, strategy: c.edl.strategy, source: c.edl.source, path: c.path, gate, heuristics: h, judge: j, score });
 		trace.emit("eval", "eval", `${c.edl.id} (${c.edl.strategy}): score ${score} · gate ${gate.ok ? "ok" : `FAIL ${gate.problems.join("; ")}`} · H ${h.H} · J ${j?.J ?? "-"}${j ? ` (loop ${j.core_loop_clarity}, features ${j.features}, human ${j.human_play}, action ${j.action}, run ${j.would_run})` : ""}`, { id: c.edl.id, score, gate, h, j });

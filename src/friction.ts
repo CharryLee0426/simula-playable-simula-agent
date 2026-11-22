@@ -96,7 +96,7 @@ export async function writeFriction(ix: IndexResult): Promise<{ summary: string;
 	let items: FrictionItem[] = [];
 	try {
 		const r = await chatJson<{ summary: string; items: FrictionItem[] }>({
-			model: cfg.models.director, reasoning: "low", system: SYSTEM, ledger, phase: "friction", kind: "friction", parts, maxTokens: 4000, estimateUsd: 0.03,
+			model: cfg.models.director, reasoning: "low", system: SYSTEM, ledger, phase: "friction", kind: "friction", parts, maxTokens: 8000, estimateUsd: 0.03,
 			validate: (v) => {
 				const e: string[] = [];
 				if (!Array.isArray(v?.items)) return ["items must be an array"];

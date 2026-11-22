@@ -203,12 +203,13 @@ async function main(): Promise<void> {
 		case "batch": {
 			const list = f._.slice(1).flatMap((p) => (existsSync(p) && statSync(p).isDirectory() ? readdirSync(p).filter((x) => x.endsWith(".html")).map((x) => join(p, x)) : [p]));
 			const outDir = resolve(String(f["out-dir"] ?? join(ROOT, "deliverables")));
-			const results: Record<string, unknown> = readJsonIf(join(outDir, "batch.json")) ?? {};
+			const results: Record<string, unknown> = readJsonIf(join(outDir, String(f.state ?? "batch.json"))) ?? {};
 			for (const p of list) {
 				const name = basename(p).replace(/\.html?$/i, "");
 				const prev = results[name] as { dir?: string; status?: string } | undefined;
 				try {
-					const r = await runSession(p, { session: prev?.dir && existsSync(prev.dir) ? prev.dir : undefined, dotted, out: join(outDir, name, "highlight.mp4") });
+					const reuse = prev?.dir && existsSync(prev.dir) ? prev.dir : undefined;
+					const r = await runSession(p, { session: reuse, dotted, out: join(outDir, name, "highlight.mp4"), redo: reuse && f.redo ? String(f.redo) : undefined });
 					await exportDeliverable(r.dir, join(outDir, name));
 					if (f.group) writeFileSync(join(outDir, name, `.${String(f.group)}`), "");
 					results[name] = { status: "ok", dir: r.dir, score: r.score, best: r.best, usd: r.usd };
@@ -216,7 +217,7 @@ async function main(): Promise<void> {
 					log.err(`${name}: ${errMsg(e)}`);
 					results[name] = { ...(prev ?? {}), status: "failed", error: errMsg(e).slice(0, 400) };
 				}
-				writeJson(join(outDir, "batch.json"), results);
+				writeJson(join(outDir, String(f.state ?? "batch.json")), results);
 			}
 			log.head("batch summary");
 			for (const [k, v] of Object.entries(results)) log.info(`${k.padEnd(28)} ${JSON.stringify(v)}`);
