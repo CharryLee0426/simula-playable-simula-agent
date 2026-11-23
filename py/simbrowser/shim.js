@@ -8,13 +8,17 @@
 //   2. Reproducibility: Math.random is a seeded PRNG.
 //   3. A sandbox: ad SDK stubs (mraid, dapi, ExitApi, FbPlayableAd), a WebSocket that never connects, window.open
 //      blocked. CTA calls are logged as events: they tell the agent that the playable reached its install button.
-//   4. An audio event log: decoded buffers, buffer-source starts/stops (with the gain on the path to the speakers),
-//      media elements and oscillators, all stamped with virtual time, so the worker can mix the game's audio
-//      offline and lay it under the 30 fps video in sync.
+//   4. The game's audio, in game time. Web Audio is rendered by the browser's own engine: the game's AudioContext is
+//      an OfflineAudioContext on the virtual clock, rendered once when the session closes (envelopes, filters,
+//      compressors, pitch sweeps: exactly what a player hears). <audio> elements are logged (play/pause/volume,
+//      virtual time) and mixed by the worker.
 //   5. Introspection: which input events the game listens to, and (for DOM games) which elements are interactive.
 (() => {
 	if (window.__sim) return;
-	const CFG = Object.assign({ seed: 1, fps: 30, frozen: true }, window.__SIM_CFG || {});
+	const CFG = Object.assign({ seed: 1, fps: 30, frozen: true, audio: "render", audioMaxS: 300, audioRate: 0 }, window.__SIM_CFG || {});
+	// "render": Web Audio rendered offline by the browser (needs the virtual clock). "log": the old event log, mixed
+	// approximately by the worker (gain read at start, no envelopes or effects).
+	const VIRTUAL_AUDIO = CFG.frozen && CFG.audio !== "log" && !!(window.OfflineAudioContext && window.AudioContext && window.AudioNode && window.AudioParam);
 	const realSetTimeout = window.setTimeout.bind(window);
 	const realPerfNow = performance.now.bind(performance);
 	const RealDate = Date;
@@ -161,9 +165,11 @@
 		window.requestIdleCallback = (cb) => addTimer(() => cb({ didTimeout: false, timeRemaining: () => 8 }), 1, false, []);
 		window.cancelIdleCallback = (id) => S.timers.delete(id);
 
-		// AudioContext.currentTime follows the virtual clock (seconds since the context was created).
+		// "log" audio: AudioContext.currentTime follows the virtual clock (seconds since the context was created).
+		// ("render" audio gives the game's context its own clock, below, and leaves the game's own
+		// OfflineAudioContexts, used to pre-render sounds, on their native clock.)
 		const BAC = window.BaseAudioContext || window.AudioContext;
-		if (BAC) {
+		if (BAC && !VIRTUAL_AUDIO) {
 			const created = new WeakMap();
 			const desc = Object.getOwnPropertyDescriptor(BAC.prototype, "currentTime");
 			Object.defineProperty(BAC.prototype, "currentTime", {
@@ -241,13 +247,18 @@
 		return { now: S.now, frame: S.frame, ms: realPerfNow() - t0, pendingRaf: S.raf.size, timers: S.timers.size };
 	};
 
-	// ------------------------------------------------------------------ 4. audio event log
+	// ------------------------------------------------------------------ 4. audio
 	const A = S.audio;
 	const ids = new WeakMap();
 	let nextAudioId = 1;
 	const idOf = (o) => { if (!ids.has(o)) ids.set(o, nextAudioId++); return ids.get(o); };
+	const RealAC = window.AudioContext;
+	const isRealCtx = (c) => !!RealAC && c instanceof RealAC; // not the game's own OfflineAudioContexts (pre-rendering)
+	const NATIVE = window.AudioNode ? { connect: AudioNode.prototype.connect, disconnect: AudioNode.prototype.disconnect } : {};
 	const graph = new WeakMap(); // node -> Set(destinations)
 	const BAC2 = window.BaseAudioContext || window.AudioContext;
+	// 4a. "log" audio (fallback): starts/stops of real AudioContexts, with the gain on the path read at start time.
+	// Approximate: no envelopes, filters or pitch automation (they are what make synthesized SFX sound right).
 	if (window.AudioNode && BAC2) {
 		const origConnect = AudioNode.prototype.connect;
 		AudioNode.prototype.connect = function (dest, ...rest) {
@@ -275,28 +286,30 @@
 		const ctxNow = (ctx) => {
 			try { return ctx.currentTime; } catch (_) { return S.now / 1000; }
 		};
-		const origDecode = BAC2.prototype.decodeAudioData;
-		BAC2.prototype.decodeAudioData = function (data, ok, err) {
-			let copy = null;
-			try { copy = data.slice(0); } catch (_) {}
-			const p = origDecode.call(this, data);
-			const out = p.then((buf) => {
-				try {
-					const id = idOf(buf);
-					if (copy && !A.buffers[id]) A.buffers[id] = { id, kind: "encoded", bytes: copy, duration: buf.duration, channels: buf.numberOfChannels, rate: buf.sampleRate };
-				} catch (_) {}
-				if (ok) try { ok(buf); } catch (_) {}
-				return buf;
-			}, (e) => { if (err) try { err(e); } catch (_) {} throw e; });
-			return out;
-		};
+		if (!VIRTUAL_AUDIO) {
+			const origDecode = BAC2.prototype.decodeAudioData;
+			BAC2.prototype.decodeAudioData = function (data, ok, err) {
+				let copy = null;
+				try { copy = data.slice(0); } catch (_) {}
+				const p = origDecode.call(this, data);
+				const out = p.then((buf) => {
+					try {
+						const id = idOf(buf);
+						if (copy && !A.buffers[id]) A.buffers[id] = { id, kind: "encoded", bytes: copy, duration: buf.duration, channels: buf.numberOfChannels, rate: buf.sampleRate };
+					} catch (_) {}
+					if (ok) try { ok(buf); } catch (_) {}
+					return buf;
+				}, (e) => { if (err) try { err(e); } catch (_) {} throw e; });
+				return out;
+			};
+		}
 		const SRC = window.AudioBufferSourceNode;
 		if (SRC) {
 			const origStart = SRC.prototype.start;
 			SRC.prototype.start = function (when = 0, offset = 0, duration) {
 				try {
 					const buf = this.buffer;
-					if (buf) {
+					if (buf && isRealCtx(this.context)) {
 						const bid = idOf(buf);
 						if (!A.buffers[bid]) {
 							// Built in code (procedural SFX): keep the PCM itself, capped at 20 s.
@@ -311,15 +324,17 @@
 							loop: !!this.loop, loopStart: this.loopStart || 0, loopEnd: this.loopEnd || 0, rate: this.playbackRate ? this.playbackRate.value : 1, gain: pathGain(this) });
 					}
 				} catch (_) {}
-				return origStart.call(this, when, offset, duration);
+				return origStart.apply(this, arguments);
 			};
 			const origStop = SRC.prototype.stop;
 			SRC.prototype.stop = function (when = 0) {
 				try {
-					const now = ctxNow(this.context);
-					A.log.push({ op: "stop", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0) });
+					if (isRealCtx(this.context)) {
+						const now = ctxNow(this.context);
+						A.log.push({ op: "stop", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0) });
+					}
 				} catch (_) {}
-				return origStop.call(this, when);
+				return origStop.apply(this, arguments);
 			};
 		}
 		const OSC = window.OscillatorNode;
@@ -327,20 +342,379 @@
 			const oStart = OSC.prototype.start;
 			OSC.prototype.start = function (when = 0) {
 				try {
-					const now = ctxNow(this.context);
-					A.log.push({ op: "osc", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0), type: this.type, freq: this.frequency.value, gain: pathGain(this) });
+					if (isRealCtx(this.context)) {
+						const now = ctxNow(this.context);
+						A.log.push({ op: "osc", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0), type: this.type, freq: this.frequency.value, gain: pathGain(this) });
+					}
 				} catch (_) {}
-				return oStart.call(this, when);
+				return oStart.apply(this, arguments);
 			};
 			const oStop = OSC.prototype.stop;
 			OSC.prototype.stop = function (when = 0) {
 				try {
-					const now = ctxNow(this.context);
-					A.log.push({ op: "stop", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0) });
+					if (isRealCtx(this.context)) {
+						const now = ctxNow(this.context);
+						A.log.push({ op: "stop", node: idOf(this), t: S.now / 1000 + (when > now ? when - now : 0) });
+					}
 				} catch (_) {}
-				return oStop.call(this, when);
+				return oStop.apply(this, arguments);
 			};
 		}
+	}
+
+	// 4b. "render" audio. The game gets one OfflineAudioContext dressed as an AudioContext (every `new AudioContext()`
+	// returns it), whose currentTime is virtual. Everything the game schedules on the timeline (start/stop, AudioParam
+	// automation) goes straight to the engine, with "now" (0 or a time already past) meaning the virtual now. Changes
+	// that a real context applies immediately (connect/disconnect, `.value =`, attributes of nodes already sounding)
+	// are recorded with their virtual time and replayed at that point of the render (OfflineAudioContext.suspend).
+	// Nodes are wired at the time they were made, as in a live context, which also keeps the render fast. When the
+	// session closes the worker calls renderAudio(): the browser renders the whole session, exactly as a player would
+	// have heard it. `ended` and `statechange` events are delivered in virtual time; the render's own are hidden.
+	let V = null;
+	if (VIRTUAL_AUDIO) {
+		const OAC = window.OfflineAudioContext;
+		const BAC = window.BaseAudioContext || OAC;
+		const ASN = window.AudioScheduledSourceNode ? AudioScheduledSourceNode.prototype : null;
+		const N = {
+			suspend: OAC.prototype.suspend, resume: OAC.prototype.resume, startRendering: OAC.prototype.startRendering,
+			createGain: BAC.prototype.createGain,
+			listener: Object.getOwnPropertyDescriptor(BAC.prototype, "listener"),
+			destination: Object.getOwnPropertyDescriptor(BAC.prototype, "destination"),
+			onstatechange: Object.getOwnPropertyDescriptor(BAC.prototype, "onstatechange"),
+			value: Object.getOwnPropertyDescriptor(AudioParam.prototype, "value"),
+		};
+		const err = (e) => S.errors.push(String((e && e.stack) || e).slice(0, 300));
+		const ctxNow = () => {
+			if (!V) return 0;
+			if (V.state !== "running") return V.frozenC;
+			const r = V.runs[V.runs.length - 1];
+			return r.c0 + (S.now - r.v0) / 1000;
+		};
+		const clampT = (t) => Math.max(Number(t) || 0, ctxNow());
+		const later = (fn) => { if (V.rendering) { try { fn(); } catch (_) {} } else V.deferred.push({ c: ctxNow(), fn }); };
+		const isOurs = (n) => V !== null && n != null && n.context === V.ctx;
+		const vTimer = (delayMs, fn) => { const id = S.nextId++; S.timers.set(id, { at: S.now + delayMs, every: 0, fn, args: [], seq: id }); return id; };
+
+		// Which AudioParams are ours: registered when the game reads them off a node (AudioParam has no .context).
+		const ours = new WeakSet();
+		const reg = (v) => {
+			if (v instanceof AudioParam) ours.add(v);
+			else if (window.AudioParamMap && v instanceof AudioParamMap) v.forEach((p) => ours.add(p));
+		};
+		const nodeClasses = Object.getOwnPropertyNames(window).filter((k) => {
+			if (!k.endsWith("Node")) return false;
+			try { const C = window[k]; return typeof C === "function" && C.prototype instanceof AudioNode; } catch (_) { return false; }
+		}).map((k) => window[k]);
+		for (const C of nodeClasses) {
+			for (const [k, d] of Object.entries(Object.getOwnPropertyDescriptors(C.prototype))) {
+				if (!d.get || !d.configurable || k === "onended") continue;
+				const g = d.get;
+				Object.defineProperty(C.prototype, k, { ...d, get() { const v = g.call(this); if (v && typeof v === "object" && V && this.context === V.ctx) reg(v); return v; } });
+			}
+		}
+		if (window.AudioListener) {
+			for (const [k, d] of Object.entries(Object.getOwnPropertyDescriptors(AudioListener.prototype))) {
+				if (!d.get || !d.configurable) continue;
+				const g = d.get;
+				Object.defineProperty(AudioListener.prototype, k, { ...d, get() { const v = g.call(this); if (V && this === V.listener) reg(v); return v; } });
+			}
+		}
+
+		// AudioParam automation. Times are clamped to now (a live context treats a past time as now). The events are
+		// also kept here, so `.value` reads what a live context would report: the automated value at this moment.
+		const TL = new WeakMap(); // AudioParam -> { init, ev: [{k, t, v, tc, d, c, at}] }
+		const tlOf = (p) => { let r = TL.get(p); if (!r) TL.set(p, (r = { init: N.value.get.call(p), ev: [] })); return r; };
+		const insert = (r, e) => { let i = r.ev.length; while (i > 0 && r.ev[i - 1].t > e.t) i--; r.ev.splice(i, 0, e); };
+		const valueAt = (r, T) => {
+			let pv = r.init, pt = null, tgt = null; // value/time of the previous event; an active setTargetAtTime
+			const cur = (t) => (tgt ? tgt.v + (tgt.from - tgt.v) * Math.exp(-Math.max(0, t - tgt.t) / Math.max(1e-6, tgt.tc)) : pv);
+			for (const e of r.ev) {
+				if (e.k === "lin" || e.k === "exp") {
+					const t0 = tgt ? tgt.t : pt !== null ? pt : e.at, v0 = tgt ? tgt.from : pv;
+					tgt = null;
+					if (T < e.t) {
+						if (T <= t0 || e.t <= t0) return v0;
+						const x = (T - t0) / (e.t - t0);
+						if (e.k === "lin") return v0 + (e.v - v0) * x;
+						return v0 !== 0 && v0 * e.v > 0 ? v0 * Math.pow(e.v / v0, x) : v0;
+					}
+					pv = e.v; pt = e.t;
+					continue;
+				}
+				if (e.t > T) break;
+				if (e.k === "set") { tgt = null; pv = e.v; pt = e.t; }
+				else if (e.k === "tgt") { const from = cur(e.t); tgt = { v: e.v, tc: e.tc, t: e.t, from }; pv = from; pt = e.t; }
+				else if (e.k === "crv") {
+					tgt = null;
+					const c = e.c, n = c.length;
+					if (!n) continue;
+					if (T < e.t + e.d) { const x = ((T - e.t) / e.d) * (n - 1), i = Math.floor(x); return i + 1 < n ? c[i] + (c[i + 1] - c[i]) * (x - i) : c[n - 1]; }
+					pv = c[n - 1]; pt = e.t + e.d;
+				}
+			}
+			return cur(T);
+		};
+		const wrapParam = (name, fn) => {
+			const orig = AudioParam.prototype[name];
+			if (typeof orig !== "function") return;
+			AudioParam.prototype[name] = function (...a) { return ours.has(this) ? fn.call(this, orig, a) : orig.apply(this, a); };
+		};
+		wrapParam("setValueAtTime", function (orig, [v, t]) { const r = tlOf(this), tt = clampT(t), out = orig.call(this, v, tt); insert(r, { k: "set", t: tt, v: +v }); return out; });
+		for (const [name, k] of [["linearRampToValueAtTime", "lin"], ["exponentialRampToValueAtTime", "exp"]]) {
+			wrapParam(name, function (orig, [v, t]) { const r = tlOf(this), tt = clampT(t), out = orig.call(this, v, tt); insert(r, { k, t: tt, v: +v, at: ctxNow() }); return out; });
+		}
+		wrapParam("setTargetAtTime", function (orig, [v, t, tc]) { const r = tlOf(this), tt = clampT(t), out = orig.call(this, v, tt, tc); insert(r, { k: "tgt", t: tt, v: +v, tc: +tc }); return out; });
+		wrapParam("setValueCurveAtTime", function (orig, [c, t, d]) { const r = tlOf(this), tt = clampT(t), out = orig.call(this, c, tt, d); insert(r, { k: "crv", t: tt, d: +d, c: Float32Array.from(c) }); return out; });
+		wrapParam("cancelScheduledValues", function (orig, [t]) { const r = tlOf(this), tt = clampT(t), out = orig.call(this, tt); r.ev = r.ev.filter((e) => e.t < tt); return out; });
+		wrapParam("cancelAndHoldAtTime", function (orig, [t]) {
+			const r = tlOf(this), tt = clampT(t), hold = valueAt(r, tt), out = orig.call(this, tt);
+			r.ev = r.ev.filter((e) => e.t < tt); insert(r, { k: "set", t: tt, v: hold });
+			return out;
+		});
+		Object.defineProperty(AudioParam.prototype, "value", {
+			configurable: true, enumerable: N.value.enumerable,
+			get() { if (!ours.has(this)) return N.value.get.call(this); const r = TL.get(this); return r && r.ev.length ? valueAt(r, ctxNow()) : N.value.get.call(this); },
+			set(v) { if (!ours.has(this) || !Number.isFinite(Number(v))) return N.value.set.call(this, v); this.setValueAtTime(Number(v), ctxNow()); },
+		});
+
+		// Graph changes happen at their virtual time in the render.
+		const wiredAt = new WeakMap(); // node -> ctx time of its first connection
+		const wire = (n, c) => { if (n && !wiredAt.has(n)) wiredAt.set(n, c); };
+		const started = new WeakMap(); // source node -> { start, end, timer, done }
+		const live = (n) => {
+			if (started.has(n)) return true;
+			if (ASN && n instanceof AudioScheduledSourceNode) return false; // silent until started
+			const w = wiredAt.get(n);
+			return w !== undefined && w < ctxNow();
+		};
+		const prevConnect = AudioNode.prototype.connect, prevDisconnect = AudioNode.prototype.disconnect;
+		AudioNode.prototype.connect = function (dest, ...rest) {
+			if (!isOurs(this)) return prevConnect.call(this, dest, ...rest);
+			const isNode = dest instanceof AudioNode;
+			const destOurs = isNode ? dest.context === V.ctx : ours.has(dest);
+			if (!destOurs || (rest[0] !== undefined && +rest[0] >= this.numberOfOutputs) || (isNode && rest[1] !== undefined && +rest[1] >= dest.numberOfInputs)) {
+				return NATIVE.connect.call(this, dest, ...rest); // throws, as a live context would (other context, bad index)
+			}
+			const c = ctxNow();
+			wire(this, c);
+			if (isNode) wire(dest, c);
+			if (dest === V.dest) V.toDest.add(this);
+			later(() => NATIVE.connect.call(this, dest, ...rest));
+			return isNode ? dest : undefined;
+		};
+		AudioNode.prototype.disconnect = function (...a) {
+			if (!isOurs(this)) return prevDisconnect.apply(this, a);
+			later(() => NATIVE.disconnect.apply(this, a));
+		};
+		// Attributes and setter methods: immediate on a node that cannot be sounding yet, else at their time (the
+		// getter reports the new value straight away).
+		const shadow = new WeakMap();
+		const wrapAttr = (C, prop) => {
+			const d = C && Object.getOwnPropertyDescriptor(C.prototype, prop);
+			if (!d || !d.set || !d.configurable) return;
+			Object.defineProperty(C.prototype, prop, {
+				configurable: true, enumerable: d.enumerable,
+				get() { const sh = shadow.get(this); return sh && prop in sh ? sh[prop] : d.get.call(this); },
+				set(v) {
+					if (!isOurs(this) || !live(this)) return d.set.call(this, v);
+					let sh = shadow.get(this);
+					if (!sh) shadow.set(this, (sh = {}));
+					sh[prop] = v;
+					later(() => { try { d.set.call(this, v); } finally { if (sh[prop] === v) delete sh[prop]; } });
+				},
+			});
+		};
+		const wrapMethod = (C, name, owner = isOurs) => {
+			const orig = C && C.prototype[name];
+			if (typeof orig !== "function") return;
+			C.prototype[name] = function (...a) {
+				if (!owner(this) || (owner === isOurs && !live(this))) return orig.apply(this, a);
+				later(() => orig.apply(this, a));
+			};
+		};
+		const W = window;
+		wrapAttr(W.OscillatorNode, "type");
+		for (const p of ["buffer", "loop", "loopStart", "loopEnd"]) wrapAttr(W.AudioBufferSourceNode, p);
+		wrapAttr(W.BiquadFilterNode, "type");
+		for (const p of ["curve", "oversample"]) wrapAttr(W.WaveShaperNode, p);
+		for (const p of ["buffer", "normalize"]) wrapAttr(W.ConvolverNode, p);
+		for (const p of ["panningModel", "distanceModel", "refDistance", "maxDistance", "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"]) wrapAttr(W.PannerNode, p);
+		for (const p of ["channelCount", "channelCountMode", "channelInterpretation"]) wrapAttr(W.AudioNode, p);
+		wrapMethod(W.OscillatorNode, "setPeriodicWave");
+		for (const m of ["setPosition", "setOrientation"]) { wrapMethod(W.PannerNode, m); wrapMethod(W.AudioListener, m, (l) => V !== null && l === V.listener); }
+
+		// start/stop: "now" means the virtual now; `ended` fires in virtual time when the sound is over.
+		const armEnded = (n) => {
+			const s = started.get(n);
+			if (s.timer) { S.timers.delete(s.timer); s.timer = 0; }
+			if (s.done || !Number.isFinite(s.end)) return;
+			const delay = V.state === "running" ? Math.max(0, (s.end - ctxNow()) * 1000) : S.dt;
+			s.timer = vTimer(delay, () => {
+				s.timer = 0;
+				if (V.state === "closed" || s.done) return;
+				if (V.state !== "running" || ctxNow() < s.end - 1e-6) return armEnded(n);
+				s.done = true;
+				try { n.dispatchEvent(new Event("ended")); } catch (e) { err(e); }
+			});
+		};
+		const onStart = (n, w, rest) => {
+			V.starts++;
+			let end = Infinity;
+			if (W.AudioBufferSourceNode && n instanceof AudioBufferSourceNode) {
+				const b = n.buffer;
+				if (b) {
+					const rate = Math.abs(n.playbackRate.value) || 1;
+					const off = Math.max(0, Number(rest[0]) || 0);
+					if (rest[1] !== undefined) end = w + Math.max(0, Number(rest[1]) || 0) / rate;
+					if (!n.loop) end = Math.min(end, w + Math.max(0, b.duration - off) / rate);
+				}
+			}
+			started.set(n, { start: w, end, timer: 0, done: false });
+			armEnded(n);
+		};
+		const srcProtos = [W.AudioScheduledSourceNode, W.AudioBufferSourceNode, W.OscillatorNode, W.ConstantSourceNode].filter(Boolean).map((C) => C.prototype);
+		for (const P of srcProtos) {
+			for (const name of ["start", "stop"]) {
+				if (!Object.prototype.hasOwnProperty.call(P, name)) continue;
+				const prev = P[name];
+				P[name] = function (when = 0, ...rest) {
+					if (!isOurs(this)) return prev.call(this, when, ...rest);
+					const w = clampT(when);
+					const out = prev.call(this, w, ...rest);
+					if (name === "start") onStart(this, w, rest);
+					else { const s = started.get(this); if (s) { s.end = Math.max(w, s.start); armEnded(this); } }
+					return out;
+				};
+			}
+		}
+		// The render's own (trusted) `ended` / `statechange` events never reach the game: it already had them.
+		const wrapped = new WeakMap();
+		const untrustedOnly = (fn) => {
+			let w = wrapped.get(fn);
+			if (!w) {
+				w = function (ev) { if (ev && ev.isTrusted) return; return typeof fn === "function" ? fn.call(this, ev) : fn.handleEvent(ev); };
+				wrapped.set(fn, w);
+			}
+			return w;
+		};
+		const guardEvents = (target, type, attr, owner) => {
+			const d = Object.getOwnPropertyDescriptor(attr.proto, attr.name);
+			const fns = new WeakMap();
+			Object.defineProperty(target, attr.name, {
+				configurable: true, enumerable: true,
+				get() { return owner(this) ? (fns.get(this) ?? null) : d.get.call(this); },
+				set(fn) {
+					if (!owner(this)) return d.set.call(this, fn);
+					const f = typeof fn === "function" ? fn : null;
+					fns.set(this, f);
+					d.set.call(this, f ? untrustedOnly(f) : null);
+				},
+			});
+			const add = EventTarget.prototype.addEventListener, remove = EventTarget.prototype.removeEventListener;
+			Object.defineProperty(target, "addEventListener", { configurable: true, writable: true, value: function (t, fn, o) {
+				return add.call(this, t, t === type && fn && owner(this) ? untrustedOnly(fn) : fn, o);
+			} });
+			Object.defineProperty(target, "removeEventListener", { configurable: true, writable: true, value: function (t, fn, o) {
+				return remove.call(this, t, t === type && fn && owner(this) && wrapped.has(fn) ? wrapped.get(fn) : fn, o);
+			} });
+		};
+		if (ASN) guardEvents(ASN, "ended", { proto: ASN, name: "onended" }, isOurs);
+
+		// The context the game gets.
+		const P = Object.create(OAC.prototype);
+		const def = (k, d) => Object.defineProperty(P, k, { configurable: true, ...(typeof d === "function" ? { writable: true, value: d } : d) });
+		const fireState = () => vTimer(0, () => { try { V.ctx.dispatchEvent(new Event("statechange")); } catch (e) { err(e); } });
+		const reopen = () => { V.runs.push({ c0: V.frozenC, v0: S.now, v1: null }); V.state = "running"; };
+		const halt = () => { V.frozenC = ctxNow(); V.runs[V.runs.length - 1].v1 = S.now; };
+		const closedErr = (what) => Promise.reject(new DOMException(`Cannot ${what} a closed AudioContext.`, "InvalidStateError"));
+		def("currentTime", { get: ctxNow });
+		def("state", { get: () => V.state });
+		def("baseLatency", { get: () => 0.01 });
+		def("outputLatency", { get: () => 0.02 });
+		def("sinkId", { get: () => "" });
+		def("onsinkchange", { value: null, writable: true });
+		def("resume", function () { if (V.state === "closed") return closedErr("resume"); if (V.state === "suspended") { reopen(); fireState(); } return Promise.resolve(); });
+		def("suspend", function () { if (V.state === "closed") return closedErr("suspend"); if (V.state === "running") { halt(); V.state = "suspended"; fireState(); } return Promise.resolve(); });
+		def("close", function () { if (V.state === "closed") return closedErr("close"); if (V.state === "running") halt(); V.state = "closed"; fireState(); return Promise.resolve(); });
+		def("getOutputTimestamp", function () { return { contextTime: ctxNow(), performanceTime: S.now }; });
+		def("setSinkId", function () { return Promise.resolve(); });
+		// <audio> routed into the graph: the element is still mixed from the media log (its graph processing is not).
+		def("createMediaElementSource", function () { A.mediaInGraph = (A.mediaInGraph || 0) + 1; return N.createGain.call(this); });
+		def("createMediaStreamSource", function () { return N.createGain.call(this); });
+		def("createMediaStreamTrackSource", function () { return N.createGain.call(this); });
+		def("createMediaStreamDestination", function () { const g = N.createGain.call(this); try { g.stream = new MediaStream(); } catch (_) {} return g; });
+		def("startRendering", function () { return Promise.reject(new DOMException("Not supported on an AudioContext.", "NotSupportedError")); });
+		def(Symbol.toStringTag, { value: "AudioContext" });
+		if (N.onstatechange) guardEvents(P, "statechange", { proto: BAC.prototype, name: "onstatechange" }, (x) => V !== null && x === V.ctx);
+		const FakeAC = function AudioContext(opts) {
+			if (!new.target) throw new TypeError("Failed to construct 'AudioContext': Please use the 'new' operator, this DOM object constructor cannot be called as a function.");
+			if (!V) {
+				// The rate a live context would have (the device's): games size buffers by it, and some fill them with
+				// Math.random(), which is the seeded stream the rest of the game draws from.
+				let rate = Math.round(Number(opts && opts.sampleRate) || CFG.audioRate || 0);
+				if (!rate) { try { const real = new RealAC(); rate = real.sampleRate; real.close(); } catch (_) { rate = 48000; } }
+				const len = Math.max(rate, Math.ceil(Math.max(1, (CFG.audioMaxS || 300) - S.now / 1000) * rate));
+				const ctx = new OAC({ numberOfChannels: 2, length: len, sampleRate: rate });
+				Object.setPrototypeOf(ctx, P);
+				V = { ctx, rate, len, t0: S.now, runs: [{ c0: 0, v0: S.now, v1: null }], state: "running", frozenC: 0, deferred: [], toDest: new Set(), starts: 0, rendering: false,
+					listener: N.listener.get.call(ctx), dest: N.destination.get.call(ctx) };
+			} else if (V.state === "closed") reopen();
+			return V.ctx;
+		};
+		FakeAC.prototype = P;
+		Object.defineProperty(P, "constructor", { value: FakeAC, configurable: true, writable: true });
+		window.AudioContext = FakeAC;
+		if (window.webkitAudioContext) window.webkitAudioContext = FakeAC;
+
+		S.audioState = () => (V ? { state: V.state, now: ctxNow(), sources: V.starts, deferred: V.deferred.length, runs: V.runs.length } : null);
+		/** Render the session's Web Audio (once). Resolves to its description; the samples are read with audioChunk. */
+		S.renderAudio = async () => {
+			if (!V) return null;
+			if (V.info) return V.info;
+			const ctx = V.ctx, rate = V.rate, Q = 128;
+			const endC = Math.min(ctxNow(), (V.len - 1) / rate);
+			if (V.state === "running") V.runs[V.runs.length - 1].v1 = S.now;
+			const runs = V.runs.map((r) => [r.c0, r.v0 / 1000, (r.v1 === null ? S.now : r.v1) / 1000]);
+			const endF = Math.floor((endC * rate) / Q) * Q;
+			const groups = new Map();
+			let opErrors = 0, failed = 0;
+			const apply = (fns) => { for (const fn of fns) { try { fn(); } catch (_) { opErrors++; } } };
+			for (const d of V.deferred) {
+				const f = Math.floor((d.c * rate) / Q) * Q;
+				if (f >= endF) continue; // after the session
+				if (f <= 0) { apply([d.fn]); continue; }
+				if (!groups.has(f)) groups.set(f, []);
+				groups.get(f).push(d.fn);
+			}
+			V.rendering = true;
+			const at = (f, fns) => N.suspend.call(ctx, f / rate).then(() => { apply(fns); return N.resume.call(ctx); }, () => { failed++; });
+			for (const [f, fns] of groups) at(f, fns);
+			// Past the end of the session nothing is heard: cut the graph so the rest of the render costs nothing.
+			if (endF > 0) at(endF, [...V.toDest].map((n) => () => NATIVE.disconnect.call(n, V.dest)));
+			const t0 = realPerfNow();
+			try {
+				const buf = await Promise.race([N.startRendering.call(ctx),
+					new Promise((_, rej) => realSetTimeout(() => rej(new Error("audio render timed out")), CFG.audioRenderTimeoutMs || 300000))]);
+				V.pcm = [buf.getChannelData(0), buf.getChannelData(buf.numberOfChannels > 1 ? 1 : 0)];
+				V.info = { rate, frames: Math.min(buf.length, Math.ceil(endC * rate)), runs, t0: V.t0 / 1000, sources: V.starts, deferred: V.deferred.length,
+					suspends: groups.size, failed, opErrors, mediaInGraph: A.mediaInGraph || 0, ms: Math.round(realPerfNow() - t0),
+					truncated: ctxNow() > (V.len - 1) / rate }; // the session outlasted audioMaxS: the rest is silent
+			} catch (e) {
+				V.info = { error: String((e && e.message) || e).slice(0, 300), sources: V.starts };
+			}
+			return V.info;
+		};
+		/** `n` frames of the render from frame `i0`, interleaved stereo float32 little-endian, base64. */
+		S.audioChunk = (i0, n) => {
+			const [L, R] = V.pcm;
+			const m = Math.max(0, Math.min(n, V.info.frames - i0));
+			const f = new Float32Array(m * 2);
+			for (let i = 0; i < m; i++) { f[2 * i] = L[i0 + i]; f[2 * i + 1] = R[i0 + i]; }
+			const u = new Uint8Array(f.buffer);
+			let s = "";
+			for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+			return btoa(s);
+		};
 	}
 	if (window.HTMLMediaElement) {
 		const MP = HTMLMediaElement.prototype;
@@ -414,7 +788,7 @@
 	S.summary = () => ({
 		now: S.now, frame: S.frame, raf: S.raf.size, timers: S.timers.size,
 		listeners: S.listeners, errors: S.errors.slice(-5), events: S.events.slice(-20),
-		audioStarts: S.audio.log.length, canvases: document.querySelectorAll("canvas").length,
+		audioStarts: S.audio.log.length + (V ? V.starts : 0), canvases: document.querySelectorAll("canvas").length,
 		domNodes: document.getElementsByTagName("*").length, title: document.title,
 	});
 })();

@@ -228,7 +228,9 @@ export async function playSession(playable: string): Promise<SessionSummary> {
 	const robot = cfg.play.policy === "random";
 	const rng = new Rng(`${cfg.browser.seed}|random-policy`);
 
-	const opened = await w.open({ playable: resolve(playable), run_dir: paths.dir, viewport: [vw, vh], dpr: cfg.browser.dpr, fps, seed: cfg.browser.seed, display: cfg.browser.display });
+	// audio_max_s: the longest the session can run (it sizes the buffer the game's Web Audio is rendered into).
+	const opened = await w.open({ playable: resolve(playable), run_dir: paths.dir, viewport: [vw, vh], dpr: cfg.browser.dpr, fps, seed: cfg.browser.seed, display: cfg.browser.display,
+		audio_max_s: Math.ceil(cfg.play.boot_max_s + cfg.play.max_game_s + cfg.play.end_card_hold_s + 60) });
 	trace.emit("play", "boot", `loaded in ${opened.load_s}s · ${opened.frame_size.join("×")} @ ${fps} fps · GL: ${opened.gl ?? "none"} · "${opened.summary.title}"`, opened);
 
 	const deciderObs = async (o: Observation, before?: Observation, intents?: string): Promise<Record<string, Answer> | null> => {

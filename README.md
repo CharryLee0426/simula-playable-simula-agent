@@ -29,9 +29,9 @@ decision by decision), plus the logs. Results: [Results](#results).
  │ injected before the game runs (py/simbrowser/shim.js):                                                │
  │   virtual clock: rAF, timers, performance.now, Date, event.timeStamp, CSS/Web animations,             │
  │                  AudioContext.currentTime — all advance only when the agent steps a frame             │
- │   seeded Math.random · ad SDK stubs (mraid, dapi, ExitApi…) · no network · audio event log            │
+ │   seeded Math.random · ad SDK stubs (mraid, dapi, ExitApi…) · no network · Web Audio rendered offline │
  │   introspection: which input events the game listens to; interactive DOM elements                    │
- │ every stepped frame → JPEG → ffmpeg (30 fps H.264)        audio log → offline mix → raw.mp4            │
+ │ every stepped frame → JPEG → ffmpeg (30 fps H.264)        audio render + media log → mix → raw.mp4     │
  └───────────────────────────────▲─────────────────────────────────────────┬──────────────────────────────┘
                JSON lines: step / touch / observe                          │ screenshots, DOM, listeners
  ┌───────────────────────────────┴───── agent (TypeScript · Pi Durable) ───▼──────────────────────────────┐
@@ -80,10 +80,20 @@ Consequence: the recording is deterministic and machine-independent; the cost is
 (~0.2–0.4 s per 3D frame on llvmpipe; headed Chrome on Xvfb is ~3.5× faster than headless SwiftShader, so the worker
 starts Xvfb automatically on Linux).
 
-**2. Game audio reconstructed in game time.** Real-time audio is meaningless under a virtual clock, so the shim logs
-every sound the game starts (decoded buffers, buffer sources with the gain on their path to the speakers, `<audio>`
-elements and their volume fades, oscillators) with its game time, and the worker mixes it offline. The soundtrack is
-frame-accurate with the video by construction.
+**2. Game audio rendered in game time, by the browser.** Real-time audio is meaningless under a virtual clock. The
+game's `AudioContext` is an `OfflineAudioContext` whose `currentTime` is the virtual clock: everything the game puts on
+the audio timeline (`start`/`stop`, gain envelopes, filter and pitch sweeps) goes straight to Chromium's engine, and
+what a live context would apply immediately (`connect`/`disconnect`, `.value =`, attributes of a sounding node) is
+replayed at its game time during the render (`suspend(t)`). When the session closes, Chromium renders the whole
+session's graph once (≈0.1 s for a 30 s session), so compressors, filters and envelopes sound exactly as they do for a
+player. `ended`/`statechange` events are delivered in game time, `.value` reads the automated value, `suspend()`
+freezes the context clock, and the context reports the device's sample rate (games size noise buffers by it and fill
+them from the seeded `Math.random`, so it has to match or the replay diverges). `<audio>` elements are logged
+(play/pause/volume) and mixed by the worker. The soundtrack is frame-accurate with the video by construction.
+An earlier version re-synthesized Web Audio in Python from an event log: it read each sound's gain once at its start
+(before any envelope ran, so usually 1.0) and dropped filters and pitch sweeps, so synthesized SFX came out as flat,
+loud, unfiltered square/saw beeps up to 28 dB above the music. That path remains as the `audio: "log"` fallback, and
+`python -m simbrowser.remix` rebuilt the shipped deliverables' audio from verified replays of their sessions.
 
 **3. See like a player, with generic help.** The main observation is the screenshot. Two generic signals make it
 reliable: for DOM games, interactive elements are drawn as numbered tags (set-of-marks) so the planner can say
@@ -315,7 +325,11 @@ picks the story, code enforces the rules.
   survival is not measurable from a handful of runs; the lead-time thresholds (0.5 / 1.2 s) are set by hand and
   belong in the same calibration loop as the evaluator. Next: re-acquire a lost track from the frame difference
   right after the player's own move, and carry learned depth across sessions of the same game.
-- **Effects nodes in audio** (filters, panners, convolvers) are not reproduced in the offline mix; gain and timing are.
+- **Audio edge cases.** Web Audio is rendered once at the end of the session, so anything that reads the audio while
+  the game runs sees silence (an `AnalyserNode` visualizer stays flat), and `ScriptProcessor`/`AudioWorklet` code runs
+  during the final render rather than live. An `<audio>` element routed into Web Audio
+  (`createMediaElementSource`) is mixed from the media log, without its graph processing. `<audio>` elements play on
+  the real clock, so the loop position music resumes at can differ slightly between runs.
 - **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
 - **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation
   to a stronger one when the decider reports low clarity or the agent is stuck would cut both.
@@ -330,7 +344,7 @@ On Linux, `Xvfb` (optional) makes WebGL capture ~3.5× faster.
 ```bash
 ./run setup          # python env (playwright, numpy, pillow), chromium, key → .env; then doctor
 ./run doctor         # checks tools, key, model ids, decider
-npm test             # unit tests: gestures, EDL normalization, timing, reflex plans (node) + player tracker (python)
+npm test             # unit tests: gestures, EDL normalization, timing, reflex plans (node) + player tracker, game audio (python)
 ./run --playable games/samples/word-hunt.html --out highlight.mp4
 ./run batch games/samples games/generated --out-dir deliverables     # many playables, resumable
 ./run --playable game.html --session runs/<id> --redo cut            # re-cut without re-playing
@@ -359,9 +373,10 @@ src/eval/evaluate.ts     gate, heuristics, judge, pairwise
 src/friction.ts          friction signals and report
 src/report/html.ts       trace.html
 src/llm.ts               OpenRouter chat (images/video → JSON) and Decisions API
-py/simbrowser/shim.js    virtual clock, sandbox, audio log, introspection (injected)
+py/simbrowser/shim.js    virtual clock, sandbox, game audio (Web Audio rendered offline), introspection (injected)
 py/simbrowser/server.py  browser worker (Playwright, CDP touch, 30 fps capture)
-py/simbrowser/audio.py   offline game-audio mix
+py/simbrowser/audio.py   game-audio mix (rendered Web Audio + <audio> elements)
+py/simbrowser/remix.py   rebuild a finished session's audio from a verified replay
 py/simbrowser/render.py  EDL → highlight with touch indicator
 games/samples/           the 4 provided playables
 games/generated/         playables I generated (2D, DOM, 3D)

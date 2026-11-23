@@ -22,7 +22,8 @@ A suggested script for the walkthrough. Times are targets; every claim points at
 - The two things that broke and how they were fixed generically: a CPU benchmark busy-loop at boot (Raid) → creeping
   clock after 20k reads per frame; floating reward labels frozen on screen (Word Hunt) → animations tracked and
   finished explicitly. The second one was found by the VLM judge ("worst moment: frozen '+$0.30' text").
-- Audio: logged in game time and re-mixed offline → frame-accurate soundtrack.
+- Audio: the game's Web Audio graph is rendered by Chromium itself on the virtual clock (envelopes, filters, compressor
+  intact), `<audio>` elements are logged in game time → frame-accurate soundtrack that sounds like the game.
 
 ## 3. How it plays (2.5 min)
 - Open a `trace.html`, scroll the turn table: screenshot → what the planner saw → its running notes → gestures with

@@ -1,11 +1,14 @@
-"""Offline mix of a session's game audio from the shim's event log.
+"""Offline mix of a session's game audio, in game time, on a 48 kHz stereo timeline in sync with the 30 fps video.
 
-The game ran on a virtual clock, so its real-time audio output is meaningless (and the browser is muted). Instead
-the shim logged every sound the game started, in game time: Web Audio buffer sources (with the gain on their path
-to the speakers), <audio> elements (with volume changes) and oscillators. Here each sound is decoded with ffmpeg
-and placed on a 48 kHz stereo timeline at its game-time position, so the mix is in sync with the 30 fps video
-frame-for-frame. Effects nodes (filters, panners) are not reproduced: gain and timing are, which is what reads as
-"the game's audio" in a highlight.
+The game ran on a virtual clock, so the browser's real-time audio output means nothing (and it is muted).
+
+Web Audio: the browser itself rendered the game's audio graph over the whole session (shim.js, "render" audio), so
+envelopes, filters, compressors and pitch sweeps sound exactly as they do for a player. The render is in the audio
+context's own time; `runs` says where each stretch of it (between suspend/resume) falls in game time.
+
+<audio> elements, and Web Audio in the "log" fallback, come from the shim's event log: each sound is decoded with
+ffmpeg and placed at its game-time position (media volume changes are followed). The fallback reads each sound's
+gain once at its start and reproduces no envelopes or effects, so synthesized SFX come out flat and loud.
 
     python -m simbrowser.audio <session_dir> <duration_s>   ->  <session_dir>/audio.wav
 """
@@ -32,6 +35,15 @@ def decode(path: Path) -> np.ndarray | None:
         return np.frombuffer(r.stdout, dtype=np.float32).reshape(-1, 2).copy()
     except Exception:
         return None
+
+
+def decode_f32(path: Path, rate: int) -> np.ndarray:
+    """Interleaved stereo float32 at `rate` -> float32 (n, 2) at SR (ffmpeg's resampler when the rates differ)."""
+    if rate == SR:
+        return np.fromfile(path, dtype="<f4").reshape(-1, 2)
+    r = subprocess.run(["ffmpeg", "-loglevel", "error", "-f", "f32le", "-ar", str(rate), "-ac", "2", "-i", str(path), "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"],
+                       capture_output=True, timeout=300, check=True)
+    return np.frombuffer(r.stdout, dtype=np.float32).reshape(-1, 2).copy()
 
 
 def from_pcm(path: Path, rate: int) -> np.ndarray:
@@ -131,6 +143,21 @@ def mix_session(session: Path, duration: float) -> dict:
             if e.get("node") == node and e["op"] in ("start", "media_play") and e["t"] > t:
                 return e["t"]
         return duration
+
+    wa = man.get("webaudio") or {}
+    if wa.get("file") and (adir / wa["file"]).exists():
+        try:
+            pcm = decode_f32(adir / wa["file"], int(wa.get("rate", SR)))
+            for c0, v0, v1 in wa.get("runs", []):
+                seg = pcm[int(round(c0 * SR)): int(round((c0 + max(0.0, v1 - v0)) * SR))]
+                if len(seg):
+                    place(mix, fade_edges(seg, 2.0), v0)
+            stats["webaudio_sources"] = int(wa.get("sources", 0))
+            stats["sounds"] += int(wa.get("sources", 0))
+        except Exception as ex:
+            stats.setdefault("errors", []).append(f"webaudio: {ex}"[:200])
+    elif wa.get("error"):
+        stats.setdefault("errors", []).append(f"webaudio: {wa['error']}"[:200])
 
     for i, e in enumerate(log):
         op = e["op"]

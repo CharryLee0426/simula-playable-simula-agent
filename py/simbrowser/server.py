@@ -129,7 +129,8 @@ class Worker:
         self.gl_renderer = None
         ctx = await self.browser.new_context(viewport={"width": vw, "height": vh}, device_scale_factor=dpr, is_mobile=True, has_touch=True,
                                              user_agent="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Mobile Safari/537.36")
-        cfg = {"seed": int(p.get("seed", 1)), "fps": fps, "frozen": bool(p.get("frozen", True))}
+        cfg = {"seed": int(p.get("seed", 1)), "fps": fps, "frozen": bool(p.get("frozen", True)),
+               "audio": str(p.get("audio", "render")), "audioMaxS": float(p.get("audio_max_s", 300))}
         await ctx.add_init_script(script=f"window.__SIM_CFG = {json.dumps(cfg)};\n{SHIM}")
 
         async def route(r):
@@ -456,9 +457,13 @@ class Worker:
 
     # ------------------------------------------------------------------ audio
     async def export_audio(self) -> dict:
-        data = await self.page.evaluate("__sim.exportAudio([])")
         adir = self.run_dir / "audio"
         adir.mkdir(exist_ok=True)
+        try:
+            webaudio = await self.render_webaudio(adir)
+        except Exception as e:  # the media log is still worth having
+            webaudio = {"error": str(e)[:300]}
+        data = await self.page.evaluate("__sim.exportAudio([])")
         bufs = []
         for b in data["buffers"]:
             if b["kind"] == "encoded":
@@ -486,8 +491,25 @@ class Worker:
                     entry["error"] = str(e)[:200]
             media.append(entry)
         manifest = {"log": data["log"], "buffers": bufs, "media": media}
+        if webaudio:
+            manifest["webaudio"] = webaudio
         (adir / "audio_log.json").write_text(json.dumps(manifest))
-        return {"starts": sum(1 for e in data["log"] if e["op"] in ("start", "media_play", "osc")), "buffers": len(bufs), "media": len(media)}
+        out = {"starts": sum(1 for e in data["log"] if e["op"] in ("start", "media_play", "osc")), "buffers": len(bufs), "media": len(media)}
+        if webaudio:
+            out["webaudio"] = {k: webaudio.get(k) for k in ("sources", "frames", "ms", "suspends", "truncated", "error") if webaudio.get(k)}
+        return out
+
+    async def render_webaudio(self, adir: Path) -> dict | None:
+        """The game's Web Audio, rendered by the browser over the whole session (see shim.js, "render" audio):
+        interleaved stereo float32 in audio/webaudio.f32, laid out in context time; `runs` maps it to game time."""
+        info = await self.page.evaluate("__sim.renderAudio ? __sim.renderAudio() : null")
+        if not info or info.get("error"):
+            return info
+        chunk = info["rate"] * 10
+        with open(adir / "webaudio.f32", "wb") as f:
+            for i0 in range(0, info["frames"], chunk):
+                f.write(base64.b64decode(await self.page.evaluate("([a, n]) => __sim.audioChunk(a, n)", [i0, chunk])))
+        return {**info, "file": "webaudio.f32", "channels": 2}
 
 
 async def main():
