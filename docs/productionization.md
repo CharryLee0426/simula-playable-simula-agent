@@ -8,7 +8,7 @@ queue, isolation, caching, budgets and a human in the loop for the cases the eva
 
 | | 2D/DOM game (Word Hunt) | 3D WebGL game, CPU only |
 | --- | --- | --- |
-| play (capture at 720×1280, 30 fps) | ~2 min | 10–20 min (llvmpipe rasterization ≈ 0.2–0.4 s/frame) |
+| play (capture at 720×1280, 30 fps) | ~2 min | 10–20 min (llvmpipe rasterization ≈ 0.16–0.25 s/frame across Raid, West and Boom Castle) |
 | index + cut + render + eval + friction | ~4 min | ~5 min |
 | model spend | ~$0.25 | ~$0.4–0.6 |
 
