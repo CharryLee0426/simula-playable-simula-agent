@@ -10,7 +10,7 @@ HERE = Path(__file__).resolve().parent
 DELIV = HERE.parents[2] / "deliverables"
 
 GROUPS = [
-    ("Samples from the brief", [("boom-castle", "Boom Castle", "3D tower defense, drag to aim"), ("word-hunt", "Word Hunt", "DOM word puzzle, swipe letters"),
+    ("Samples from the brief", [("boom-castle", "Boom Castle", "2D tower defense, drag to aim"), ("word-hunt", "Word Hunt", "DOM word puzzle, swipe letters"),
                                 ("raid-shard-market", "Raid: Shard Market", "3D resource game, joystick"), ("west-game-ii", "West Game II", "3D town defense, joystick")]),
     ("Generated for this project", [("castle-toss", "Castle Toss", "2D physics slingshot"), ("bakery-rush", "Bakery Rush", "DOM idle clicker"),
                                     ("neon-lanes", "Neon Lanes", "raw-WebGL 3D runner, reflexes"), ("orb-merge", "Orb Merge", "2D merge puzzle")]),
