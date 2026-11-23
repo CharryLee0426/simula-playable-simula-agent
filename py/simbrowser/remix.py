@@ -15,10 +15,11 @@ HUD), for games whose cosmetic effects draw from the random stream. Writes audio
 in place.
 
 Some recordings had real-time races in them: a live AudioContext's state flipping to "running" on the real clock,
-or assets (audio, images, shaders) finishing on the real clock, when the game's logic or its random draws depend on
-them. Their replays can differ run to run (the "render" audio path has removed the audio ones). With --attempts N a
-diverging replay is abandoned as soon as a checkpoint frame no longer matches raw.mp4, and replayed again, up to N
-times; only a replay that passes the full check is used.
+assets (audio, images, fonts, shaders) finishing on the real clock, or a touch move handled a frame late, when the
+game's logic or its random draws depend on them. The shim now pins all of these to game frames (README, key decision
+1), so a replay is the same game on every run; a recording made before that is one sample of its races, and its
+replay may be another game. With --attempts N a diverging replay is abandoned as soon as a checkpoint frame no longer
+matches raw.mp4, and replayed again, up to N times; only a replay that passes the full check is used.
 """
 from __future__ import annotations
 

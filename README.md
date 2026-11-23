@@ -75,7 +75,21 @@ fails twice: model latency of 3–20 s freezes the player on video, and on a CPU
 advances when the agent steps a frame. While the model thinks the game is frozen; every captured frame is exactly
 1/30 s of game time apart however slow the machine is; the only pauses on video are the humanizer's reaction times.
 Two generic guards keep it robust: busy-wait loops (CPU benchmarks at boot) are detected and given a creeping clock,
-and Web Animations are tracked and finished explicitly so `animationend`/`.finished` handlers still fire.
+and Web Animations are tracked and finished explicitly so `animationend`/`.finished` handlers still fire (a CSS
+transition starts in the frame whose style change made it, not whenever the compositor got to it).
+Work that finishes on the real clock is pinned to game frames too. Decoding pictures (`createImageBitmap`,
+`img.decode()`, `<img>` load/error), reading `data:`/`blob:` URLs and blobs (`fetch`, `Response`/`Blob` bodies),
+fonts, `<script src>` loads and `decodeAudioData` are tracked when the game asks for them: at each of its sync points a
+step waits (real time) until everything asked for so far is done, and the results (promises, load/error events,
+callbacks) land at the start of the next frame, in request order, from a virtual timer. A chain (fetch → blob →
+`createImageBitmap`) takes one frame per link on any machine. `KHR_parallel_shader_compile` reports a shader compiled
+on the first poll. Input sent before a step is handled before the frame: Chrome hands touch moves to the page at one
+of its real rendering frames, which on a 3D page can come 250 ms after the CDP call returned, so the page counts the
+input it receives, the worker counts what it sent, and a step first waits until they agree. Before this, two replays
+of one West Game II session parted from frame 3 (its packed assets finished decoding a frame earlier or later), and a
+move handled a frame late nudged the hero, then the camera. Work the game itself holds up (a stream it feeds from a
+timer) is waited for 10 s at most, then lands when it finishes; a module loaded with `import()` cannot be intercepted
+and runs whenever it arrives.
 Consequence: the recording is deterministic and machine-independent; the cost is wall time on slow machines
 (~0.2–0.4 s per 3D frame on llvmpipe; headed Chrome on Xvfb is ~3.5× faster than headless SwiftShader, so the worker
 starts Xvfb automatically on Linux).
@@ -346,7 +360,7 @@ On Linux, `Xvfb` (optional) makes WebGL capture ~3.5× faster.
 ```bash
 ./run setup          # python env (playwright, numpy, pillow), chromium, key → .env; then doctor
 ./run doctor         # checks tools, key, model ids, decider
-npm test             # unit tests: gestures, EDL normalization, timing, reflex plans (node) + player tracker, game audio (python)
+npm test             # unit tests: gestures, EDL normalization, timing, reflex plans (node) + player tracker, game audio, asset work and input in game time (python)
 ./run --playable games/samples/word-hunt.html --out highlight.mp4
 ./run batch games/samples games/generated --out-dir deliverables     # many playables, resumable
 ./run --playable game.html --session runs/<id> --redo cut            # re-cut without re-playing
@@ -375,7 +389,7 @@ src/eval/evaluate.ts     gate, heuristics, judge, pairwise
 src/friction.ts          friction signals and report
 src/report/html.ts       trace.html
 src/llm.ts               OpenRouter chat (images/video → JSON) and Decisions API
-py/simbrowser/shim.js    virtual clock, sandbox, game audio (Web Audio rendered offline), introspection (injected)
+py/simbrowser/shim.js    virtual clock (asset work and input pinned to frames), sandbox, game audio (Web Audio rendered offline), introspection (injected)
 py/simbrowser/server.py  browser worker (Playwright, CDP touch, 30 fps capture)
 py/simbrowser/audio.py   game-audio mix (rendered Web Audio + <audio> elements)
 py/simbrowser/remix.py   rebuild a finished session's audio from a verified replay

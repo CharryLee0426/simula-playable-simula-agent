@@ -16,6 +16,13 @@
    模型思考时游戏冻结，思考时间不会出现在画面里；每一帧之间严格相隔 1/30 秒游戏时间，与机器快慢无关
    （无 GPU 时 3D 样例实时只有 2–5 fps，实时录制根本做不到 30 fps）。两个通用护栏：忙等循环检测
    （启动时的 CPU 跑分）和显式结束 Web Animations（否则 `.finished` 回调不触发、特效会冻在屏幕上）。
+   按实时完成的工作也钉在游戏帧上：解码图片（`createImageBitmap`、`img.decode()`、`<img>` 的 load/error）、读取
+   `data:`/`blob:` URL 和 Blob（`fetch`、`Response`/`Blob` 的 body）、字体、`<script src>` 加载和 `decodeAudioData`
+   在请求时被记录；每一步在它的同步点上（按实时）等到已请求的工作全部完成，结果（promise、load/error 事件、回调）
+   按请求顺序由虚拟定时器在下一帧开头送达，一条链（fetch → blob → `createImageBitmap`）在任何机器上都是每环一帧。
+   `KHR_parallel_shader_compile` 第一次查询就报告编译完成。步进前发出的输入在这一帧之前处理：Chrome 在某个真实渲染帧
+   才把触摸移动交给页面，3D 页面上可能比 CDP 调用返回晚 250 ms，所以页面统计收到的输入、worker 统计发出的输入，
+   步进先等两者一致。游戏自己卡住的工作最多等 10 秒，之后在完成时送达；`import()` 加载的模块无法拦截，到达时即运行。
 2. **由浏览器按游戏时间渲染游戏音频。** 游戏拿到的 `AudioContext` 其实是一个以虚拟时钟为 `currentTime` 的
    `OfflineAudioContext`：游戏排进音频时间线的一切（`start`/`stop`、音量包络、滤波和音高扫频）直接交给 Chromium
    的音频引擎；实时上下文会立即生效的操作（`connect`/`disconnect`、`.value =`、正在发声节点的属性）记下游戏时间，

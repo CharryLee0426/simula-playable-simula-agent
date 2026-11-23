@@ -4,7 +4,10 @@
 //   1. A virtual clock. requestAnimationFrame, timers, performance.now, Date, event.timeStamp, Web Animations /
 //      CSS animations and AudioContext.currentTime all read __sim.now, which only moves when the worker calls
 //      __sim.step(). The game is frozen while the model thinks, and every captured frame is exactly 1/30 s of game
-//      time apart however slow the machine renders (3D under SwiftShader runs at 2-5 real fps).
+//      time apart however slow the machine renders (3D under SwiftShader runs at 2-5 real fps). Work that finishes
+//      on the real clock (decoding pictures and audio, data:/blob: fetches and blob reads, fonts, script loads) is
+//      waited for and delivered at the start of the next frame (1b), and input sent before a step is handled
+//      before it (counted on both sides), so a replay of the same touches is the same game on any machine.
 //   2. Reproducibility: Math.random is a seeded PRNG.
 //   3. A sandbox: ad SDK stubs (mraid, dapi, ExitApi, FbPlayableAd), a WebSocket that never connects, window.open
 //      blocked. CTA calls are logged as events: they tell the agent that the playable reached its install button.
@@ -20,9 +23,12 @@
 	// approximately by the worker (gain read at start, no envelopes or effects).
 	const VIRTUAL_AUDIO = CFG.frozen && CFG.audio !== "log" && !!(window.OfflineAudioContext && window.AudioContext && window.AudioNode && window.AudioParam);
 	const realSetTimeout = window.setTimeout.bind(window);
+	const realClearTimeout = window.clearTimeout.bind(window);
 	const realPerfNow = performance.now.bind(performance);
 	const RealDate = Date;
 	const T0 = RealDate.now();
+	const nativeAddListener = EventTarget.prototype.addEventListener;
+	const nativeTimeStamp = Object.getOwnPropertyDescriptor(Event.prototype, "timeStamp").get;
 	const S = (window.__sim = {
 		cfg: CFG,
 		now: 0, // virtual ms since page start
@@ -58,6 +64,8 @@
 
 	// ------------------------------------------------------------------ 3. sandbox: ad SDKs, sockets, popups
 	const logEvent = (kind, data) => S.events.push({ t: S.now, frame: S.frame, kind, ...(data || {}) });
+	// The stubs answer later, on the game's clock (a virtual timer under the virtual clock, section 1).
+	const soon = (fn, ms) => (S.timeout || realSetTimeout)(fn, ms);
 	{
 		const mraidL = {};
 		const fire = (ev, ...args) => (mraidL[ev] || []).slice().forEach((f) => { try { f(...args); } catch (e) {} });
@@ -66,7 +74,7 @@
 			getState: () => "default",
 			getPlacementType: () => "interstitial",
 			isViewable: () => true,
-			addEventListener: (ev, f) => { (mraidL[ev] = mraidL[ev] || []).push(f); if (ev === "ready") realSetTimeout(() => f(), 0); if (ev === "viewableChange") realSetTimeout(() => f(true), 0); },
+			addEventListener: (ev, f) => { (mraidL[ev] = mraidL[ev] || []).push(f); if (ev === "ready") soon(() => f(), 0); if (ev === "viewableChange") soon(() => f(true), 0); },
 			removeEventListener: (ev, f) => { mraidL[ev] = (mraidL[ev] || []).filter((x) => x !== f); },
 			open: (url) => logEvent("cta", { via: "mraid.open", url: String(url || "") }),
 			close: () => logEvent("close", { via: "mraid.close" }),
@@ -83,7 +91,7 @@
 		window.dapi = {
 			isReady: () => true,
 			isViewable: () => true,
-			addEventListener: (ev, f) => { (dapiL[ev] = dapiL[ev] || []).push(f); if (ev === "ready") realSetTimeout(() => f(), 0); if (ev === "viewabilityChange") realSetTimeout(() => f({ isViewable: true }), 0); },
+			addEventListener: (ev, f) => { (dapiL[ev] = dapiL[ev] || []).push(f); if (ev === "ready") soon(() => f(), 0); if (ev === "viewabilityChange") soon(() => f({ isViewable: true }), 0); },
 			removeEventListener: () => {},
 			getScreenSize: () => ({ width: innerWidth, height: innerHeight }),
 			getAudioVolume: () => 1,
@@ -96,7 +104,7 @@
 			constructor(url) {
 				this.url = String(url); this.readyState = 0; this.onopen = this.onclose = this.onerror = this.onmessage = null; this._l = {};
 				logEvent("network", { via: "WebSocket", url: this.url.slice(0, 120) });
-				realSetTimeout(() => { this.readyState = 3; this._emit("error", {}); this._emit("close", { code: 1006, reason: "offline", wasClean: false }); }, 30);
+				soon(() => { this.readyState = 3; this._emit("error", {}); this._emit("close", { code: 1006, reason: "offline", wasClean: false }); }, 30);
 			}
 			_emit(t, e) { try { this["on" + t] && this["on" + t](e); } catch (_) {} (this._l[t] || []).forEach((f) => { try { f(e); } catch (_) {} }); }
 			addEventListener(t, f) { (this._l[t] = this._l[t] || []).push(f); }
@@ -160,6 +168,7 @@
 			return id;
 		};
 		window.setTimeout = (cb, ms, ...a) => addTimer(cb, ms, false, a);
+		S.timeout = (fn, ms) => addTimer(fn, ms, false, []);
 		window.setInterval = (cb, ms, ...a) => addTimer(cb, ms, true, a);
 		window.clearTimeout = window.clearInterval = (id) => { S.timers.delete(id); };
 		window.requestIdleCallback = (cb) => addTimer(() => cb({ didTimeout: false, timeRemaining: () => 8 }), 1, false, []);
@@ -185,7 +194,20 @@
 	// animation reaches its end we call finish(), so animationend / transitionend / finish handlers still fire.
 	// Tracked in our own set: an animation seeked to (almost) its end drops out of document.getAnimations(), and must
 	// still be finished explicitly, or `.finished.then(remove)` never runs and effects stay frozen on screen.
+	// Until we first see an animation it runs on the compositor's real clock, so how far it got says nothing about game
+	// time: one made by a style change (a CSS transition or animation) starts when we see it, at the end of the frame
+	// that made it, as a browser would start it at its next rendering; one made by element.animate() is paused as it is
+	// made, so it only moves when the game seeks it.
 	const anims = new Map();
+	const styleMade = (a) => (window.CSSTransition && a instanceof CSSTransition) || (window.CSSAnimation && a instanceof CSSAnimation);
+	if (CFG.frozen && window.Element && typeof Element.prototype.animate === "function") {
+		const nAnimate = Element.prototype.animate;
+		Element.prototype.animate = function (...a) {
+			const anim = nAnimate.apply(this, a);
+			try { anim.pause(); } catch (_) {}
+			return anim;
+		};
+	}
 	function syncAnimations() {
 		if (!document.getAnimations) return;
 		try { for (const a of document.getAnimations()) if (!anims.has(a)) anims.set(a, null); } catch (_) {}
@@ -193,7 +215,7 @@
 			try {
 				let st = prev;
 				if (!st) {
-					st = { start: S.now - (Number(a.currentTime) || 0) / (a.playbackRate || 1) };
+					st = { start: S.now - (styleMade(a) ? 0 : (Number(a.currentTime) || 0) / (a.playbackRate || 1)) };
 					anims.set(a, st);
 				}
 				if (a.playState === "finished" || a.playState === "idle") { anims.delete(a); continue; }
@@ -213,6 +235,71 @@
 	mc.port1.onmessage = () => { const w = waiters.shift(); if (w) w(); };
 	const yieldTask = () => new Promise((r) => { waiters.push(r); mc.port2.postMessage(0); });
 
+	// Asset work (section 1b) the virtual clock waits for: requested, finished on the real clock, delivered in game time.
+	const ops = []; // in request order
+	const assetStats = { requested: 0, delivered: 0, late: 0, waits: 0, waitMs: 0, maxWaitMs: 0, kinds: {} };
+	const STALL_MS = CFG.assetStallMs || 10000;
+	/** `job` (a promise of native work) is an op: `deliver({v} | {e})` runs from a virtual timer at the start of the first
+	 *  frame stepped after it finished. Its timer sequence number is taken now, so deliveries keep request order.
+	 *  `blocking()`: whether the clock waits for it yet (a script only loads once it is in the document). */
+	const track = (kind, job, deliver, blocking) => {
+		const op = { seq: S.nextId++, kind, frame: S.frame, done: false, r: null, deliver, late: false, cancelled: false, blocking };
+		assetStats.requested++;
+		assetStats.kinds[kind] = (assetStats.kinds[kind] || 0) + 1;
+		op.wait = Promise.resolve(job).then((v) => { op.done = true; op.r = { v }; }, (e) => { op.done = true; op.r = { e }; });
+		ops.push(op);
+		return op;
+	};
+	/** A promise for native work that settles in game time (see track). */
+	const defer = (kind, job) => new Promise((res, rej) => { track(kind, job, (r) => ("e" in r ? rej(r.e) : res(r.v))); });
+	let fontsLoading = null; // () => native document.fonts.ready while fonts load (CSS @font-face fetched on first use)
+	/** Wait (real time) until every op requested so far has finished, and any font the page started loading is in.
+	 *  An op the game itself holds up (a stream it feeds from a timer, an image whose src is removed) would never
+	 *  finish: when STALL_MS pass with none finishing, the ones still open are marked late and no longer waited for;
+	 *  they are delivered whenever they finish, the one place where real time still shows (counted in assetStats). */
+	async function settle() {
+		const t0 = realPerfNow();
+		let waited = false;
+		for (;;) {
+			const open = ops.filter((o) => !o.done && !o.late && (!o.blocking || o.blocking()));
+			const fonts = fontsLoading && fontsLoading();
+			if (!open.length && !fonts) break;
+			waited = true;
+			let timer = 0;
+			const stall = new Promise((r) => { timer = realSetTimeout(() => r(false), STALL_MS); });
+			const finished = [...open.map((o) => o.wait), ...(fonts ? [fonts] : [])].map((p) => Promise.resolve(p).then(() => true, () => true));
+			const any = await Promise.race([...finished, stall]);
+			realClearTimeout(timer);
+			if (!any) {
+				for (const o of open) if (!o.done) { o.late = true; assetStats.late++; S.errors.push(`asset ${o.kind} still loading after ${STALL_MS} ms: delivered when it finishes`); }
+				if (fonts) fontsLoading = null; // fonts that never finish loading: stop waiting for them
+				break;
+			}
+		}
+		if (waited) {
+			const ms = realPerfNow() - t0;
+			assetStats.waits++; assetStats.waitMs += ms; assetStats.maxWaitMs = Math.max(assetStats.maxWaitMs, ms);
+		}
+	}
+	/** A sync point: microtasks run (their requests join `ops`), then everything in flight finishes before game code
+	 *  runs again. Real-clock side effects (a script executing, a font or picture becoming drawable) happen here, at a
+	 *  fixed point of game time, never in the middle of a frame at a moment that depends on the machine. */
+	const sync = async () => { await yieldTask(); if (ops.length || fontsLoading) await settle(); };
+	S.assetLog = []; // [kind, frame requested, frame delivered] (the first 4000)
+	/** Ops finished by now land in this frame: virtual timers at the frame's start, in request order. */
+	function deliverDone() {
+		let w = 0;
+		for (const op of ops) {
+			if (!op.done) { ops[w++] = op; continue; }
+			if (op.cancelled || !op.deliver) continue;
+			assetStats.delivered++;
+			if (S.assetLog.length < 4000) S.assetLog.push([op.kind, op.frame, S.frame]);
+			S.timers.set(op.seq, { at: S.now, every: 0, fn: () => op.deliver(op.r), args: [], seq: op.seq });
+		}
+		ops.length = w;
+	}
+	S.assetStats = () => ({ ...assetStats, open: ops.length, pending: ops.filter((o) => !o.done).map((o) => o.kind).slice(0, 20) });
+
 	async function runTimersUntil(target) {
 		for (let guard = 0; guard < 5000; guard++) {
 			let best = null, bestId = 0;
@@ -221,22 +308,65 @@
 			S.now = Math.max(S.now, best.at);
 			if (best.every) { best.at += best.every; best.seq = S.nextId++; } else S.timers.delete(bestId);
 			try { best.fn(...(best.args || [])); } catch (e) { S.errors.push(String(e && e.stack || e).slice(0, 300)); }
-			if (guard % 16 === 15) await yieldTask();
+			if (guard % 16 === 15) await sync();
 		}
 	}
 
-	/** Advance n frames of 1/fps seconds each. Resolves when the frame's callbacks (and their microtasks) have run. */
-	S.step = async (n = 1) => {
+	// Input. Chrome hands touch and mouse moves to the page at one of its real rendering frames, which for a 3D page can
+	// come hundreds of ms after the worker's CDP call has returned: a move sent before a step was seen before the frame,
+	// during it or after it, depending on the machine. So the page counts the input it receives (each event Chrome
+	// hands over once: its pointer and touch events share a timestamp; mouse events are left out, as a tap's
+	// compatibility mouse events are not the worker's), touch and mouse apart (headless Chrome moves the mouse to 0,0
+	// on its own), the worker counts what it sent, and a step first waits (real time, capped) until the two agree. The
+	// counts are returned so the worker can resync after an event Chrome dropped.
+	const INPUT_WAIT_MS = CFG.inputWaitMs || 2000;
+	const inputStats = { touch: 0, mouse: 0, waits: 0, waitMs: 0, maxWaitMs: 0, timeouts: 0 };
+	const lastTs = { touch: -1, mouse: -1 };
+	let inputWaiter = null;
+	const inputIn = (want) => inputStats.touch >= want.touch && inputStats.mouse >= want.mouse;
+	const countInput = (e) => {
+		if (!e.isTrusted) return;
+		const kind = e.pointerType === undefined ? "touch" : e.pointerType; // a TouchEvent has no pointerType
+		if (kind !== "touch" && kind !== "mouse") return;
+		const ts = nativeTimeStamp.call(e);
+		if (ts === lastTs[kind]) return;
+		lastTs[kind] = ts;
+		inputStats[kind]++;
+		if (inputWaiter && inputIn(inputWaiter.want)) inputWaiter.done();
+	};
+	for (const t of ["pointerdown", "pointermove", "pointerup", "pointercancel", "touchstart", "touchmove", "touchend", "touchcancel"]) {
+		nativeAddListener.call(window, t, countInput, { capture: true, passive: true });
+	}
+	const inputHandled = (want) => new Promise((r) => {
 		const t0 = realPerfNow();
+		const end = (timedOut) => {
+			realClearTimeout(timer);
+			inputWaiter = null;
+			const ms = realPerfNow() - t0;
+			inputStats.waits++; inputStats.waitMs += ms; inputStats.maxWaitMs = Math.max(inputStats.maxWaitMs, ms);
+			if (timedOut) inputStats.timeouts++;
+			r();
+		};
+		const timer = realSetTimeout(() => end(true), INPUT_WAIT_MS);
+		inputWaiter = { want, done: () => end(false) };
+	});
+	S.inputStats = () => ({ ...inputStats });
+
+	/** Advance n frames of 1/fps seconds each. Resolves when the frame's callbacks (and their microtasks) have run,
+	 *  and the asset work they started has finished (it is delivered in the next frame). `input`: how many touch and
+	 *  mouse events the worker has sent so far, {touch, mouse}; they are handled before the frame starts. */
+	S.step = async (n = 1, input = null) => {
+		const t0 = realPerfNow();
+		if (input && !inputIn(input)) await inputHandled(input);
 		for (let i = 0; i < n; i++) {
-			const decodes = S.audioPending && S.audioPending(); // "render" audio: decodes in flight land in this frame
-			if (decodes) await decodes;
+			await sync(); // work started since the last frame (touch handlers, page load) finishes...
+			deliverDone(); // ... and everything finished lands in this frame
 			if (S.drift) { S.now += S.drift; S.drift = 0; }
 			S.reads = 0;
 			const target = S.now + S.dt;
 			await runTimersUntil(target);
 			S.now = target;
-			await yieldTask();
+			await sync();
 			const q = S.raf;
 			S.raf = new Map();
 			for (const cb of q.values()) {
@@ -244,10 +374,121 @@
 			}
 			syncAnimations();
 			S.frame++;
-			await yieldTask();
+			await sync(); // the screenshot after this step sees the frame's work done, whatever the machine's speed
 		}
-		return { now: S.now, frame: S.frame, ms: realPerfNow() - t0, pendingRaf: S.raf.size, timers: S.timers.size };
+		return { now: S.now, frame: S.frame, ms: realPerfNow() - t0, pendingRaf: S.raf.size, timers: S.timers.size, input: { touch: inputStats.touch, mouse: inputStats.mouse } };
 	};
+
+	// ------------------------------------------------------------------ 1b. asset work in game time
+	// Decoding pictures, reading data:/blob: URLs and blobs, loading fonts and scripts all finish on the real clock: when,
+	// in game frames, depends on the machine, and a game whose boot (and so every random draw after it) follows them
+	// plays out differently on every run. Under the virtual clock each request is an op (track, above): the frame waits
+	// at its sync points until the work is done, and the result (promise, load/error event, callback) is delivered from
+	// a virtual timer at the start of the next frame, in request order. A chain (fetch -> blob -> createImageBitmap)
+	// takes one frame per link, whatever the machine.
+	if (CFG.frozen) {
+		const W = window;
+		const wrapAsync = (proto, name, kind) => {
+			const orig = proto && proto[name];
+			if (typeof orig === "function") proto[name] = function (...a) { return defer(kind, orig.apply(this, a)); };
+		};
+		if (typeof W.createImageBitmap === "function") { const n = W.createImageBitmap; W.createImageBitmap = function (...a) { return defer("createImageBitmap", n.apply(W, a)); }; }
+		if (typeof W.fetch === "function") { const n = W.fetch; W.fetch = function (...a) { return defer("fetch", n.apply(W, a)); }; }
+		for (const m of ["arrayBuffer", "blob", "bytes", "formData", "json", "text"]) {
+			wrapAsync(W.Response && Response.prototype, m, "response." + m);
+			wrapAsync(W.Request && Request.prototype, m, "request." + m);
+		}
+		for (const m of ["arrayBuffer", "bytes", "text"]) wrapAsync(W.Blob && Blob.prototype, m, "blob." + m);
+		wrapAsync(W.HTMLImageElement && HTMLImageElement.prototype, "decode", "img.decode");
+		wrapAsync(W.OffscreenCanvas && OffscreenCanvas.prototype, "convertToBlob", "convertToBlob");
+		if (W.HTMLCanvasElement && typeof HTMLCanvasElement.prototype.toBlob === "function") {
+			const n = HTMLCanvasElement.prototype.toBlob;
+			HTMLCanvasElement.prototype.toBlob = function (cb, ...a) {
+				let res;
+				const job = new Promise((r) => { res = r; });
+				n.call(this, (b) => res(b), ...a); // throws (a tainted canvas) before anything is tracked
+				track("toBlob", job, (r) => { if (typeof cb === "function") cb(r.v); });
+			};
+		}
+		// Fonts: FontFaceSet.load / .ready and FontFace.load / .loaded. Fonts a stylesheet starts loading on first use are
+		// waited for too (settle), so text is drawn in its font from a fixed frame on.
+		if (W.FontFaceSet) {
+			const FS = FontFaceSet.prototype;
+			wrapAsync(FS, "load", "fonts.load");
+			const rd = Object.getOwnPropertyDescriptor(FS, "ready"), sd = Object.getOwnPropertyDescriptor(FS, "status");
+			if (rd && rd.get && rd.configurable) {
+				Object.defineProperty(FS, "ready", { ...rd, get() { return defer("fonts.ready", rd.get.call(this)); } });
+				if (sd && sd.get) fontsLoading = () => { const f = document.fonts; return f && sd.get.call(f) === "loading" ? rd.get.call(f) : null; };
+			}
+		}
+		if (W.FontFace) {
+			wrapAsync(FontFace.prototype, "load", "font.load");
+			const ld = Object.getOwnPropertyDescriptor(FontFace.prototype, "loaded");
+			if (ld && ld.get && ld.configurable) Object.defineProperty(FontFace.prototype, "loaded", { ...ld, get() { return defer("font.loaded", ld.get.call(this)); } });
+		}
+		// <img> and <script src> load/error events. Our capture listener at the element runs before the game's own: it
+		// stops the browser's event and the op dispatches it again (untrusted) when delivered. A new src before the
+		// picture finished replaces the op, as the browser drops the old request.
+		const held = new WeakMap(); // element -> its current load op
+		const listening = new WeakSet();
+		function hold(ev) {
+			const op = held.get(this);
+			if (!ev.isTrusted || !op) return;
+			ev.stopImmediatePropagation();
+			op.finish(ev.type);
+		}
+		const drop = (el) => { const op = held.get(el); if (op && !op.done) { op.cancelled = true; op.finish(null); held.delete(el); } };
+		const trackLoad = (el, kind, blocking) => {
+			const prev = held.get(el);
+			if (prev && !prev.done) { prev.cancelled = true; prev.finish(null); }
+			let finish;
+			const op = track(kind, new Promise((r) => { finish = r; }), (r) => {
+				if (held.get(el) === op) held.delete(el);
+				if (r.v) el.dispatchEvent(new Event(r.v));
+			}, blocking);
+			op.finish = finish;
+			held.set(el, op);
+			if (!listening.has(el)) { listening.add(el); nativeAddListener.call(el, "load", hold, true); nativeAddListener.call(el, "error", hold, true); }
+		};
+		const startImg = (el) => { if (el.loading !== "lazy") trackLoad(el, "img", null); }; // a lazy picture off screen never loads
+		// A script loads once it is in the document; one already in it with a src has run (a new src does nothing).
+		const startScript = (el) => { if (!el.isConnected) trackLoad(el, "script", () => el.isConnected); };
+		const onSet = (C, props, start) => {
+			for (const prop of props) {
+				const d = C && Object.getOwnPropertyDescriptor(C.prototype, prop);
+				if (d && d.set && d.configurable) Object.defineProperty(C.prototype, prop, { ...d, set(v) { try { start(this); } catch (_) {} return d.set.call(this, v); } });
+			}
+		};
+		onSet(W.HTMLImageElement, ["src", "srcset"], startImg);
+		onSet(W.HTMLScriptElement, ["src"], startScript);
+		const nSetAttr = Element.prototype.setAttribute, nRemoveAttr = Element.prototype.removeAttribute;
+		Element.prototype.setAttribute = function (name, value) {
+			try {
+				const k = String(name).toLowerCase();
+				if ((k === "src" || k === "srcset") && W.HTMLImageElement && this instanceof HTMLImageElement) startImg(this);
+				else if (k === "src" && W.HTMLScriptElement && this instanceof HTMLScriptElement) startScript(this);
+			} catch (_) {}
+			return nSetAttr.apply(this, arguments);
+		};
+		Element.prototype.removeAttribute = function (name) {
+			try { // a picture left without a source fires no event
+				const k = String(name).toLowerCase();
+				if ((k === "src" || k === "srcset") && W.HTMLImageElement && this instanceof HTMLImageElement && !this.hasAttribute(k === "src" ? "srcset" : "src")) drop(this);
+			} catch (_) {}
+			return nRemoveAttr.apply(this, arguments);
+		};
+		// KHR_parallel_shader_compile: COMPLETION_STATUS_KHR, polled from a (virtual) timer by three.js's compileAsync,
+		// turns true some real milliseconds after the compile starts. It reports done on the first poll: the program
+		// still compiles in parallel, and its first use waits for it.
+		for (const C of [W.WebGLRenderingContext, W.WebGL2RenderingContext]) {
+			if (!C) continue;
+			for (const m of ["getProgramParameter", "getShaderParameter"]) {
+				const n = C.prototype[m];
+				if (typeof n === "function") C.prototype[m] = function (obj, pname) { return pname === 0x91b1 ? true : n.call(this, obj, pname); };
+			}
+		}
+		// requestIdleCallback is already a virtual timer (section 1).
+	}
 
 	// ------------------------------------------------------------------ 4. audio
 	const A = S.audio;
@@ -397,27 +638,20 @@
 		const isOurs = (n) => V !== null && n != null && n.context === V.ctx;
 		const vTimer = (delayMs, fn) => { const id = S.nextId++; S.timers.set(id, { at: S.now + delayMs, every: 0, fn, args: [], seq: id }); return id; };
 
-		// decodeAudioData finishes on the real clock: when, in game frames, depends on the machine, and a game that
-		// skips a sound until its buffer is ready (drawing its random pitch only when it plays) would play out
-		// differently on every run. Decodes complete before the next frame is stepped and are delivered in it.
-		const decoding = new Set();
+		// decodeAudioData finishes on the real clock: a game that skips a sound until its buffer is ready (drawing its
+		// random pitch only when it plays) would play out differently on every run. It is asset work like any other
+		// (section 1b): finished before the next frame is stepped, delivered in it.
 		const nDecode = BAC.prototype.decodeAudioData;
 		BAC.prototype.decodeAudioData = function (data, ok, fail) {
 			if (!V || this !== V.ctx) return nDecode.apply(this, arguments);
 			let settle;
 			const out = new Promise((res, rej) => { settle = { res, rej }; });
-			const job = nDecode.call(this, data).then((buf) => ({ buf }), (e) => ({ e }));
-			decoding.add(job);
-			job.then((r) => {
-				decoding.delete(job);
-				vTimer(0, () => {
-					if ("buf" in r) { settle.res(r.buf); if (typeof ok === "function") try { ok(r.buf); } catch (e) { err(e); } }
-					else { settle.rej(r.e); if (typeof fail === "function") try { fail(r.e); } catch (e) { err(e); } }
-				});
+			track("decodeAudioData", nDecode.call(this, data), (r) => {
+				if ("v" in r) { settle.res(r.v); if (typeof ok === "function") try { ok(r.v); } catch (e) { err(e); } }
+				else { settle.rej(r.e); if (typeof fail === "function") try { fail(r.e); } catch (e) { err(e); } }
 			});
 			return out;
 		};
-		S.audioPending = () => (decoding.size ? Promise.race([Promise.allSettled([...decoding]), new Promise((r) => realSetTimeout(r, 20000))]) : null);
 
 		// Which AudioParams are ours: registered when the game reads them off a node (AudioParam has no .context).
 		const ours = new WeakSet();

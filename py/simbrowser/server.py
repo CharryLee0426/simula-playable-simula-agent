@@ -113,6 +113,8 @@ class Worker:
         self.freeze_scan = 0  # ... and sudden freezes
         self.frozen = False
         self.shot_ms: list[float] = []
+        self.input_sent = {"touch": 0, "mouse": 0}  # events sent that Chrome hands to the page: a step waits until it has them
+        self.pointer_at: tuple[float, float] | None = None  # where the last touch/mouse event left the pointer
 
     # ------------------------------------------------------------------ lifecycle
     async def open(self, p: dict) -> dict:
@@ -130,7 +132,8 @@ class Worker:
         ctx = await self.browser.new_context(viewport={"width": vw, "height": vh}, device_scale_factor=dpr, is_mobile=True, has_touch=True,
                                              user_agent="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Mobile Safari/537.36")
         cfg = {"seed": int(p.get("seed", 1)), "fps": fps, "frozen": bool(p.get("frozen", True)),
-               "audio": str(p.get("audio", "render")), "audioMaxS": float(p.get("audio_max_s", 300))}
+               "audio": str(p.get("audio", "render")), "audioMaxS": float(p.get("audio_max_s", 300)),
+               "assetStallMs": float(p.get("asset_stall_ms", 10000))}
         await ctx.add_init_script(script=f"window.__SIM_CFG = {json.dumps(cfg)};\n{SHIM}")
 
         async def route(r):
@@ -228,7 +231,8 @@ class Worker:
         last = {}
         for _ in range(n):
             t = time.time()
-            last = await self.page.evaluate("__sim.step(1)")
+            last = await self.page.evaluate(f"__sim.step(1, {json.dumps(self.input_sent)})")
+            self.input_sent = dict(last.get("input") or self.input_sent)  # what the page received (resync after a drop)
             self.step_ms.append((time.time() - t) * 1000)
             if capture:
                 self.rec.add(await self._shot(), last["now"])
@@ -240,8 +244,12 @@ class Worker:
         x, y = float(p.get("x", 0)), float(p.get("y", 0))
         cdp_type = {"start": "touchStart", "move": "touchMove", "end": "touchEnd", "cancel": "touchCancel"}[typ]
         points = [] if typ in ("end", "cancel") else [{"x": x, "y": y, "radiusX": 6, "radiusY": 6, "force": 0.6, "id": 0}]
+        if typ == "move" and self.pointer_at == (x, y):
+            return {"ok": True, "same_point": True}  # Chrome drops a move that goes nowhere
         await self.cdp.send("Input.dispatchTouchEvent", {"type": cdp_type, "touchPoints": points})
         self.touch_active = typ in ("start", "move")
+        self.pointer_at = (x, y) if self.touch_active else None
+        self.input_sent["touch"] += 1
         return {"ok": True}
 
     async def mouse(self, p: dict) -> dict:
@@ -251,14 +259,18 @@ class Worker:
         params = {"type": t, "x": x, "y": y, "button": "left" if typ != "move" else ("left" if self.touch_active else "none"), "clickCount": 1}
         if typ == "move" and self.touch_active:
             params["buttons"] = 1
+        if typ == "move" and self.pointer_at == (x, y):
+            return {"ok": True, "same_point": True}
         await self.cdp.send("Input.dispatchMouseEvent", params)
+        self.pointer_at = (x, y)
+        self.input_sent["mouse"] += 1
         self.touch_active = typ in ("down",) or (typ == "move" and self.touch_active)
         if typ == "up":
             self.touch_active = False
         return {"ok": True}
 
     async def key(self, p: dict) -> dict:
-        await self.page.keyboard.press(p["key"])
+        await self.page.keyboard.press(p["key"])  # acknowledged once the page has handled it
         return {"ok": True}
 
     async def ops(self, p: dict) -> dict:
