@@ -77,8 +77,8 @@ advances when the agent steps a frame. While the model thinks the game is frozen
 Two generic guards keep it robust: busy-wait loops (CPU benchmarks at boot) are detected and given a creeping clock,
 and Web Animations are tracked and finished explicitly so `animationend`/`.finished` handlers still fire.
 Consequence: the recording is deterministic and machine-independent; the cost is wall time on slow machines
-(~0.2–0.4 s per 3D frame on llvmpipe; headed Chrome on Xvfb is ~3.5× faster than headless SwiftShader, so the worker
-starts Xvfb automatically on Linux).
+(about 0.16–0.25 s per frame on llvmpipe for Boom Castle and the two 3D samples; headed Chrome on Xvfb is ~3.5×
+faster than headless SwiftShader, so the worker starts Xvfb automatically on Linux).
 
 **2. Game audio rendered in game time, by the browser.** Real-time audio is meaningless under a virtual clock. The
 game's `AudioContext` is an `OfflineAudioContext` whose `currentTime` is the virtual clock: everything the game puts on
@@ -205,11 +205,11 @@ calibration from review decisions and online CTR/IPM.
 ## Results
 
 Full table with links to every highlight, raw session, trace and friction report: **[deliverables/README.md](deliverables/README.md)**.
-All runs: default config, seed 7, one take per playable, CPU-only Linux VM (4 cores, no GPU).
+All runs: default config except a 70 s session cap for Boom Castle (the ablation and calibration rows add their own overrides: `play.reflex_actions=false`, and `play.policy=random` with a 45 s cap), seed 7, one take per playable, CPU-only Linux VM (4 cores, no GPU).
 
 | set | playable | how it's played (agent's own words, condensed) | session | score | judge · heuristics | baselines (first 20 s / random) | head-to-head |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| sample | Boom Castle (3D WebGL) | drag from the cannon to aim at goblin waves; pick upgrade cards between waves | 71 s, 56 inputs, 3 upgrades | **82.7** | 82.1 · 83.5 | 63.2 / 73.9 | 2/2 |
+| sample | Boom Castle (2D tower defense, three.js WebGL) | drag from the cannon to aim at goblin waves; pick upgrade cards between waves | 71 s, 56 inputs, 3 upgrades | **82.7** | 82.1 · 83.5 | 63.2 / 73.9 | 2/2 |
 | sample | Word Hunt (DOM) | swipe through letter tiles to form target words; 3 rounds | 26 s, game over → end card | **85.5** | 82.3 · 89.5 | 83.6 / 69.7 | 0/2 (ties) |
 | sample | Raid: Shard Market (3D) | joystick-drag to mine shards, sell at the market, buy worker/mine upgrades | 92 s, 25 inputs | **79.7** | 81.5 · 77.5 | 53.3 / 60.4 | 2/2 |
 | sample | West Game II (3D) | joystick-drag near outlaws to auto-shoot, collect gold, build defenses on pads | 93 s, 20 inputs | **83.4** | 81.5 · 85.7 | 40.6 / 64.9 | 2/2 |
@@ -227,8 +227,8 @@ What the numbers say:
 
 - **It plays games it has never seen**, across 2D canvas, DOM and WebGL 3D, tap/swipe/drag/joystick/slingshot
   controls, with no per-game code: it read every tutorial, used upgrades/power-ups when offered, reached the end card
-  in 8 of 11 games (the three that did not — Boom Castle, Raid, West — simply last longer than the 90 s cap), and recovered from fail
-  screens via retry/revive.
+  in 8 of 11 games (the three that did not — Boom Castle, Raid, West — simply last longer than the session cap: 70 s
+  for Boom Castle, 90 s for the other two), and recovered from fail screens via retry/revive.
 - **The evaluator separates real edits from lazy ones**: the chosen cut beat the best naive baseline head to head
   in 10 of 11 games, by +7.5 to +25 points. The exception is informative: Word Hunt's whole game lasts 26 s, so "the
   first 20 s" already *is* the story; the evaluator calls it a tie, correctly.
@@ -274,9 +274,10 @@ What the numbers say:
   re-runs reached 2 and 1 floors vs 7 without it. It ships **off by default** (`--set play.timing_actions=true`
   to try it). The better next step is to estimate the moving object's phase from pixel motion over one period and
   time the tap from that. (Sky Stack is no longer a clean hold-out for timing work after this.)
-- **Cost and time**: $0.29–0.71 per playable (median ≈ $0.35); 6–11 min wall time for 2D/DOM games, 17–20 min for
-  the 3D samples on CPU (capture is ~0.2–0.4 s per frame on llvmpipe; a GPU worker removes most of that). The three 3D
-  samples were re-cut once after evaluator changes (play reused), so their cost includes both cut/eval passes.
+- **Cost and time**: $0.29–0.71 per playable (median ≈ $0.38); 6–11 min wall time for the other eight games, 17–20 min
+  for Boom Castle and the two 3D samples on CPU (their capture is about 0.16–0.25 s per frame on llvmpipe; a GPU worker
+  removes most of that). Those three were re-cut once after evaluator changes (play reused), so their cost includes
+  both cut/eval passes.
 
 ---
 
@@ -332,7 +333,8 @@ picks the story, code enforces the rules.
   during the final render rather than live. An `<audio>` element routed into Web Audio
   (`createMediaElementSource`) is mixed from the media log, without its graph processing. `<audio>` elements play on
   the real clock, so the loop position music resumes at can differ slightly between runs.
-- **Speed on CPU.** 3D capture is 0.2–0.4 s per frame on llvmpipe; a GPU worker makes it ~10× faster.
+- **Speed on CPU.** Capture of Boom Castle and the two 3D samples is about 0.16–0.25 s per frame on llvmpipe; a GPU
+  worker makes it ~10× faster.
 - **Planner cost/latency.** Every decision is a VLM call (3–20 s, ~$0.006). A cheap model by default with escalation
   to a stronger one when the decider reports low clarity or the agent is stuck would cut both.
 
