@@ -5,9 +5,9 @@
 //      CSS animations and AudioContext.currentTime all read __sim.now, which only moves when the worker calls
 //      __sim.step(). The game is frozen while the model thinks, and every captured frame is exactly 1/30 s of game
 //      time apart however slow the machine renders (3D under SwiftShader runs at 2-5 real fps). Work that finishes
-//      on the real clock (decoding pictures and audio, data:/blob: fetches and blob reads, fonts, script loads) is
-//      waited for and delivered at the start of the next frame (1b), and input sent before a step is handled
-//      before it (counted on both sides), so a replay of the same touches is the same game on any machine.
+//      on the real clock (decoding pictures and audio, data:/blob: fetches and blob reads, fonts, scripts and blob
+//      modules) is waited for and delivered at the start of the next frame (1b), and input sent before a step is
+//      handled before it (counted on both sides), so a replay of the same touches is the same game on any machine.
 //   2. Reproducibility: Math.random is a seeded PRNG.
 //   3. A sandbox: ad SDK stubs (mraid, dapi, ExitApi, FbPlayableAd), a WebSocket that never connects, window.open
 //      blocked. CTA calls are logged as events: they tell the agent that the playable reached its install button.
@@ -253,6 +253,11 @@
 	/** A promise for native work that settles in game time (see track). */
 	const defer = (kind, job) => new Promise((res, rej) => { track(kind, job, (r) => ("e" in r ? rej(r.e) : res(r.v))); });
 	let fontsLoading = null; // () => native document.fonts.ready while fonts load (CSS @font-face fetched on first use)
+	// Modules the page builds from blobs (section 1b): how many were made and have run, when one last finished running,
+	// and since when a sync point watches for one (a frame that delivered work may have imported the first of a chain).
+	const JS_GAP_MS = CFG.moduleGapMs || 200;
+	const js = { made: 0, ran: 0, lastRan: -Infinity, watch: -Infinity, armed: false, waits: 0, waitMs: 0 };
+	const jsBusy = () => realPerfNow() < Math.max(js.lastRan, js.watch) + JS_GAP_MS;
 	/** Wait (real time) until every op requested so far has finished, and any font the page started loading is in.
 	 *  An op the game itself holds up (a stream it feeds from a timer, an image whose src is removed) would never
 	 *  finish: when STALL_MS pass with none finishing, the ones still open are marked late and no longer waited for;
@@ -263,7 +268,16 @@
 		for (;;) {
 			const open = ops.filter((o) => !o.done && !o.late && (!o.blocking || o.blocking()));
 			const fonts = fontsLoading && fontsLoading();
-			if (!open.length && !fonts) break;
+			if (!open.length && !fonts) {
+				// A chain of imports in progress: wait until none has finished running for JS_GAP_MS, then look again
+				// (a module may have asked for asset work).
+				const quiet = Math.max(js.lastRan, js.watch) + JS_GAP_MS - realPerfNow();
+				if (quiet <= 0) break;
+				const m0 = realPerfNow();
+				await new Promise((r) => realSetTimeout(r, quiet));
+				js.waits++; js.waitMs += realPerfNow() - m0;
+				continue;
+			}
 			waited = true;
 			let timer = 0;
 			const stall = new Promise((r) => { timer = realSetTimeout(() => r(false), STALL_MS); });
@@ -284,7 +298,11 @@
 	/** A sync point: microtasks run (their requests join `ops`), then everything in flight finishes before game code
 	 *  runs again. Real-clock side effects (a script executing, a font or picture becoming drawable) happen here, at a
 	 *  fixed point of game time, never in the middle of a frame at a moment that depends on the machine. */
-	const sync = async () => { await yieldTask(); if (ops.length || fontsLoading) await settle(); };
+	const sync = async (afterTimers = false) => {
+		await yieldTask();
+		if (afterTimers && js.armed) { js.armed = false; js.watch = realPerfNow(); }
+		if (ops.length || fontsLoading || jsBusy()) await settle();
+	};
 	S.assetLog = []; // [kind, frame requested, frame delivered] (the first 4000)
 	/** Ops finished by now land in this frame: virtual timers at the frame's start, in request order. */
 	function deliverDone() {
@@ -293,12 +311,14 @@
 			if (!op.done) { ops[w++] = op; continue; }
 			if (op.cancelled || !op.deliver) continue;
 			assetStats.delivered++;
+			if (js.made > js.ran) js.armed = true;
 			if (S.assetLog.length < 4000) S.assetLog.push([op.kind, op.frame, S.frame]);
 			S.timers.set(op.seq, { at: S.now, every: 0, fn: () => op.deliver(op.r), args: [], seq: op.seq });
 		}
 		ops.length = w;
 	}
-	S.assetStats = () => ({ ...assetStats, open: ops.length, pending: ops.filter((o) => !o.done).map((o) => o.kind).slice(0, 20) });
+	S.assetStats = () => ({ ...assetStats, open: ops.length, pending: ops.filter((o) => !o.done).map((o) => o.kind).slice(0, 20),
+		modules: { made: js.made, ran: js.ran, waits: js.waits, waitMs: Math.round(js.waitMs) } });
 
 	async function runTimersUntil(target) {
 		for (let guard = 0; guard < 5000; guard++) {
@@ -358,6 +378,7 @@
 	S.step = async (n = 1, input = null) => {
 		const t0 = realPerfNow();
 		if (input && !inputIn(input)) await inputHandled(input);
+		if (S.frame === 0 && js.made > js.ran) js.watch = realPerfNow(); // modules the page started importing as it loaded
 		for (let i = 0; i < n; i++) {
 			await sync(); // work started since the last frame (touch handlers, page load) finishes...
 			deliverDone(); // ... and everything finished lands in this frame
@@ -366,7 +387,7 @@
 			const target = S.now + S.dt;
 			await runTimersUntil(target);
 			S.now = target;
-			await sync();
+			await sync(true);
 			const q = S.raf;
 			S.raf = new Map();
 			for (const cb of q.values()) {
@@ -488,6 +509,29 @@
 			}
 		}
 		// requestIdleCallback is already a virtual timer (section 1).
+
+		// import() of a module built from a blob (playables that pack their code) loads and runs on the real clock, and
+		// the import itself cannot be seen from here. Each JavaScript blob gets a last statement that reports its run
+		// (valid in a classic script and in a module); a sync point waits for a chain of them to go quiet: after a module
+		// ran, and, while some have yet to run, after a frame's delivered work (whose continuation may import the first).
+		const JS_TYPE = /^\s*(text|application)\/(x-)?(javascript|ecmascript|jscript)\b/i;
+		const NBlob = W.Blob;
+		if (NBlob) {
+			S._jsRan = () => { js.ran++; js.lastRan = realPerfNow(); };
+			const SimBlob = function Blob(parts, opts) {
+				if (!new.target) throw new TypeError("Failed to construct 'Blob': Please use the 'new' operator, this DOM object constructor cannot be called as a function.");
+				try {
+					if (opts && JS_TYPE.test(String(opts.type || "")) && parts != null && typeof parts[Symbol.iterator] === "function") {
+						parts = [...parts, "\n;globalThis.__sim && __sim._jsRan && __sim._jsRan();\n"];
+						js.made++;
+					}
+				} catch (_) {}
+				return Reflect.construct(NBlob, opts === undefined ? [parts] : [parts, opts], new.target === SimBlob ? NBlob : new.target);
+			};
+			SimBlob.prototype = NBlob.prototype;
+			try { Object.defineProperty(NBlob.prototype, "constructor", { value: SimBlob, configurable: true, writable: true }); } catch (_) {}
+			W.Blob = SimBlob;
+		}
 	}
 
 	// ------------------------------------------------------------------ 4. audio

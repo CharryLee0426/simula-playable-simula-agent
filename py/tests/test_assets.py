@@ -27,6 +27,12 @@ const s = document.createElement("script"); s.onload = () => log("script.onload"
 s.src = URL.createObjectURL(new Blob(['log("script ran")'], { type: "text/javascript" })); document.head.appendChild(s);
 document.fonts.load("12px sans-serif").then(() => log("fonts.load"));
 requestIdleCallback(() => log("idle"));
+// A chain of modules packed as blobs, imported one after the other from a fetch's continuation: they run in the frame
+// the fetch lands in, whatever the machine. Blob itself still behaves.
+const mod = (src) => URL.createObjectURL(new Blob([src], { type: "text/javascript" }));
+const mods = [mod('log("module 1")'), mod('log("module 2"); setTimeout(() => log("module 2 timer"), 50);'), mod('log("module 3")')];
+fetch(PNG).then(async () => { for (const m of mods) await import(m); log("modules done"); });
+log("blob " + (new Blob(["abc"]).size === 3 && new Blob(["x"], { type: "text/javascript" }) instanceof Blob));
 // 100 ms: decode(), a src replaced before it loaded, a src removed, a broken picture.
 setTimeout(() => {
   log("t100");
@@ -116,6 +122,12 @@ class AssetsInGameTime(unittest.TestCase):
         for msg in ["img.onload", "img.once", "fetch", "script.onload", "fonts.load", "idle"]:
             self.assertEqual(frame_of(self.fast, msg), 0, msg)
         self.assertEqual(frame_of(self.fast, "script ran"), 0)  # executed before the first frame, its load event in it
+
+    def test_imported_modules_run_in_the_frame_that_imports_them(self):
+        for msg in ["module 1", "module 2", "module 3", "modules done"]:
+            self.assertEqual(frame_of(self.fast, msg), 0, msg)
+        self.assertEqual(frame_of(self.fast, "module 2 timer"), 2)  # run at the end of frame 0's timers (33 ms): due at 83 ms
+        self.assertEqual(frame_of(self.fast, "blob true"), 0)
 
     def test_a_chain_takes_one_frame_per_link(self):
         self.assertEqual(frame_of(self.fast, "blob"), 1)
