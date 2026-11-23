@@ -52,6 +52,15 @@ setTimeout(() => {
   bar.style.width = "300px";
 }, 100);
 setTimeout(() => log("bar " + getComputedStyle(bar).width), 400);
+// 100 ms: a Web Animation and a CSS animation, each 100 ms: their finish / animationend events (which Chrome dispatches
+// at a real rendering frame) reach the game at the end of the frame they finish in.
+const st = document.createElement("style"); st.textContent = "@keyframes grow { to { width: 10px } } .grow { animation: grow 100ms linear }"; document.head.appendChild(st);
+const box = document.createElement("div"); document.body.appendChild(box);
+box.addEventListener("animationend", () => log("animationend"));
+setTimeout(() => {
+  box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 100 }).onfinish = () => log("onfinish");
+  box.classList.add("grow");
+}, 100);
 // 200 ms: a shader's parallel-compile status.
 setTimeout(() => {
   const gl = document.createElement("canvas").getContext("webgl");
@@ -151,6 +160,11 @@ class AssetsInGameTime(unittest.TestCase):
         self.assertEqual(len(bar), 1)
         f, m = bar[0]
         self.assertAlmostEqual(float(m[4:-2]), 300 * (f * 1000 / 30 - 100) / 1000, delta=0.5)
+
+    def test_animation_events_reach_the_game_at_the_end_of_their_frame(self):
+        t = frame_of(self.fast, "t100")  # both made in the frame of the 100 ms timer, both last 100 ms (3 frames)
+        self.assertEqual(frame_of(self.fast, "onfinish"), t + 4)  # finished at the end of frame t + 3
+        self.assertEqual(frame_of(self.fast, "animationend"), t + 4)
 
     def test_shader_compile_reports_done(self):
         msgs = [m for _, m in self.fast if m.startswith("khr") or m == "no webgl"]

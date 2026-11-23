@@ -26,6 +26,7 @@
 	const VIRTUAL_AUDIO = CFG.frozen && CFG.audio !== "log" && !!(window.OfflineAudioContext && window.AudioContext && window.AudioNode && window.AudioParam);
 	const realSetTimeout = window.setTimeout.bind(window);
 	const realClearTimeout = window.clearTimeout.bind(window);
+	const realRaf = window.requestAnimationFrame.bind(window);
 	const realPerfNow = performance.now.bind(performance);
 	const RealDate = Date;
 	const T0 = Number.isFinite(CFG.epoch) && CFG.frozen ? CFG.epoch : RealDate.now();
@@ -202,6 +203,7 @@
 	// that made it, as a browser would start it at its next rendering; one made by element.animate() is paused as it is
 	// made, so it only moves when the game seeks it.
 	const anims = new Map();
+	let animTouched = false; // an animation was found or finished: its events are pending until a real rendering frame
 	const styleMade = (a) => (window.CSSTransition && a instanceof CSSTransition) || (window.CSSAnimation && a instanceof CSSAnimation);
 	if (CFG.frozen && window.Element && typeof Element.prototype.animate === "function") {
 		const nAnimate = Element.prototype.animate;
@@ -223,6 +225,7 @@
 			try {
 				anims.set(a, { start: S.now - (styleMade(a) ? 0 : (Number(a.currentTime) || 0) / (a.playbackRate || 1)) });
 				if (a.playState === "running") a.pause();
+				animTouched = true;
 			} catch (_) {}
 		}
 	}
@@ -241,7 +244,7 @@
 				const timing = a.effect ? a.effect.getComputedTiming() : null;
 				const t = (S.now - st.start) * (a.playbackRate || 1);
 				const end = timing && Number.isFinite(timing.endTime) ? timing.endTime : Infinity;
-				if (t >= end - 0.5) { anims.delete(a); a.finish(); }
+				if (t >= end - 0.5) { anims.delete(a); a.finish(); animTouched = true; }
 				else a.currentTime = Math.max(0, t);
 			} catch (_) { anims.delete(a); }
 		}
@@ -391,6 +394,23 @@
 	});
 	S.inputStats = () => ({ ...inputStats });
 
+	// Animation events (animationstart/end, transitionrun/end, an Animation's finish event) are dispatched by Chrome at
+	// its next real rendering frame, not when an animation is finished or made: a game whose handler restarts an effect
+	// or changes its state (West Game II pops its gold counter when a flying ingot's animation finishes) saw them at a
+	// moment that depended on the machine. A frame that found or finished an animation ends with one real rendering
+	// frame, in which they fire (before its animation frame callbacks), at the frame's game time; what the handlers
+	// started is then seen and paused, and so on (a few rounds at most).
+	const realFrame = () => new Promise((r) => { const t = realSetTimeout(r, 250); realRaf(() => { realClearTimeout(t); r(); }); });
+	async function flushAnimationEvents() {
+		for (let i = 0; i < 3 && animTouched; i++) {
+			animTouched = false;
+			await realFrame();
+			syncAnimations();
+			await sync();
+		}
+		animTouched = false;
+	}
+
 	/** Advance n frames of 1/fps seconds each. Resolves when the frame's callbacks (and their microtasks) have run,
 	 *  and the asset work they started has finished (it is delivered in the next frame). `input`: how many touch and
 	 *  mouse events the worker has sent so far, {touch, mouse}; they are handled before the frame starts. */
@@ -415,6 +435,7 @@
 			syncAnimations();
 			S.frame++;
 			await sync(); // the screenshot after this step sees the frame's work done, whatever the machine's speed
+			await flushAnimationEvents();
 		}
 		return { now: S.now, frame: S.frame, ms: realPerfNow() - t0, pendingRaf: S.raf.size, timers: S.timers.size, input: { touch: inputStats.touch, mouse: inputStats.mouse } };
 	};
