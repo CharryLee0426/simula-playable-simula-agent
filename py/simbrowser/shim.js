@@ -211,9 +211,24 @@
 			return anim;
 		};
 	}
+	// New ones are seen (and paused) at every sync point of a step, not only at the end of the frame: a transition a
+	// style change starts would otherwise run on the compositor while the frame waits for asset work, and a second
+	// change in the same frame would start the next transition from wherever the first had got to.
+	function discoverAnimations() {
+		if (!document.getAnimations) return;
+		let list;
+		try { list = document.getAnimations(); } catch (_) { return; }
+		for (const a of list) {
+			if (anims.has(a)) continue;
+			try {
+				anims.set(a, { start: S.now - (styleMade(a) ? 0 : (Number(a.currentTime) || 0) / (a.playbackRate || 1)) });
+				if (a.playState === "running") a.pause();
+			} catch (_) {}
+		}
+	}
 	function syncAnimations() {
 		if (!document.getAnimations) return;
-		try { for (const a of document.getAnimations()) if (!anims.has(a)) anims.set(a, null); } catch (_) {}
+		discoverAnimations();
 		for (const [a, prev] of anims) {
 			try {
 				let st = prev;
@@ -303,6 +318,7 @@
 	 *  fixed point of game time, never in the middle of a frame at a moment that depends on the machine. */
 	const sync = async (afterTimers = false) => {
 		await yieldTask();
+		discoverAnimations();
 		if (afterTimers && js.armed) { js.armed = false; js.watch = realPerfNow(); }
 		if (ops.length || fontsLoading || jsBusy()) await settle();
 	};
