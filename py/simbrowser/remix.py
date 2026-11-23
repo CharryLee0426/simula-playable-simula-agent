@@ -10,26 +10,59 @@ already played and cut, with no model calls and no re-cut: the video streams are
 
 --verify also records the replay and compares it frame by frame with the video in raw.mp4: a replay that is not
 the same game is reported and nothing is replaced. --verify-band limits the comparison to a strip of the frame (a
-HUD), for games whose cosmetic effects draw from the random stream. A session whose original recording had a
-real-time race in it (a live AudioContext's state flipping to "running" on the real clock, audio decoded on the
-real clock, when the game's logic or its random draws depend on them) cannot be replayed exactly; --verify catches it. Writes audio.wav and audio/ into --work (default: a temporary
-directory) and replaces the audio track of raw.mp4, highlight.mp4 and candidates/cut_<id>.mp4 in place.
+HUD), for games whose cosmetic effects draw from the random stream. Writes audio.wav and audio/ into --work
+(default: a temporary directory) and replaces the audio track of raw.mp4, highlight.mp4 and candidates/cut_<id>.mp4
+in place.
+
+Some recordings had real-time races in them: a live AudioContext's state flipping to "running" on the real clock,
+or assets (audio, images, shaders) finishing on the real clock, when the game's logic or its random draws depend on
+them. Their replays can differ run to run (the "render" audio path has removed the audio ones). With --attempts N a
+diverging replay is abandoned as soon as a checkpoint frame no longer matches raw.mp4, and replayed again, up to N
+times; only a replay that passes the full check is used.
 """
 from __future__ import annotations
 
 import argparse
 import asyncio
+import io
 import json
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import Callable
+
+import numpy as np
+from PIL import Image
 
 from simbrowser.audio import mix_session
 from simbrowser.render import build_audio_filter
 from simbrowser.server import Worker
 
 
-async def replay(session: Path, playable: Path, work: Path, record: bool) -> dict:
+class Diverged(Exception):
+    pass
+
+
+def checkpoint(raw: Path, fps: float, every: int = 150, floor_db: float = 20.0) -> Callable[[int, bytes], None]:
+    """Every `every` frames, the replay's frame against raw.mp4's at 135x240: raises Diverged when it is clearly
+    another game (an idle animation at another phase stays near 30 dB; a different game is ~13 dB)."""
+    def small(img: Image.Image) -> np.ndarray:
+        return np.asarray(img.convert("L").resize((135, 240), Image.BOX), dtype=np.float32)
+
+    def check(f: int, jpeg: bytes) -> None:
+        if f < 30 or f % every:
+            return
+        r = subprocess.run(["ffmpeg", "-loglevel", "error", "-ss", f"{f / fps:.4f}", "-i", str(raw), "-frames:v", "1", "-f", "image2pipe", "-c:v", "png", "-"],
+                           capture_output=True)
+        if r.returncode or not r.stdout:
+            return
+        mse = float(np.mean((small(Image.open(io.BytesIO(jpeg))) - small(Image.open(io.BytesIO(r.stdout)))) ** 2))
+        if 10 * np.log10(255 ** 2 / max(mse, 1e-6)) < floor_db:
+            raise Diverged(f"frame {f}")
+    return check
+
+
+async def replay(session: Path, playable: Path, work: Path, record: bool, check: Callable[[int, bytes], None] | None = None) -> dict:
     sess = json.loads((session / "session.json").read_text())
     browser = json.loads((session / "config.json").read_text()).get("browser", {}) if (session / "config.json").exists() else {}
     fps = int(browser.get("fps", sess.get("fps", 30)))
@@ -50,6 +83,8 @@ async def replay(session: Path, playable: Path, work: Path, record: bool) -> dic
                 else:
                     await w.touch({"type": t["phase"], "x": t["x"], "y": t["y"]})
             await w.step({"frames": 1, "capture": record})
+            if check and w.rec and w.rec.last_jpeg:
+                check(f, w.rec.last_jpeg)
     finally:
         out = await w.close({})
     return {"game_s": frames / fps, "close": out}
@@ -94,21 +129,35 @@ def cut_audio(video: Path, wav: Path, edl: dict, fps: float, bitrate: str) -> No
     replace_audio(video, wav, ["-filter_complex", build_audio_filter(clips, total_s), "-map", "[aout]"], bitrate)
 
 
-def remix(session: Path, playable: Path, work: Path, verify: bool, band: tuple[float, float] | None = None, reuse: bool = False) -> dict:
-    if reuse and (work / "audio" / "audio_log.json").exists() and (not verify or (work / "raw_video.mp4").exists()):
-        sess = json.loads((session / "session.json").read_text())
-        rep = {"game_s": sess.get("frames", 0) / float(sess.get("fps", 30)) or sess["game_s"], "close": {"audio": "reused"}}
-    else:
-        rep = asyncio.run(replay(session, playable, work, verify))
-    report: dict = {"audio": rep["close"].get("audio"), "mix": mix_session(work, rep["game_s"])}
-    if verify:
-        report["video"] = compare_video(work / "raw_video.mp4", session / "raw.mp4", band)
-        if report["video"]["below"] > 0.02 * report["video"]["frames"]:
-            report["replaced"] = []
-            report["error"] = "the replay is not the same game as raw.mp4; nothing replaced"
-            return report
-    wav = work / "audio.wav"
+def remix(session: Path, playable: Path, work: Path, verify: bool, band: tuple[float, float] | None = None, reuse: bool = False,
+          attempts: int = 1) -> dict:
     fps = float(json.loads((session / "session.json").read_text()).get("fps", 30))
+    report: dict = {"attempts": []}
+    for attempt in range(max(1, attempts)):
+        if reuse and attempt == 0 and (work / "audio" / "audio_log.json").exists() and (not verify or (work / "raw_video.mp4").exists()):
+            sess = json.loads((session / "session.json").read_text())
+            rep = {"game_s": sess.get("frames", 0) / fps or sess["game_s"], "close": {"audio": "reused"}}
+        else:
+            # the checkpoint compares the whole frame, so it is off when only a band is verified
+            check = checkpoint(session / "raw.mp4", fps) if verify and attempts > 1 and not band else None
+            try:
+                rep = asyncio.run(replay(session, playable, work, verify, check))
+            except Diverged as e:
+                report["attempts"].append(f"diverged at {e}")
+                continue
+        report.update({"audio": rep["close"].get("audio"), "mix": mix_session(work, rep["game_s"])})
+        if not verify:
+            break
+        report["video"] = compare_video(work / "raw_video.mp4", session / "raw.mp4", band)
+        if report["video"]["below"] <= 0.02 * report["video"]["frames"]:
+            report["attempts"].append("verified")
+            break
+        report["attempts"].append(f"{report['video']['below']} frames below {report['video']['threshold_db']} dB")
+    else:
+        report["replaced"] = []
+        report["error"] = "no replay was the same game as raw.mp4; nothing replaced"
+        return report
+    wav = work / "audio.wav"
     replaced = []
     if (session / "raw.mp4").exists():
         replace_audio(session / "raw.mp4", wav, ["-map", "1:a", "-shortest"], "96k")
@@ -134,11 +183,12 @@ if __name__ == "__main__":
     ap.add_argument("--verify-band", help="TOP:HEIGHT, fractions of the frame height: verify only this strip (e.g. the HUD)")
     ap.add_argument("--work")
     ap.add_argument("--reuse", action="store_true", help="use the replay already in --work instead of replaying again")
+    ap.add_argument("--attempts", type=int, default=1, help="with --verify: replay up to N times, abandoning a replay at the first checkpoint that diverges")
     a = ap.parse_args()
     band = tuple(float(x) for x in a.verify_band.split(":")) if a.verify_band else None
     if a.work:
         Path(a.work).mkdir(parents=True, exist_ok=True)
-        print(json.dumps(remix(Path(a.session), Path(a.playable), Path(a.work), a.verify, band, a.reuse)))
+        print(json.dumps(remix(Path(a.session), Path(a.playable), Path(a.work), a.verify, band, a.reuse, a.attempts)))
     else:
         with tempfile.TemporaryDirectory() as d:
-            print(json.dumps(remix(Path(a.session), Path(a.playable), Path(d), a.verify, band)))
+            print(json.dumps(remix(Path(a.session), Path(a.playable), Path(d), a.verify, band, attempts=a.attempts)))
