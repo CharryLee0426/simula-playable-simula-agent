@@ -74,7 +74,7 @@ export class BrowserWorker {
 		});
 	}
 
-	open(p: { playable: string; run_dir: string; viewport: [number, number]; dpr: number; fps: number; seed: number; display: string; record?: boolean; audio?: "render" | "log"; audio_max_s?: number }) {
+	open(p: { playable: string; run_dir: string; viewport: [number, number]; dpr: number; fps: number; seed: number; display: string; record?: boolean; audio?: "render" | "log"; audio_max_s?: number; epoch?: number }) {
 		return this.call<{ load_s: number; frame_size: [number, number]; gl: string | null; summary: PageSummary }>("open", p, 180_000);
 	}
 	step(frames: number, capture = true) {

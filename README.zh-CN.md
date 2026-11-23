@@ -23,7 +23,8 @@
    `KHR_parallel_shader_compile` 第一次查询就报告编译完成。步进前发出的输入在这一帧之前处理：Chrome 在某个真实渲染帧
    才把触摸移动交给页面，3D 页面上可能比 CDP 调用返回晚 250 ms，所以页面统计收到的输入、worker 统计发出的输入，
    步进先等两者一致。`import()` 本身无法拦截，所以页面构造的每个 JavaScript Blob（把代码打包的 playable）末尾加一条
-   语句报告自己已运行，步进等一串这样的导入安静下来。游戏自己卡住的工作最多等 10 秒，之后在完成时送达。
+   语句报告自己已运行，步进等一串这样的导入安静下来。`Date` 从固定纪元开始（2026-01-01 12:00 UTC，或 `browser.epoch`），
+   和带种子的 `Math.random` 一样：Boom Castle 用 `Date.now()` 给模拟播种。游戏自己卡住的工作最多等 10 秒，之后在完成时送达。
 2. **由浏览器按游戏时间渲染游戏音频。** 游戏拿到的 `AudioContext` 其实是一个以虚拟时钟为 `currentTime` 的
    `OfflineAudioContext`：游戏排进音频时间线的一切（`start`/`stop`、音量包络、滤波和音高扫频）直接交给 Chromium
    的音频引擎；实时上下文会立即生效的操作（`connect`/`disconnect`、`.value =`、正在发声节点的属性）记下游戏时间，

@@ -134,6 +134,8 @@ class Worker:
         cfg = {"seed": int(p.get("seed", 1)), "fps": fps, "frozen": bool(p.get("frozen", True)),
                "audio": str(p.get("audio", "render")), "audioMaxS": float(p.get("audio_max_s", 300)),
                "assetStallMs": float(p.get("asset_stall_ms", 10000))}
+        if p.get("epoch") is not None:  # ms since 1970 that Date.now() reads at game time 0 (default: the shim's fixed one)
+            cfg["epoch"] = float(p["epoch"])
         await ctx.add_init_script(script=f"window.__SIM_CFG = {json.dumps(cfg)};\n{SHIM}")
 
         async def route(r):

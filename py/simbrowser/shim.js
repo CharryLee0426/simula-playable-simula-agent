@@ -8,7 +8,7 @@
 //      on the real clock (decoding pictures and audio, data:/blob: fetches and blob reads, fonts, scripts and blob
 //      modules) is waited for and delivered at the start of the next frame (1b), and input sent before a step is
 //      handled before it (counted on both sides), so a replay of the same touches is the same game on any machine.
-//   2. Reproducibility: Math.random is a seeded PRNG.
+//   2. Reproducibility: Math.random is a seeded PRNG, and Date starts at a fixed epoch.
 //   3. A sandbox: ad SDK stubs (mraid, dapi, ExitApi, FbPlayableAd), a WebSocket that never connects, window.open
 //      blocked. CTA calls are logged as events: they tell the agent that the playable reached its install button.
 //   4. The game's audio, in game time. Web Audio is rendered by the browser's own engine: the game's AudioContext is
@@ -18,7 +18,9 @@
 //   5. Introspection: which input events the game listens to, and (for DOM games) which elements are interactive.
 (() => {
 	if (window.__sim) return;
-	const CFG = Object.assign({ seed: 1, fps: 30, frozen: true, audio: "render", audioMaxS: 300, audioRate: 0 }, window.__SIM_CFG || {});
+	// epoch: what Date.now() reads at game time 0. Fixed, like the random seed: a game that seeds itself from the date
+	// (Boom Castle seeds its simulation from Date.now()) would otherwise be another game on every run.
+	const CFG = Object.assign({ seed: 1, fps: 30, frozen: true, audio: "render", audioMaxS: 300, audioRate: 0, epoch: Date.UTC(2026, 0, 1, 12) }, window.__SIM_CFG || {});
 	// "render": Web Audio rendered offline by the browser (needs the virtual clock). "log": the old event log, mixed
 	// approximately by the worker (gain read at start, no envelopes or effects).
 	const VIRTUAL_AUDIO = CFG.frozen && CFG.audio !== "log" && !!(window.OfflineAudioContext && window.AudioContext && window.AudioNode && window.AudioParam);
@@ -26,7 +28,7 @@
 	const realClearTimeout = window.clearTimeout.bind(window);
 	const realPerfNow = performance.now.bind(performance);
 	const RealDate = Date;
-	const T0 = RealDate.now();
+	const T0 = Number.isFinite(CFG.epoch) && CFG.frozen ? CFG.epoch : RealDate.now();
 	const nativeAddListener = EventTarget.prototype.addEventListener;
 	const nativeTimeStamp = Object.getOwnPropertyDescriptor(Event.prototype, "timeStamp").get;
 	const S = (window.__sim = {
@@ -59,7 +61,8 @@
 			return (t >>> 0) / 4294967296;
 		};
 		for (let i = 0; i < 16; i++) next();
-		Math.random = next;
+		S.randCalls = 0; // how far the game is into its random stream (two replays of a session draw the same numbers)
+		Math.random = () => { S.randCalls++; return next(); };
 	}
 
 	// ------------------------------------------------------------------ 3. sandbox: ad SDKs, sockets, popups

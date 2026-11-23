@@ -75,7 +75,8 @@ async def replay(session: Path, playable: Path, work: Path, record: bool, check:
     mouse = sess.get("input_mode") == "mouse"
     w = Worker()
     await w.open({"run_dir": str(work), "playable": str(playable), "viewport": browser.get("viewport", [360, 640]), "dpr": browser.get("dpr", 2), "fps": fps,
-                  "seed": browser.get("seed", 7), "display": browser.get("display", "auto"), "record": record, "audio": "render", "audio_max_s": frames / fps + 60})
+                  "seed": browser.get("seed", 7), "display": browser.get("display", "auto"), "record": record, "audio": "render", "audio_max_s": frames / fps + 60,
+                  **({"epoch": browser["epoch"]} if browser.get("epoch") is not None else {})})
     try:
         for f in range(frames):
             for t in touches.get(f, []):

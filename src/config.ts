@@ -11,7 +11,7 @@ export type Reasoning = "none" | "minimal" | "low" | "medium" | "high";
 export type Config = {
 	budget_usd: number;
 	models: { planner: string; planner_reasoning: Reasoning; director: string; director_reasoning: Reasoning; judge: string; decider: string };
-	browser: { viewport: [number, number]; dpr: number; fps: number; display: "auto" | "headless" | "headed" | "xvfb"; seed: number };
+	browser: { viewport: [number, number]; dpr: number; fps: number; display: "auto" | "headless" | "headed" | "xvfb"; seed: number; epoch?: number };
 	play: {
 		max_game_s: number;
 		min_game_s: number;

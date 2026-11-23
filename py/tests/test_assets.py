@@ -33,6 +33,7 @@ const mod = (src) => URL.createObjectURL(new Blob([src], { type: "text/javascrip
 const mods = [mod('log("module 1")'), mod('log("module 2"); setTimeout(() => log("module 2 timer"), 50);'), mod('log("module 3")')];
 fetch(PNG).then(async () => { for (const m of mods) await import(m); log("modules done"); });
 log("blob " + (new Blob(["abc"]).size === 3 && new Blob(["x"], { type: "text/javascript" }) instanceof Blob));
+log("date " + new Date().toISOString());
 // 100 ms: decode(), a src replaced before it loaded, a src removed, a broken picture.
 setTimeout(() => {
   log("t100");
@@ -128,6 +129,9 @@ class AssetsInGameTime(unittest.TestCase):
             self.assertEqual(frame_of(self.fast, msg), 0, msg)
         self.assertEqual(frame_of(self.fast, "module 2 timer"), 2)  # run at the end of frame 0's timers (33 ms): due at 83 ms
         self.assertEqual(frame_of(self.fast, "blob true"), 0)
+
+    def test_date_starts_at_a_fixed_epoch(self):
+        self.assertEqual(frame_of(self.fast, "date 2026-01-01T12:00:00.000Z"), 0)
 
     def test_a_chain_takes_one_frame_per_link(self):
         self.assertEqual(frame_of(self.fast, "blob"), 1)

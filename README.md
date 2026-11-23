@@ -89,8 +89,9 @@ input it receives, the worker counts what it sent, and a step first waits until 
 of one West Game II session parted from frame 3 (its packed assets finished decoding a frame earlier or later), and a
 move handled a frame late nudged the hero, then the camera. `import()` itself cannot be intercepted, so each
 JavaScript blob the page builds (playables that pack their code) gets a last statement reporting that it ran, and a
-step waits for a chain of such imports to go quiet. Work the game itself holds up (a stream it feeds from a timer) is
-waited for 10 s at most, then lands when it finishes.
+step waits for a chain of such imports to go quiet. `Date` starts at a fixed epoch (2026-01-01 12:00 UTC, or
+`browser.epoch`), like the seeded `Math.random`: Boom Castle seeds its simulation from `Date.now()`. Work the game itself
+holds up (a stream it feeds from a timer) is waited for 10 s at most, then lands when it finishes.
 Consequence: the recording is deterministic and machine-independent; the cost is wall time on slow machines
 (~0.2–0.4 s per 3D frame on llvmpipe; headed Chrome on Xvfb is ~3.5× faster than headless SwiftShader, so the worker
 starts Xvfb automatically on Linux).
