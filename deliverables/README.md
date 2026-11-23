@@ -2,6 +2,8 @@
 
 One folder per playable: `highlight.mp4` (20 s, 1080×1920, 30 fps, H.264 + AAC), `raw.mp4` (the full session in game time), `friction.md`/`.json`, `eval.json`, `trace.html` (open in a browser), `candidates/` (every cut that was scored, including the naive baselines), and the logs (`plans.jsonl`, `actions.jsonl`, `observations.jsonl`, `ledger.jsonl`, `trace.jsonl`).
 
+Game audio is the game's own Web Audio graph rendered by Chromium on the virtual clock, plus its `<audio>` elements (README §2). Sessions recorded before that change had their audio rebuilt with `python -m simbrowser.remix --verify`: each session is replayed from `actions.jsonl`, checked frame by frame against `raw.mp4`, and only the audio tracks are replaced (video streams copied unchanged).
+
 | set | playable | genre (as understood by the agent) | files | score | judge J / heuristics H | baselines (first 20 s / random) | separation | head-to-head vs best baseline | session | friction items | cost | wall time |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | samples | **boom-castle** | Tower Defense | [highlight](boom-castle/highlight.mp4) · [raw](boom-castle/raw.mp4) · [trace](boom-castle/trace.html) · [friction](boom-castle/friction.md) | **82.7** | 82.1 / 83.5 | 63.2 / 73.9 | 8.8 | 2/2 | 71 s · 56 inputs · time_limit | 4 (2 high) | $0.71 | 18 min |
