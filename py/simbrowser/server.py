@@ -171,7 +171,7 @@ class Worker:
             disp = f":{90 + (os.getpid() % 500)}"
             self.xvfb = subprocess.Popen(["Xvfb", disp, "-screen", "0", "1280x1024x24", "-nolisten", "tcp"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             time.sleep(0.6)
-            os.environ["DISPLAY"] = disp
+            os.environ["DISPLAY"] = self.xvfb_display = disp
             return False
         return True
 
@@ -201,6 +201,13 @@ class Worker:
             await self.pw.stop()
         if getattr(self, "xvfb", None):
             self.xvfb.terminate()
+            try:
+                self.xvfb.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                self.xvfb.kill()
+            self.xvfb = None
+            if os.environ.get("DISPLAY") == getattr(self, "xvfb_display", None):
+                os.environ.pop("DISPLAY")  # a later worker in this process starts its own display
         self.page = None
         return out
 
