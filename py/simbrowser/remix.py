@@ -6,10 +6,13 @@ Audio rendered by the browser instead of the approximate event-log mix) can be a
 already played and cut, with no model calls and no re-cut: the video streams are copied, only the audio is rebuilt
 (same clip lists, fades and loudness normalization as simbrowser.render).
 
-  python -m simbrowser.remix <session_or_deliverable_dir> <playable.html> [--verify] [--work DIR]
+  python -m simbrowser.remix <session_or_deliverable_dir> <playable.html> [--verify [--verify-band T:H]] [--work DIR [--reuse]]
 
 --verify also records the replay and compares it frame by frame with the video in raw.mp4: a replay that is not
-the same game is reported and nothing is replaced. Writes audio.wav and audio/ into --work (default: a temporary
+the same game is reported and nothing is replaced. --verify-band limits the comparison to a strip of the frame (a
+HUD), for games whose cosmetic effects draw from the random stream. A session whose original recording had a
+real-time race in it (a live AudioContext's state flipping to "running" on the real clock, audio decoded on the
+real clock, when the game's logic or its random draws depend on them) cannot be replayed exactly; --verify catches it. Writes audio.wav and audio/ into --work (default: a temporary
 directory) and replaces the audio track of raw.mp4, highlight.mp4 and candidates/cut_<id>.mp4 in place.
 """
 from __future__ import annotations
@@ -52,19 +55,29 @@ async def replay(session: Path, playable: Path, work: Path, record: bool) -> dic
     return {"game_s": frames / fps, "close": out}
 
 
-def compare_video(replayed: Path, raw: Path) -> dict:
+def compare_video(replayed: Path, raw: Path, band: tuple[float, float] | None = None) -> dict:
     """Per-frame PSNR of the replay against raw.mp4's video, both shrunk to 135x240: compression noise and an idle
-    animation at another phase (a pulsing button: 28-34 dB) stay well above what a different game scores (~13 dB)."""
+    animation at another phase (a pulsing button: 28-34 dB) stay well above what a different game scores (~13 dB).
+
+    `band` = (top, height) as fractions of the frame: compare only that strip, at 540 px wide (e.g. the HUD of a game
+    whose particles and camera shake draw from the random stream while its gameplay does not)."""
     stats = replayed.with_name(f"psnr_{raw.parent.name}.txt")
+    if band:
+        y, h = int(band[0] * 960) // 2 * 2, max(2, int(band[1] * 960) // 2 * 2)
+        fit = f"scale=540:960:flags=area,crop=540:{h}:0:{y}"
+        threshold = 22.0
+    else:
+        fit, threshold = "scale=135:240:flags=area", 25.0
     subprocess.run(["ffmpeg", "-loglevel", "error", "-i", str(replayed), "-i", str(raw), "-lavfi",
-                    f"[0:v]scale=135:240:flags=area[a];[1:v]scale=135:240:flags=area[b];[a][b]psnr=stats_file={stats}", "-f", "null", "-"], check=True)
+                    f"[0:v]{fit}[a];[1:v]{fit}[b];[a][b]psnr=shortest=1:stats_file={stats}", "-f", "null", "-"], check=True)
     vals = []
     for line in stats.read_text().splitlines():
         kv = dict(x.split(":", 1) for x in line.split() if ":" in x)
         v = kv.get("psnr_avg", "inf")
         vals.append(99.0 if v == "inf" else float(v))
     body = vals[15:] or vals  # the first half second is boot (assets decoding in real time)
-    return {"frames": len(vals), "mean_db": round(sum(body) / len(body), 2), "min_db": round(min(body), 2), "below_25db": sum(1 for v in body if v < 25)}
+    return {"frames": len(vals), "mean_db": round(sum(body) / len(body), 2), "min_db": round(min(body), 2), "threshold_db": threshold,
+            "below": sum(1 for v in body if v < threshold), **({"band": list(band)} if band else {})}
 
 
 def replace_audio(video: Path, wav: Path, audio: list[str], bitrate: str) -> None:
@@ -81,12 +94,16 @@ def cut_audio(video: Path, wav: Path, edl: dict, fps: float, bitrate: str) -> No
     replace_audio(video, wav, ["-filter_complex", build_audio_filter(clips, total_s), "-map", "[aout]"], bitrate)
 
 
-def remix(session: Path, playable: Path, work: Path, verify: bool) -> dict:
-    rep = asyncio.run(replay(session, playable, work, verify))
+def remix(session: Path, playable: Path, work: Path, verify: bool, band: tuple[float, float] | None = None, reuse: bool = False) -> dict:
+    if reuse and (work / "audio" / "audio_log.json").exists() and (not verify or (work / "raw_video.mp4").exists()):
+        sess = json.loads((session / "session.json").read_text())
+        rep = {"game_s": sess.get("frames", 0) / float(sess.get("fps", 30)) or sess["game_s"], "close": {"audio": "reused"}}
+    else:
+        rep = asyncio.run(replay(session, playable, work, verify))
     report: dict = {"audio": rep["close"].get("audio"), "mix": mix_session(work, rep["game_s"])}
     if verify:
-        report["video"] = compare_video(work / "raw_video.mp4", session / "raw.mp4")
-        if report["video"]["below_25db"] > 0.02 * report["video"]["frames"]:
+        report["video"] = compare_video(work / "raw_video.mp4", session / "raw.mp4", band)
+        if report["video"]["below"] > 0.02 * report["video"]["frames"]:
             report["replaced"] = []
             report["error"] = "the replay is not the same game as raw.mp4; nothing replaced"
             return report
@@ -114,11 +131,14 @@ if __name__ == "__main__":
     ap.add_argument("session")
     ap.add_argument("playable")
     ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--verify-band", help="TOP:HEIGHT, fractions of the frame height: verify only this strip (e.g. the HUD)")
     ap.add_argument("--work")
+    ap.add_argument("--reuse", action="store_true", help="use the replay already in --work instead of replaying again")
     a = ap.parse_args()
+    band = tuple(float(x) for x in a.verify_band.split(":")) if a.verify_band else None
     if a.work:
         Path(a.work).mkdir(parents=True, exist_ok=True)
-        print(json.dumps(remix(Path(a.session), Path(a.playable), Path(a.work), a.verify)))
+        print(json.dumps(remix(Path(a.session), Path(a.playable), Path(a.work), a.verify, band, a.reuse)))
     else:
         with tempfile.TemporaryDirectory() as d:
-            print(json.dumps(remix(Path(a.session), Path(a.playable), Path(d), a.verify)))
+            print(json.dumps(remix(Path(a.session), Path(a.playable), Path(d), a.verify, band)))
