@@ -1,0 +1,19 @@
+/* Shared look for the write-up figures. Rendered to PNG with docs/figures/src/render.mjs. */
+:root {
+  --surface: #fcfcfb; --plane: #f4f3ef; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781; --hair: #e1e0d9; --axis: #c3c2b7;
+  --blue: #2a78d6; --orange: #eb6834; --aqua: #1baf7a; --violet: #6250d6; --yellow: #eda100; --magenta: #e87ba4; --gray: #a9a8a1;
+  --blue-t: #eaf2fc; --orange-t: #fdeee7; --aqua-t: #e5f6ee; --violet-t: #eeecfb; --yellow-t: #fdf4dc; --gray-t: #f1f0ec;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--surface); }
+body { font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.fig { padding: 36px 40px 32px; width: 1480px; }
+.fig h1 { font-size: 24px; font-weight: 650; margin: 0 0 6px; letter-spacing: -0.01em; }
+.fig .sub { font-size: 15px; color: var(--ink2); margin: 0 0 24px; line-height: 1.45; max-width: 1180px; }
+.note { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.mono { font-family: "DejaVu Sans Mono", ui-monospace, Menlo, monospace; font-size: 0.92em; }
+.card { background: #fff; border: 1px solid var(--hair); border-radius: 12px; }
+.chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; line-height: 1.5; white-space: nowrap; }
+.chip.blue { background: var(--blue-t); color: #184f95; } .chip.orange { background: var(--orange-t); color: #a03c12; }
+.chip.aqua { background: var(--aqua-t); color: #0b6a48; } .chip.violet { background: var(--violet-t); color: #3f31a1; }
+.chip.yellow { background: var(--yellow-t); color: #7a5300; } .chip.gray { background: var(--gray-t); color: var(--ink2); }

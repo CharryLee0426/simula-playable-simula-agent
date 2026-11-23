@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Highlights</title><link rel="stylesheet" href="base.css">
+<style>
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px 16px; }
+  .g img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 12px; display: block; border: 1px solid var(--hair); }
+  .g .t { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; }
+  .g b { font-size: 14px; } .g .s { font-size: 14px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .g p { margin: 2px 0 5px; font-size: 12px; color: var(--ink2); line-height: 1.4; }
+  .sum { border-radius: 12px; background: var(--gray-t); padding: 18px 16px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .sum b { font-size: 24px; display: block; letter-spacing: -0.02em; } .sum span { font-size: 12.5px; color: var(--ink2); line-height: 1.4; display: block; }
+</style></head><body><div class="fig">
+<h1>One frame from each delivered highlight</h1>
+<p class="sub">Every highlight is 20.0 s, 1080×1920, 30 fps, H.264 with the game’s own audio. The white dot is the touch indicator drawn from the action log. Scores are 0–100 from the evaluator.</p>
+<div class="grid" id="grid"></div>
+</div>
+<script>
+const G = [
+  ["boom-castle", "Boom Castle", "3D tower defense · drag to aim", "sample", "82.7"],
+  ["word-hunt", "Word Hunt", "DOM word puzzle · swipe letters", "sample", "85.5"],
+  ["raid-shard-market", "Raid: Shard Market", "3D resource game · joystick", "sample", "79.7"],
+  ["west-game-ii", "West Game II", "3D town defense · joystick", "sample", "83.4"],
+  ["castle-toss", "Castle Toss", "2D physics · slingshot", "generated", "88.2"],
+  ["bakery-rush", "Bakery Rush", "DOM idle clicker · taps", "generated", "84.9"],
+  ["neon-lanes", "Neon Lanes", "raw-WebGL runner · swipes, reflexes", "generated", "91.8"],
+  ["orb-merge", "Orb Merge", "2D merge puzzle · drag and drop", "generated", "87.2"],
+  ["gem-swap", "Gem Swap", "match-3 · swipes", "hold-out", "89.9"],
+  ["sky-stack", "Sky Stack", "raw-WebGL stacker · timed taps", "hold-out", "80.3"],
+  ["comet-dodge", "Comet Dodge", "2D dodger · hold to steer", "hold-out", "84.3"],
+];
+const chip = { sample: "blue", generated: "violet", "hold-out": "orange" };
+document.getElementById("grid").innerHTML = G.map(([id, n, k, set, s]) => `<div class="g"><img src="../frames/${id}.jpg"><div class="t"><b>${n}</b><span class="s">${s}</span></div><p>${k}</p><span class="chip ${chip[set]}">${set}</span></div>`).join("") +
+  `<div class="sum"><div><b>11</b><span>playables: 4 samples, 4 generated, 3 hold-out</span></div><div><b>3</b><span>renderers: canvas 2D, DOM, WebGL 3D</span></div><div><b>85.3</b><span>mean score; every highlight passes the spec gate</span></div><div><b>0</b><span>lines of per-game code, rules or coordinates</span></div></div>`;
+</script></body></html>
