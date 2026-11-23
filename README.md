@@ -76,7 +76,9 @@ advances when the agent steps a frame. While the model thinks the game is frozen
 1/30 s of game time apart however slow the machine is; the only pauses on video are the humanizer's reaction times.
 Two generic guards keep it robust: busy-wait loops (CPU benchmarks at boot) are detected and given a creeping clock,
 and Web Animations are tracked and finished explicitly so `animationend`/`.finished` handlers still fire (a CSS
-transition starts in the frame whose style change made it, not whenever the compositor got to it).
+transition starts in the frame whose style change made it, not whenever the compositor got to it, and since Chrome
+dispatches animation events at a real rendering frame, a step that finished an animation ends with one, so
+`animationend`/`transitionend`/`finish` handlers run at that frame's game time).
 Work that finishes on the real clock is pinned to game frames too. Decoding pictures (`createImageBitmap`,
 `img.decode()`, `<img>` load/error), reading `data:`/`blob:` URLs and blobs (`fetch`, `Response`/`Blob` bodies),
 fonts, `<script src>` loads and `decodeAudioData` are tracked when the game asks for them: at each of its sync points a

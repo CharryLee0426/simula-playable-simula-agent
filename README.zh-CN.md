@@ -15,7 +15,9 @@
    event.timeStamp、CSS/Web Animations、AudioContext.currentTime），游戏只在 agent “推进一帧”时前进。
    模型思考时游戏冻结，思考时间不会出现在画面里；每一帧之间严格相隔 1/30 秒游戏时间，与机器快慢无关
    （无 GPU 时 3D 样例实时只有 2–5 fps，实时录制根本做不到 30 fps）。两个通用护栏：忙等循环检测
-   （启动时的 CPU 跑分）和显式结束 Web Animations（否则 `.finished` 回调不触发、特效会冻在屏幕上）。
+   （启动时的 CPU 跑分）和显式结束 Web Animations（否则 `.finished` 回调不触发、特效会冻在屏幕上）；CSS 过渡从引起它的
+   那一帧开始，Chrome 在真实渲染帧才派发动画事件，所以结束了动画的那一步最后走一个真实渲染帧，
+   `animationend`/`transitionend`/`finish` 回调都在该帧的游戏时间运行。
    按实时完成的工作也钉在游戏帧上：解码图片（`createImageBitmap`、`img.decode()`、`<img>` 的 load/error）、读取
    `data:`/`blob:` URL 和 Blob（`fetch`、`Response`/`Blob` 的 body）、字体、`<script src>` 加载和 `decodeAudioData`
    在请求时被记录；每一步在它的同步点上（按实时）等到已请求的工作全部完成，结果（promise、load/error 事件、回调）
