@@ -34,6 +34,13 @@ at(1000, async () => {
   const o = oc.createOscillator(); o.connect(oc.destination); o.start();
   const b = await oc.startRendering(); R.ocLen = b.length; R.ocPeak = Math.max(...b.getChannelData(0).slice(0, 1000));
 });
+// 1.5 s: decoding a WAV (callback and promise forms) completes in the next stepped frame, whatever the machine.
+const wav = (n, rate) => { const b = new ArrayBuffer(44 + n * 2), v = new DataView(b), w = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); w(8, "WAVE"); w(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, "data"); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.round(Math.sin(i / 10) * 8000), true); return b; };
+at(1500, () => { const t0 = performance.now(), f0 = __sim.frame;
+  ctx.decodeAudioData(wav(4410, 44100), (b) => { R.decCb = [performance.now() - t0, __sim.frame - f0, b.duration]; }).then((b) => { R.decP = b.duration; }); });
 // 2.0 s: an envelope like a word game's tile sound: 12 ms attack to 0.025, exponential decay, stop at 200 ms.
 at(2000, () => {
   const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime;
@@ -124,6 +131,13 @@ class RenderedAudio(unittest.TestCase):
         self.assertAlmostEqual(r["cAfter"], 2.5, places=6)
         self.assertEqual(r["stateDuring"], "suspended")
         self.assertEqual(r["states"], ["suspended", "running"])
+
+    def test_decode_lands_in_the_next_frame(self):
+        dt, frames, dur = self.r["decCb"]
+        self.assertEqual(frames, 1)        # delivered in the frame after the call, not whenever the decoder finished
+        self.assertLess(dt, 1000 / 30 + 1e-6)
+        self.assertAlmostEqual(dur, 0.1, places=3)
+        self.assertAlmostEqual(self.r["decP"], 0.1, places=3)
 
     def test_games_own_offline_context_is_untouched(self):
         self.assertEqual(self.r["ocTime"], 0)

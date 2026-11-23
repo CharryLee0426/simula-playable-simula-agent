@@ -229,6 +229,8 @@
 	S.step = async (n = 1) => {
 		const t0 = realPerfNow();
 		for (let i = 0; i < n; i++) {
+			const decodes = S.audioPending && S.audioPending(); // "render" audio: decodes in flight land in this frame
+			if (decodes) await decodes;
 			if (S.drift) { S.now += S.drift; S.drift = 0; }
 			S.reads = 0;
 			const target = S.now + S.dt;
@@ -394,6 +396,28 @@
 		const later = (fn) => { if (V.rendering) { try { fn(); } catch (_) {} } else V.deferred.push({ c: ctxNow(), fn }); };
 		const isOurs = (n) => V !== null && n != null && n.context === V.ctx;
 		const vTimer = (delayMs, fn) => { const id = S.nextId++; S.timers.set(id, { at: S.now + delayMs, every: 0, fn, args: [], seq: id }); return id; };
+
+		// decodeAudioData finishes on the real clock: when, in game frames, depends on the machine, and a game that
+		// skips a sound until its buffer is ready (drawing its random pitch only when it plays) would play out
+		// differently on every run. Decodes complete before the next frame is stepped and are delivered in it.
+		const decoding = new Set();
+		const nDecode = BAC.prototype.decodeAudioData;
+		BAC.prototype.decodeAudioData = function (data, ok, fail) {
+			if (!V || this !== V.ctx) return nDecode.apply(this, arguments);
+			let settle;
+			const out = new Promise((res, rej) => { settle = { res, rej }; });
+			const job = nDecode.call(this, data).then((buf) => ({ buf }), (e) => ({ e }));
+			decoding.add(job);
+			job.then((r) => {
+				decoding.delete(job);
+				vTimer(0, () => {
+					if ("buf" in r) { settle.res(r.buf); if (typeof ok === "function") try { ok(r.buf); } catch (e) { err(e); } }
+					else { settle.rej(r.e); if (typeof fail === "function") try { fail(r.e); } catch (e) { err(e); } }
+				});
+			});
+			return out;
+		};
+		S.audioPending = () => (decoding.size ? Promise.race([Promise.allSettled([...decoding]), new Promise((r) => realSetTimeout(r, 20000))]) : null);
 
 		// Which AudioParams are ours: registered when the game reads them off a node (AudioParam has no .context).
 		const ours = new WeakSet();

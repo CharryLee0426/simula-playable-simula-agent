@@ -87,8 +87,9 @@ what a live context would apply immediately (`connect`/`disconnect`, `.value =`,
 replayed at its game time during the render (`suspend(t)`). When the session closes, Chromium renders the whole
 session's graph once (≈0.1 s for a 30 s session), so compressors, filters and envelopes sound exactly as they do for a
 player. `ended`/`statechange` events are delivered in game time, `.value` reads the automated value, `suspend()`
-freezes the context clock, and the context reports the device's sample rate (games size noise buffers by it and fill
-them from the seeded `Math.random`, so it has to match or the replay diverges). `<audio>` elements are logged
+freezes the context clock, decoded buffers arrive in the next stepped frame whatever the machine's speed, and the
+context reports the device's sample rate (games size noise buffers by it and fill them from the seeded `Math.random`,
+so it has to match or the replay diverges). `<audio>` elements are logged
 (play/pause/volume) and mixed by the worker. The soundtrack is frame-accurate with the video by construction.
 An earlier version re-synthesized Web Audio in Python from an event log: it read each sound's gain once at its start
 (before any envelope ran, so usually 1.0) and dropped filters and pitch sweeps, so synthesized SFX came out as flat,
