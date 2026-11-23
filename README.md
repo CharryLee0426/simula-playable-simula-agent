@@ -94,7 +94,8 @@ so it has to match or the replay diverges). `<audio>` elements are logged
 An earlier version re-synthesized Web Audio in Python from an event log: it read each sound's gain once at its start
 (before any envelope ran, so usually 1.0) and dropped filters and pitch sweeps, so synthesized SFX came out as flat,
 loud, unfiltered square/saw beeps up to 28 dB above the music. That path remains as the `audio: "log"` fallback, and
-`python -m simbrowser.remix` rebuilt the shipped deliverables' audio from verified replays of their sessions.
+`python -m simbrowser.remix` rebuilt the shipped deliverables' audio from verified replays of their sessions (nine of
+thirteen; the others had real-time races in their recordings and do not replay exactly, see `deliverables/README.md`).
 
 **3. See like a player, with generic help.** The main observation is the screenshot. Two generic signals make it
 reliable: for DOM games, interactive elements are drawn as numbered tags (set-of-marks) so the planner can say
