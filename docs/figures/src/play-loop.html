@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Play loop</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .panel { padding: 18px 20px 20px; }
+  .panel h2 { font-size: 16.5px; margin: 0 0 4px; font-weight: 650; display: flex; gap: 10px; align-items: center; }
+  .panel .cap { font-size: 13.5px; color: var(--ink2); margin: 0 0 14px; line-height: 1.45; }
+  .step { display: grid; grid-template-columns: 30px 1fr; gap: 12px; padding: 9px 0; border-top: 1px solid var(--hair); }
+  .step:first-of-type { border-top: 0; }
+  .num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 650; color: #fff; }
+  .step b { font-size: 14px; display: block; }
+  .step p { margin: 3px 0 0; font-size: 12.8px; color: var(--ink2); line-height: 1.5; }
+  .loop { margin-top: 10px; font-size: 12.5px; color: var(--ink2); display: flex; gap: 8px; align-items: center; }
+  .loop .bar { flex: 1; height: 1px; background: var(--axis); }
+  .side { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .side div { background: var(--gray-t); border-radius: 9px; padding: 10px 11px; font-size: 12.3px; line-height: 1.45; color: var(--ink2); }
+  .side b { display: block; color: var(--ink); font-size: 12.8px; margin-bottom: 2px; }
+  .bridge { margin: 16px 0 0; padding: 12px 16px; border-radius: 10px; background: var(--yellow-t); border: 1px solid #f2dfa6; font-size: 13.2px; line-height: 1.5; color: #4f3a00; }
+</style>
+</head>
+<body>
+<div class="fig">
+  <h1>How it plays: a turn-by-turn brain, and reflexes when the game is too fast</h1>
+  <p class="sub">The planner decides on a frozen frame, so it can take as long as it needs. For runners and dodgers one decision per screenshot is still too coarse in game time, so the planner hands a policy to a faster loop and takes control back whenever something new appears.</p>
+
+  <div class="two">
+    <div class="card panel">
+      <h2><span class="chip blue">default</span> Turn-by-turn play</h2>
+      <p class="cap">One planner call per turn. The game is frozen from step 1 to step 4.</p>
+      <div class="step"><div class="num" style="background:var(--blue)">1</div><div><b>Observe</b><p>Screenshot, numbered interactive DOM elements when there are any, the input events the game listens to, the player’s own running notes and its last six actions.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--blue)">2</div><div><b>Decide: planner ‖ decider, on the same frame</b><p>Planner returns screen, phase, progress, notes, 1–4 gestures and how long to watch. In parallel the decider answers: which screen phase, did the last input work (before / after images), would a first-timer know what to do.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--blue)">3</div><div><b>Validate</b><p>Code checks the plan (types, coordinates 0–1000, element numbers, durations). Problems go back to the model to fix; after three failures a generic probe is used.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--blue)">4</div><div><b>Humanize</b><p>Lognormal reaction time, extra reading time after a big screen change, Fitts-law movement time, curved Bézier paths with jitter, presses that last a few frames, the occasional slip.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--blue)">5</div><div><b>Act</b><p>Touch events through the browser’s input layer, one frame at a time, so canvas, DOM and WebGL games receive the same stream a finger would produce.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--blue)">6</div><div><b>Watch</b><p>Step 0.3–2.5 s of game time, then back to step 1.</p></div></div>
+      <div class="side">
+        <div><b>Stuck</b>Three turns without visible effect: the planner is told to try another place or gesture.</div>
+        <div><b>End card</b>Hold it for 2.5 s, tap the call to action once, stop.</div>
+        <div><b>Limits</b>90 s of game time, 60 planner calls, $2 per session.</div>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <h2><span class="chip orange">escalation</span> Reflex policy</h2>
+      <p class="cap">The planner writes it once; the decider runs it. Chosen by the planner only when things reach the player between screenshots.</p>
+      <div class="step"><div class="num" style="background:var(--orange)">A</div><div><b>The policy</b><p>Where the player is, an attention zone just ahead of it, and 2–5 situations, each with its gesture: “a pink block directly ahead and the left lane is empty → swipe left”.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--orange)">B</div><div><b>Every 0.1 s of game time</b><p>Track the player by template matching, move the zone with it, crop, and ask the decider one multi-option question: which situation is happening now?</p></div></div>
+      <div class="step"><div class="num" style="background:var(--orange)">C</div><div><b>Fire like a person</b><p>When an action clearly beats “nothing needs a reaction”, wait a reflex delay of about 210 ms, fire, then commit to that move for 0.4 s. A move that does not move the tracked player has hit a wall and is suppressed for 1.5 s.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--orange)">D</div><div><b>Every 0.5 s: look at the whole screen</b><p>Is play interrupted? Is there something the policy does not cover? Was the player just hit? Any yes ends the policy.</p></div></div>
+      <div class="step"><div class="num" style="background:var(--orange)">E</div><div><b>Learn from a hit</b><p>A flash or a sudden freeze in the recorded frames, confirmed on the whole screen. Reaction fired under 0.5 s before the hit: seen too late, the zone looks 15 % further ahead. Over 1.2 s: too early, it looks less far. In between: the situations were wrong, and the planner is told.</p></div></div>
+      <div class="bridge"><b>Hand-back.</b> A crash, a popup, a new obstacle type or a new tutorial prompt returns control to the planner, which sees the new thing while the game is frozen and writes a better policy.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Virtual clock</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .panel { padding: 18px 22px 20px; margin-bottom: 16px; }
+  .panel h2 { font-size: 16px; margin: 0 0 4px; font-weight: 650; }
+  .panel .cap { font-size: 13.5px; color: var(--ink2); margin: 0 0 14px; line-height: 1.45; }
+  .lane { display: grid; grid-template-columns: 150px 1fr; align-items: center; margin: 6px 0; }
+  .lane .name { font-size: 12.5px; color: var(--ink2); font-weight: 600; line-height: 1.3; }
+  .lane .name small { display: block; font-weight: 400; color: var(--muted); font-size: 11.5px; }
+  .track { position: relative; height: 38px; }
+  .seg { position: absolute; top: 0; height: 38px; border-radius: 6px; font-size: 11.5px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.2; padding: 0 4px; overflow: hidden; white-space: nowrap; }
+  .think { background: var(--gray-t); color: var(--ink2); border: 1px solid #dddcd5; }
+  .dead { background: var(--orange-t); color: #8a3410; border: 1px solid #f6cdbb; }
+  .react { background: var(--yellow-t); color: #6a4800; border: 1px solid #f2dfa6; }
+  .gest { background: var(--blue); color: #fff; }
+  .watch { background: var(--aqua-t); color: #0b6a48; border: 1px solid #bfe6d5; }
+  .stepw { background: var(--blue-t); color: #184f95; border: 1px solid #cfe0f6; }
+  .axis { position: relative; height: 20px; margin-left: 150px; border-top: 1px solid var(--axis); }
+  .axis span { position: absolute; top: 4px; font-size: 11px; color: var(--muted); transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink2); margin: 2px 0 14px; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 6px; }
+  .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .tile { padding: 14px 16px; }
+  .tile b { display: block; font-size: 26px; font-weight: 650; letter-spacing: -0.02em; }
+  .tile span { display: block; font-size: 12.5px; color: var(--ink2); line-height: 1.4; margin-top: 4px; }
+  .mark { position: absolute; top: 4px; height: 40px; border-left: 2px solid var(--gray); }
+  .mark span { position: absolute; left: 6px; top: -2px; font-size: 11.5px; color: var(--ink2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .axis span { white-space: nowrap; }
+  .wrap { position: relative; }
+</style>
+</head>
+<body>
+<div class="fig">
+  <h1>Why the game runs on a virtual clock</h1>
+  <p class="sub">A vision model needs seconds per decision, and a CPU-only machine renders the 3D samples at 2–5 frames per second. In real time both end up on the video. Under the virtual clock the game advances only when the agent steps a frame, so thinking costs wall time and no game time.</p>
+
+  <div class="legend">
+    <span><i style="background:var(--gray-t);border:1px solid #dddcd5"></i>model is thinking</span>
+    <span><i style="background:var(--yellow-t);border:1px solid #f2dfa6"></i>human reaction and reading time (humanizer)</span>
+    <span><i style="background:var(--blue)"></i>gesture</span>
+    <span><i style="background:var(--aqua-t);border:1px solid #bfe6d5"></i>watching the result</span>
+  </div>
+
+  <div class="card panel">
+    <h2>Real time: what a screen recorder would capture</h2>
+    <p class="cap">The game keeps running while the model thinks. The viewer sees a player who freezes for seconds between moves, and a fast game is lost before the first input. Three decisions take 11.6 s of video.</p>
+    <div class="lane"><div class="name">video = wall clock</div>
+      <div class="track" id="rt"></div></div>
+    <div class="axis" id="ax1"></div>
+  </div>
+
+  <div class="card panel">
+    <h2>Virtual clock: what this system records</h2>
+    <p class="cap">The same three decisions. Each planner call collapses to a zero-width mark on the video; the only pauses left are the ones a person would make. The same decisions take 4.4 s of video, and every frame is exactly 1/30 s of game time after the previous one.</p>
+    <div class="wrap">
+      <div class="lane"><div class="name">wall clock<small>not recorded</small></div><div class="track" id="wall"></div></div>
+      <div class="lane"><div class="name"></div><div class="track" id="marks" style="height:36px"></div></div>
+      <div class="lane"><div class="name">video = game time<small>30 fps, frame-exact</small></div><div class="track" id="game"></div></div>
+    </div>
+    <div class="axis" id="ax2"></div>
+  </div>
+
+  <div class="tiles">
+    <div class="card tile"><b>181</b><span>planner decisions across the 11 deliverable sessions</span></div>
+    <div class="card tile"><b>3.6 s</b><span>median model latency per decision (max 22.2 s)</span></div>
+    <div class="card tile"><b>0 s</b><span>of that latency visible in any recording</span></div>
+    <div class="card tile"><b>33.3 ms</b><span>of game time between any two frames, on any machine</span></div>
+    <div class="card tile"><b>0</b><span>gaps under 150 ms between two inputs, in every session</span></div>
+  </div>
+</div>
+<script>
+  const W = 1206, MAX = 16, px = (s) => (s / MAX) * W;
+  const add = (id, cls, t0, t1, label, short) => { const d = document.createElement("div"); d.className = "seg " + cls; d.style.left = px(t0) + "px"; const w = px(t1 - t0) - 2; d.style.width = w + "px"; const fits = (x) => x && w >= x.length * 6.2 + 8; d.textContent = fits(label) ? label : fits(short) ? short : ""; document.getElementById(id).appendChild(d); };
+  const think = [3.6, 4.3, 2.9];
+  const react = [0.75, 0.43, 0.5], gest = [0.25, 0.3, 0.25], watch = [0.8, 0.6, 0.5];
+  // real time: thinking is dead air on the video
+  let t = 0;
+  think.forEach((th, i) => { add("rt", "dead", t, t + th, `player frozen ${th} s, game still running`, `player frozen ${th} s`); t += th; add("rt", "gest", t, t + gest[i], ""); t += gest[i]; });
+  // virtual: wall clock lane and game time lane
+  let w = 0, g = 0;
+  const marks = document.getElementById("marks");
+  think.forEach((th, i) => {
+    add("wall", "think", w, w + th, `planner ${th} s · game frozen`); w += th;
+    const play = react[i] + gest[i] + watch[i];
+    const stepWall = play * 1.15; // stepping frames takes roughly their own duration on a 2D game, several times longer in 3D on a CPU
+    add("wall", "stepw", w, w + stepWall, "step frames"); w += stepWall;
+    const m = document.createElement("div"); m.className = "mark"; m.style.left = px(g) + "px"; m.innerHTML = `<span style="top:${i % 2 ? 14 : -2}px">${th} s → 0 frames</span>`; marks.appendChild(m);
+    add("game", "react", g, g + react[i], "read"); g += react[i];
+    add("game", "gest", g, g + gest[i], ""); g += gest[i];
+    add("game", "watch", g, g + watch[i], "watch"); g += watch[i];
+  });
+  for (const id of ["ax1", "ax2"]) for (let s = 0; s <= MAX; s += 2) { const e = document.createElement("span"); e.style.left = px(s) + "px"; e.textContent = s + " s"; document.getElementById(id).appendChild(e); }
+</script>
+</body>
+</html>
